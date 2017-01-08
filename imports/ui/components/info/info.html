@@ -1,12 +1,13 @@
 <template name="info">
   <h2>Learn Meteor!</h2>
-      <form class="info-note-add">
-        <input type="text" name="title" placeholder="Title" required>
-        <input type="submit" name="submit" value="+">
-      </form>
+
   <ul id='notes'>
     {{#each notes}}
       <li class='note'><a href="#" class='delete'>X</a>{{title}} - {{rank}}</li>
     {{/each}}
   </ul>
+        <form class="info-note-add">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="submit" name="submit" value="+">
+      </form>
 </template>
