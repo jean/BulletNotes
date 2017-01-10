@@ -1,9 +1,9 @@
 <template name="info">
-  <h2>Learn Meteor!</h2>
+  <h2 contenteditable="true">Noted</h2>
 
   <ul id='notes'>
     {{#each notes}}
-      <li class='note'><a href="#" class='delete'>X</a>{{title}} - {{rank}}</li>
+      {{> note}}
     {{/each}}
   </ul>
         <form class="info-note-add">

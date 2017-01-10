@@ -1,6 +1,7 @@
 import { Notes } from '/imports/api/notes/notes.js';
 import { Meteor } from 'meteor/meteor';
 import './info.html';
+import '../note/note.js'
 
 Template.info.onCreated(function () {
   Meteor.subscribe('notes.all');
@@ -26,14 +27,12 @@ Template.info.events({
         title.value = '';
       }
     });
-  },
-  'click .delete'() {
-    Meteor.call('notes.remove', this._id);
   }
 });
 
 Template.info.rendered = function() {
     this.$('#notes').sortable({
+        handle: '.delete',
         stop: function(el, ui) {
           $('.note').each(function(ii, el){
             console.log(el,ii);
