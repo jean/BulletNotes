@@ -26,6 +26,10 @@ Meteor.methods({
     check(title, String);
     check(rank, Number);
 
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
     return Notes.update(id,{ $set: {
       rank: rank,
       title: title
@@ -33,6 +37,10 @@ Meteor.methods({
   },
   'notes.updateBody'(id,body) {
     check(body, String);
+
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
     
     return Notes.update(id,{ $set: {
       body: body
@@ -40,6 +48,11 @@ Meteor.methods({
   },
   'notes.makeChild'(id,parent) {
     check(parent, String);
+
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
     var note = Notes.findOne(id);
     var parent = Notes.findOne(parent);
     console.log(parent,"---",note);
@@ -59,6 +72,11 @@ Meteor.methods({
   },
   'notes.remove'(id) {
     check(id, String);
+
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
     var children = Notes.find({parent:id});
     children.forEach(function(child) {
       Meteor.call('notes.remove',child._id);
@@ -66,6 +84,10 @@ Meteor.methods({
     Notes.remove(id);
   },
   'notes.outdent'(id) {
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+    
     var note = Notes.findOne(id);
     var parent = Notes.findOne(note.parent);
     parent = Notes.findOne(parent.parent);
