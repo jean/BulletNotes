@@ -10,11 +10,14 @@ Template.notes.onCreated(function () {
 });
 
 Template.notes.helpers({
-  notes() {
-    console.log(Template.currentData());
-    console.log(Notes.findOne(Template.currentData().noteId));
+  focusedNote() {
     if (Template.currentData().noteId) {
-      return Notes.find(Template.currentData().noteId);
+      return Notes.findOne(Template.currentData().noteId);
+    }
+  },
+  notes() {
+    if (Template.currentData().noteId) {
+      return Notes.find({parent:Template.currentData().noteId});
     } else {
       return Notes.find({parent: null}, {sort: {rank: 1}});
     }
