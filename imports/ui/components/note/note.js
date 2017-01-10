@@ -14,6 +14,15 @@ Template.note.events({
   'click .delete'() {
     Meteor.call('notes.remove', this._id);
   },
+  'blur div'(event) {
+  	Meteor.call('notes.update',this._id,event.target.innerText,this.rank);
+  },
+  'keydown div'(event) {
+  	if (event.keyCode==13) {
+  		$(event.target).blur();
+  		return false;
+  	}
+  }
 });
 
 Template.note.helpers({
