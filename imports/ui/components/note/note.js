@@ -18,9 +18,22 @@ Template.note.events({
   	Meteor.call('notes.update',this._id,event.target.innerText,this.rank);
   },
   'keydown div'(event) {
-  	if (event.keyCode==13) {
-  		$(event.target).blur();
-  		return false;
+  	console.log(event);
+  	switch(event.keyCode) {
+		case 13:
+			event.preventDefault();
+  			$(event.target).blur();
+  			return false;
+  		break;
+  		case 9:
+  			event.preventDefault();
+  			if (event.shiftKey) {
+  				Meteor.call('notes.outdent',this._id)
+  			} else {
+  				Meteor.call('notes.indent',this._id);
+  			}
+  			return false;
+  		break;
   	}
   }
 });
@@ -36,5 +49,9 @@ Template.note.helpers({
 			className = className+ ' tag-'+tag.substr(1).toLowerCase();
 		});
 		return className;
+	},
+	'style'() {
+		let margin = this.level;
+		return 'margin-left: '+margin+'em';
 	}
 });

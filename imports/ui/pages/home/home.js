@@ -1,3 +1,3 @@
 import './home.html';
 
-import '../../components/info/info.js';
+import '../../components/notes/notes.js';
