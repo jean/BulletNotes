@@ -10,9 +10,11 @@ Template.notes.onCreated(function () {
 });
 
 Template.notes.helpers({
-  focusedNote() {
+  focusedNoteTitle() {
     if (Template.currentData().noteId) {
-      return Notes.findOne(Template.currentData().noteId);
+      return Notes.findOne(Template.currentData().noteId).title;
+    } else {
+      return 'Home';
     }
   },
   notes() {
@@ -72,7 +74,7 @@ App.calculateRank = function() {
 
 Template.notes.rendered = function() {
     this.$('#notes').sortable({
-        handle: '.bullet',
+        handle: '.fa-ellipsis-v',
         stop: function(el, ui) {
           App.calculateRank();
         }

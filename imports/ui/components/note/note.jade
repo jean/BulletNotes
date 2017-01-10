@@ -1,8 +1,15 @@
 template(name='note')
-  div(class='note {{class}}', style='{{style}}')
-    a.bullet(href='/note/{{this._id}}',class='{{bulletClass}}')
-    a.expand(href='#') {{expand}}
-    div(contenteditable='true',class='title') {{title}}
+  div(class='note {{class}} list-primary', style='{{style}}')
+    i.fa.fa-ellipsis-v
+    .task-checkbox
+      input.list-child(type='checkbox', value='')
+    .task-title
+      div(contenteditable='true',class='title task-title-sp') {{title}}
+      span.badge.bg-theme Done
+      .pull-right.hidden-phone
+        a.bullet.btn.btn-success.btn-xs.fa.fa-search-plus(href='/note/{{this._id}}',class='{{bulletClass}}')
+        a.expand(href='#',class='btn btn-xs fa {{expandClass}}')
+    
     p(contenteditable='true', style='{{bodyStyle}}') {{body}}
   each children
     +note

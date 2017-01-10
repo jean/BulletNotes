@@ -1,6 +1,16 @@
 template(name='notes')
-  h2 {{focusedNote.title}}
-  #notes
-    each notes
-      +note
-    #new-note(contenteditable='true') {{newNoteText}}
+  .row.mt.mb
+    .col-md-12
+      section.task-panel.tasks-widget
+        .panel-heading
+          .pull-left
+            h5
+              i.fa.fa-tasks
+              |  {{focusedNoteTitle}}
+          br
+        .panel-body
+          .task-content
+            #notes.task-list
+              each notes
+                +note
+            #new-note(contenteditable='true') {{newNoteText}}

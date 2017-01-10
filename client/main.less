@@ -1,5 +1,9 @@
 @import "{}/imports/ui/stylesheets/not-found.less";
 
+#main-content {
+	margin-left: inherit !important;
+}
+
 .tag-red { background-color: #FF2020; }
 .tag-orange { background-color: #FFD8B5; }
 .tag-yellow { background-color: #FFFAB5; }
@@ -22,17 +26,6 @@
 	}
 }
 
-a.bullet {
-	text-decoration: none;
-	background-image: url(/img/bullet.svg);
-	display: inline-block;
-	height: 18px;
-	width: 18px;
-	border-radius: 12px;
-}
-a.bullet.hasChildren {
-	background-color: #e0e0e0;
-}
 #notes {
 	margin: 1em;
 }
@@ -46,7 +39,6 @@ a.bullet.hasChildren {
 	}
 	div.title {
 		display: inline-block;
-		min-width: 50%;
 	}
 	div.title:focus {
 	    outline: none;
@@ -59,4 +51,170 @@ a.bullet.hasChildren {
 #new-note {
 	opacity: .6;
 	clear: left;
+}
+
+
+/*--------------Tasks Widget--------------*/
+
+.task-content {
+    margin-bottom: 30px;
+}
+
+.task-panel {
+  background: #fff;
+  text-align: left;
+  box-shadow: 0px 3px 2px #aab2bd;
+  margin: 5px;
+}
+
+.tasks-widget .task-content:after {
+  clear: both;
+}
+
+.tasks-widget .task-footer  { 
+  margin-top: 5px;
+}
+
+.tasks-widget .task-footer:after,
+.tasks-widget .task-footer:before {
+  content: "";
+  display: table;
+  line-height: 0;
+}
+
+.tasks-widget .task-footer:after {
+  clear: both;
+}
+
+.tasks-widget  .task-list {
+  padding:0;
+  margin:0;
+}
+
+.tasks-widget .task-list > .note {
+  position:relative;
+  padding:10px 5px;
+  border-bottom:1px dashed #eaeaea;
+}
+
+.tasks-widget .task-list  .note.last-line {
+  border-bottom:none;
+}
+
+.tasks-widget .task-list  .note > .task-bell  {
+  margin-left:10px;
+}
+
+.tasks-widget .task-list  .note > .task-checkbox {
+  float:left;
+  width:30px;
+}
+
+.tasks-widget .task-list  .note > .task-title  {
+  overflow:hidden;
+  margin-right:10px;
+}
+
+.tasks-widget .task-list  .note > .task-config {
+  position:absolute;
+  top:10px;
+  right:10px;
+}
+
+.tasks-widget .task-list  .note .task-title .task-title-sp  {
+  margin-right:5px;
+}
+
+.tasks-widget .task-list  .note.task-done .task-title-sp  {
+  text-decoration:line-through;
+  color: #bbbbbb;
+}
+
+.tasks-widget .task-list  .note.task-done  {
+  background:#f6f6f6;
+}
+
+.tasks-widget .task-list  .note.task-done:hover {
+  background:#f4f4f4;
+}
+
+.tasks-widget .task-list  .note:hover  {
+  background:#f9f9f9;
+}
+
+.tasks-widget .task-list  .note .task-config {
+  display:none;
+}
+
+.tasks-widget .task-list  .note:hover > .task-config {
+  display:block;
+  margin-bottom:0 !important;
+}
+
+
+@media only screen and (max-width: 320px) {
+
+  .tasks-widget .task-config-btn {
+    float:inherit;
+    display:block;
+  }
+  
+  .tasks-widget .task-list-projects .note > .label {
+    margin-bottom:5px;
+  }
+
+}
+
+/*todolist*/
+#notes {
+    list-style-type: none;
+    margin: 0 0 20px 0;
+    padding: 0;
+    width: 100%;
+}
+#notes .note {
+    padding-left: 3em;
+    font-size: 12px;
+}
+#notes .note i {
+    position: absolute;
+    left:6px;
+    padding:4px 10px 0 10px;
+    cursor: pointer;
+}
+
+#notes .note input[type=checkbox]{
+    margin-top: 0;
+}
+
+.ui-sortable > .note {
+    padding: 15px 0 15px 35px !important ;
+    position: relative;
+    background: #f5f6f8;
+    margin-bottom: 2px;
+    border-bottom   : none !important;
+}
+
+.ui-sortable .note.list-primary {
+    border-left: 3px solid #41CAC0;
+}
+
+.ui-sortable .note.list-success {
+    border-left: 3px solid #78CD51;
+}
+
+.ui-sortable .note.list-danger {
+    border-left: 3px solid #FF6C60;
+}
+
+.ui-sortable .note.list-warning {
+    border-left: 3px solid #F1C500;
+}
+
+.ui-sortable .note.list-info {
+    border-left: 3px solid #58C9F3;
+}
+
+.ui-sortable .note.list-inverse {
+    border-left: 3px solid #BEC3C7;
 }

@@ -134,11 +134,11 @@ Template.note.helpers({
 			return 'display: none';
 		}
 	},
-	'expand'() {
+	'expandClass'() {
 		if (this.children > 0 && this.showChildren) {
-			return '-';
+			return 'fa-caret-square-o-up btn-primary';
 		} else if (this.children > 0) {
-			return '+';
+			return 'fa-caret-square-o-down btn-primary';
 		} else {
 			return '';
 		}
