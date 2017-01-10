@@ -13,11 +13,11 @@ Template.note.helpers({
 });
 
 Template.note.events({
-	'click .bullet'(event) {
-		event.stopImmediatePropagation();
-		event.preventDefault();
-		Meteor.call('notes.showChildren', this._id, ! this.showChildren);
-	},
+  'click .expand'(event) {
+    event.stopImmediatePropagation();
+    event.preventDefault();
+    Meteor.call('notes.showChildren', this._id, ! this.showChildren);
+  },
   'blur p'(event) {
   	Meteor.call('notes.updateBody',this._id,event.target.innerText);
   },
@@ -104,6 +104,10 @@ Template.note.events({
   		case 40:
   			$(event.currentTarget).parent().next().children('div').focus();
   		break;
+  		// Escape
+  		case 27:
+  			$(event.currentTarget).blur();
+  		break;
   	}
   }
 });
@@ -126,6 +130,15 @@ Template.note.helpers({
 	'bodyStyle'() {
 		if (!this.body) {
 			return 'display: none';
+		}
+	},
+	'expand'() {
+		if (this.children > 0 && this.showChildren) {
+			return '-';
+		} else if (this.children > 0) {
+			return '+';
+		} else {
+			return '';
 		}
 	},
 	'bulletClass'() {

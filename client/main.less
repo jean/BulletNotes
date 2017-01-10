@@ -35,8 +35,15 @@ a.bullet.hasChildren {
 	margin: 1em;
 }
 .note {
-	div {
+	float: left;
+	clear: both;
+	width: 100%;
+	div.title {
 		display: inline-block;
+		min-width: 50%;
+	}
+	div.title:focus {
+	    outline: none;
 	}
 	p {
 		margin: .5em;
@@ -45,4 +52,5 @@ a.bullet.hasChildren {
 }
 #new-note {
 	opacity: .6;
+	clear: left;
 }
