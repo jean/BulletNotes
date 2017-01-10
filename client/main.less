@@ -16,8 +16,10 @@
 .tag-silver { background-color: silver; }
 .tag-gray { background-color: #gray; }
 .tag-complete, .tag-done {
-	text-decoration: line-through;
-	opacity: .5;
+	.title {
+		text-decoration: line-through;
+		opacity: .5;
+	}
 }
 
 a.bullet {
@@ -38,6 +40,10 @@ a.bullet.hasChildren {
 	float: left;
 	clear: both;
 	width: 100%;
+	.expand {
+		text-decoration: none;
+		font-weight: bold;
+	}
 	div.title {
 		display: inline-block;
 		min-width: 50%;

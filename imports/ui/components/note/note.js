@@ -22,7 +22,9 @@ Template.note.events({
   	Meteor.call('notes.updateBody',this._id,event.target.innerText);
   },
   'blur div.title'(event) {
-  	Meteor.call('notes.updateTitle',this._id,event.target.innerText);
+  	Meteor.call('notes.updateTitle',this._id,event.target.innerText,function(err,res) {
+  		// Fix for contenteditable crap here?
+  	});
   },
   'keydown div'(event) {
   	console.log(event);
@@ -69,7 +71,7 @@ Template.note.events({
   		break;
   		// Backspace
   		case 8:
-  			if (this.title.length==0) {
+  			if ($(event.currentTarget).length==0) {
   				Meteor.call('notes.remove',this._id);
   			}
   			if (window.getSelection().toString() == "") {
