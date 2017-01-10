@@ -8,13 +8,17 @@ Meteor.methods({
   'notes.insert'(title) {
     check(title, String);
 
-    var nextRank = Notes.find().count() + 1;
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
 
+    var nextRank = Notes.find().count() + 1;
 
     return Notes.insert({
       title,
       createdAt: new Date(),
       rank: nextRank,
+      owner: this.userId,
       level: 0
     });
   },
@@ -25,6 +29,13 @@ Meteor.methods({
     return Notes.update(id,{ $set: {
       rank: rank,
       title: title
+    }});
+  },
+  'notes.updateBody'(id,body) {
+    check(body, String);
+    
+    return Notes.update(id,{ $set: {
+      body: body
     }});
   },
   'notes.makeChild'(id,parent) {

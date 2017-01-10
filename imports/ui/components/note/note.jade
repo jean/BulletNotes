@@ -2,5 +2,6 @@ template(name='note')
   li(class='{{class}}', style='{{style}}')
     a.delete(href='#') &times;
     div(contenteditable='true') {{title}}
+    p(contenteditable='true', style='{{bodyStyle}}') {{body}}
   each children
     +note

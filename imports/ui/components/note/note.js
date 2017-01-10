@@ -22,17 +22,26 @@ Template.note.events({
     	App.calculateRank();
     });
   },
+  'blur p'(event) {
+  	Meteor.call('notes.updateBody',this._id,event.target.innerText);
+  },
   'blur div'(event) {
   	Meteor.call('notes.update',this._id,event.target.innerText,this.rank);
   },
   'keydown div'(event) {
 	event.stopImmediatePropagation();
-  		console.log(event);
   	switch(event.keyCode) {
   		// Enter
 		case 13:
-			event.preventDefault();
-  			$(event.target).blur();
+			if (event.shiftKey) {
+				// Show the body area
+				this.body = 'Yes';
+				$(event.currentTarget).siblings('p').show().focus();
+				console.log("show body",this);
+
+			} else {
+  				$(event.target).blur();
+  			}
   			return false;
   		break;
   		// Tab
@@ -65,5 +74,11 @@ Template.note.helpers({
 	'style'() {
 		let margin = this.level;
 		return 'margin-left: '+margin+'em';
+	},
+	'bodyStyle'() {
+		console.log(this);
+		if (!this.body) {
+			return 'display: none';
+		}
 	}
 });

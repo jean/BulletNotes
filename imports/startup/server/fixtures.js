@@ -8,23 +8,13 @@ Meteor.startup(() => {
   if (Notes.find().count() === 0) {
     const data = [
       {
-        title: 'Do the Tutorial',
+        title: 'Welcome to Note.d!',
         rank: 1,
         createdAt: new Date(),
       },
       {
-        title: 'Follow the Guide',
+        title: 'Sign in and have fun.',
         rank: 2,
-        createdAt: new Date(),
-      },
-      {
-        title: 'Read the Docs',
-        rank: 3,
-        createdAt: new Date(),
-      },
-      {
-        title: 'Discussions',
-        rank: 4,
         createdAt: new Date(),
       },
     ];
