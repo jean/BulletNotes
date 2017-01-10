@@ -143,9 +143,9 @@ Template.note.helpers({
 	},
 	'expandClass'() {
 		if (this.children > 0 && this.showChildren) {
-			return 'fa-caret-square-o-up btn-primary';
+			return 'fa-angle-up btn-primary';
 		} else if (this.children > 0) {
-			return 'fa-caret-square-o-down btn-primary';
+			return 'fa-angle-down btn-primary';
 		} else {
 			return '';
 		}

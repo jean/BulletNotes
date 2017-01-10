@@ -1,5 +1,7 @@
 import './body.html';
 
+import '../../components/importer/importer.js';
+
 Template.App_body.onCreated(function () {
   Meteor.subscribe('notes.all');
 });

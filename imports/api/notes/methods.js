@@ -19,6 +19,11 @@ Meteor.methods({
       rank = Notes.find().count() + 1;
     }
 
+    var parentNote = Notes.findOne(parent);
+    if (parentNote) {
+      Notes.update(parentNote._id,{$inc:{children:1},$set:{showChildren:true}});
+    }
+
     return Notes.insert({
       title,
       createdAt: new Date(),

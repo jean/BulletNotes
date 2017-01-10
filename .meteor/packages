@@ -27,10 +27,10 @@ johanbrook:publication-collector  # Test a Meteor publication by collecting its 
 mrt:jquery-ui
 meteortoys:allthings
 sewdn:collection-behaviours
-accounts-ui
 accounts-password
 accounts-facebook
 accounts-google
 accounts-github
 accounts-twitter
 mquandalle:jade
+accounts-ui-unstyled
