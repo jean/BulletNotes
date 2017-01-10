@@ -6,7 +6,7 @@ import { Match } from 'meteor/check'
 import { Notes } from './notes.js';
 
 Meteor.methods({
-  'notes.insert'(title,rank=null,parent=null) {
+  'notes.insert'(title,rank=null,parent=null,level=0) {
     check(title, String);
     check(rank, Match.Maybe(Number));
     check(parent, Match.Maybe(String));
@@ -25,7 +25,7 @@ Meteor.methods({
       rank: rank,
       owner: this.userId,
       parent: parent,
-      level: 0
+      level: level
     });
   },
   'notes.updateTitle'(id,title) {
@@ -74,7 +74,7 @@ Meteor.methods({
     if (!note || !parent) {
       return false;
     }
-    Notes.update(parent._id,{$inc:{children:1}});
+    Notes.update(parent._id,{$inc:{children:1},$set:{showChildren:true}});
     Notes.update(id,{ $set: {
       parent: parent._id,
       level: parent.level+1
@@ -104,11 +104,12 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized');
     }
 
-    var note = Notes.findOne(id);
-    var parent = Notes.findOne(note.parent);
-    parent = Notes.findOne(parent.parent);
-    if (parent) {
-      Meteor.call('notes.makeChild',note._id,parent._id);
+    let note = Notes.findOne(id);
+    let old_parent = Notes.findOne(note.parent);
+    Notes.update(old_parent._id,{$inc:{children:-1}})
+    let new_parent = Notes.findOne(old_parent.parent);
+    if (new_parent) {
+      Meteor.call('notes.makeChild',note._id,new_parent._id);
     } else {
       // No parent left to go out to, set things to top level.
       var children = Notes.find({parent:note._id});
@@ -127,9 +128,10 @@ Meteor.methods({
     if (! this.userId) {
       throw new Meteor.Error('not-authorized');
     }
-
+    let children = Notes.find({parent:id}).count();
     Notes.update(id, {
-      $set: { showChildren: show },
+      $set: { showChildren: show,
+      children: children },
     });
   }
 });

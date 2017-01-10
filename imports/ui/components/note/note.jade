@@ -1,7 +1,7 @@
 template(name='note')
   div(class='note {{class}}', style='{{style}}')
     a.bullet(href='#',class='{{bulletClass}}') &nbsp;
-    div(contenteditable='true') {{title}}
+    div(contenteditable='true',class='title') {{title}}
     p(contenteditable='true', style='{{bodyStyle}}') {{body}}
   each children
     +note

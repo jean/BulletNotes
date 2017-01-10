@@ -21,7 +21,7 @@ Template.note.events({
   'blur p'(event) {
   	Meteor.call('notes.updateBody',this._id,event.target.innerText);
   },
-  'blur div'(event) {
+  'blur div.title'(event) {
   	Meteor.call('notes.updateTitle',this._id,event.target.innerText);
   },
   'keydown div'(event) {
@@ -46,7 +46,7 @@ Template.note.events({
   				let bottomNote = text.substr(position);
   				// Create a new note below the current.
   				Meteor.call('notes.updateTitle',note._id,topNote,function(err,res) {
-	  				Meteor.call('notes.insert',bottomNote,note.rank+.5,note.parent,function(err,res) {
+	  				Meteor.call('notes.insert',bottomNote,note.rank+.5,note.parent,note.level,function(err,res) {
 	 	  				if (topNote.length > 0) {
 	  						$(event.currentTarget).parent().next().children('div').focus();
 	  					}
@@ -79,7 +79,7 @@ Template.note.events({
 	  				let prev = $(event.currentTarget).parent().prev();
 	  				let prevNote = Blaze.getData(prev.get(0));
 	  				let note = this;
-	 				Meteor.call('notes.updateTitle',prevNote._id,prevNote.title+note.title,function(err,res) {
+	 				Meteor.call('notes.updateTitle',prevNote._id,prevNote.title+$(event.currentTarget).get(0).innerText,function(err,res) {
 	 					Meteor.call('notes.remove',note._id,function(err,res) {
 	 						// This bit just moves the caret to the correct position
 	 						prev.children('div').focus();

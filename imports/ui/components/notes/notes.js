@@ -63,7 +63,7 @@ App.calculateRank = function() {
 
 Template.notes.rendered = function() {
     this.$('#notes').sortable({
-        handle: '.collapse',
+        handle: '.bullet',
         stop: function(el, ui) {
           App.calculateRank();
         }
