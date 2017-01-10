@@ -11,7 +11,7 @@ Template.notes.onCreated(function () {
 
 Template.notes.helpers({
   notes() {
-    return Notes.find({}, {sort: {rank: 1}});
+    return Notes.find({parent: null}, {sort: {rank: 1}});
   },
   newNoteText() {
     return newNoteText;
@@ -20,13 +20,13 @@ Template.notes.helpers({
 
 Template.notes.events({
   'focus #new-note'(event) {
-    console.log(event);
     if (event.currentTarget.innerText == newNoteText) {
       event.currentTarget.innerText = '';
     }
   },
   'keyup #new-note'(event) {
     switch (event.keyCode) {
+      // Enter
       case 13:
         Meteor.call('notes.insert', event.currentTarget.innerText, (error) => {
           if (error) {
@@ -36,6 +36,7 @@ Template.notes.events({
           }
         });
         break;
+      // Escape
       case 27:
         $('#new-note').text(newNoteText).blur();
     }
@@ -52,14 +53,16 @@ Template.notes.rendered = function() {
         handle: '.delete',
         stop: function(el, ui) {
           console.log('sort');
-          $('#notes li').each(function(ii, el){
-            console.log(el,ii);
-            console.log(Blaze.getData(this));
-            var id = Blaze.getData(this)._id;
-            console.log(id,ii);
-            //Notes.update(id, {$set:{rank:ii+1}});
-            Meteor.call('notes.update',id,Blaze.getData(this).title,ii+1);
-          });
+          let levelCount = 0;
+          let maxLevel = 6;
+          while (levelCount < maxLevel) {
+            console.log($('#notes li.level-'+levelCount));
+            $('#notes li.level-'+levelCount).each(function(ii, el){
+              var id = Blaze.getData(this)._id;
+              Meteor.call('notes.update',id,Blaze.getData(this).title,ii+1);
+            });
+            levelCount++;
+          }
         }
     })
   }

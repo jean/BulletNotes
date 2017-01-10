@@ -1,0 +1,6 @@
+template(name='note')
+  li(class='{{class}}', style='{{style}}')
+    a.delete(href='#') -
+    div(contenteditable='true') {{title}}
+  each children
+    +note
