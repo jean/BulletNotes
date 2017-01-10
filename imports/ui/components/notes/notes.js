@@ -64,7 +64,7 @@ App.calculateRank = function() {
   let levelCount = 0;
   let maxLevel = 6;
   while (levelCount < maxLevel) {
-    $('#notes li.level-'+levelCount).each(function(ii, el){
+    $('#notes .level-'+levelCount).each(function(ii, el){
       var id = Blaze.getData(this)._id;
       Meteor.call('notes.updateRank',id,ii+1);
     });
@@ -73,11 +73,11 @@ App.calculateRank = function() {
 }
 
 Template.notes.rendered = function() {
-    this.$('#notes').sortable({
-        handle: '.fa-ellipsis-v',
-        stop: function(el, ui) {
-          App.calculateRank();
-        }
-    })
-  }
-
+  this.$('#notes').sortable({
+      handle: '.fa-ellipsis-v',
+      stop: function(el, ui) {
+        console.log("Sort!");
+        App.calculateRank();
+      }
+  });
+}

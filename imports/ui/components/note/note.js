@@ -50,7 +50,7 @@ Template.note.events({
   				Meteor.call('notes.updateTitle',note._id,topNote,function(err,res) {
 	  				Meteor.call('notes.insert',bottomNote,note.rank+.5,note.parent,note.level,function(err,res) {
 	 	  				if (topNote.length > 0) {
-	  						$(event.currentTarget).parent().next().children('div').focus();
+	  						$(event.currentTarget).parent().parent().next().children('div').focus();
 	  					}
 		  				App.calculateRank();
 	  				});
@@ -61,7 +61,7 @@ Template.note.events({
   		// Tab
   		case 9:
   			event.preventDefault();
-  			let parent_id = Blaze.getData($(event.currentTarget).parent().prev().get(0))._id;
+  			let parent_id = Blaze.getData($(event.currentTarget).parent().parent().prev().get(0))._id;
   			if (event.shiftKey) {
   				Meteor.call('notes.outdent',this._id);
   			} else {
@@ -78,7 +78,7 @@ Template.note.events({
 	  			let position = window.getSelection().getRangeAt(0).startOffset;
 	  			console.log(event); //return false;
 	  			if (position == 0) {
-	  				let prev = $(event.currentTarget).parent().prev();
+	  				let prev = $(event.currentTarget).parent().parent().prev();
 	  				let prevNote = Blaze.getData(prev.get(0));
 	  				let note = this;
 	 				Meteor.call('notes.updateTitle',prevNote._id,prevNote.title+$(event.currentTarget).get(0).innerText,function(err,res) {
@@ -100,11 +100,11 @@ Template.note.events({
   		break;
   		// Up
   		case 38:
-  			$(event.currentTarget).parent().prev().children('div').focus();
+  			$(event.currentTarget).parent().parent().prev().children('div').focus();
   		break;
   		// Down
   		case 40:
-  			$(event.currentTarget).parent().next().children('div').focus();
+  			$(event.currentTarget).parent().parent().next().children('div').focus();
   		break;
   		// Escape
   		case 27:
