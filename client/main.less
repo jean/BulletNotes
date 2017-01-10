@@ -20,18 +20,29 @@
 	opacity: .5;
 }
 
-a.delete {
+a.bullet {
 	text-decoration: none;
+	background-image: url(/img/bullet.svg);
+	display: inline-block;
+	height: 18px;
+	width: 18px;
+	border-radius: 12px;
 }
-
+a.bullet.hasChildren {
+	background-color: #e0e0e0;
+}
 #notes {
-	li {
-		div {
-			display: inline-block;
-		}
-		p {
-			margin: .5em;
-			opacity: .8;
-		}
+	margin: 1em;
+}
+.note {
+	div {
+		display: inline-block;
 	}
+	p {
+		margin: .5em;
+		opacity: .8;
+	}
+}
+#new-note {
+	opacity: .6;
 }

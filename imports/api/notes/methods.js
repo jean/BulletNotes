@@ -74,6 +74,7 @@ Meteor.methods({
     if (!note || !parent) {
       return false;
     }
+    Notes.update(parent._id,{$inc:{children:1}});
     Notes.update(id,{ $set: {
       parent: parent._id,
       level: parent.level+1
@@ -121,5 +122,14 @@ Meteor.methods({
       }});
     }
 
+  },
+  'notes.showChildren'(id,show=true) {
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    Notes.update(id, {
+      $set: { showChildren: show },
+    });
   }
 });

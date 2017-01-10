@@ -6,17 +6,18 @@ import './note.jade';
  
 Template.note.helpers({
   children() {
-    return Notes.find({parent: this._id}, {sort: {rank: 1}});
+  	if (this.showChildren) {
+    	return Notes.find({parent: this._id}, {sort: {rank: 1}});
+    }
   }
 });
 
 Template.note.events({
-  'click .delete'(event) {
-	event.preventDefault();
-    Meteor.call('notes.remove', this._id, function() {
-    	App.calculateRank();
-    });
-  },
+	'click .bullet'(event) {
+		event.stopImmediatePropagation();
+		event.preventDefault();
+		Meteor.call('notes.showChildren', this._id, ! this.showChildren);
+	},
   'blur p'(event) {
   	Meteor.call('notes.updateBody',this._id,event.target.innerText);
   },
@@ -24,7 +25,8 @@ Template.note.events({
   	Meteor.call('notes.updateTitle',this._id,event.target.innerText);
   },
   'keydown div'(event) {
-  	let that = this;
+  	console.log(event);
+  	let note = this;
 	event.stopImmediatePropagation();
   	switch(event.keyCode) {
   		// Enter
@@ -43,10 +45,8 @@ Template.note.events({
   				let topNote = text.substr(0,position);
   				let bottomNote = text.substr(position);
   				// Create a new note below the current.
-  				Meteor.call('notes.updateTitle',this._id,topNote,function(err,res) {
-  					console.log(err,res,that);
-	  				Meteor.call('notes.insert',bottomNote,that.rank+.5,that.parent,function(err,res) {
-	  					console.log(err,res);
+  				Meteor.call('notes.updateTitle',note._id,topNote,function(err,res) {
+	  				Meteor.call('notes.insert',bottomNote,note.rank+.5,note.parent,function(err,res) {
 	 	  				if (topNote.length > 0) {
 	  						$(event.currentTarget).parent().next().children('div').focus();
 	  					}
@@ -66,6 +66,43 @@ Template.note.events({
   				Meteor.call('notes.makeChild',this._id,parent_id);
   			}
   			return false;
+  		break;
+  		// Backspace
+  		case 8:
+  			if (this.title.length==0) {
+  				Meteor.call('notes.remove',this._id);
+  			}
+  			if (window.getSelection().toString() == "") {
+	  			let position = window.getSelection().getRangeAt(0).startOffset;
+	  			console.log(event); //return false;
+	  			if (position == 0) {
+	  				let prev = $(event.currentTarget).parent().prev();
+	  				let prevNote = Blaze.getData(prev.get(0));
+	  				let note = this;
+	 				Meteor.call('notes.updateTitle',prevNote._id,prevNote.title+note.title,function(err,res) {
+	 					Meteor.call('notes.remove',note._id,function(err,res) {
+	 						// This bit just moves the caret to the correct position
+	 						prev.children('div').focus();
+							let ele = prev.children('div').get(0);
+							let rng = document.createRange();
+							let sel = window.getSelection();
+							rng.setStart(ele.childNodes[0], prevNote.title.length);
+							rng.collapse(true);
+							sel.removeAllRanges();
+							sel.addRange(rng);
+							ele.focus();
+	 					});
+	 				});
+	  			}
+	  		}
+  		break;
+  		// Up
+  		case 38:
+  			$(event.currentTarget).parent().prev().children('div').focus();
+  		break;
+  		// Down
+  		case 40:
+  			$(event.currentTarget).parent().next().children('div').focus();
   		break;
   	}
   }
@@ -89,6 +126,11 @@ Template.note.helpers({
 	'bodyStyle'() {
 		if (!this.body) {
 			return 'display: none';
+		}
+	},
+	'bulletClass'() {
+		if (this.children > 0) {
+			return 'hasChildren';
 		}
 	}
 });

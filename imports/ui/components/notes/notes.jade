@@ -1,6 +1,5 @@
 template(name='notes')
-  ul#notes
+  #notes
     each notes
       +note
-  ul
-    li#new-note(contenteditable='true') {{newNoteText}}
+    #new-note(contenteditable='true') {{newNoteText}}
