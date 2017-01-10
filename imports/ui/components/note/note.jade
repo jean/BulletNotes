@@ -1,6 +1,6 @@
 template(name='note')
   li(class='{{class}}', style='{{style}}')
-    a.delete(href='#') -
+    a.delete(href='#') &times;
     div(contenteditable='true') {{title}}
   each children
     +note

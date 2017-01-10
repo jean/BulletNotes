@@ -31,24 +31,28 @@ Meteor.methods({
     check(parent, String);
     var note = Notes.findOne(id);
     var parent = Notes.findOne(parent);
+    console.log(parent,"---",note);
     if (!note || !parent) {
       return false;
     }
-    var children = Notes.find({parent:note._id});
-    // Set each child of the node being moved to the parent level, plus 2.
-    children.forEach(function(child) {
-      Notes.update(child.id,{$set:{level: parent.level+2}});
-    });
-    // Set the level to the parent level, plus 1. And set the parent.
-    return Notes.update(id,{ $set: {
+    Notes.update(id,{ $set: {
       parent: parent._id,
       level: parent.level+1
     }});
+
+    var children = Notes.find({parent:id});
+    children.forEach(function(child) {
+      Meteor.call('notes.makeChild',child._id,id);
+    });
+    
   },
-  'notes.remove'(taskId) {
-    check(taskId, String);
- 
-    Notes.remove(taskId);
+  'notes.remove'(id) {
+    check(id, String);
+    var children = Notes.find({parent:id});
+    children.forEach(function(child) {
+      Meteor.call('notes.remove',child._id);
+    });
+    Notes.remove(id);
   },
   'notes.outdent'(id) {
     var note = Notes.findOne(id);
@@ -57,6 +61,12 @@ Meteor.methods({
     if (parent) {
       Meteor.call('notes.makeChild',note._id,parent._id);
     } else {
+      // No parent left to go out to, set things to top level.
+      var children = Notes.find({parent:note._id});
+      children.forEach(function(child) {
+        Notes.update(child._id,{$set:{level: 1}});
+      });
+
       return Notes.update(id,{ $set: {
         level: 0,
         parent: null

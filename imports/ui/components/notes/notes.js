@@ -32,7 +32,7 @@ Template.notes.events({
           if (error) {
             alert(error.error);
           } else {
-            $('#new-note').text(newNoteText);
+            $('#new-note').text('');
           }
         });
         break;
@@ -48,21 +48,24 @@ Template.notes.events({
   }
 });
 
-Template.notes.rendered = function() {
-    this.$('#notes').sortable({
-        handle: '.delete',
-        stop: function(el, ui) {
-          console.log('sort');
-          let levelCount = 0;
+App = {};
+App.calculateRank = function() {
+            let levelCount = 0;
           let maxLevel = 6;
           while (levelCount < maxLevel) {
-            console.log($('#notes li.level-'+levelCount));
             $('#notes li.level-'+levelCount).each(function(ii, el){
               var id = Blaze.getData(this)._id;
               Meteor.call('notes.update',id,Blaze.getData(this).title,ii+1);
             });
             levelCount++;
           }
+}
+
+Template.notes.rendered = function() {
+    this.$('#notes').sortable({
+        handle: '.delete',
+        stop: function(el, ui) {
+          App.calculateRank();
         }
     })
   }

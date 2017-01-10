@@ -18,7 +18,9 @@ Template.note.events({
     });
   },
   'click .delete'() {
-    Meteor.call('notes.remove', this._id);
+    Meteor.call('notes.remove', this._id, function() {
+    	App.calculateRank();
+    });
   },
   'blur div'(event) {
   	Meteor.call('notes.update',this._id,event.target.innerText,this.rank);
