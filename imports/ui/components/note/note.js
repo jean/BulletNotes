@@ -13,6 +13,14 @@ Template.note.helpers({
 });
 
 Template.note.events({
+  'click .fa-trash-o'(event) {
+    event.preventDefault();
+    Meteor.call('notes.remove', this._id);
+  },
+  'click .fa-pencil'(event) {
+    event.preventDefault();
+    $(event.currentTarget).parent().siblings('.title').focus();
+  },
   'click .expand'(event) {
     event.stopImmediatePropagation();
     event.preventDefault();
@@ -27,9 +35,8 @@ Template.note.events({
   	});
   },
   'keydown div'(event) {
-  	console.log(event);
   	let note = this;
-	event.stopImmediatePropagation();
+  	event.stopImmediatePropagation();
   	switch(event.keyCode) {
   		// Enter
 		case 13:
