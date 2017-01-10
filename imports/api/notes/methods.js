@@ -2,28 +2,44 @@
 
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import { Match } from 'meteor/check'
 import { Notes } from './notes.js';
 
 Meteor.methods({
-  'notes.insert'(title) {
+  'notes.insert'(title,rank=null,parent=null) {
+    check(title, String);
+    check(rank, Match.Maybe(Number));
+    check(parent, Match.Maybe(String));
+
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    if (!rank) {
+      rank = Notes.find().count() + 1;
+    }
+
+    return Notes.insert({
+      title,
+      createdAt: new Date(),
+      rank: rank,
+      owner: this.userId,
+      parent: parent,
+      level: 0
+    });
+  },
+  'notes.updateTitle'(id,title) {
     check(title, String);
 
     if (! this.userId) {
       throw new Meteor.Error('not-authorized');
     }
 
-    var nextRank = Notes.find().count() + 1;
-
-    return Notes.insert({
-      title,
-      createdAt: new Date(),
-      rank: nextRank,
-      owner: this.userId,
-      level: 0
-    });
+    return Notes.update(id,{ $set: {
+      title: title
+    }});
   },
-  'notes.update'(id,title,rank) {
-    check(title, String);
+  'notes.updateRank'(id,rank) {
     check(rank, Number);
 
     if (! this.userId) {
@@ -32,7 +48,6 @@ Meteor.methods({
 
     return Notes.update(id,{ $set: {
       rank: rank,
-      title: title
     }});
   },
   'notes.updateBody'(id,body) {
@@ -87,7 +102,7 @@ Meteor.methods({
     if (! this.userId) {
       throw new Meteor.Error('not-authorized');
     }
-    
+
     var note = Notes.findOne(id);
     var parent = Notes.findOne(note.parent);
     parent = Notes.findOne(parent.parent);

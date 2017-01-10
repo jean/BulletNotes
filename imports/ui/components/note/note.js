@@ -11,13 +11,8 @@ Template.note.helpers({
 });
 
 Template.note.events({
-  'click .toggle-checked'() {
-    // Set the checked property to the opposite of its current value
-    Notes.update(this._id, {
-      $set: { checked: ! this.checked },
-    });
-  },
-  'click .delete'() {
+  'click .delete'(event) {
+	event.preventDefault();
     Meteor.call('notes.remove', this._id, function() {
     	App.calculateRank();
     });
@@ -26,9 +21,10 @@ Template.note.events({
   	Meteor.call('notes.updateBody',this._id,event.target.innerText);
   },
   'blur div'(event) {
-  	Meteor.call('notes.update',this._id,event.target.innerText,this.rank);
+  	Meteor.call('notes.updateTitle',this._id,event.target.innerText);
   },
   'keydown div'(event) {
+  	let that = this;
 	event.stopImmediatePropagation();
   	switch(event.keyCode) {
   		// Enter
@@ -37,10 +33,26 @@ Template.note.events({
 				// Show the body area
 				this.body = 'Yes';
 				$(event.currentTarget).siblings('p').show().focus();
-				console.log("show body",this);
-
 			} else {
-  				$(event.target).blur();
+  				// Chop the text in half at the cursor
+  				// put what's on the left in a note on top
+  				// put what's to the right in a note below
+  				
+  				let position = window.getSelection().getRangeAt(0).startOffset;
+  				let text = event.currentTarget.innerText;
+  				let topNote = text.substr(0,position);
+  				let bottomNote = text.substr(position);
+  				// Create a new note below the current.
+  				Meteor.call('notes.updateTitle',this._id,topNote,function(err,res) {
+  					console.log(err,res,that);
+	  				Meteor.call('notes.insert',bottomNote,that.rank+.5,that.parent,function(err,res) {
+	  					console.log(err,res);
+	 	  				if (topNote.length > 0) {
+	  						$(event.currentTarget).parent().next().children('div').focus();
+	  					}
+		  				App.calculateRank();
+	  				});
+  				});
   			}
   			return false;
   		break;
@@ -48,7 +60,6 @@ Template.note.events({
   		case 9:
   			event.preventDefault();
   			let parent_id = Blaze.getData($(event.currentTarget).parent().prev().get(0))._id;
-  			console.log(this._id,parent_id);
   			if (event.shiftKey) {
   				Meteor.call('notes.outdent',this._id);
   			} else {
@@ -76,7 +87,6 @@ Template.note.helpers({
 		return 'margin-left: '+margin+'em';
 	},
 	'bodyStyle'() {
-		console.log(this);
 		if (!this.body) {
 			return 'display: none';
 		}

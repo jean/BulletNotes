@@ -50,15 +50,15 @@ Template.notes.events({
 
 App = {};
 App.calculateRank = function() {
-            let levelCount = 0;
-          let maxLevel = 6;
-          while (levelCount < maxLevel) {
-            $('#notes li.level-'+levelCount).each(function(ii, el){
-              var id = Blaze.getData(this)._id;
-              Meteor.call('notes.update',id,Blaze.getData(this).title,ii+1);
-            });
-            levelCount++;
-          }
+  let levelCount = 0;
+  let maxLevel = 6;
+  while (levelCount < maxLevel) {
+    $('#notes li.level-'+levelCount).each(function(ii, el){
+      var id = Blaze.getData(this)._id;
+      Meteor.call('notes.updateRank',id,ii+1);
+    });
+    levelCount++;
+  }
 }
 
 Template.notes.rendered = function() {
