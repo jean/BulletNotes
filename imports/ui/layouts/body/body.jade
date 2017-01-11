@@ -13,6 +13,9 @@ template(name='App_body')
                 p.green Settings
               li.external
                 a(href='#', id='#import', data-toggle='modal', data-target='#import') Import from Workflowy
+      form.searchForm
+        input.form-control(placeholder='Search...', value='{{ searchTerm }}')
+        submit(style='display:none')
       .top-menu
         ul.nav.pull-right.top-menu
           | {{> loginButtons}}

@@ -17,21 +17,33 @@
 
 @bordercolorWidth: 4px;
 
-.tag-red { border-left: solid @bordercolorWidth #FF2020; }
-.tag-orange { border-left: solid @bordercolorWidth #FFD8B5; }
-.tag-yellow { border-left: solid @bordercolorWidth #FFFAB5; }
-.tag-lime { border-left: solid @bordercolorWidth #E1FFB5; }
-.tag-olive { border-left: solid @bordercolorWidth #B5FFC9; }
-.tag-green { border-left: solid @bordercolorWidth #CCFFB5; }
-.tag-teal { border-left: solid @bordercolorWidth #B5FFD7; }
-.tag-aqua { border-left: solid @bordercolorWidth #B5FFFC; }
-.tag-blue { border-left: solid @bordercolorWidth #B5E8FF; }
-.tag-navy { border-left: solid @bordercolorWidth #B9B5FF; }
-.tag-fuchia { border-left: solid @bordercolorWidth #F1B5FF; }
-.tag-purple { border-left: solid @bordercolorWidth #D3B5FF; }
-.tag-maroon { border-left: solid @bordercolorWidth #C08F8F; }
-.tag-silver { border-left: solid @bordercolorWidth silver; }
-.tag-gray { border-left: solid @bordercolorWidth gray; }
+
+.tagLink { 
+  border-width: 1px;
+  padding: .25em; 
+  border-radius: 10px;
+  border-style: solid;
+  box-shadow: 1px 1px 2px #8e8e8e;
+}
+.tagLink:hover {
+  box-shadow: 2px 2px 3px #8e8e8e;
+}
+.note { border-left: solid @bordercolorWidth; }
+.tag-red { border-color: #FF2020; }
+.tag-orange { border-color: #FFD8B5; }
+.tag-yellow { border-color: #FFFAB5; }
+.tag-lime { border-color: #E1FFB5; }
+.tag-olive { border-color: #B5FFC9; }
+.tag-green { border-color: #CCFFB5; }
+.tag-teal { border-color: #B5FFD7; }
+.tag-aqua { border-color: #B5FFFC; }
+.tag-blue { border-color: #B5E8FF; }
+.tag-navy { border-color: #B9B5FF; }
+.tag-fuchia { border-color: #F1B5FF; }
+.tag-purple { border-color: #D3B5FF; }
+.tag-maroon { border-color: #C08F8F; }
+.tag-silver { border-color: silver; }
+.tag-gray { border-color: gray; }
 .tag-complete, .tag-done {
 	.title {
 		text-decoration: line-through;
@@ -129,7 +141,6 @@
 }
 
 .tasks-widget .task-list  .note > .task-title  {
-  overflow:hidden;
   margin-right:10px;
 }
 
@@ -235,4 +246,10 @@
 
 .ui-sortable .note.list-inverse {
     border-left: 3px solid #BEC3C7;
+}
+
+.searchResult {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #41CAC0;
 }

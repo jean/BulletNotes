@@ -6,12 +6,9 @@ import '../note/note.js'
 newNoteText = "New note...";
 
 Template.notes.onCreated(function () {
-  console.log(Template.currentData());
   if (Template.currentData().searchTerm) {
-    console.log('searching');
     Meteor.subscribe('notes.search', Template.currentData().searchTerm);
   } else {
-    console.log("ALL");
     Meteor.subscribe('notes.all');
   }
 });
@@ -25,8 +22,6 @@ Template.notes.helpers({
     }
   },
   notes() {
-    console.log("Check");
-    console.log(Template.currentData());
     if (Template.currentData().noteId) {
       return Notes.find({parent:Template.currentData().noteId});
     } else if (Template.currentData().searchTerm) {
@@ -50,7 +45,7 @@ Template.notes.events({
     switch (event.keyCode) {
       // Enter
       case 13:
-        Meteor.call('notes.insert', event.currentTarget.innerText, (error) => {
+        Meteor.call('notes.insert', event.currentTarget.innerText, null, Template.currentData().noteId, (error) => {
           if (error) {
             alert(error.error);
           } else {
@@ -87,7 +82,6 @@ Template.notes.rendered = function() {
   this.$('#notes').sortable({
       handle: '.fa-ellipsis-v',
       stop: function(el, ui) {
-        console.log("Sort!");
         App.calculateRank();
       }
   });

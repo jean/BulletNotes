@@ -185,11 +185,14 @@ Template.note.helpers({
     replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
     replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
 
-    let hashtagPattern = /(^|\s)(([#])([a-z\d-]+))/;
-    replacedText = replacedText.replace(hashtagPattern, ' <a href="/search/%23$4">#$4</a> ')
+    let hashtagPattern = /(^|\s)(([#])([a-z\d-]+))/gim;
+    replacedText = replacedText.replace(hashtagPattern, ' <a href="/search/%23$4" class="tagLink tag-$4">#$4</a> ');
 
-    let namePattern = /(^|\s)(([@])([a-z\d-]+))/;
-    replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$4">@$4</a> ')
+    let namePattern = /(^|\s)(([@])([a-z\d-]+))/gim;
+    replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$4" class="at-$4">@$4</a> ');
+
+    let searchTerm = Session.get('searchTerm');
+    replacedText = replacedText.replace(searchTerm, "<span class='searchResult'>$&</span>");
 
     return replacedText;
   },

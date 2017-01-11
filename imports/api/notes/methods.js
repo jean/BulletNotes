@@ -16,7 +16,7 @@ Meteor.methods({
     }
 
     if (!rank) {
-      rank = Notes.find().count() + 1;
+      rank = Notes.find({parent:parent}).count() + 1;
     }
 
     var parentNote = Notes.findOne(parent);
