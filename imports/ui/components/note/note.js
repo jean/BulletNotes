@@ -170,7 +170,6 @@ Template.note.helpers({
 		}
 	},
   'displayTitle'() {
-    console.log(this);
     let inputText = this.title;
     var replacedText, replacePattern1, replacePattern2, replacePattern3;
 
@@ -186,8 +185,11 @@ Template.note.helpers({
     replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
     replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
 
-    let hashtagAndNamePatter = /(^|\s)([#@][a-z\d-]+)/;
-    replacedText = replacedText.replace(hashtagAndNamePatter, ' <a href="/search/$2">$2</a> ')
+    let hashtagPattern = /(^|\s)(([#])([a-z\d-]+))/;
+    replacedText = replacedText.replace(hashtagPattern, ' <a href="/search/%23$4">#$4</a> ')
+
+    let namePattern = /(^|\s)(([@])([a-z\d-]+))/;
+    replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$4">@$4</a> ')
 
     return replacedText;
   },

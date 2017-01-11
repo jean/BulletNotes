@@ -6,7 +6,14 @@ import '../note/note.js'
 newNoteText = "New note...";
 
 Template.notes.onCreated(function () {
-  Meteor.subscribe('notes.all');
+  console.log(Template.currentData());
+  if (Template.currentData().searchTerm) {
+    console.log('searching');
+    Meteor.subscribe('notes.search', Template.currentData().searchTerm);
+  } else {
+    console.log("ALL");
+    Meteor.subscribe('notes.all');
+  }
 });
 
 Template.notes.helpers({
@@ -18,8 +25,12 @@ Template.notes.helpers({
     }
   },
   notes() {
+    console.log("Check");
+    console.log(Template.currentData());
     if (Template.currentData().noteId) {
       return Notes.find({parent:Template.currentData().noteId});
+    } else if (Template.currentData().searchTerm) {
+      return Notes.find({});
     } else {
       return Notes.find({parent: null}, {sort: {rank: 1}});
     }

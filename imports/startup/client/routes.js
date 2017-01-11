@@ -5,6 +5,7 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import '../../ui/layouts/body/body.js';
 import '../../ui/pages/home/home.js';
 import '../../ui/pages/note/note.js';
+import '../../ui/pages/search/search.js';
 import '../../ui/pages/not-found/not-found.js';
 
 // Set up all routes in the app
@@ -19,6 +20,13 @@ FlowRouter.route('/note/:noteId', {
   name: 'App.note',
   action() {
     BlazeLayout.render('App_body', { main: 'App_note' });
+  },
+});
+
+FlowRouter.route('/search/:searchTerm', {
+  name: 'App.search',
+  action() {
+    BlazeLayout.render('App_body', { main: 'App_search' });
   },
 });
 

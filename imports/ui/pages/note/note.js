@@ -1,7 +1,4 @@
-import './note.html';
-
-import '../../components/notes/notes.js';
-import { Notes } from '/imports/api/notes/notes.js';
+import './note.jade';
 
 Template.App_note.helpers({
     noteId: function () {
