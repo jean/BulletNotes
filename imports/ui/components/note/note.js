@@ -74,8 +74,11 @@ Template.note.events({
         // Create a new note below the current.
         Meteor.call('notes.updateTitle',note._id,topNote,function(err,res) {
           Meteor.call('notes.insert',bottomNote,note.rank+.5,note.parent,note.level,function(err,res) {
-            // TODO: Expand new note
+            
+            console.log($(event.target).parentsUntil('#notes').prev());
+            console.log(event.target);
             App.calculateRank();
+            setTimeout(function(){$(event.target).parentsUntil('#notes').prev().find('.title').trigger('click');},10);
           });
         });
         return false;

@@ -23,7 +23,7 @@ Template.notes.helpers({
   },
   notes() {
     if (Template.currentData().noteId) {
-      return Notes.find({parent:Template.currentData().noteId});
+      return Notes.find({parent:Template.currentData().noteId}, {sort: {rank: 1}});
     } else if (Template.currentData().searchTerm) {
       return Notes.find({});
     } else {
