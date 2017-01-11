@@ -19,12 +19,15 @@ Template.note.onCreated(function bodyOnCreated() {
 
 Template.note.events({
   'click .title, click .fa-pencil'(event, instance) {
+    event.stopImmediatePropagation();
     if (event.originalEvent.target.tagName == 'A') {
-      event.stopPropagation();
       return;
     }
     event.preventDefault();
     instance.state.set('editing', true);
+    //console.log($(event.originalEvent.target).parent().find('.title-edit'));
+    //setTimeout(function(){$($(event.originalEvent.target).parent().find('.title-edit').get(0)).focus();},100);
+    $('input.title-edit').focus();
   },
   'click .fa-trash-o'(event) {
     event.preventDefault();
@@ -182,6 +185,9 @@ Template.note.helpers({
     //Change email addresses to mailto:: links.
     replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
     replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+    let hashtagAndNamePatter = /(^|\s)([#@][a-z\d-]+)/;
+    replacedText = replacedText.replace(hashtagAndNamePatter, ' <a href="/search/$2">$2</a> ')
 
     return replacedText;
   },

@@ -1,4 +1,4 @@
-import './body.html';
+import './body.jade';
 
 import '../../components/importer/importer.js';
 

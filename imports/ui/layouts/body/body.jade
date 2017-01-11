@@ -1,0 +1,31 @@
+template(name='App_body')
+  section#container
+    header.header.black-bg
+      a.logo(href='/') Note.d
+      #top_menu.nav.notify-row
+        ul.nav.top-menu
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown', href='#')
+              i.fa.fa-tasks
+            ul.dropdown-menu.extended.tasks-bar
+              .notify-arrow.notify-arrow-green
+              li
+                p.green Settings
+              li.external
+                a(href='#', id='#import', data-toggle='modal', data-target='#import') Import from Workflowy
+      .top-menu
+        ul.nav.pull-right.top-menu
+          | {{> loginButtons}}
+    section#main-content
+      section.wrapper
+        | {{> importer}}
+        | {{> Template.dynamic template=main}}
+    footer.site-footer
+      .text-center
+        | 2017 - Note.d - 
+        a(href='https://github.com/NickBusey/noted') GitHub
+        a.go-top(href='#')
+          i.fa.fa-angle-up
+  script(src='/js/bootstrap.min.js')
+  script(src='/js/jquery.scrollTo.min.js')
+  script(src='/js/common-scripts.js')

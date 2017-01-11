@@ -4,6 +4,17 @@
 	margin-left: inherit !important;
 }
 
+.header.black-bg {
+  background-color: #ff8f1b;
+  a {
+    color: white;
+    border-color: white !important;
+  }
+  #login-buttons {
+    margin: 1.5em;
+  }
+}
+
 @bordercolorWidth: 4px;
 
 .tag-red { border-left: solid @bordercolorWidth #FF2020; }
@@ -41,7 +52,9 @@
 	}
 	div.title {
 		display: inline-block;
-    font-size: 1.2em;
+    font-size: 1.4em;
+    color: black;
+    min-width: 40%;
 	}
 	div.title:focus {
 	    outline: none;
@@ -49,6 +62,8 @@
 	p {
 		margin: .5em;
 		opacity: .8;
+    font-size: 1.2em;
+    color: black;
 	}
 }
 #new-note {
