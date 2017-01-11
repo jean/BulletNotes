@@ -1,8 +1,6 @@
 template(name='note')
   div(class='note {{class}}', style='{{style}}')
     i.fa.fa-ellipsis-v
-    .task-checkbox
-      input.list-child(type='checkbox', value='')
     .task-title
       +if (isEditing)
         input(class='title-edit form-control' value='{{title}}')
