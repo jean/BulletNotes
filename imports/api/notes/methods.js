@@ -76,7 +76,7 @@ Meteor.methods({
     var note = Notes.findOne(id);
     var parent = Notes.findOne(parent);
     console.log(parent,"---",note);
-    if (!note || !parent) {
+    if (!note || !parent || (id == parent._id)) {
       return false;
     }
     Notes.update(parent._id,{$inc:{children:1},$set:{showChildren:true}});

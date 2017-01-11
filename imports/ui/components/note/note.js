@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating';
- 
+import { ReactiveDict } from 'meteor/reactive-dict';
+
 import { Notes } from '../../../api/notes/notes.js';
  
 import './note.jade';
@@ -12,14 +13,22 @@ Template.note.helpers({
   }
 });
 
+Template.note.onCreated(function bodyOnCreated() {
+  this.state = new ReactiveDict();
+});
+
 Template.note.events({
+  'click .title, click .fa-pencil'(event, instance) {
+    if (event.originalEvent.target.tagName == 'A') {
+      event.stopPropagation();
+      return;
+    }
+    event.preventDefault();
+    instance.state.set('editing', true);
+  },
   'click .fa-trash-o'(event) {
     event.preventDefault();
     Meteor.call('notes.remove', this._id);
-  },
-  'click .fa-pencil'(event) {
-    event.preventDefault();
-    $(event.currentTarget).parent().siblings('.title').focus();
   },
   'click .expand'(event) {
     event.stopImmediatePropagation();
@@ -29,9 +38,11 @@ Template.note.events({
   'blur p'(event) {
   	Meteor.call('notes.updateBody',this._id,event.target.innerText);
   },
-  'blur div.title'(event) {
-  	Meteor.call('notes.updateTitle',this._id,event.target.innerText,function(err,res) {
+  'blur input.title-edit'(event,instance) {
+    event.stopImmediatePropagation();
+  	Meteor.call('notes.updateTitle',this._id,event.target.value,function(err,res) {
   		// Fix for contenteditable crap here?
+      instance.state.set('editing',false);
   	});
   },
   'keydown div'(event) {
@@ -68,7 +79,7 @@ Template.note.events({
   		// Tab
   		case 9:
   			event.preventDefault();
-  			let parent_id = Blaze.getData($(event.currentTarget).parent().parent().prev().get(0))._id;
+  			let parent_id = Blaze.getData($(event.currentTarget).parentsUntil('.notes').prev().get(0))._id;
   			if (event.shiftKey) {
   				Meteor.call('notes.outdent',this._id);
   			} else {
@@ -154,5 +165,28 @@ Template.note.helpers({
 		if (this.children > 0) {
 			return 'hasChildren';
 		}
-	}
+	},
+  'displayTitle'() {
+    console.log(this);
+    let inputText = this.title;
+    var replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+    //URLs starting with http://, https://, or ftp://
+    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+    //Change email addresses to mailto:: links.
+    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+    return replacedText;
+  },
+  'isEditing'() {
+    const instance = Template.instance();
+    return instance.state.get('editing');
+  }
 });

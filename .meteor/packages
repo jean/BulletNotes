@@ -28,9 +28,6 @@ mrt:jquery-ui
 meteortoys:allthings
 sewdn:collection-behaviours
 accounts-password
-accounts-facebook
-accounts-google
-accounts-github
-accounts-twitter
 mquandalle:jade
 accounts-ui-unstyled
+reactive-dict

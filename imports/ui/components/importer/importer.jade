@@ -1,17 +1,16 @@
 template(name='importer')
   .modal.fade(id="import", tabindex='-1', role='dialog', style='display: none;')
     .modal-dialog
-      .modal-content
+      form.modal-content
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
           h4#myModalLabel.modal-title Confirm
         .modal-body
-          form
             p In Workflowy, click the down arrow in the top right, then 'Export All'. Select 'Plain Text', and copy and paste the results into the box below.
             p Be aware this process can take a long time depending on how much you are importing. 5000 items takes up to 10 minutes.
             textarea(rows='4',cols='40',class='form-control')
-            input(type='submit',value='Import',class='submit form-control btn btn-theme')
+            
         .modal-footer
-          button.btn.btn-success.btn-sm.deleteChart(data-dismiss='modal') Import
+          input(type='submit',value='Import',class='submit form-control btn btn-theme')
           button.btn.btn-sm(data-dismiss='modal') Cancel
 
