@@ -36,7 +36,7 @@ Meteor.methods({
     });
   },
   'notes.updateTitle'(id,title) {
-    check(title, String);
+    check(title, Match.Maybe(String));
 
     if (! this.userId) {
       throw new Meteor.Error('not-authorized');
@@ -104,7 +104,7 @@ Meteor.methods({
     children.forEach(function(child) {
       Meteor.call('notes.remove',child._id);
     });
-    Notes.remove(id);
+    Notes.remove({_id:id}, {tx: true});
   },
   'notes.outdent'(id) {
     if (! this.userId) {

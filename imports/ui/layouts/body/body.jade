@@ -13,16 +13,17 @@ template(name='App_body')
                 p.green Settings
               li.external
                 a(href='#', id='#import', data-toggle='modal', data-target='#import') Import from Workflowy
+      +undoRedoButtons
       form.searchForm.form-inline
         input.form-control(placeholder='Search...', value='{{ searchTerm }}')
         submit(class='btn btn-theme') Search
       .top-menu
         ul.nav.pull-right.top-menu
-          | {{> loginButtons}}
+          +loginButtons
     section#main-content
       section.wrapper
-        | {{> importer}}
-        | {{> Template.dynamic template=main}}
+        +importer
+        +Template.dynamic(template=main)
     footer.site-footer
       .text-center
         | 2017 - Note.d - 

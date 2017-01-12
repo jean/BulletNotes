@@ -32,3 +32,6 @@ mquandalle:jade
 accounts-ui-unstyled
 reactive-dict
 session
+babrahams:undo-redo
+check
+ejson
