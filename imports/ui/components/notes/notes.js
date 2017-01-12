@@ -65,6 +65,10 @@ Template.notes.events({
       // Escape
       case 27:
         $('#new-note').text(newNoteText).blur();
+      break;
+      case 38:
+        $(event.currentTarget).closest('.note').prev().find('div.title').focus();
+      break;
     }
   },
   'blur #new-note'(event) {

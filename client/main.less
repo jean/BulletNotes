@@ -58,6 +58,12 @@
 	margin: 1em;
 }
 .note {
+  font-size: 12px;
+  padding: 15px 0 15px 35px !important ;
+  position: relative;
+  background: #f5f6f8;
+  margin-bottom: 2px;
+  border-bottom   : none !important;
 	.expand {
 		text-decoration: none;
 		font-weight: bold;
@@ -77,6 +83,15 @@
     font-size: 1.2em;
     color: black;
 	}
+  .fa.fa-ellipsis-v {
+    position: absolute;
+    left:6px;
+    padding:4px 10px 0 10px;
+    cursor: pointer;
+  }
+  a {
+    cursor: pointer;
+  }
 }
 #new-note {
 	opacity: .6;
@@ -200,21 +215,6 @@
     margin: 0;
     padding: 0;
     width: 100%;
-}
-.note .fa.fa-ellipsis-v {
-    position: absolute;
-    left:6px;
-    padding:4px 10px 0 10px;
-    cursor: pointer;
-}
-
-.note {
-    font-size: 12px;
-    padding: 15px 0 15px 35px !important ;
-    position: relative;
-    background: #f5f6f8;
-    margin-bottom: 2px;
-    border-bottom   : none !important;
 }
 
 .ui-sortable .note.list-primary {
