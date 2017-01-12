@@ -121,61 +121,61 @@
   margin:0;
 }
 
-.tasks-widget .task-list > .note {
+.note {
   position:relative;
   padding:10px 5px;
   border-bottom:1px dashed #eaeaea;
 }
 
-.tasks-widget .task-list  .note.last-line {
+  .note.last-line {
   border-bottom:none;
 }
 
-.tasks-widget .task-list  .note > .task-bell  {
+  .note > .task-bell  {
   margin-left:10px;
 }
 
-.tasks-widget .task-list  .note > .task-checkbox {
+  .note > .task-checkbox {
   float:left;
   width:30px;
 }
 
-.tasks-widget .task-list  .note > .task-title  {
+  .note > .task-title  {
   margin-right:10px;
 }
 
-.tasks-widget .task-list  .note > .task-config {
+  .note > .task-config {
   position:absolute;
   top:10px;
   right:10px;
 }
 
-.tasks-widget .task-list  .note .task-title .task-title-sp  {
+  .note .task-title .task-title-sp  {
   margin-right:5px;
 }
 
-.tasks-widget .task-list  .note.task-done .task-title-sp  {
+  .note.task-done .task-title-sp  {
   text-decoration:line-through;
   color: #bbbbbb;
 }
 
-.tasks-widget .task-list  .note.task-done  {
+  .note.task-done  {
   background:#f6f6f6;
 }
 
-.tasks-widget .task-list  .note.task-done:hover {
+  .note.task-done:hover {
   background:#f4f4f4;
 }
 
-.tasks-widget .task-list  .note:hover  {
+  .note:hover  {
   background:#f9f9f9;
 }
 
-.tasks-widget .task-list  .note .task-config {
+  .note .task-config {
   display:none;
 }
 
-.tasks-widget .task-list  .note:hover > .task-config {
+  .note:hover > .task-config {
   display:block;
   margin-bottom:0 !important;
 }
@@ -188,7 +188,7 @@
     display:block;
   }
   
-  .tasks-widget .task-list-projects .note > .label {
+  -projects .note > .label {
     margin-bottom:5px;
   }
 
@@ -201,22 +201,18 @@
     padding: 0;
     width: 100%;
 }
-#notes .note {
+.note {
     padding-left: 3em;
     font-size: 12px;
 }
-#notes .note i.fa {
+.note i.fa {
     position: absolute;
     left:6px;
     padding:4px 10px 0 10px;
     cursor: pointer;
 }
 
-#notes .note input[type=checkbox]{
-    margin-top: 0;
-}
-
-.ui-sortable > .note {
+.note {
     padding: 15px 0 15px 35px !important ;
     position: relative;
     background: #f5f6f8;

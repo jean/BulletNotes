@@ -52,12 +52,15 @@ Template.note.events({
     });
   },
   'blur div.title'(event,instance) {
+    let that = this;
     event.stopImmediatePropagation();
-    // Strip spans and A hrefs
-    let title = event.target.innerHTML.replace(/<\/?span[^>]*>/g,"");
-    title = title.replace(/<\/?a[^>]*>/g,"");
-    event.target.innerHTML='';
-    Meteor.call('notes.updateTitle',this._id,title);
+    let title = Template.note.stripTags(event.target.innerHTML);
+    if (title != this.title) {
+      event.target.innerHTML='';
+      Meteor.call('notes.updateTitle',this._id,title,function(err,res){
+        that.title = title;
+      });
+    }
   },
   'keydown div.title'(event) {
     let note = this;
@@ -68,7 +71,7 @@ Template.note.events({
         event.preventDefault();
         if (event.shiftKey) {
           // Edit the body
-
+          note.body = ' yes ';
         } else {
           // Chop the text in half at the cursor
           // put what's on the left in a note on top
@@ -92,7 +95,7 @@ Template.note.events({
       case 9:
         event.preventDefault();
         let parent_id = Blaze.getData($(event.currentTarget).closest('.note').prev().get(0))._id;
-        console.log(parent_id); return;
+        //console.log(parent_id); return;
         if (event.shiftKey) {
           Meteor.call('notes.outdent',this._id);
         } else {
@@ -127,16 +130,15 @@ Template.note.events({
         break;
       // Up
       case 38:
-      console.log($(event.currentTarget).closest('.note'));
-      $(event.currentTarget).closest('.note').prev().find('div.title').focus();
+        $(event.currentTarget).closest('.note').prev().find('div.title').focus();
       break;
       // Down
       case 40:
-      $(event.currentTarget).closest('.note').next().find('div').focus();
+        $(event.currentTarget).closest('.note').next().find('div').focus();
       break;
       // Escape
       case 27:
-      $(event.currentTarget).blur();
+        $(event.currentTarget).blur();
       break;
     }
   }
@@ -161,7 +163,7 @@ Template.note.formatText = function(inputText) {
 
   //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
   replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-  replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+  replacedText = replacedText.replace(replacePattern2, '<a href="http://$2" target="_blank">$2</a>');
 
   //Change email addresses to mailto:: links.
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
@@ -170,11 +172,11 @@ Template.note.formatText = function(inputText) {
   let hashtagPattern = /(^|\s)(([#])([a-z\d-]+))/gim;
   replacedText = replacedText.replace(hashtagPattern, function(match, p1, p2, p3, p4, offset, string) {
     let className = p4.toLowerCase();
-    return ' <a href="/search/%23'+p4+'" class="tagLink tag-'+className+'">#'+p4+'</a> '
+    return ' <a href="/search/%23'+p4+'" class="tagLink tag-'+className+'">#'+p4+'</a>'
   });
 
   let namePattern = /(^|\s)(([@])([a-z\d-]+))/gim;
-  replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$4" class="at-$4">@$4</a> ');
+  replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$4" class="at-$4">@$4</a>');
 
   let searchTerm = Session.get('searchTerm');
   replacedText = replacedText.replace(searchTerm, "<span class='searchResult'>$&</span>");

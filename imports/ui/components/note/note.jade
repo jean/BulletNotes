@@ -11,7 +11,7 @@ template(name='note')
         a.bullet.btn.btn-success.btn-xs.fa.fa-search-plus(href='/note/{{this._id}}',class='{{bulletClass}}')
         button.btn.btn-primary.btn-xs.fa.fa-pencil
         button.btn.btn-danger.btn-xs.fa.fa-trash-o
-    
-      p.body(contenteditable='true') {{{displayBody}}}
+      if (displayBody)
+        p.body(contenteditable='true') {{{displayBody}}}
   each children
     +note

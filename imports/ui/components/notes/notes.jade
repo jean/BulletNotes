@@ -13,4 +13,8 @@ template(name='notes')
             #notes.task-list
               each notes
                 +note
-            #new-note(contenteditable='true') {{newNoteText}}
+            div(class='note')
+              i.fa.fa-ellipsis-v
+              .task-title
+                #new-note(class='title task-title-sp', contenteditable='true') {{newNoteText}}
+
