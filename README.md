@@ -1,6 +1,10 @@
 # Note.d
 
-## Demo
+## User Guide
+
+https://github.com/NickBusey/noted/wiki
+
+## Hosted Version
 
 https://note-d.herokuapp.com/
 
