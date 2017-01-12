@@ -18,10 +18,6 @@ Template.note.onCreated(function bodyOnCreated() {
 });
 
 Template.note.events({
-  'click .fa-trash-o'(event) {
-    event.preventDefault();
-    Meteor.call('notes.remove', this._id);
-  },
   'click .expand'(event) {
     event.stopImmediatePropagation();
     event.preventDefault();
@@ -189,7 +185,7 @@ Template.note.helpers({
   },
   'expandClass'() {
     if (this.children > 0 && this.showChildren) {
-      return 'fa-angle-up btn-primary';
+      return 'fa-angle-up';
     } else if (this.children > 0) {
       return 'fa-angle-down btn-primary';
     } else {
