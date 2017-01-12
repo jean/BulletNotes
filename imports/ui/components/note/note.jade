@@ -1,13 +1,9 @@
 template(name='note')
   div(class='note {{class}}', style='{{style}}')
     a.fa.fa-ellipsis-v(href='/note/{{this._id}}')
+    a.expand(href='#',class='btn btn-xs fa {{expandClass}}')
     .task-title
-      if (isEditing)
-        input(class='title-edit form-control' value='{{title}}')
-      else
-        div(class='title task-title-sp', contenteditable='true') {{{displayTitle}}}
-      .pull-right
-        a.expand(href='#',class='btn btn-xs fa {{expandClass}}')
+      div(class='title task-title-sp', contenteditable='true') {{{displayTitle}}}
       if (displayBody)
         p.body(contenteditable='true') {{{displayBody}}}
   each children

@@ -180,7 +180,7 @@ Template.note.helpers({
     return className;
   },
   'style'() {
-    let margin = (this.level-Session.get('level'));
+    let margin = 2*(this.level-Session.get('level'));
     return 'margin-left: '+margin+'em';
   },
   'expandClass'() {

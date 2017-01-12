@@ -67,12 +67,22 @@
 	.expand {
 		text-decoration: none;
 		font-weight: bold;
+    position: absolute;
+    left: 2.25em;
+    margin-top: 1px;
 	}
+  .fa.fa-ellipsis-v {
+    position: absolute;
+    left:6px;
+    padding:4px 10px 0 10px;
+    cursor: pointer;
+  }
 	div.title {
 		display: inline-block;
     font-size: 1.4em;
     color: black;
     min-width: 40%;
+    margin: -5px 0 0 20px;
 	}
 	div.title:focus {
 	    outline: none;
@@ -83,12 +93,6 @@
     font-size: 1.2em;
     color: black;
 	}
-  .fa.fa-ellipsis-v {
-    position: absolute;
-    left:6px;
-    padding:4px 10px 0 10px;
-    cursor: pointer;
-  }
   a {
     cursor: pointer;
   }
@@ -153,10 +157,6 @@
   .note > .task-checkbox {
   float:left;
   width:30px;
-}
-
-  .note > .task-title  {
-  margin-right:10px;
 }
 
   .note > .task-config {
