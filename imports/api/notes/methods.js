@@ -29,6 +29,7 @@ Meteor.methods({
     return Notes.insert({
       title,
       createdAt: new Date(),
+      updatedAt: new Date(),
       rank: rank,
       owner: this.userId,
       parent: parent,
@@ -43,7 +44,8 @@ Meteor.methods({
     }
 
     return Notes.update(id,{ $set: {
-      title: title
+      title: title,
+      updatedAt: new Date(),
     }});
   },
   'notes.updateRank'(id,rank) {
@@ -65,7 +67,8 @@ Meteor.methods({
     }
     
     return Notes.update(id,{ $set: {
-      body: body
+      body: body,
+      updatedAt: new Date(),
     }});
   },
   'notes.makeChild'(id,parent) {

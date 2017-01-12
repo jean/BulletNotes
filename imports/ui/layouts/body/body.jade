@@ -13,6 +13,8 @@ template(name='App_body')
                 p.green Settings
               li.external
                 a(href='#', id='#import', data-toggle='modal', data-target='#import') Import from Workflowy
+              li.external
+                a(href='/search/last-changed:1h') Recently Modified
       +undoRedoButtons
       form.searchForm.form-inline
         input.form-control(placeholder='Search...', value='{{ searchTerm }}')

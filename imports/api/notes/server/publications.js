@@ -15,15 +15,16 @@ Meteor.publish('notes.search', function(search) {
   let query = {};
   let projection = { limit: 100 };
 
-console.log('search',search);
-    let regex = new RegExp( search, 'i' );
-
+  if (search.indexOf('last-changed:') == 0) {
     query = {
-      
-         title: regex 
-      
+      "updatedAt": { $gte : new Date(new Date()-60*60*1000) }
     };
+  } else {
+    let regex = new RegExp( search, 'i' );
+    query = {
+       title: regex 
+    };
+  }
 
-console.log(query,projection);
   return Notes.find( query, projection );
 });
