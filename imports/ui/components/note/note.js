@@ -115,11 +115,20 @@ Template.note.events({
         break;
       // Up
       case 38:
-        $(event.currentTarget).closest('.note').prev().find('div.title').focus();
+        // Command is held
+        if (event.metaKey) {
+          $(event.currentTarget).closest('.note').find('.expand').trigger('click');
+        } else {
+          $(event.currentTarget).closest('.note').prev().find('div.title').focus();
+        }
       break;
       // Down
       case 40:
-        $(event.currentTarget).closest('.note').next().find('div').focus();
+        if (event.metaKey) {
+          $(event.currentTarget).closest('.note').find('.expand').trigger('click');
+        } else {
+          $(event.currentTarget).closest('.note').next().find('div.title').focus();
+        }
       break;
       // Escape
       case 27:
@@ -187,7 +196,7 @@ Template.note.helpers({
     if (this.children > 0 && this.showChildren) {
       return 'fa-angle-up';
     } else if (this.children > 0) {
-      return 'fa-angle-down btn-primary';
+      return 'fa-angle-down collapsed';
     } else {
       return '';
     }
