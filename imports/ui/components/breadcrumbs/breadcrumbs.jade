@@ -1,0 +1,5 @@
+template(name='breadcrumbs')
+  a(href='/') Home
+  +each parents
+    | &gt; 
+    a(href='/note/{{_id}}') {{title}}

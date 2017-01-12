@@ -6,13 +6,15 @@ template(name='notes')
           .pull-left
             h5
               i.fa.fa-tasks
-              |  {{focusedNoteTitle}}
+              +breadcrumbs
           br
         .panel-body
           .task-content
             #notes.task-list
+              h4 {{focusedNote.title}}
               each notes
                 +note
+
             div(class='note')
               i.fa.fa-ellipsis-v
               .task-title

@@ -18,17 +18,6 @@ Template.note.onCreated(function bodyOnCreated() {
 });
 
 Template.note.events({
-  // 'click .title, click .fa-pencil'(event, instance) {
-  //   event.stopImmediatePropagation();
-  //   console.log(event);
-  //   if (event.target.tagName == 'A') {
-  //     return;
-  //   }
-  //   event.preventDefault();
-  //   instance.state.set('editing', true);
-  //   instance.state.set('editingBody',false);
-  //   setTimeout(function(){$('input.title-edit').select();},10);
-  // },
   'click .fa-trash-o'(event) {
     event.preventDefault();
     Meteor.call('notes.remove', this._id);
@@ -185,7 +174,6 @@ Template.note.formatText = function(inputText) {
 }
 Template.note.helpers({
   'class'() {
-    console.log(Session.get('level'));
     let className = 'level-'+(this.level-Session.get('level'));
     let tags = this.title.match(/#\w+/g);
     if (tags) {

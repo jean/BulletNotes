@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import './notes.jade';
 import '../note/note.js'
+import '../breadcrumbs/breadcrumbs.js'
 
 newNoteText = "New note...";
 
@@ -37,6 +38,9 @@ Template.notes.helpers({
   },
   newNoteText() {
     return newNoteText;
+  },
+  focusedNote() {
+    return Notes.findOne(Template.currentData().noteId);
   }
 });
 
