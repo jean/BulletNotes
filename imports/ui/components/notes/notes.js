@@ -1,5 +1,6 @@
 import { Notes } from '/imports/api/notes/notes.js';
 import { Meteor } from 'meteor/meteor';
+
 import './notes.jade';
 import '../note/note.js'
 
@@ -23,10 +24,14 @@ Template.notes.helpers({
   },
   notes() {
     if (Template.currentData().noteId) {
+      let note = Notes.findOne({parent:Template.currentData().noteId}, {sort: {rank: 1}});
+      Session.set('level',note.level);
       return Notes.find({parent:Template.currentData().noteId}, {sort: {rank: 1}});
     } else if (Template.currentData().searchTerm) {
+      Session.set('level',0);
       return Notes.find({});
     } else {
+      Session.set('level',0);
       return Notes.find({parent: null}, {sort: {rank: 1}});
     }
   },

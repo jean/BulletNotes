@@ -1,10 +1,10 @@
-import './note.jade';
+import './view-note.jade';
 
-Template.App_note.onCreated(function () {
+Template.App_viewNote.onCreated(function () {
   Session.set('searchTerm','');
 });
 
-Template.App_note.helpers({
+Template.App_viewNote.helpers({
     noteId: function () {
         return FlowRouter.getParam('noteId');
     }

@@ -84,7 +84,7 @@ Template.note.events({
           let bottomNote = text.substr(position);
           // Create a new note below the current.
           Meteor.call('notes.updateTitle',note._id,topNote,function(err,res) {
-            Meteor.call('notes.insert','',note.rank+.5,note.parent,note.level,function(err,res) {
+            Meteor.call('notes.insert','',note.rank+.5,note.parent,function(err,res) {
               App.calculateRank();
               setTimeout(function(){$(event.target).closest('.note').next().find('.title').focus();},50);
             });
@@ -185,7 +185,8 @@ Template.note.formatText = function(inputText) {
 }
 Template.note.helpers({
   'class'() {
-    let className = 'level-'+this.level;
+    console.log(Session.get('level'));
+    let className = 'level-'+(this.level-Session.get('level'));
     let tags = this.title.match(/#\w+/g);
     if (tags) {
       tags.forEach(function(tag) {
@@ -195,7 +196,7 @@ Template.note.helpers({
     return className;
   },
   'style'() {
-    let margin = this.level;
+    let margin = (this.level-Session.get('level'));
     return 'margin-left: '+margin+'em';
   },
   'expandClass'() {

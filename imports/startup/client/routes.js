@@ -4,7 +4,7 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 // Import needed templates
 import '../../ui/layouts/body/body.js';
 import '../../ui/pages/home/home.js';
-import '../../ui/pages/note/note.js';
+import '../../ui/pages/view-note/view-note.js';
 import '../../ui/pages/search/search.js';
 import '../../ui/pages/not-found/not-found.js';
 
@@ -17,9 +17,9 @@ FlowRouter.route('/', {
 });
 
 FlowRouter.route('/note/:noteId', {
-  name: 'App.note',
+  name: 'App.viewNote',
   action() {
-    BlazeLayout.render('App_body', { main: 'App_note' });
+    BlazeLayout.render('App_body', { main: 'App_viewNote' });
   },
 });
 

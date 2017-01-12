@@ -6,7 +6,7 @@ import { Match } from 'meteor/check'
 import { Notes } from './notes.js';
 
 Meteor.methods({
-  'notes.insert'(title,rank=null,parent=null,level=0) {
+  'notes.insert'(title,rank=null,parent=null) {
     check(title, String);
     check(rank, Match.Maybe(Number));
     check(parent, Match.Maybe(String));
@@ -19,9 +19,11 @@ Meteor.methods({
       rank = Notes.find({parent:parent}).count() + 1;
     }
 
+    let level = 0;
     var parentNote = Notes.findOne(parent);
     if (parentNote) {
       Notes.update(parentNote._id,{$inc:{children:1},$set:{showChildren:true}});
+      level = parentNote.level+1;
     }
 
     return Notes.insert({
