@@ -17,12 +17,14 @@ Meteor.publish('notes.search', function(search) {
 
   if (search.indexOf('last-changed:') == 0) {
     query = {
-      "updatedAt": { $gte : new Date(new Date()-60*60*1000) }
+      "updatedAt": { $gte : new Date(new Date()-60*60*1000) },
+      owner: this.userId
     };
   } else {
     let regex = new RegExp( search, 'i' );
     query = {
-       title: regex 
+       title: regex,
+       owner: this.userId
     };
   }
 

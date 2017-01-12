@@ -1,6 +1,9 @@
 template(name='App_body')
   section#container
     header.header.black-bg
+      .top-menu
+        ul.nav.pull-right.top-menu
+          +loginButtons
       a.logo(href='/') Note.d
       #top_menu.nav.notify-row
         ul.nav.top-menu
@@ -19,9 +22,6 @@ template(name='App_body')
       form.searchForm.form-inline
         input.form-control(placeholder='Search...', value='{{ searchTerm }}')
         submit(class='btn btn-theme') Search
-      .top-menu
-        ul.nav.pull-right.top-menu
-          +loginButtons
     section#main-content
       section.wrapper
         +importer
