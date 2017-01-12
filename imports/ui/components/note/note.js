@@ -90,9 +90,9 @@ Template.note.events({
       break;
       // Backspace
       case 8:
-        //if ($(event.currentTarget).length==0) {
-        //  Meteor.call('notes.remove',this._id);
-        //}
+        if (event.currentTarget.innerText.length==0) {
+         Meteor.call('notes.remove',this._id);
+        }
         if (window.getSelection().toString() == "") {
           let position = event.target.selectionStart
           if (position == 0) {
