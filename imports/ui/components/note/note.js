@@ -56,9 +56,8 @@ Template.note.events({
     // Strip spans and A hrefs
     let title = event.target.innerHTML.replace(/<\/?span[^>]*>/g,"");
     title = title.replace(/<\/?a[^>]*>/g,"");
-    Meteor.call('notes.updateTitle',this._id,title,function(err,res) {
-      instance.data.title = title;
-    });
+    event.target.innerHTML='';
+    Meteor.call('notes.updateTitle',this._id,title);
   },
   'keydown div.title'(event) {
     let note = this;
@@ -66,6 +65,7 @@ Template.note.events({
     switch(event.keyCode) {
       // Enter
       case 13:
+        event.preventDefault();
         if (event.shiftKey) {
           // Edit the body
 
@@ -74,19 +74,16 @@ Template.note.events({
           // put what's on the left in a note on top
           // put what's to the right in a note below
           console.log(window.getSelection().anchorOffset);
-          console.log(event); return;
+          console.log(event); //return;
           let position = event.target.selectionStart;
           let text = event.target.innerHTML;
           let topNote = text.substr(0,position);
           let bottomNote = text.substr(position);
           // Create a new note below the current.
           Meteor.call('notes.updateTitle',note._id,topNote,function(err,res) {
-            Meteor.call('notes.insert',bottomNote,note.rank+.5,note.parent,note.level,function(err,res) {
-              
-              console.log($(event.target).parentsUntil('#notes').prev());
-              console.log(event.target);
+            Meteor.call('notes.insert','',note.rank+.5,note.parent,note.level,function(err,res) {
               App.calculateRank();
-              setTimeout(function(){$(event.target).parentsUntil('#notes').prev().find('.title').trigger('click');},10);
+              setTimeout(function(){$(event.target).closest('.note').next().find('.title').focus();},50);
             });
           });
         }
@@ -94,7 +91,7 @@ Template.note.events({
       // Tab
       case 9:
         event.preventDefault();
-        let parent_id = Blaze.getData($(event.currentTarget).parentsUntil('#notes').prev().get(0))._id;
+        let parent_id = Blaze.getData($(event.currentTarget).closest('.note').prev().get(0))._id;
         console.log(parent_id); return;
         if (event.shiftKey) {
           Meteor.call('notes.outdent',this._id);
@@ -130,11 +127,12 @@ Template.note.events({
         break;
       // Up
       case 38:
-      $(event.currentTarget).parent().parent().prev().children('div').focus();
+      console.log($(event.currentTarget).closest('.note'));
+      $(event.currentTarget).closest('.note').prev().find('div.title').focus();
       break;
       // Down
       case 40:
-      $(event.currentTarget).parent().parent().next().children('div').focus();
+      $(event.currentTarget).closest('.note').next().find('div').focus();
       break;
       // Escape
       case 27:
@@ -170,7 +168,10 @@ Template.note.formatText = function(inputText) {
   replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
 
   let hashtagPattern = /(^|\s)(([#])([a-z\d-]+))/gim;
-  replacedText = replacedText.replace(hashtagPattern, ' <a href="/search/%23$4" class="tagLink tag-$4">#$4</a> ');
+  replacedText = replacedText.replace(hashtagPattern, function(match, p1, p2, p3, p4, offset, string) {
+    let className = p4.toLowerCase();
+    return ' <a href="/search/%23'+p4+'" class="tagLink tag-'+className+'">#'+p4+'</a> '
+  });
 
   let namePattern = /(^|\s)(([@])([a-z\d-]+))/gim;
   replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$4" class="at-$4">@$4</a> ');
@@ -186,7 +187,7 @@ Template.note.helpers({
     let tags = this.title.match(/#\w+/g);
     if (tags) {
       tags.forEach(function(tag) {
-        className = className + ' tag-'+tag.substr(1).toLowerCase();
+        className = className + ' tag-'+(tag.substr(1)).toLowerCase();
       });
     }
     return className;
