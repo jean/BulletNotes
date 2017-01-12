@@ -91,7 +91,11 @@ Template.notes.rendered = function() {
   this.$('#notes').sortable({
       handle: '.fa-ellipsis-v',
       stop: function(el, ui) {
-        App.calculateRank();
+        let note = Blaze.getData($(el.originalEvent.target).closest('.note').get(0));
+        let parent_note = Blaze.getData($(el.originalEvent.target).closest('.note').prev().get(0));
+        Meteor.call('notes.makeChild',note._id,parent_note._id,function(err,res) {
+          App.calculateRank();
+        });
       }
   });
 }

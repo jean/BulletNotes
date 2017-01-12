@@ -83,6 +83,7 @@ Meteor.methods({
     }
     Notes.update(parent._id,{$inc:{children:1},$set:{showChildren:true}});
     Notes.update(id,{ $set: {
+      rank: 0,
       parent: parent._id,
       level: parent.level+1
     }});
