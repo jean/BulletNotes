@@ -18,17 +18,17 @@ Template.note.onCreated(function bodyOnCreated() {
 });
 
 Template.note.events({
-  'click .title, click .fa-pencil'(event, instance) {
-    event.stopImmediatePropagation();
-    console.log(event);
-    if (event.target.tagName == 'A') {
-      return;
-    }
-    event.preventDefault();
-    instance.state.set('editing', true);
-    instance.state.set('editingBody',false);
-    setTimeout(function(){$('input.title-edit').select();},10);
-  },
+  // 'click .title, click .fa-pencil'(event, instance) {
+  //   event.stopImmediatePropagation();
+  //   console.log(event);
+  //   if (event.target.tagName == 'A') {
+  //     return;
+  //   }
+  //   event.preventDefault();
+  //   instance.state.set('editing', true);
+  //   instance.state.set('editingBody',false);
+  //   setTimeout(function(){$('input.title-edit').select();},10);
+  // },
   'click .fa-trash-o'(event) {
     event.preventDefault();
     Meteor.call('notes.remove', this._id);
@@ -44,55 +44,64 @@ Template.note.events({
     instance.state.set('editing',false);
     setTimeout(function(){$('textarea').select();},10);
   },
-  'blur textarea'(event, instance) {
+  'blur p.body'(event, instance) {
     event.stopImmediatePropagation();
-    Meteor.call('notes.updateBody',this._id,event.target.value,function (err,res) {
+    let body = Template.note.stripTags(event.target.innerHTML);
+    Meteor.call('notes.updateBody',this._id,body,function (err,res) {
       instance.state.set('editingBody',false);
     });
   },
-  'blur input.title-edit'(event,instance) {
+  'blur div.title'(event,instance) {
     event.stopImmediatePropagation();
-    Meteor.call('notes.updateTitle',this._id,event.target.value,function(err,res) {
-      // Fix for contenteditable crap here?
-      instance.state.set('editing',false);
+    // Strip spans and A hrefs
+    let title = event.target.innerHTML.replace(/<\/?span[^>]*>/g,"");
+    title = title.replace(/<\/?a[^>]*>/g,"");
+    Meteor.call('notes.updateTitle',this._id,title,function(err,res) {
+      instance.data.title = title;
     });
   },
-  'keydown div'(event) {
+  'keydown div.title'(event) {
     let note = this;
     event.stopImmediatePropagation();
     switch(event.keyCode) {
       // Enter
       case 13:
-        // Chop the text in half at the cursor
-        // put what's on the left in a note on top
-        // put what's to the right in a note below
+        if (event.shiftKey) {
+          // Edit the body
 
-        let position = event.target.selectionStart;
-        let text = event.target.value;
-        let topNote = text.substr(0,position);
-        let bottomNote = text.substr(position);
-        // Create a new note below the current.
-        Meteor.call('notes.updateTitle',note._id,topNote,function(err,res) {
-          Meteor.call('notes.insert',bottomNote,note.rank+.5,note.parent,note.level,function(err,res) {
-            
-            console.log($(event.target).parentsUntil('#notes').prev());
-            console.log(event.target);
-            App.calculateRank();
-            setTimeout(function(){$(event.target).parentsUntil('#notes').prev().find('.title').trigger('click');},10);
+        } else {
+          // Chop the text in half at the cursor
+          // put what's on the left in a note on top
+          // put what's to the right in a note below
+          console.log(window.getSelection().anchorOffset);
+          console.log(event); return;
+          let position = event.target.selectionStart;
+          let text = event.target.innerHTML;
+          let topNote = text.substr(0,position);
+          let bottomNote = text.substr(position);
+          // Create a new note below the current.
+          Meteor.call('notes.updateTitle',note._id,topNote,function(err,res) {
+            Meteor.call('notes.insert',bottomNote,note.rank+.5,note.parent,note.level,function(err,res) {
+              
+              console.log($(event.target).parentsUntil('#notes').prev());
+              console.log(event.target);
+              App.calculateRank();
+              setTimeout(function(){$(event.target).parentsUntil('#notes').prev().find('.title').trigger('click');},10);
+            });
           });
-        });
-        return false;
-        break;
+        }
+      break;
       // Tab
       case 9:
-      event.preventDefault();
-      let parent_id = Blaze.getData($(event.currentTarget).parentsUntil('.notes').prev().get(0))._id;
-      if (event.shiftKey) {
-        Meteor.call('notes.outdent',this._id);
-      } else {
-        Meteor.call('notes.makeChild',this._id,parent_id);
-      }
-      return false;
+        event.preventDefault();
+        let parent_id = Blaze.getData($(event.currentTarget).parentsUntil('#notes').prev().get(0))._id;
+        console.log(parent_id); return;
+        if (event.shiftKey) {
+          Meteor.call('notes.outdent',this._id);
+        } else {
+          Meteor.call('notes.makeChild',this._id,parent_id);
+        }
+        return;
       break;
       // Backspace
       case 8:
@@ -134,6 +143,14 @@ Template.note.events({
     }
   }
 });
+Template.note.stripTags = function(inputText) {
+  if (!inputText) {
+    return;
+  }
+  inputText = inputText.replace(/<\/?span[^>]*>/g,"");
+  inputText = inputText.replace(/<\/?a[^>]*>/g,"");
+  return inputText;
+}
 Template.note.formatText = function(inputText) {
   if (!inputText) {
     return;
@@ -160,6 +177,7 @@ Template.note.formatText = function(inputText) {
 
   let searchTerm = Session.get('searchTerm');
   replacedText = replacedText.replace(searchTerm, "<span class='searchResult'>$&</span>");
+  replacedText = replacedText.replace(/&nbsp;/gim, " ");
   return replacedText;
 }
 Template.note.helpers({

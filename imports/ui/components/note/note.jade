@@ -5,19 +5,13 @@ template(name='note')
       if (isEditing)
         input(class='title-edit form-control' value='{{title}}')
       else
-        div(class='title task-title-sp') {{{displayTitle}}}
+        div(class='title task-title-sp', contenteditable='true') {{{displayTitle}}}
       .pull-right
         a.expand(href='#',class='btn btn-xs fa {{expandClass}}')
         a.bullet.btn.btn-success.btn-xs.fa.fa-search-plus(href='/note/{{this._id}}',class='{{bulletClass}}')
         button.btn.btn-primary.btn-xs.fa.fa-pencil
         button.btn.btn-danger.btn-xs.fa.fa-trash-o
     
-    if (isEditingBody)
-      textarea(class='body-edit form-control') {{body}}
-    else
-      if (displayBody)
-        p.body {{{displayBody}}}
-      else if (isEditing)
-        p.body Add a body..
+      p.body(contenteditable='true') {{{displayBody}}}
   each children
     +note

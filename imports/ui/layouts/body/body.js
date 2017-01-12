@@ -15,7 +15,7 @@ Template.App_body.events({
     }
   },
   'click .searchForm'(event) {
-    $(event.target).select();
+    //$(event.target).select();
   },
   'click .searchForm .btn'(event) {
     window.location.pathname='/search/'+$('.searchForm input').val();
