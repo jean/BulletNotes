@@ -71,14 +71,25 @@
     left: 2.25em;
     margin-top: 1px;
 	}
+  .expand.fa-angle-up:hover,
+  .expand.fa-angle-down:hover
+  {
+    border: dotted 1px red;
+  }
   .expand.collapsed {
-    border: dotted 1px;
+    border: dotted 1px rgba(255, 255, 255, 0);
   }
   .fa.fa-ellipsis-v {
     position: absolute;
-    left:6px;
-    padding:4px 10px 0 10px;
+    left: 5px;
+    padding: 4px 9px;
     cursor: pointer;
+    border-radius: 10px;
+    border: dashed 1px rgba(255, 255, 255, 0);
+  }
+  .fa-ellipsis-v:hover {
+    //background-color: #ccc;
+    border: dashed 1px red;
   }
 	div.title {
 		display: inline-block;
