@@ -7,11 +7,13 @@ import './breadcrumbs.jade';
 Template.breadcrumbs.helpers({
   parents() {
     let parents = [];
-    let note = Notes.findOne(this.noteId);
-    let parent = Notes.findOne(note.parent);
-    while (parent) {
-      parents.unshift(parent);
-      parent = Notes.findOne(parent.parent);
+    if (this.noteId) {
+      let note = Notes.findOne(this.noteId);
+      let parent = Notes.findOne(note.parent);
+      while (parent) {
+        parents.unshift(parent);
+        parent = Notes.findOne(parent.parent);
+      }
     }
     return parents;
   }
