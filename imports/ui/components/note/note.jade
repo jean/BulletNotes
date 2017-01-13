@@ -3,7 +3,7 @@ template(name='note')
     a.fa.fa-ellipsis-v(href='/note/{{this._id}}')
     a.expand(href='#',class='btn btn-xs fa {{expandClass}}')
     .task-title
-      div(class='title task-title-sp', contenteditable='true') {{{displayTitle}}}
+      div(class='title task-title-sp', contenteditable='true')
       if (displayBody)
         p.body(contenteditable='true') {{{displayBody}}}
   each children

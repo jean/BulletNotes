@@ -12,6 +12,10 @@ Template.notes.onCreated ->
   else
     Meteor.subscribe 'notes.all'
   return
+
+#Template.notes.onRendered ->
+#  $( ".selectable" ).selectable()
+
 Template.notes.helpers
   focusedNoteTitle: ->
     if Template.currentData().noteId

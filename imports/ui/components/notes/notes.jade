@@ -10,8 +10,8 @@ template(name='notes')
           br
         .panel-body
           .task-content
-            #notes.task-list
-              h4 {{{focusedNoteTitle}}}
+            h4 {{{focusedNoteTitle}}}
+            #notes.task-list.selectable
               each notes
                 +note
 
