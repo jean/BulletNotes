@@ -1,3 +1,3 @@
 require '/imports/startup/server/index.coffee'
-require '/imports/startup/both'
+require '/imports/startup/both/index.coffee'
 

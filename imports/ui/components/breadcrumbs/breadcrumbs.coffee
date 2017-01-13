@@ -1,5 +1,5 @@
 { Template } = require 'meteor/templating';
-{ Notes } = require '../../../api/notes/notes.js'
+{ Notes } = require '../../../api/notes/notes.coffee'
 require './breadcrumbs.jade'
 
 Template.breadcrumbs.helpers parents: ->

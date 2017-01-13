@@ -1,2 +1,2 @@
-require './fixtures.js'
+require './fixtures.coffee'
 require './register-api.coffee'

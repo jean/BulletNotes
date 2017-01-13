@@ -1,4 +1,4 @@
-{ Notes } = require '/imports/api/notes/notes.js'
+{ Notes } = require '/imports/api/notes/notes.coffee'
 { Meteor } = require 'meteor/meteor'
 
 require './notes.jade'

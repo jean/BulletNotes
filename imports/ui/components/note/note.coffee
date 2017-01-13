@@ -1,6 +1,6 @@
 { Template } = require 'meteor/templating'
 { ReactiveDict } = require 'meteor/reactive-dict'
-{ Notes } = require '../../../api/notes/notes.js'
+{ Notes } = require '../../../api/notes/notes.coffee'
 require './note.jade'
 
 Template.note.helpers children: ->
