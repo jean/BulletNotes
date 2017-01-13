@@ -1,5 +1,6 @@
 import './body.jade';
 import '../../components/importer/importer.js';
+import '../../components/exporter/exporter.js';
 
 Template.App_body.helpers({
     searchTerm: function () {

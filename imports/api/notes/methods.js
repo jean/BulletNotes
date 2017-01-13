@@ -25,7 +25,7 @@ Meteor.methods({
       Notes.update(parentNote._id,{$inc:{children:1},$set:{showChildren:true}});
       level = parentNote.level+1;
     }
-
+    title = title.replace(/(\r\n|\n|\r)/gm,"");
     return Notes.insert({
       title,
       createdAt: new Date(),
@@ -38,7 +38,7 @@ Meteor.methods({
   },
   'notes.updateTitle'(id,title) {
     check(title, Match.Maybe(String));
-
+    title = title.replace(/(\r\n|\n|\r)/gm,"");
     if (! this.userId) {
       throw new Meteor.Error('not-authorized');
     }
@@ -144,5 +144,21 @@ Meteor.methods({
       $set: { showChildren: show,
       children: children },
     });
+  },
+  'notes.export'(id=null) {
+    var topLevelNotes = Notes.find({parent:id,owner:this.userId,});
+    var exportText = '';
+    topLevelNotes.forEach(function(note) {
+      if (!note.level) { note.level = 0; }
+      let spacing = new Array(note.level * 4).join(' ');
+      exportText += spacing+'- '+note.title.replace(/(\r\n|\n|\r)/gm,"")+"\n";
+      console.log(note);
+      console.log(exportText);
+      if (note.body) {
+        exportText += spacing+"  \""+note.body+"\"\n";
+      }
+      exportText = exportText + Meteor.call('notes.export',note._id);
+    });
+    return exportText;
   }
 });

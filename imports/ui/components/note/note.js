@@ -49,6 +49,7 @@ Template.note.events({
   },
   'keydown div.title'(event) {
     let note = this;
+    console.log(note);
     event.stopImmediatePropagation();
     switch(event.keyCode) {
       // Enter
@@ -57,6 +58,7 @@ Template.note.events({
         if (event.shiftKey) {
           // Edit the body
           note.body = ' yes ';
+          console.log(note);
         } else {
           // Chop the text in half at the cursor
           // put what's on the left in a note on top
@@ -211,13 +213,5 @@ Template.note.helpers({
   },
   'displayBody'() {
     return Template.note.formatText(this.body);
-  },
-  'isEditing'() {
-    const instance = Template.instance();
-    return instance.state.get('editing');
-  },
-  'isEditingBody'() {
-    const instance = Template.instance();
-    return instance.state.get('editingBody');
   }
 });

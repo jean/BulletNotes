@@ -15,7 +15,9 @@ template(name='App_body')
               li
                 p.green Settings
               li.external
-                a(href='#', id='#import', data-toggle='modal', data-target='#import') Import from Workflowy
+                a(href='#', id='#importLink', data-toggle='modal', data-target='#import') Import from Workflowy
+              li.external
+                a(href='#', id='#exportLink', data-toggle='modal', data-target='#export') Export
               li.external
                 a(href='/search/last-changed:1h') Recently Modified
       +undoRedoButtons
@@ -25,6 +27,7 @@ template(name='App_body')
     section#main-content
       section.wrapper
         +importer
+        +exporter
         +Template.dynamic(template=main)
     footer.site-footer
       .text-center

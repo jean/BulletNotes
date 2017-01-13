@@ -1,0 +1,15 @@
+template(name='exporter')
+  .modal.fade(id="export", tabindex='-1', role='dialog', style='display: none;')
+    .modal-dialog
+      form.modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h4#myModalLabel.modal-title Confirm
+        .modal-body
+            p Paste the below into Workflowy, or into another Note.d instance.
+            textarea(rows='4',cols='40',class='form-control exportContent') Test {{exportContent}}
+            
+        .modal-footer
+          input(type='submit',value='Export',class='submit form-control btn btn-theme')
+          button.btn.btn-sm(data-dismiss='modal') Cancel
+
