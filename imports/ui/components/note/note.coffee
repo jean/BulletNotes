@@ -52,6 +52,10 @@ Template.note.events
   'mouseleave .note': (event) ->
     $(event.target).find('img').remove()
     this.imagePreview = false
+  'click .fa-star': (event) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    Meteor.call 'notes.star', @_id
   'click .expand': (event) ->
     event.stopImmediatePropagation()
     event.preventDefault()
@@ -124,7 +128,7 @@ Template.note.events
           if position == 0
             # We're at the start of the note, add this to the note above, and remove it.
             console.log event.target.value
-            prev = $(event.currentTarget).parentsUntil('#notes').prev()
+            prev = $(event.currentTarget).closest('.note').prev()
             console.log prev
             prevNote = Blaze.getData(prev.get(0))
             console.log prevNote
@@ -133,7 +137,7 @@ Template.note.events
             Meteor.call 'notes.updateTitle', prevNote._id, prevNote.title + event.target.value, (err, res) ->
               Meteor.call 'notes.remove', note._id, (err, res) ->
                 # Moves the caret to the correct position
-                prev.find('.title').trigger 'click'
+                prev.find('div.title').trigger 'click'
                 return
               return
       # Up
@@ -169,6 +173,8 @@ Template.note.helpers
       tags.forEach (tag) ->
         className = className + ' tag-' + tag.substr(1).toLowerCase()
         return
+    if @starred
+      className = className + ' starred'
     className
   'style': ->
     margin = 2 * (@level - Session.get('level'))

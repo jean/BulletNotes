@@ -7,8 +7,12 @@ require '../breadcrumbs/breadcrumbs.coffee'
 
 newNoteText = 'New note...'
 Template.notes.onCreated ->
+  console.log "hmm"
   if Template.currentData().searchTerm
     Meteor.subscribe 'notes.search', Template.currentData().searchTerm
+  else if Template.currentData().starred
+    console.log "You're a star!"
+    Meteor.subscribe 'notes.starred'
   else
     Meteor.subscribe 'notes.all'
   return

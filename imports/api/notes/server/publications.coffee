@@ -5,6 +5,8 @@
 
 Meteor.publish 'notes.all', ->
   Notes.find owner: @userId
+Meteor.publish 'notes.starred', ->
+  Notes.find owner: @userId, starred: true
 Meteor.publish 'notes.search', (search) ->
   check search, Match.Maybe(String)
   query = {}

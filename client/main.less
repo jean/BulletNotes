@@ -112,6 +112,21 @@
   a {
     cursor: pointer;
   }
+  .fa-star {
+    margin: 0 1em;
+    display: none;
+  }
+}
+.note:hover {
+  .fa-star {
+    display: block;
+  }
+}
+.note.starred {
+  .fa-star {
+    color: #f78a09;
+    display: block;
+  }
 }
 #new-note {
 	opacity: .6;

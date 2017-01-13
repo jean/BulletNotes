@@ -36,6 +36,13 @@ Meteor.methods
     Notes.update id, $set:
       title: title
       updatedAt: new Date
+  'notes.star': (id) ->
+    if !@userId
+      throw new (Meteor.Error)('not-authorized')
+    note = Notes.findOne(id)
+    Notes.update id, $set:
+      starred: !note.starred
+      updatedAt: new Date
   'notes.updateRank': (id, rank) ->
     check rank, Number
     if !@userId

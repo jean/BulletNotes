@@ -2,6 +2,8 @@ template(name='note')
   div(class='note {{class}}', style='{{style}}')
     a.fa.fa-ellipsis-v(href='/note/{{this._id}}')
     a.expand(href='#',class='btn btn-xs fa {{expandClass}}')
+    .pull-right
+      i.fa.fa-star
     .task-title
       div(class='title task-title-sp', contenteditable='true')
       if (displayBody)
