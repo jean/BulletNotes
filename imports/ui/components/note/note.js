@@ -23,12 +23,6 @@ Template.note.events({
     event.preventDefault();
     Meteor.call('notes.showChildren', this._id, ! this.showChildren);
   },
-  'click p.body'(event,instance) {
-    event.stopImmediatePropagation();
-    instance.state.set('editingBody',true);
-    instance.state.set('editing',false);
-    setTimeout(function(){$('textarea').select();},10);
-  },
   'blur p.body'(event, instance) {
     event.stopImmediatePropagation();
     let body = Template.note.stripTags(event.target.innerHTML);
@@ -49,7 +43,6 @@ Template.note.events({
   },
   'keydown div.title'(event) {
     let note = this;
-    console.log(note);
     event.stopImmediatePropagation();
     switch(event.keyCode) {
       // Enter

@@ -4,9 +4,13 @@ template(name='importer')
       form.modal-content
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-          h4#myModalLabel.modal-title Confirm
+          h4#myModalLabel.modal-title Import
         .modal-body
+            h4 Workflowy
             p In Workflowy, click the down arrow in the top right, then 'Export All'. Select 'Plain Text', and copy and paste the results into the box below.
+            h4 Note.d
+            p In Note.d, click the menu button, 'Export', then click 'Generate' and copy and paste the output here.
+            h4 Notice
             p Be aware this process can take a long time depending on how much you are importing. 5000 items takes up to 10 minutes.
             textarea(rows='4',cols='40',class='form-control')
             

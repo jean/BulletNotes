@@ -150,7 +150,7 @@ Meteor.methods({
     var exportText = '';
     topLevelNotes.forEach(function(note) {
       if (!note.level) { note.level = 0; }
-      let spacing = new Array(note.level * 4).join(' ');
+      let spacing = new Array(note.level * 2).join(' ');
       exportText += spacing+'- '+note.title.replace(/(\r\n|\n|\r)/gm,"")+"\n";
       console.log(note);
       console.log(exportText);

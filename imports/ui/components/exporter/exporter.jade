@@ -4,12 +4,12 @@ template(name='exporter')
       form.modal-content
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-          h4#myModalLabel.modal-title Confirm
+          h4#myModalLabel.modal-title Export
         .modal-body
             p Paste the below into Workflowy, or into another Note.d instance.
-            textarea(rows='4',cols='40',class='form-control exportContent') Test {{exportContent}}
+            textarea(rows='4',cols='40',class='form-control exportContent') Click 'Generate' Below
             
         .modal-footer
-          input(type='submit',value='Export',class='submit form-control btn btn-theme')
+          input(type='submit',value='Generate',class='submit form-control btn btn-theme')
           button.btn.btn-sm(data-dismiss='modal') Cancel
 
