@@ -6,8 +6,9 @@ Template.breadcrumbs.helpers parents: ->
   parents = []
   if @noteId
     note = Notes.findOne(@noteId)
-    parent = Notes.findOne(note.parent)
-    while parent
-      parents.unshift parent
-      parent = Notes.findOne(parent.parent)
+    if (note)
+      parent = Notes.findOne(note.parent)
+      while parent
+        parents.unshift parent
+        parent = Notes.findOne(parent.parent)
   parents
