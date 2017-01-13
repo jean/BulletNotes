@@ -2,10 +2,10 @@
 { BlazeLayout } = require 'meteor/kadira:blaze-layout'
 
 require '../../ui/layouts/body/body.coffee'
-require '../../ui/pages/home/home.js'
-require '../../ui/pages/view-note/view-note.js'
-require '../../ui/pages/search/search.js'
-require '../../ui/pages/not-found/not-found.js'
+require '../../ui/pages/home/home.coffee'
+require '../../ui/pages/view-note/view-note.coffee'
+require '../../ui/pages/search/search.coffee'
+require '../../ui/pages/not-found/not-found.coffee'
 
 FlowRouter.route '/',
   name: 'App.home'

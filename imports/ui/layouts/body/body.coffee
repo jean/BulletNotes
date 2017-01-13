@@ -1,6 +1,6 @@
 require './body.jade'
-require '../../components/importer/importer.js'
-require '../../components/exporter/exporter.js'
+require '../../components/importer/importer.coffee'
+require '../../components/exporter/exporter.coffee'
 
 Template.App_body.helpers searchTerm: ->
   Session.get 'searchTerm'
