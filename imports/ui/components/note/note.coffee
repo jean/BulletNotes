@@ -115,9 +115,9 @@ Template.note.events
         else
           Meteor.call 'notes.makeChild', @_id, parent_id
         return
-      # Backspace
+      # Backspace / delete
       when 8
-        if event.currentTarget.innerText.length == 0
+        if event.currentTarget.innerText.trim().length == 0
           Meteor.call 'notes.remove', @_id
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
