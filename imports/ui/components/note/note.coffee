@@ -93,8 +93,6 @@ Template.note.events
           # put what's to the right in a note below
           console.log window.getSelection().anchorOffset
           console.log event
-          #return;
-          #debugger
           position = event.target.selectionStart
           text = event.target.innerHTML
           topNote = text.substr(0, position)
@@ -122,6 +120,7 @@ Template.note.events
       # Backspace / delete
       when 8
         if event.currentTarget.innerText.trim().length == 0
+          $(event.currentTarget).closest('.note').prev().find('.title').focus()
           Meteor.call 'notes.remove', @_id
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
@@ -137,7 +136,7 @@ Template.note.events
             Meteor.call 'notes.updateTitle', prevNote._id, prevNote.title + event.target.value, (err, res) ->
               Meteor.call 'notes.remove', note._id, (err, res) ->
                 # Moves the caret to the correct position
-                prev.find('div.title').trigger 'click'
+                prev.find('div.title').focus()
                 return
               return
       # Up
@@ -152,7 +151,11 @@ Template.note.events
         if event.metaKey
           $(event.currentTarget).closest('.note').find('.expand').trigger 'click'
         else
-          $(event.currentTarget).closest('.note').next().find('div.title').focus()
+          nextNote = $(event.currentTarget).closest('.note').next()
+          if nextNote.length
+            nextNote.find('div.title').focus()
+          else
+            $('#new-note').focus()
       # Escape
       when 27
         $(event.currentTarget).blur()
