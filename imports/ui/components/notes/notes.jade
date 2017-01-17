@@ -11,10 +11,10 @@ template(name='notes')
         .panel-body
           .task-content
             h4 {{{focusedNoteTitle}}}
-            .dd.sortable
-              ol#notes.task-list.selectable.dd-list
-                each notes
-                  +note
+            ol#notes.task-list.selectable.dd-list.sortable
+              each notes
+                +note
             div(class='note')
-              .task-title
-                #new-note(class='title task-title-sp', contenteditable='true') {{newNoteText}}
+              .noteContainer
+                .task-title
+                  #new-note(class='title task-title-sp', contenteditable='true') {{newNoteText}}

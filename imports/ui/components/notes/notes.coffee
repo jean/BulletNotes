@@ -109,9 +109,15 @@ Template.notes.formatText = (inputText) ->
 
 Template.notes.rendered = ->
   #$( ".selectable" ).selectable()
-  $('.sortable').nestable(
-    handleClass: 'fa-arrows'
-
-  ).on 'change', (event) ->
-    list = if event.length then event else $(event.target)
-    Meteor.call 'notes.updateRanks', list.nestable('serialize'), FlowRouter.getParam 'noteId'
+  $('.sortable').nestedSortable
+    handle: '.fa-ellipsis-v'
+    items: 'li.note'
+    placeholder: 'placeholder'
+    forcePlaceholderSize: true
+    helper: 'clone'
+    toleranceElement: '> div.noteContainer'
+    relocate: ->
+      console.log 'Relocated item'
+      console.log $('.sortable').nestedSortable('toArray')
+      Meteor.call 'notes.updateRanks', $('.sortable').nestedSortable('toArray'), FlowRouter.getParam 'noteId'
+      return

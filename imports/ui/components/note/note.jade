@@ -1,8 +1,7 @@
 template(name='note')
-  li(class='note {{class}} dd-item',data-id="{{this._id}}")
+  li(class='note {{class}} dd-item',id="menuItem_{{this._id}}")
     .noteContainer
       .options
-        i.fa.fa-arrows
         a.fa.fa-ellipsis-v(href='/note/{{this._id}}')
         ul.dropdown-menu
           li

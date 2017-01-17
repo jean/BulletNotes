@@ -43,18 +43,20 @@ Meteor.methods
     Notes.update id, $set:
       starred: !note.starred
       updatedAt: new Date
-  'notes.updateRanks': (ranks, parentId = null) ->
-    count = 0
-    for ii, rank of ranks
-      if rank.children
-        Meteor.call 'notes.updateRanks', rank.children, rank.id
-      childCount = Notes.find({parent:rank.id}).count()
-      Notes.update rank.id, $set: {
-        rank: count
-        parent: parentId
-        children: childCount
+  'notes.updateRanks': (notes, parentId = null) ->
+    for ii, note of notes
+      Notes.update note.id, $set: {
+        rank: note.left
+        parent: note.parent_id
       }
-      count++
+    for ii, note of notes
+      count = Notes.find({parent:note.parent_id}).count()
+      console.log note.parent_id
+      console.log count
+      Notes.update note.parent_id, $set: {
+        showChildren: true
+        children: count
+      }
   'notes.updateBody': (id, body) ->
     check body, String
     if !@userId
