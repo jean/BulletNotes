@@ -6,52 +6,14 @@ require './note.jade'
 Template.note.helpers children: ->
   if @showChildren
     return Notes.find({ parent: @_id }, sort: rank: 1)
-  return
+
 Template.note.onRendered ->
   $(this.firstNode).find('.title').html Template.notes.formatText this.data.title
-Template.note.testImage = (url, callback, timeout) ->
-  timeout = timeout or 5000
-  timedOut = false
-  timer = undefined
-  img = new Image
-  img.onerror =
-  img.onabort = ->
-    if !timedOut
-      clearTimeout timer
-      callback url, 'error'
-    return
 
-  img.onload = ->
-    if !timedOut
-      clearTimeout timer
-      callback url, 'success', img
-    return
-
-  img.src = url
-  timer = setTimeout((->
-    timedOut = true
-    # reset .src to invalid URL so it stops previous
-    # loading, but doesn't trigger new load
-    img.src = '//!!!!/test.jpg'
-    callback url, 'timeout'
-    return
-  ), timeout)
-  return
 Template.note.events
   'click .title a': (event) ->
     if !$(event.target).hasClass('tagLink')
       window.open(event.target.href)
-  'mouseenter .title a': (event) ->
-    if !$(event.target).hasClass('tagLink') && !this.imagePreview
-      this.imagePreview = true
-      Template.note.testImage event.target.href, ((url, res, img) ->
-        if res
-          $(event.target).closest('.title').after($(img).addClass('image-preview'))
-        return
-      ), 1000
-  'mouseleave .note': (event) ->
-    $(event.target).find('img').remove()
-    this.imagePreview = false
   'click .fa-star': (event) ->
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -61,6 +23,9 @@ Template.note.events
     event.preventDefault()
     Meteor.call 'notes.showChildren', @_id, !@showChildren
     return
+  'click a.delete': (event) ->
+    event.preventDefault();
+    Meteor.call 'notes.remove', @_id
   'blur p.body': (event, instance) ->
     event.stopImmediatePropagation()
     body = Template.note.stripTags(event.target.innerHTML)
@@ -110,8 +75,11 @@ Template.note.events
       # Tab
       when 9
         event.preventDefault()
+        # First save the title in case it was changed.
+        title = Template.note.stripTags(event.target.innerHTML)
+        if title != @title
+          Meteor.call 'notes.updateTitle', @_id, title
         parent_id = Blaze.getData($(event.currentTarget).closest('.note').prev().get(0))._id
-        #console.log(parent_id); return;
         if event.shiftKey
           Meteor.call 'notes.outdent', @_id
         else
@@ -187,11 +155,14 @@ Template.note.helpers
       'fa-angle-up'
     else if @children > 0
       'fa-angle-down collapsed'
-    else
-      ''
   'bulletClass': ->
     if @children > 0
       return 'hasChildren'
     return
   'displayBody': ->
     Template.notes.formatText @body
+  'thumb': ->
+    title = @title.replace(/&nbsp;/gim, ' ')
+    match = Template.notes.urlPattern1.exec title
+    if match
+      match[0]

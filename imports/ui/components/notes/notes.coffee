@@ -18,6 +18,12 @@ Template.notes.onCreated ->
 #Template.notes.onRendered ->
 #  $( ".selectable" ).selectable()
 
+#URLs starting with http://, https://, or ftp://
+Template.notes.urlPattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+
+#URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+Template.notes.urlPattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim
+
 Template.notes.helpers
   focusedNoteTitle: ->
     if Template.currentData().noteId
@@ -85,12 +91,10 @@ Template.notes.formatText = (inputText) ->
   replacePattern1 = undefined
   replacePattern2 = undefined
   replacePattern3 = undefined
-  #URLs starting with http://, https://, or ftp://
-  replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
-  replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>')
-  #URLs starting with "www." (without // before it, or it'd re-link the ones done above).
-  replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim
-  replacedText = replacedText.replace(replacePattern2, '<a href="http://$2" target="_blank">$2</a>')
+
+  replacedText = inputText.replace(Template.notes.urlPattern1, '<a href="$1" target="_blank">$1</a>')
+  
+  replacedText = replacedText.replace(Template.notes.urlPattern2, '<a href="http://$2" target="_blank">$2</a>')
   #Change email addresses to mailto:: links.
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim
   replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>')
