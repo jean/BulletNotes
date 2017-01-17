@@ -43,11 +43,18 @@ Meteor.methods
     Notes.update id, $set:
       starred: !note.starred
       updatedAt: new Date
-  'notes.updateRank': (id, rank) ->
-    check rank, Number
-    if !@userId
-      throw new (Meteor.Error)('not-authorized')
-    Notes.update id, $set: rank: rank
+  'notes.updateRanks': (ranks, parentId = null) ->
+    count = 0
+    for ii, rank of ranks
+      if rank.children
+        Meteor.call 'notes.updateRanks', rank.children, rank.id
+      childCount = Notes.find({parent:rank.id}).count()
+      Notes.update rank.id, $set: {
+        rank: count
+        parent: parentId
+        children: childCount
+      }
+      count++
   'notes.updateBody': (id, body) ->
     check body, String
     if !@userId
@@ -55,28 +62,6 @@ Meteor.methods
     Notes.update id, $set:
       body: body
       updatedAt: new Date
-  'notes.makeChild': (id, parent) ->
-    `var parent`
-    check parent, String
-    if !@userId
-      throw new (Meteor.Error)('not-authorized')
-    note = Notes.findOne(id)
-    parent = Notes.findOne(parent)
-    console.log parent, '---', note
-    if !note or !parent or id == parent._id
-      return false
-    Notes.update parent._id,
-      $inc: children: 1
-      $set: showChildren: true
-    Notes.update id, $set:
-      rank: 0
-      parent: parent._id
-      level: parent.level + 1
-    children = Notes.find(parent: id)
-    children.forEach (child) ->
-      Meteor.call 'notes.makeChild', child._id, id
-      return
-    return
   'notes.remove': (id) ->
     check id, String
     if !@userId

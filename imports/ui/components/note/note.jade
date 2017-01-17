@@ -1,37 +1,41 @@
 template(name='note')
-  div(class='note {{class}}', style='{{style}}')
-    .options
-      a.fa.fa-ellipsis-v(href='/note/{{this._id}}')
-      ul.dropdown-menu
-        li
-          a.delete(href='#')
-            i.fa.fa-trash-o
-            |  Delete
-
-    a.expand(href='#',class='btn btn-xs fa {{expandClass}}')
-    .pull-right
-      i.fa.fa-star
-      span.badge {{this.children}}
-    .note-title
-      if thumb
-        .pull-left.thumb
-          a(href='#', data-toggle='modal', data-target='#thumb_{{this._id}}')
-            img(src='{{thumb}}',style='height:49px')
-        .modal.fade(id="thumb_{{this._id}}", tabindex='-1', role='dialog', style='display: none;')
-          .modal-dialog
-            form.modal-content
-              .modal-header
-                button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-                h4#myModalLabel.modal-title Image Preview
-              .modal-body
-                if thumb
-                  a(href='{{thumb}}',target='_blank')
+  li(class='note {{class}} dd-item',data-id="{{this._id}}")
+    .noteContainer
+      .options
+        i.fa.fa-arrows
+        a.fa.fa-ellipsis-v(href='/note/{{this._id}}')
+        ul.dropdown-menu
+          li
+            a.delete(href='#')
+              i.fa.fa-trash-o
+              |  Delete
+        a.expand(href='#',class='btn btn-xs fa {{expandClass}}')
+      .pull-right
+        i.fa.fa-star
+        if this.children
+          span.badge {{this.children}}
+      .note-title
+        if thumb
+          .pull-left.thumb
+            a(href='#', data-toggle='modal', data-target='#thumb_{{this._id}}')
+              img(src='{{thumb}}',style='height:49px')
+          .modal.fade(id="thumb_{{this._id}}", tabindex='-1', role='dialog', style='display: none;')
+            .modal-dialog
+              form.modal-content
+                .modal-header
+                  button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                  h4#myModalLabel.modal-title Image Preview
+                .modal-body
                   if thumb
-                    img(src='{{thumb}}',style='width:100%;')
-              .modal-footer
-                button.btn.btn-sm(data-dismiss='modal') Close
-      div(class='title task-title-sp', contenteditable='true')
-      if (displayBody)
-        p.body(contenteditable='true') {{{displayBody}}}
-  each children
-    +note
+                    a(href='{{thumb}}',target='_blank')
+                    if thumb
+                      img(src='{{thumb}}',style='width:100%;')
+                .modal-footer
+                  button.btn.btn-sm(data-dismiss='modal') Close
+        div(class='title task-title-sp', contenteditable='true')
+        if (displayBody)
+          p.body(contenteditable='true') {{{displayBody}}}
+    if children
+      ol.dd-list
+        each children
+          +note

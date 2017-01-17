@@ -109,33 +109,9 @@ Template.notes.formatText = (inputText) ->
 
 Template.notes.rendered = ->
   #$( ".selectable" ).selectable()
-  #ns = $('ol.sortable').nestedSortable(
-  #  forcePlaceholderSize: true
-  #  handle: 'div'
-  #  helper: 'clone'
-  #  items: 'li'
-  #  opacity: .6
-  #  placeholder: 'placeholder'
-  #  revert: 250
-  #  tabSize: 25
-  #  tolerance: 'pointer'
-  #  toleranceElement: '> div'
-  #  maxLevels: 4
-  #  isTree: true
-  #  expandOnHover: 700
-  #  startCollapsed: false
-  #  change: ->
-  #    console.log 'Relocated item'
-  #    return
-  #)
-  # @$('#notes').sortable
-  #   handle: '.fa-ellipsis-v'
-  #   stop: (el, ui) ->
-  #     note = Blaze.getData($(el.originalEvent.target).closest('.note').get(0))
-  #     parent_note = Blaze.getData($(el.originalEvent.target).closest('.note').prev().get(0))
-  #     Meteor.call 'notes.makeChild', note._id, parent_note._id, (err, res) ->
-  #       Template.notes.calculateRank()
-  #       return
-  #     return
-  # return
+  $('.sortable').nestable(
+    handleClass: 'fa-arrows'
 
+  ).on 'change', (event) ->
+    list = if event.length then event else $(event.target)
+    Meteor.call 'notes.updateRanks', list.nestable('serialize'), FlowRouter.getParam 'noteId'

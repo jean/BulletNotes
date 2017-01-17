@@ -1,87 +1,4 @@
 template(name='notes')
-  //- ol.sortable.ui-sortable.mjs-nestedSortable-branch.mjs-nestedSortable-expanded
-    li#menuItem_2.mjs-nestedSortable-branch.mjs-nestedSortable-expanded(style='display: list-item;', data-foo='bar')
-      .menuDiv
-        span.disclose.ui-icon.ui-icon-minusthick(title='Click to show/hide children')
-          span
-        span.expandEditor.ui-icon.ui-icon-triangle-1-n(title='Click to show/hide item editor', data-id='2')
-          span
-        span
-          span.itemTitle(data-id='2') a
-          span.deleteMenu.ui-icon.ui-icon-closethick(title='Click to delete item.', data-id='2')
-            span
-        #menuEdit2.menuEdit.hidden
-          p
-            | Content or form, or nothing here. Whatever you want.
-      ol
-        li#menuItem_4.mjs-nestedSortable-branch.mjs-nestedSortable-expanded(style='display: list-item;', data-foo='baz')
-          .menuDiv
-            span.disclose.ui-icon.ui-icon-minusthick(title='Click to show/hide children')
-              span
-            span.expandEditor.ui-icon.ui-icon-triangle-1-n(title='Click to show/hide item editor', data-id='4')
-              span
-            span
-              span.itemTitle(data-id='4') c
-              span.deleteMenu.ui-icon.ui-icon-closethick(title='Click to delete item.', data-id='4')
-                span
-            #menuEdit4.menuEdit.hidden
-              p
-                | Content or form, or nothing here. Whatever you want.
-          ol
-            li#menuItem_6.mjs-nestedSortable-leaf
-              .menuDiv
-                span.disclose.ui-icon.ui-icon-minusthick(title='Click to show/hide children')
-                  span
-                span.expandEditor.ui-icon.ui-icon-triangle-1-n(title='Click to show/hide item editor', data-id='6')
-                  span
-                span
-                  span.itemTitle(data-id='6') e
-                  span.deleteMenu.ui-icon.ui-icon-closethick(title='Click to delete item.', data-id='6')
-                    span
-                #menuEdit6.menuEdit.hidden
-                  p
-                    | Content or form, or nothing here. Whatever you want.
-        li#menuItem_5.mjs-nestedSortable-leaf(style='display: list-item;')
-          .menuDiv
-            span.disclose.ui-icon.ui-icon-minusthick(title='Click to show/hide children')
-              span
-            span.expandEditor.ui-icon.ui-icon-triangle-1-n(title='Click to show/hide item editor', data-id='5')
-              span
-            span
-              span.itemTitle(data-id='5') d
-              span.deleteMenu.ui-icon.ui-icon-closethick(title='Click to delete item.', data-id='5')
-                span
-            #menuEdit5.menuEdit.hidden
-              p
-                | Content or form, or nothing here. Whatever you want.
-    ol
-    li#menuItem_7.mjs-nestedSortable-leaf(style='display: list-item;')
-      .menuDiv
-        span.disclose.ui-icon.ui-icon-minusthick(title='Click to show/hide children')
-          span
-        span.expandEditor.ui-icon.ui-icon-triangle-1-n(title='Click to show/hide item editor', data-id='7')
-          span
-        span
-          span.itemTitle(data-id='7') f
-          span.deleteMenu.ui-icon.ui-icon-closethick(title='Click to delete item.', data-id='7')
-            span
-        #menuEdit7.menuEdit.hidden
-          p
-            | Content or form, or nothing here. Whatever you want.
-    li#menuItem_3.mjs-nestedSortable-leaf
-      .menuDiv
-        span.disclose.ui-icon.ui-icon-minusthick(title='Click to show/hide children')
-          span
-        span.expandEditor.ui-icon.ui-icon-triangle-1-n(title='Click to show/hide item editor', data-id='3')
-          span
-        span
-          span.itemTitle(data-id='3') b
-          span.deleteMenu.ui-icon.ui-icon-closethick(title='Click to delete item.', data-id='3')
-            span
-        #menuEdit3.menuEdit.hidden
-          p
-            | Content or form, or nothing here. Whatever you want.
-
   .row.mt.mb
     .col-md-12
       section.task-panel.tasks-widget
@@ -94,11 +11,10 @@ template(name='notes')
         .panel-body
           .task-content
             h4 {{{focusedNoteTitle}}}
-            #notes.task-list.selectable
-              each notes
-                +note
-
+            .dd.sortable
+              ol#notes.task-list.selectable.dd-list
+                each notes
+                  +note
             div(class='note')
               .task-title
                 #new-note(class='title task-title-sp', contenteditable='true') {{newNoteText}}
-

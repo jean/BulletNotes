@@ -5,7 +5,8 @@ require './note.jade'
 
 Template.note.helpers children: ->
   if @showChildren
-    return Notes.find({ parent: @_id }, sort: rank: 1)
+    notes = Notes.find({ parent: @_id }, sort: rank: 1)
+    return notes
 
 Template.note.onRendered ->
   $(this.firstNode).find('.title').html Template.notes.formatText this.data.title
@@ -138,7 +139,6 @@ Template.note.stripTags = (inputText) ->
 
 Template.note.helpers
   'class': ->
-    className = 'level-' + (@level - Session.get('level'))
     tags = @title.match(/#\w+/g)
     if tags
       tags.forEach (tag) ->
