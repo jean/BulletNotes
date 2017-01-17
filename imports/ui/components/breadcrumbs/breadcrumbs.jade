@@ -1,5 +1,8 @@
 template(name='breadcrumbs')
-  a(href='/') Home
-  +each parents
-    | &gt; 
-    a(href='/note/{{_id}}') {{{title}}}
+  ol.breadcrumb
+    li
+      a(href='/') Home
+    +each parents
+      li
+        a(href='/note/{{_id}}') {{{title}}}
+    li {{{focusedTitle}}}

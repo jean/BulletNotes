@@ -15,9 +15,6 @@ Template.notes.onCreated ->
     Meteor.subscribe 'notes.all'
   return
 
-#Template.notes.onRendered ->
-#  $( ".selectable" ).selectable()
-
 #URLs starting with http://, https://, or ftp://
 Template.notes.urlPattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
 
@@ -30,8 +27,6 @@ Template.notes.helpers
       note = Notes.findOne(Template.currentData().noteId)
       if note
         Template.notes.formatText note.title
-    else
-      'Home'
   notes: ->
     if Template.currentData().noteId
       note = Notes.findOne({ parent: Template.currentData().noteId }, sort: rank: 1)
@@ -113,14 +108,34 @@ Template.notes.formatText = (inputText) ->
   return replacedText
 
 Template.notes.rendered = ->
-  @$('#notes').sortable
-    handle: '.fa-ellipsis-v'
-    stop: (el, ui) ->
-      note = Blaze.getData($(el.originalEvent.target).closest('.note').get(0))
-      parent_note = Blaze.getData($(el.originalEvent.target).closest('.note').prev().get(0))
-      Meteor.call 'notes.makeChild', note._id, parent_note._id, (err, res) ->
-        Template.notes.calculateRank()
-        return
-      return
-  return
+  #$( ".selectable" ).selectable()
+  #ns = $('ol.sortable').nestedSortable(
+  #  forcePlaceholderSize: true
+  #  handle: 'div'
+  #  helper: 'clone'
+  #  items: 'li'
+  #  opacity: .6
+  #  placeholder: 'placeholder'
+  #  revert: 250
+  #  tabSize: 25
+  #  tolerance: 'pointer'
+  #  toleranceElement: '> div'
+  #  maxLevels: 4
+  #  isTree: true
+  #  expandOnHover: 700
+  #  startCollapsed: false
+  #  change: ->
+  #    console.log 'Relocated item'
+  #    return
+  #)
+  # @$('#notes').sortable
+  #   handle: '.fa-ellipsis-v'
+  #   stop: (el, ui) ->
+  #     note = Blaze.getData($(el.originalEvent.target).closest('.note').get(0))
+  #     parent_note = Blaze.getData($(el.originalEvent.target).closest('.note').prev().get(0))
+  #     Meteor.call 'notes.makeChild', note._id, parent_note._id, (err, res) ->
+  #       Template.notes.calculateRank()
+  #       return
+  #     return
+  # return
 

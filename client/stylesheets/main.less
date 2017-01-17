@@ -1,7 +1,7 @@
 @import "{}/imports/ui/stylesheets/not-found.less";
 
 #main-content {
-	margin-left: inherit !important;
+  margin-left: inherit !important;
 }
 
 .header.black-bg {
@@ -48,101 +48,11 @@
 .tag-silver { border-color: silver; }
 .tag-gray { border-color: gray; }
 .tag-complete, .tag-done {
-	.title {
-		text-decoration: line-through;
-		opacity: .5;
-	}
-}
-
-#notes {
-	margin: 1em;
-}
-.note {
-  font-size: 12px;
-  padding: 15px 0 15px 35px !important ;
-  position: relative;
-  background: #f5f6f8;
-  margin-bottom: 2px;
-  border-bottom   : none !important;
-  .options:hover > ul.dropdown-menu {
-    display: block;
-    margin-top: -1em;   
-  }
-	.expand {
-		text-decoration: none;
-		font-weight: bold;
-    position: absolute;
-    left: 2.25em;
-    margin-top: 1px;
-	}
-  .expand.fa-angle-up:hover,
-  .expand.fa-angle-down:hover
-  {
-    border: dashed 1px red;
-  }
-  .expand.collapsed {
-    border: dashed 1px #777;
-  }
-  .fa.fa-ellipsis-v {
-    position: absolute;
-    left: 5px;
-    padding: 4px 9px;
-    cursor: pointer;
-    border-radius: 10px;
-    border: dashed 1px rgba(255, 255, 255, 0);
-  }
-  .fa-ellipsis-v:hover {
-    //background-color: #ccc;
-    border: dashed 1px red;
-  }
-	div.title {
-		display: inline-block;
-    font-size: 1.4em;
-    color: black;
-    min-width: 40%;
-    margin: -5px 0 0 20px;
-	}
-  img.image-preview { height: 100px; display: block; }
-  .image-preview:hover { height: 600px; } 
-	div.title:focus {
-	    outline: none;
-	}
-	p {
-		margin: .5em;
-		opacity: .8;
-    font-size: 1.2em;
-    color: black;
-	}
-  a {
-    cursor: pointer;
-  }
-  .fa-star {
-    margin: 0 1em;
-    display: none;
-  }
-  .thumb {
-    margin: -15px 0 0 25px;
-  }
-  .badge {
-    margin-right: 1em;
+  .title {
+    text-decoration: line-through;
+    opacity: .5;
   }
 }
-.note:hover {
-  .fa-star {
-    display: inline-block;
-  }
-}
-.note.starred {
-  .fa-star {
-    color: #f78a09;
-    display: block;
-  }
-}
-#new-note {
-	opacity: .6;
-	clear: left;
-}
-
 
 /*--------------Tasks Widget--------------*/
 
@@ -250,14 +160,6 @@
 
 }
 
-/*todolist*/
-#notes {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
-
 .ui-sortable .note.list-primary {
     border-left: 3px solid #41CAC0;
 }
@@ -293,6 +195,9 @@
   color: #41CAC0;
 }
 
-  .ui-selecting { background: #FECA40; }
-  .ui-selected { background: #F39814; color: white; }
-  
+.ui-selecting { background: #FECA40; }
+.ui-selected { background: #F39814; color: white; }
+
+ol.breadcrumb {
+  display: inline;
+}
