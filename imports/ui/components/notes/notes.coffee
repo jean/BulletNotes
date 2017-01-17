@@ -114,7 +114,7 @@ Template.notes.rendered = ->
     items: 'li.note'
     placeholder: 'placeholder'
     forcePlaceholderSize: true
-    helper: 'clone'
+    opacity: .6
     toleranceElement: '> div.noteContainer'
     relocate: ->
       console.log 'Relocated item'
