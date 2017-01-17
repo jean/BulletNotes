@@ -85,6 +85,8 @@ Meteor.methods
     children.forEach (child) ->
       Meteor.call 'notes.remove', child._id
       return
+    note = Notes.findOne(id)
+    Notes.update(note.parent, $inc:{children:-1})
     Notes.remove { _id: id }, tx: true
     return
   'notes.outdent': (id) ->
