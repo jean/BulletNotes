@@ -36,3 +36,5 @@ babrahams:undo-redo
 check
 ejson
 coffeescript
+email
+percolate:synced-cron

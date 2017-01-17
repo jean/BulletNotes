@@ -114,10 +114,12 @@ Meteor.methods
       showChildren: show
       children: children
     return
-  'notes.export': (id = null) ->
+  'notes.export': (id = null, userId = null) ->
+    if !userId
+      userId = @userId
     topLevelNotes = Notes.find(
       parent: id
-      owner: @userId)
+      owner: userId)
     exportText = ''
     topLevelNotes.forEach (note) ->
       if !note.level
@@ -126,7 +128,17 @@ Meteor.methods
       exportText += spacing + '- ' + note.title.replace(/(\r\n|\n|\r)/gm, '') + '\n'
       if note.body
         exportText += spacing + '  "' + note.body + '"\n'
-      exportText = exportText + Meteor.call('notes.export', note._id)
+      exportText = exportText + Meteor.call('notes.export', note._id, userId)
       return
     exportText
+  'notes.email': (userId) ->
+    if !userId
+      userId = @userId
+    exportText = Meteor.call('notes.export',null,userId)
+    email = Meteor.users.findOne(userId).emails[0].address
+    Email.send
+      from: 'from@mailinator.com'
+      to: email
+      subject: new Date().toLocaleDateString() + ' Note Export'
+      text: 'Below are your notes. You can paste the below into the "Import" section.\n------\n'+exportText
 

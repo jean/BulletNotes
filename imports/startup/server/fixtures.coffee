@@ -11,7 +11,7 @@ Meteor.startup ->
         createdAt: new Date
       }
       {
-        title: 'Sign in and have fun.'
+        title: 'Sign in and have fun. 👍'
         rank: 2
         createdAt: new Date
       }
