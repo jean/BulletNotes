@@ -19,3 +19,7 @@ Template.App_body.events
   'click #emailExportLink': (event) ->
     event.preventDefault();
     Meteor.call 'notes.email'
+    $.gritter.add
+      title: 'Email Export Started'
+      text: 'Check your email in a few minutes.'
+      time: 5000
