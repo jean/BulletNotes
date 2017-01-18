@@ -21,7 +21,11 @@ template(name='App_body')
               li.external
                 a(href='#', id='emailExportLink') Email Export
               li.external
-                a(href='/search/last-changed:1h') Recently Modified
+                a(href='/search/last-changed:1hour') Updated in the last hour
+              li.external
+                a(href='/search/last-changed:1day') Updated in the last day
+              li.external
+                a(href='/search/not-changed:1month') Not updated for a month
       +undoRedoButtons
       form.searchForm.form-inline
         input.form-control(placeholder='Search...', value='{{ searchTerm }}')

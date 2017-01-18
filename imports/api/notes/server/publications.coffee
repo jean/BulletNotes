@@ -30,10 +30,15 @@ Meteor.publish 'notes.search', (search) ->
     query =
       'updatedAt': $gte: moment().subtract(match[1], match[2]).toDate()
       owner: @userId
+  else if search.indexOf('not-changed:') == 0
+    myRegexp = /not-changed:([0-9]+)([a-z]+)/gim
+    match = myRegexp.exec(search)
+    query =
+      'updatedAt': $lte: moment().subtract(match[1], match[2]).toDate()
+      owner: @userId
   else
     regex = new RegExp(search, 'i')
     query =
       title: regex
       owner: @userId
-  console.log query
   Notes.find query, projection
