@@ -38,3 +38,4 @@ ejson
 coffeescript
 email
 percolate:synced-cron
+momentjs:moment
