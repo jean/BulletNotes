@@ -16,3 +16,6 @@ Template.App_body.events
   'click .searchForm .btn': (event) ->
     window.location.pathname = '/search/' + $('.searchForm input').val()
     return
+  'click #emailExportLink': (event) ->
+    event.preventDefault();
+    Meteor.call 'notes.email'
