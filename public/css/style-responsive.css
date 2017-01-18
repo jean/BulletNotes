@@ -81,6 +81,9 @@
 
 @media (max-width: 768px) {
 
+    .searchForm {
+        width: 10em;
+    }
     .header {
         position: absolute;
     }
