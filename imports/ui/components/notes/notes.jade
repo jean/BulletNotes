@@ -11,7 +11,7 @@ template(name='notes')
         .panel-body
           .task-content
             h4 {{{focusedNoteTitle}}}
-            ol#notes.task-list.selectable.dd-list.sortable
+            ol#notes.task-list.selectable.sortable
               each notes
                 +note
             div(class='note')

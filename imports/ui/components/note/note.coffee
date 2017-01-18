@@ -3,11 +3,6 @@
 { Notes } = require '../../../api/notes/notes.coffee'
 require './note.jade'
 
-Template.note.helpers children: ->
-  if @showChildren
-    notes = Notes.find({ parent: @_id }, sort: rank: 1)
-    return notes
-
 Template.note.onRendered ->
   $(this.firstNode).find('.title').html Template.notes.formatText this.data.title
 
@@ -166,3 +161,8 @@ Template.note.helpers
     match = Template.notes.urlPattern1.exec title
     if match
       match[0]
+  'children': ->
+    if @showChildren
+      Meteor.subscribe 'notes.children', @_id
+      notes = Notes.find({ parent: @_id }, sort: rank: 1)
+      return notes

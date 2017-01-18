@@ -12,7 +12,8 @@ Template.notes.onCreated ->
   else if Template.currentData().starred
     Meteor.subscribe 'notes.starred'
   else
-    Meteor.subscribe 'notes.all'
+    Meteor.subscribe 'notes.view', Template.currentData().noteId
+    Meteor.subscribe 'notes.children', Template.currentData().noteId
   return
 
 #URLs starting with http://, https://, or ftp://

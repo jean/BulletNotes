@@ -43,16 +43,23 @@ Meteor.methods
     Notes.update id, $set:
       starred: !note.starred
       updatedAt: new Date
-  'notes.updateRanks': (notes, parentId = null) ->
+  'notes.updateRanks': (notes, focusedNoteId = null) ->
+    # First save new parent IDs
     for ii, note of notes
-      if note.parentId
-        noteParentId = note.parentId
+      if note.parent_id
+        noteParentId = note.parent_id
+      # If we don't have a parentId, we're at the top level.
+      # Use the focused note id
       else 
-        noteParentId = parentId
+        noteParentId = focusedNoteId
+
       Notes.update note.id, $set: {
         rank: note.left
         parent: noteParentId
       }
+
+    # Now update the children count.
+    # TODO: Don't do this here.
     for ii, note of notes
       count = Notes.find({parent:note.parent_id}).count()
       Notes.update note.parent_id, $set: {
@@ -132,4 +139,3 @@ Meteor.methods
       to: email
       subject: new Date().toLocaleDateString() + ' Note Export'
       text: 'Below are your notes. You can paste the below into the "Import" section.\n------\n'+exportText
-
