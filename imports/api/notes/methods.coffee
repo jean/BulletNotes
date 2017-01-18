@@ -104,6 +104,28 @@ Meteor.methods
         level: 0
         parent: null)
     return
+  'notes.makeChild': (id, parent) ->
+    `var parent`
+    check parent, String
+    if !@userId
+      throw new (Meteor.Error)('not-authorized')
+    note = Notes.findOne(id)
+    parent = Notes.findOne(parent)
+    console.log parent, '---', note
+    if !note or !parent or id == parent._id
+      return false
+    Notes.update parent._id,
+      $inc: children: 1
+      $set: showChildren: true
+    Notes.update id, $set:
+      rank: 0
+      parent: parent._id
+      level: parent.level + 1
+    children = Notes.find(parent: id)
+    children.forEach (child) ->
+      Meteor.call 'notes.makeChild', child._id, id
+      return
+    return
   'notes.showChildren': (id, show = true) ->
     if !@userId
       throw new (Meteor.Error)('not-authorized')
