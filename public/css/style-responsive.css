@@ -346,6 +346,14 @@
         margin-bottom: 0;
     }
 
+    .logo, .searchForm .btn {
+        display: none;
+    }
+
+    .searchForm {
+        width: 8em;
+    }
+
     .mail-option .inbox-pagination {
         margin-top: 10px;
         float: left;

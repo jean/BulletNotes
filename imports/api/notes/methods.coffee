@@ -30,7 +30,8 @@ Meteor.methods
       level: level
   'notes.updateTitle': (id, title) ->
     check title, Match.Maybe(String)
-    title = title.replace(/(\r\n|\n|\r)/gm, '')
+    if title
+      title = title.replace(/(\r\n|\n|\r)/gm, '')
     if !@userId
       throw new (Meteor.Error)('not-authorized')
     Notes.update id, $set:
