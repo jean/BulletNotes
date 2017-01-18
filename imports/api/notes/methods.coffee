@@ -45,14 +45,16 @@ Meteor.methods
       updatedAt: new Date
   'notes.updateRanks': (notes, parentId = null) ->
     for ii, note of notes
+      if note.parentId
+        noteParentId = note.parentId
+      else 
+        noteParentId = parentId
       Notes.update note.id, $set: {
         rank: note.left
-        parent: note.parent_id
+        parent: noteParentId
       }
     for ii, note of notes
       count = Notes.find({parent:note.parent_id}).count()
-      console.log note.parent_id
-      console.log count
       Notes.update note.parent_id, $set: {
         showChildren: true
         children: count

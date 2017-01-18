@@ -117,7 +117,5 @@ Template.notes.rendered = ->
     opacity: .6
     toleranceElement: '> div.noteContainer'
     relocate: ->
-      console.log 'Relocated item'
-      console.log $('.sortable').nestedSortable('toArray')
       Meteor.call 'notes.updateRanks', $('.sortable').nestedSortable('toArray'), FlowRouter.getParam 'noteId'
       return
