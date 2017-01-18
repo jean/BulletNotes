@@ -166,3 +166,20 @@ Template.note.helpers
       Meteor.subscribe 'notes.children', @_id
       notes = Notes.find({ parent: @_id }, sort: rank: 1)
       return notes
+  'progress': ->
+    pattern = /#pct-([0-9]+)/gim
+    match = pattern.exec @title
+    if match
+      match[1]
+  'progressClass': ->
+    pattern = /#pct-([0-9]+)/gim
+    match = pattern.exec @title
+    if match
+      percent = match[1]
+      console.log percent
+      if (percent < 25)
+        return 'danger'
+      else if (percent > 74)
+        return 'success'
+      else
+        return 'warning'

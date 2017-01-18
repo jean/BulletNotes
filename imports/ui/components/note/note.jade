@@ -32,6 +32,11 @@ template(name='note')
                 .modal-footer
                   button.btn.btn-sm(data-dismiss='modal') Close
         div(class='title task-title-sp', contenteditable='true')
+        if (progress)
+          .progress.progress-striped
+            .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
+              span.sr-only {{progress}}% Complete (success)
+
         if (displayBody)
           p.body(contenteditable='true') {{{displayBody}}}
     if children
