@@ -6,15 +6,6 @@ require '../note/note.coffee'
 require '../breadcrumbs/breadcrumbs.coffee'
 
 newNoteText = 'New note...'
-Template.notes.onCreated ->
-  if Template.currentData().searchTerm
-    Meteor.subscribe 'notes.search', Template.currentData().searchTerm
-  else if Template.currentData().starred
-    Meteor.subscribe 'notes.starred'
-  else
-    Meteor.subscribe 'notes.view', Template.currentData().noteId
-    Meteor.subscribe 'notes.children', Template.currentData().noteId
-  return
 
 #URLs starting with http://, https://, or ftp://
 Template.notes.urlPattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
@@ -29,6 +20,15 @@ Template.notes.helpers
       if note
         Template.notes.formatText note.title
   notes: ->
+    if Template.currentData().searchTerm
+      Meteor.subscribe 'notes.search', Template.currentData().searchTerm
+    else if Template.currentData().starred
+      Meteor.subscribe 'notes.starred'
+    else
+      Meteor.subscribe 'notes.view', Template.currentData().noteId
+      Meteor.subscribe 'notes.children', Template.currentData().noteId
+    Session.set 'searchTerm', Template.currentData().searchTerm
+
     if Template.currentData().noteId
       note = Notes.findOne({ parent: Template.currentData().noteId }, sort: rank: 1)
       if (note)

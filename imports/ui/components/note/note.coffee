@@ -162,7 +162,7 @@ Template.note.helpers
     if match
       match[0]
   'children': ->
-    if @showChildren
+    if @showChildren && !Session.get 'searchTerm'
       Meteor.subscribe 'notes.children', @_id
       notes = Notes.find({ parent: @_id }, sort: rank: 1)
       return notes
