@@ -6,7 +6,7 @@ https://github.com/NickBusey/noted/wiki
 
 ## Hosted Version
 
-https://note-d.herokuapp.com/
+https://noted-prod.herokuapp.com/
 
 ## Goal
 
