@@ -95,7 +95,7 @@ Template.notes.formatText = (inputText) ->
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim
   replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>')
   hashtagPattern = /(^|\s|\>)(([#])([a-z\d-]+))/gim
-
+  searchTerm = Session.get('searchTerm')
   replacedText = replacedText.replace(searchTerm, '<span class=\'searchResult\'>$&</span>')
   replacedText = replacedText.replace(/&nbsp;/gim, ' ')
 
@@ -105,7 +105,7 @@ Template.notes.formatText = (inputText) ->
   )
   namePattern = /(^|\s)(([@])([a-z\d-]+))/gim
   replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$4" class="at-$4">@$4</a>')
-  searchTerm = Session.get('searchTerm')
+
   return replacedText
 
 Template.notes.rendered = ->

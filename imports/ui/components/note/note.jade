@@ -36,10 +36,8 @@ template(name='note')
           .progress.progress-striped
             .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
               span.sr-only {{progress}}% Complete (success)
-
-        if (displayBody)
-          p.body(contenteditable='true') {{{displayBody}}}
+        p.body(contenteditable='true',style='display:none')
     if children
-      ol.dd-list
+      ol
         each children
           +note

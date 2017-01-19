@@ -3,10 +3,11 @@ require '../../components/importer/importer.coffee'
 require '../../components/exporter/exporter.coffee'
 
 Template.App_body.onCreated ->
-  $.gritter.add
-    title: 'Beta Warning'
-    text: 'This site is still under construction! While it should work pretty well, and you can and should export regularly, be aware data loss may occur. <a href="https://github.com/NickBusey/noted/issues" target="_blank">Report Issues on GitHub</a>'
-    sticky: true 
+  if !Meteor.userId()
+    $.gritter.add
+      title: 'Beta Warning'
+      text: 'This site is still under construction! While it should work pretty well, and you can and should export regularly, be aware data loss may occur. <a href="https://github.com/NickBusey/noted/issues" target="_blank">Report Issues on GitHub</a>'
+      sticky: true 
 
 Template.App_body.helpers searchTerm: ->
   Session.get 'searchTerm'

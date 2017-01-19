@@ -4,7 +4,9 @@
 require './note.jade'
 
 Template.note.onRendered ->
-  $(this.firstNode).find('.title').html Template.notes.formatText this.data.title
+  $(this.firstNode).find('.title').first().html Template.notes.formatText this.data.title
+  if @data.body
+    $(this.firstNode).find('.body').first().show().html Template.notes.formatText this.data.body
 
 Template.note.events
   'click .title a': (event) ->
@@ -46,8 +48,8 @@ Template.note.events
         event.preventDefault()
         if event.shiftKey
           # Edit the body
-          note.body = ' yes '
-          console.log note
+          console.log event
+          $(event.target).siblings('.body').show().focus()
         else
           # Chop the text in half at the cursor
           # put what's on the left in a note on top
@@ -134,11 +136,12 @@ Template.note.stripTags = (inputText) ->
 
 Template.note.helpers
   'class': ->
-    tags = @title.match(/#\w+/g)
-    if tags
-      tags.forEach (tag) ->
-        className = className + ' tag-' + tag.substr(1).toLowerCase()
-        return
+    if @title
+      tags = @title.match(/#\w+/g)
+      if tags
+        tags.forEach (tag) ->
+          className = className + ' tag-' + tag.substr(1).toLowerCase()
+          return
     if @starred
       className = className + ' starred'
     className
@@ -154,13 +157,12 @@ Template.note.helpers
     if @children > 0
       return 'hasChildren'
     return
-  'displayBody': ->
-    Template.notes.formatText @body
   'thumb': ->
-    title = @title.replace(/&nbsp;/gim, ' ')
-    match = Template.notes.urlPattern1.exec title
-    if match
-      match[0]
+    if @title
+      title = @title.replace(/&nbsp;/gim, ' ')
+      match = Template.notes.urlPattern1.exec title
+      if match
+        match[0]
   'children': ->
     if @showChildren && !Session.get 'searchTerm'
       Meteor.subscribe 'notes.children', @_id
@@ -176,7 +178,6 @@ Template.note.helpers
     match = pattern.exec @title
     if match
       percent = match[1]
-      console.log percent
       if (percent < 25)
         return 'danger'
       else if (percent > 74)
