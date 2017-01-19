@@ -8,9 +8,11 @@ Template.breadcrumbs.helpers
     if @noteId
       note = Notes.findOne(@noteId)
       if (note)
+        Meteor.subscribe 'notes.view', note.parent
         parent = Notes.findOne(note.parent)
         while parent
           parents.unshift parent
+          Meteor.subscribe 'notes.view', parent.parent
           parent = Notes.findOne(parent.parent)
     parents
   focusedTitle: ->
