@@ -163,7 +163,7 @@ Meteor.methods
       userId = @userId
     if Meteor.users.findOne(userId).profile.dropbox_token
       exportText = Meteor.call('notes.export',null,userId)
-      dbx = new Dropbox(accessToken: Meteor.user().profile.dropbox_token)
+      dbx = new Dropbox(accessToken: Meteor.users.findOne(userId).profile.dropbox_token)
       dbx.filesUpload(
         path: '/'+moment().format('YYYY-MM-DD-HH:mm:ss')+'.txt'
         contents: exportText).then((response) ->
