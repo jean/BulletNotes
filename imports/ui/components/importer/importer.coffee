@@ -10,6 +10,7 @@ Template.importer.events 'click input.submit': (event) ->
   data.prevLevel = 0
   data.prevParents = []
   data.levelRanks = []
+  $('.close').trigger('click')
   Template.importer.import data
   return
 
@@ -39,6 +40,8 @@ Template.importer.import = (data, row = 0, lastNote = null) ->
     else
       data.levelRanks[level] = 1
     title = line.substr(2 + level * 4)
+    # Replace Workflowy [COMPLETE] tag with a #done tag.
+    title = title.replace(/(\[COMPLETE\])/,'#done')
     # Check if the next line is a body
     nextLine = data.importLines[ii + 1]
     body = null

@@ -19,7 +19,7 @@
   }
   .options:hover > ul.dropdown-menu {
     display: block;
-    top: 2.5em;
+    top: 2.2em;
   }
   .expand {
     text-decoration: none;
@@ -84,10 +84,8 @@
     margin-right: 1em;
   }
 }
-.note:hover {
-  .fa-star {
+.note:hover > .noteContainer .fa-star {
     opacity: .5;
-  }
 }
 .note .fa-star:hover {
     color: #f78a09;
@@ -97,7 +95,37 @@
     color: #f78a09;
     opacity: 1;
 }
-#new-note {
-  opacity: .6;
-  clear: left;
+
+@bordercolorWidth: 4px;
+.tagLink { 
+  border-width: 1px;
+  padding: .25em; 
+  border-radius: 10px;
+  border-style: solid;
+  box-shadow: 1px 1px 2px #8e8e8e;
+}
+.tagLink:hover {
+  box-shadow: 2px 2px 3px #8e8e8e;
+}
+.note { border-left: solid @bordercolorWidth; }
+.tag-red { border-color: #FF2020; }
+.tag-orange { border-color: #FFD8B5; }
+.tag-yellow { border-color: #FFFAB5; }
+.tag-lime { border-color: #E1FFB5; }
+.tag-olive { border-color: #B5FFC9; }
+.tag-green { border-color: #CCFFB5; }
+.tag-teal { border-color: #B5FFD7; }
+.tag-aqua { border-color: #B5FFFC; }
+.tag-blue { border-color: #B5E8FF; }
+.tag-navy { border-color: #B9B5FF; }
+.tag-fuchia { border-color: #F1B5FF; }
+.tag-purple { border-color: #D3B5FF; }
+.tag-maroon { border-color: #C08F8F; }
+.tag-silver { border-color: silver; }
+.tag-gray { border-color: gray; }
+.tag-complete, .tag-done, .tag-finished {
+  .title {
+    text-decoration: line-through;
+    opacity: .5;
+  }
 }

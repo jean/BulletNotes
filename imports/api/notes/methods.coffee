@@ -84,14 +84,15 @@ Meteor.methods
     check id, String
     if !@userId
       throw new (Meteor.Error)('not-authorized')
+
+    tx.start 'delete note'
     children = Notes.find(parent: id)
     children.forEach (child) ->
       Meteor.call 'notes.remove', child._id
-      return
     note = Notes.findOne(id)
     Notes.update(note.parent, $inc:{children:-1})
     Notes.remove { _id: id }, tx: true
-    return
+    tx.commit()
   'notes.outdent': (id) ->
     if !@userId
       throw new (Meteor.Error)('not-authorized')
