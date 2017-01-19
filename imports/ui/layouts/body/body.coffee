@@ -25,10 +25,3 @@ Template.App_body.events
   'click .searchForm .btn': (event) ->
     window.location.pathname = '/search/' + $('.searchForm input').val()
     return
-  'click #dropboxExportLink': (event) ->
-    event.preventDefault();
-    Meteor.call 'notes.dropbox'
-    $.gritter.add
-      title: 'Dropbox Export Started'
-      text: 'The file will be added to dropbox when it\'s done'
-      time: 5000
