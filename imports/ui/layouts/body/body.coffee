@@ -1,6 +1,7 @@
 require './body.jade'
 require '../../components/importer/importer.coffee'
 require '../../components/exporter/exporter.coffee'
+require '../../components/settings/settings.coffee'
 
 Template.App_body.onCreated ->
   if !Meteor.userId()
@@ -24,10 +25,10 @@ Template.App_body.events
   'click .searchForm .btn': (event) ->
     window.location.pathname = '/search/' + $('.searchForm input').val()
     return
-  'click #emailExportLink': (event) ->
+  'click #dropboxExportLink': (event) ->
     event.preventDefault();
-    Meteor.call 'notes.email'
+    Meteor.call 'notes.dropbox'
     $.gritter.add
-      title: 'Email Export Started'
-      text: 'Check your email in a few minutes.'
+      title: 'Dropbox Export Started'
+      text: 'The file will be added to dropbox when it\'s done'
       time: 5000

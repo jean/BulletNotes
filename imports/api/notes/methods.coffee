@@ -2,8 +2,14 @@
 { check } = require 'meteor/check'
 { Match } = require 'meteor/check'
 { Notes } = require './notes.coffee'
+Dropbox = require('dropbox')
 
 Meteor.methods
+  'users.setDropboxOauth': (access_token) ->
+    check access_token, String
+    console.log access_token
+    Meteor.users.update {_id:@userId}, {$set:{"profile.dropbox_token":access_token}}
+
   'notes.insert': (title, rank = null, parent = null) ->
     check title, String
     check rank, Match.Maybe(Number)
@@ -152,13 +158,15 @@ Meteor.methods
       exportText = exportText + Meteor.call('notes.export', note._id, userId)
       return
     exportText
-  'notes.email': (userId) ->
+  'notes.dropbox': (userId) ->
     if !userId
       userId = @userId
-    exportText = Meteor.call('notes.export',null,userId)
-    email = Meteor.users.findOne(userId).emails[0].address
-    Email.send
-      from: 'from@mailinator.com'
-      to: email
-      subject: new Date().toLocaleDateString() + ' Note Export'
-      text: 'Below are your notes. You can paste the below into the "Import" section.\n------\n'+exportText
+    if Meteor.users.findOne(userId).profile.dropbox_token
+      exportText = Meteor.call('notes.export',null,userId)
+      dbx = new Dropbox(accessToken: Meteor.user().profile.dropbox_token)
+      dbx.filesUpload(
+        path: '/'+moment().format('YYYY-MM-DD-HH:mm:ss')+'.txt'
+        contents: exportText).then((response) ->
+        console.log response
+      ).catch (error) ->
+        console.error error

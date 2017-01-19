@@ -1,0 +1,14 @@
+template(name='settings')
+  .modal.fade(id="settings", tabindex='-1', role='dialog', style='display: none;')
+    .modal-dialog
+      form.modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h4#myModalLabel.modal-title Settings
+        .modal-body
+            h4 Dropbox
+            {{dropbox_token}}
+            a#authlink.button Authenticate
+        .modal-footer
+          input(type='submit',value='Import',class='submit form-control btn btn-theme')
+          button.btn.btn-sm(data-dismiss='modal') Cancel

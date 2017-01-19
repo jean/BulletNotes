@@ -16,13 +16,15 @@ template(name='App_body')
             ul.dropdown-menu.extended.tasks-bar
               .notify-arrow.notify-arrow-green
               li
-                p.green Settings
+                p.green Options
+              li.external
+                a(href='#', data-toggle='modal', data-target='#settings') Settings
               li.external
                 a(href='#', data-toggle='modal', data-target='#import') Import
               li.external
                 a(href='#', data-toggle='modal', data-target='#export') Export
               li.external
-                a(href='#', id='emailExportLink') Email Export
+                a(href='#', id='dropboxExportLink') Dropbox Export
               li.external
                 a(href='/search/last-changed:1hour') Updated in the last hour
               li.external
@@ -34,6 +36,7 @@ template(name='App_body')
       section.wrapper
         +importer
         +exporter
+        +settings
         +Template.dynamic(template=main)
     footer.site-footer
       .text-center
