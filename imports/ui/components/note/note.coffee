@@ -3,6 +3,9 @@
 { Notes } = require '../../../api/notes/notes.coffee'
 require './note.jade'
 
+Template.note.previewXOffset = 10
+Template.note.previewYOffset = 10
+
 Template.note.onRendered ->
   $(this.firstNode).find('.title').first().html Template.notes.formatText this.data.title
   if @data.body
@@ -39,6 +42,16 @@ Template.note.events
         $(event.target).html Template.notes.formatText title
         return
     return
+  'mouseover .previewLink': (event) ->
+    @t = @title
+    @title = ''
+    c = if @t != '' then '<br/>' + @t else ''
+    $('body').append '<p id=\'preview\'><img src=\'' + event.currentTarget.href + '\' alt=\'Image preview\' />' + c + '</p>'
+    $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css('left', event.pageX + Template.note.previewYOffset + 'px').fadeIn 'fast'
+  'mousemove .previewLink': (event) ->
+    $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css 'left', event.pageX + Template.note.previewYOffset + 'px'
+  'mouseleave .previewLink': (event) ->
+    $('#preview').remove()
   'keydown div.title': (event) ->
     note = this
     event.stopImmediatePropagation()
@@ -164,12 +177,6 @@ Template.note.helpers
     if @children > 0
       return 'hasChildren'
     return
-  'thumb': ->
-    if @title
-      title = @title.replace(/&nbsp;/gim, ' ')
-      match = Template.notes.urlPattern1.exec title
-      if match
-        match[0]
   'children': ->
     if @showChildren && !Session.get 'searchTerm'
       Meteor.subscribe 'notes.children', @_id

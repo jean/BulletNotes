@@ -88,9 +88,9 @@ Template.notes.formatText = (inputText) ->
   replacePattern2 = undefined
   replacePattern3 = undefined
 
-  replacedText = inputText.replace(Template.notes.urlPattern1, '<a href="$1" target="_blank">$1</a>')
+  replacedText = inputText.replace(Template.notes.urlPattern1, '<a href="$1" target="_blank" class="previewLink">$1</a>')
   
-  replacedText = replacedText.replace(Template.notes.urlPattern2, '<a href="http://$2" target="_blank">$2</a>')
+  replacedText = replacedText.replace(Template.notes.urlPattern2, '<a href="http://$2" target="_blank" class="previewLink">$2</a>')
   #Change email addresses to mailto:: links.
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim
   replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>')
