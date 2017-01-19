@@ -5,6 +5,7 @@ require './note.jade'
 
 Template.note.previewXOffset = 10
 Template.note.previewYOffset = 10
+Template.note.donePattern = /(#done|#complete|#finished)/gim
 
 Template.note.onRendered ->
   $(this.firstNode).find('.title').first().html Template.notes.formatText this.data.title
@@ -26,6 +27,7 @@ Template.note.events
     return
   'click a.delete': (event) ->
     event.preventDefault();
+    $(event.currentTarget).closest('.note').remove()
     Meteor.call 'notes.remove', @_id
   'blur p.body': (event, instance) ->
     event.stopImmediatePropagation()
@@ -155,13 +157,13 @@ Template.note.stripTags = (inputText) ->
   inputText
 
 Template.note.helpers
-  'class': ->
+  'className': ->
+    className = "note"
     if @title
       tags = @title.match(/#\w+/g)
       if tags
         tags.forEach (tag) ->
           className = className + ' tag-' + tag.substr(1).toLowerCase()
-          return
     if @starred
       className = className + ' starred'
     className
@@ -187,6 +189,19 @@ Template.note.helpers
     match = pattern.exec @title
     if match
       match[1]
+    else
+      if @showChildren
+        notes = Notes.find({ parent: @_id }, sort: rank: 1)
+        total = 0
+        done = 0
+        notes.forEach (note) ->
+          match = note.title.match Template.note.donePattern
+          if match
+            done++
+          total++
+        console.log done, total
+        return Math.round((done/total)*100)
+
   'progressClass': ->
     pattern = /#pct-([0-9]+)/gim
     match = pattern.exec @title

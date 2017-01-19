@@ -18,10 +18,7 @@ Template.App_body.events
     if event.keyCode == 13
       event.preventDefault()
       window.location.pathname = '/search/' + event.target.value
-    return
   'click .searchForm': (event) ->
     #$(event.target).select();
-    return
   'click .searchForm .btn': (event) ->
     window.location.pathname = '/search/' + $('.searchForm input').val()
-    return
