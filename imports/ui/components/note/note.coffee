@@ -111,15 +111,22 @@ Template.note.events
         if event.metaKey
           $(event.currentTarget).closest('.note').find('.expand').trigger 'click'
         else
-          $(event.currentTarget).closest('.note').prev().find('div.title').focus()
+          if $(event.currentTarget).closest('.note').prev().length
+            $(event.currentTarget).closest('.note').prev().find('div.title').focus()
+          else
+            # There is no previous note in the current sub list, go up a note.
+            $(event.currentTarget).closest('.note').parentsUntil('.note').siblings('.noteContainer').find('div.title').focus()
       # Down
       when 40
         if event.metaKey
           $(event.currentTarget).closest('.note').find('.expand').trigger 'click'
         else
+          childNote = $(event.currentTarget).closest('.note').find('ol .note').first()
           nextNote = $(event.currentTarget).closest('.note').next()
-          if nextNote.length
-            nextNote.find('div.title').focus()
+          if childNote.length
+            childNote.find('div.title').focus()
+          else if nextNote.length
+            nextNote.find('div.title').first().focus()
           else
             $('#new-note').focus()
       # Escape
