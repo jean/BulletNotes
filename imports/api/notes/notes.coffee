@@ -1,5 +1,16 @@
 { Mongo } = require 'meteor/mongo'
 Notes = exports.Notes = new Mongo.Collection 'notes'
+sanitizeHtml = require('sanitize-html')
+
+Notes.filterTitle = (title) ->
+  title = title.replace(/(\r\n|\n|\r)/gm, '')
+  sanitizeHtml title,
+    allowedTags: [
+      'b'
+      'i'
+      'em'
+      'strong'
+    ]
 
 Notes.search = (search) ->
   check search, Match.Maybe(String)

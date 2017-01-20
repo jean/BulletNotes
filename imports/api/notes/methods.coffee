@@ -25,7 +25,7 @@ Meteor.methods
         $inc: children: 1
         $set: showChildren: true
       level = parentNote.level + 1
-    title = title.replace(/(\r\n|\n|\r)/gm, '')
+    title = Notes.filterTitle title
     Notes.insert
       title: title
       createdAt: new Date
@@ -36,10 +36,11 @@ Meteor.methods
       level: level
   'notes.updateTitle': (id, title) ->
     check title, Match.Maybe(String)
-    if title
-      title = title.replace(/(\r\n|\n|\r)/gm, '')
+    if !title
+      return false
     if !@userId
       throw new (Meteor.Error)('not-authorized')
+    title = Notes.filterTitle title
     Notes.update {_id:id}, {$set: {
       title: title
       updatedAt: new Date

@@ -185,6 +185,9 @@ Template.note.helpers
       notes = Notes.find({ parent: @_id }, sort: rank: 1)
       return notes
   'progress': ->
+    setTimeout ->
+      $('[data-toggle="tooltip"]').tooltip()
+    , 100
     Template.notes.getProgress this
 
   'progressClass': ->

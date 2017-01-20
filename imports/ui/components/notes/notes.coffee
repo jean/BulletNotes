@@ -36,8 +36,10 @@ Template.notes.getProgress = (note) ->
 
 Template.notes.helpers
   progress: ->
+    setTimeout ->
+      $('[data-toggle="tooltip"]').tooltip()
+    , 100
     note = Notes.findOne(Template.currentData().noteId)
-    console.log note
     Template.notes.getProgress note
   focusedNoteTitle: ->
     if Template.currentData().noteId
