@@ -34,6 +34,15 @@ Template.notes.getProgress = (note) ->
           done++
     return Math.round((done/total)*100)
 
+Template.notes.getProgressClass = (note) ->
+    percent = Template.notes.getProgress note
+    if (percent < 25)
+      return 'danger'
+    else if (percent > 74)
+      return 'success'
+    else
+      return 'warning'
+
 Template.notes.helpers
   progress: ->
     setTimeout ->
@@ -41,6 +50,9 @@ Template.notes.helpers
     , 100
     note = Notes.findOne(Template.currentData().noteId)
     Template.notes.getProgress note
+  progressClass: ->
+    note = Notes.findOne(Template.currentData().noteId)
+    Template.notes.getProgressClass note
   focusedNoteTitle: ->
     if Template.currentData().noteId
       note = Notes.findOne(Template.currentData().noteId)

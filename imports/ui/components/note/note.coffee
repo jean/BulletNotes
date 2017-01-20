@@ -197,15 +197,6 @@ Template.note.helpers
     , 100
     Template.notes.getProgress this
   progressClass: ->
-    pattern = /#pct-([0-9]+)/gim
-    match = pattern.exec @title
-    if match
-      percent = match[1]
-      if (percent < 25)
-        return 'danger'
-      else if (percent > 74)
-        return 'success'
-      else
-        return 'warning'
+    Template.notes.getProgressClass this
   shareKey: ->
     FlowRouter.getParam 'shareKey'
