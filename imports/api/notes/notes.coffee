@@ -13,11 +13,12 @@ Notes.filterTitle = (title) ->
   #     'strong'
   #   ]
 
-Notes.search = (search) ->
+Notes.search = (search, userId = null) ->
   check search, Match.Maybe(String)
   query = {}
   projection = limit: 100
-  userId = @userId || Meteor.userId()
+  if !userId
+    userId =  Meteor.userId()
   if search.indexOf('last-changed:') == 0
     myRegexp = /last-changed:([0-9]+)([a-z]+)/gim
     match = myRegexp.exec(search)

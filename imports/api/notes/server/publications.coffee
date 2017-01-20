@@ -40,4 +40,4 @@ Meteor.publish 'notes.favorites', ->
     favorite: true
 
 Meteor.publish 'notes.search', (search) ->
-  Notes.search search
+  Notes.search search, this.userId
