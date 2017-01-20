@@ -9,7 +9,7 @@ template(name='settings')
             h4 Dropbox
             p You can link your Dropbox account for a nightly backup. Each backup file can be imported straight into Workflowy, or a new Noted instance.
             if dropbox_token
-              | Authenticated!
+              a#deauthlink.button Un-link
             else
               a#authlink.button Authenticate
         .modal-footer

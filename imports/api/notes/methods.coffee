@@ -5,11 +5,6 @@
 Dropbox = require('dropbox')
 
 Meteor.methods
-  'users.setDropboxOauth': (access_token) ->
-    check access_token, String
-    console.log access_token
-    Meteor.users.update {_id:@userId}, {$set:{"profile.dropbox_token":access_token}}
-
   'notes.insert': (title, rank = null, parent = null) ->
     check title, String
     check rank, Match.Maybe(Number)
