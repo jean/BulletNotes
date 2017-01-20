@@ -5,6 +5,14 @@ template(name='note')
         a.fa.fa-ellipsis-v(href='/note/{{this._id}}')
         ul.dropdown-menu
           li
+            a.share(href='#')
+              i.fa.fa-share
+              |  Share
+          li
+            a.duplicate(href='#')
+              i.fa.fa-copy
+              |  Duplicate
+          li
             a.delete(href='#')
               i.fa.fa-trash-o
               |  Delete

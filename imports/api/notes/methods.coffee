@@ -34,6 +34,7 @@ Meteor.methods
       owner: @userId
       parent: parent
       level: level
+
   'notes.updateTitle': (id, title) ->
     check title, Match.Maybe(String)
     if !title
@@ -45,6 +46,7 @@ Meteor.methods
       title: title
       updatedAt: new Date
       }}, tx: true
+
   'notes.favorite': (id) ->
     if !@userId
       throw new (Meteor.Error)('not-authorized')
@@ -53,6 +55,7 @@ Meteor.methods
       favorite: !note.favorite
       favoritedAt: new Date
       updatedAt: new Date
+
   'notes.updateRanks': (notes, focusedNoteId = null) ->
     # First save new parent IDs
     for ii, note of notes
@@ -67,7 +70,6 @@ Meteor.methods
         rank: note.left
         parent: noteParentId
       }
-
     # Now update the children count.
     # TODO: Don't do this here.
     for ii, note of notes
@@ -76,16 +78,17 @@ Meteor.methods
         showChildren: true
         children: count
       }
+
   'notes.updateBody': (id, body) ->
     check body, String
     if !@userId
       throw new (Meteor.Error)('not-authorized')
     Notes.update { _id: id }, { $set: {body: body, updatedAt: new Date} }, tx: true
+
   'notes.remove': (id) ->
     check id, String
     if !@userId
       throw new (Meteor.Error)('not-authorized')
-
     tx.start 'delete note'
     children = Notes.find(parent: id)
     children.forEach (child) ->
@@ -94,6 +97,7 @@ Meteor.methods
     Notes.update(note.parent, $inc:{children:-1})
     Notes.remove { _id: id }, tx: true
     tx.commit()
+
   'notes.outdent': (id) ->
     if !@userId
       throw new (Meteor.Error)('not-authorized')
@@ -113,6 +117,7 @@ Meteor.methods
         level: 0
         parent: null)
     return
+
   'notes.makeChild': (id, parent) ->
     `var parent`
     check parent, String
@@ -133,8 +138,7 @@ Meteor.methods
     children = Notes.find(parent: id)
     children.forEach (child) ->
       Meteor.call 'notes.makeChild', child._id, id
-      return
-    return
+
   'notes.showChildren': (id, show = true) ->
     if !@userId
       throw new (Meteor.Error)('not-authorized')
@@ -142,7 +146,7 @@ Meteor.methods
     Notes.update id, $set:
       showChildren: show
       children: children
-    return
+    
   'notes.export': (id = null, userId = null) ->
     if !userId
       userId = @userId
@@ -158,8 +162,8 @@ Meteor.methods
       if note.body
         exportText += spacing + '  "' + note.body + '"\n'
       exportText = exportText + Meteor.call('notes.export', note._id, userId)
-      return
     exportText
+
   'notes.dropbox': (userId) ->
     if !userId
       userId = @userId
@@ -172,3 +176,33 @@ Meteor.methods
         console.log response
       ).catch (error) ->
         console.error error
+
+  'notes.duplicate': (id, parentId = null) ->
+    tx.start 'duplicate note'
+    Meteor.call 'notes.duplicateRun', id
+    tx.commit()
+
+  'notes.duplicateRun': (id, parentId = null) ->
+    console.log id, parentId
+    note = Notes.findOne(id)
+    if !note
+      return false
+    if !parentId
+      parentId = note.parent
+    newNoteId = Notes.insert
+      title: note.title
+      createdAt: new Date
+      updatedAt: new Date
+      rank: note.rank+.5
+      owner: @userId
+      parent: parentId
+      level: note.level
+    , 
+      tx: true
+      instant: true
+    children = Notes.find parent: id
+    if children
+      Notes.update newNoteId, $set: showChildren: true, children: children.count()
+      children.forEach (child) ->
+        Meteor.call 'notes.duplicateRun', child._id, newNoteId
+

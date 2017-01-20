@@ -20,6 +20,10 @@ Template.note.events
     event.preventDefault()
     event.stopImmediatePropagation()
     Meteor.call 'notes.favorite', @_id
+  'click .duplicate': (event) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    Meteor.call 'notes.duplicate', @_id
   'click .expand': (event) ->
     event.stopImmediatePropagation()
     event.preventDefault()
