@@ -39,4 +39,3 @@ coffeescript
 email
 percolate:synced-cron
 momentjs:moment
-force-ssl
