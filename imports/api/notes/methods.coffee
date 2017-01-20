@@ -162,9 +162,10 @@ Meteor.methods
   'notes.export': (id = null, userId = null) ->
     if !userId
       userId = @userId
-    topLevelNotes = Notes.find(
+    topLevelNotes = Notes.find {
       parent: id
-      owner: userId)
+      owner: userId
+    }, sort: rank: 1
     exportText = ''
     topLevelNotes.forEach (note) ->
       if !note.level
