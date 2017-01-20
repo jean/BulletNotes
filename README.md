@@ -4,7 +4,7 @@ https://infininote.com/
 
 ## User Guide
 
-https://github.com/NickBusey/Infininote/wiki
+https://github.com/NickBusey/BulletNotes/wiki
 
 ## Goal
 
@@ -16,4 +16,4 @@ I have become fully reliant on Workflowy for just about every aspect of my life.
 
 ## Planned Feature List
 
-* Public Lists (There are many more planned features, but they live in a Note.d list, once Public Lists are done, this will link to the planned feature list.)
+http://www.bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA
