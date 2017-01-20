@@ -179,7 +179,7 @@ Meteor.methods
   'notes.dropbox': (userId) ->
     if !userId
       userId = @userId
-    if Meteor.users.findOne(userId).profile.dropbox_token
+    if Meteor.users.findOne(userId).profile && Meteor.users.findOne(userId).profile.dropbox_token
       exportText = Meteor.call('notes.export',null,userId)
       dbx = new Dropbox(accessToken: Meteor.users.findOne(userId).profile.dropbox_token)
       dbx.filesUpload(
