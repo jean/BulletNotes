@@ -185,24 +185,7 @@ Template.note.helpers
       notes = Notes.find({ parent: @_id }, sort: rank: 1)
       return notes
   'progress': ->
-    pattern = /#pct-([0-9]+)/gim
-    match = pattern.exec @title
-    if match
-      match[1]
-    else
-      if @showChildren
-        # If there is not a defined percent tag (e.g., #pct-20)
-        # then calculate the #done rate of notes
-        notes = Notes.find({ parent: @_id }, sort: rank: 1)
-        total = 0
-        done = 0
-        notes.forEach (note) ->
-          total++
-          if note.title
-            match = note.title.match Template.note.donePattern
-            if match
-              done++
-        return Math.round((done/total)*100)
+    Template.notes.getProgress this
 
   'progressClass': ->
     pattern = /#pct-([0-9]+)/gim

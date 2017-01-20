@@ -11,6 +11,11 @@ template(name='notes')
         .panel-body
           .task-content
             h4 {{{focusedNoteTitle}}}
+            if (progress)
+              .progress.progress-striped
+                .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
+                  span.sr-only {{progress}}% Complete (success)
+
             ol#notes.task-list.selectable.sortable
               each notes
                 +note
