@@ -6,4 +6,4 @@ require './favorites.jade'
 Template.favorites.helpers
   'favorites': ->
     Meteor.subscribe 'notes.favorites'
-    Notes.find favorite: true
+    Notes.find {favorite: true}, sort: favoritedAt: -1

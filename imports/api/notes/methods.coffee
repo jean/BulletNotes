@@ -50,6 +50,7 @@ Meteor.methods
     note = Notes.findOne(id)
     Notes.update id, $set:
       favorite: !note.favorite
+      favoritedAt: new Date
       updatedAt: new Date
   'notes.updateRanks': (notes, focusedNoteId = null) ->
     # First save new parent IDs
