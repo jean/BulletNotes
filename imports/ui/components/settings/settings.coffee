@@ -13,6 +13,8 @@ Template.settings.helpers
       setTimeout ->
         dbx = new Dropbox(clientId: Meteor.settings.public.dropbox_client_id)
         authUrl = dbx.getAuthenticationUrl(Meteor.absoluteUrl() + 'dropboxAuth')
-        document.getElementById('authlink').href = authUrl
+        authLink = document.getElementById('authlink')
+        if authLink
+          authLink.href = authUrl
       , 100
       return Meteor.user().profile.dropbox_token
