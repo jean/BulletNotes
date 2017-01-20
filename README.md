@@ -1,12 +1,10 @@
 # Infininote
 
+https://infininote.com/
+
 ## User Guide
 
 https://github.com/NickBusey/Infininote/wiki
-
-## Hosted Version
-
-https://noted-prod.herokuapp.com/
 
 ## Goal
 
