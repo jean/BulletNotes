@@ -1,8 +1,8 @@
-# Note.d
+# Infininote
 
 ## User Guide
 
-https://github.com/NickBusey/noted/wiki
+https://github.com/NickBusey/Infininote/wiki
 
 ## Hosted Version
 

@@ -61,7 +61,7 @@ Template.notes.helpers
       Notes.find { parent: Template.currentData().noteId }, sort: rank: 1
     else if Template.currentData().searchTerm
       Session.set 'level', 0
-      Notes.find {}
+      Notes.search Template.currentData().searchTerm
     else
       Session.set 'level', 0
       Notes.find { parent: null }, sort: rank: 1
