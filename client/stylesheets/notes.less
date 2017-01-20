@@ -73,9 +73,10 @@
   a {
     cursor: pointer;
   }
-  .fa-star {
+  .fa-heart {
     margin: 0 1em;
     opacity: 0;
+    cursor: pointer;
   }
   .thumb {
     margin: -15px 0 0 25px;
@@ -84,14 +85,14 @@
     margin-right: 1em;
   }
 }
-.note:hover > .noteContainer .fa-star {
+.note:hover > .noteContainer .fa-heart {
     opacity: .5;
 }
-.note .fa-star:hover {
+.note .fa-heart:hover {
     color: #f78a09;
     opacity: .7;
 }
-.note.starred .fa-star {
+.note.favorite > .noteContainer .fa-heart, .note:hover.favorite > .noteContainer .fa-heart {
     color: #f78a09;
     opacity: 1;
 }

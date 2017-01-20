@@ -1,0 +1,4 @@
+template(name='favorites')
+  +each favorites
+    li.external
+      a(href='/note/{{_id}}') {{title}}

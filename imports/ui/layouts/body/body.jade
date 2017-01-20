@@ -29,6 +29,14 @@ template(name='App_body')
                 a(href='/search/last-changed:1day') Updated in the last day
               li.external
                 a(href='/search/not-changed:1month') Not updated for a month
+          li.settingsMenu
+            a(href='#')
+              i.fa.fa-heart
+            ul.dropdown-menu.extended.tasks-bar
+              .notify-arrow.notify-arrow-green
+              li
+                p.green Favorites
+              +favorites
       +undoRedoButtons
     section#main-content
       section.wrapper

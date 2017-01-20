@@ -16,10 +16,10 @@ Template.note.events
   'click .title a': (event) ->
     if !$(event.target).hasClass('tagLink')
       window.open(event.target.href)
-  'click .fa-star': (event) ->
+  'click .fa-heart': (event) ->
     event.preventDefault()
     event.stopImmediatePropagation()
-    Meteor.call 'notes.star', @_id
+    Meteor.call 'notes.favorite', @_id
   'click .expand': (event) ->
     event.stopImmediatePropagation()
     event.preventDefault()
@@ -164,8 +164,8 @@ Template.note.helpers
       if tags
         tags.forEach (tag) ->
           className = className + ' tag-' + tag.substr(1).toLowerCase()
-    if @starred
-      className = className + ' starred'
+    if @favorite
+      className = className + ' favorite'
     className
   'style': ->
     margin = 2 * (@level - Session.get('level'))

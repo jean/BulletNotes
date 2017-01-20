@@ -40,15 +40,16 @@ Meteor.methods
       title = title.replace(/(\r\n|\n|\r)/gm, '')
     if !@userId
       throw new (Meteor.Error)('not-authorized')
-    Notes.update id, $set:
+    Notes.update {_id:id}, {$set: {
       title: title
       updatedAt: new Date
-  'notes.star': (id) ->
+      }}, tx: true
+  'notes.favorite': (id) ->
     if !@userId
       throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(id)
     Notes.update id, $set:
-      starred: !note.starred
+      favorite: !note.favorite
       updatedAt: new Date
   'notes.updateRanks': (notes, focusedNoteId = null) ->
     # First save new parent IDs
@@ -77,9 +78,7 @@ Meteor.methods
     check body, String
     if !@userId
       throw new (Meteor.Error)('not-authorized')
-    Notes.update id, $set:
-      body: body
-      updatedAt: new Date
+    Notes.update { _id: id }, { $set: {body: body, updatedAt: new Date} }, tx: true
   'notes.remove': (id) ->
     check id, String
     if !@userId

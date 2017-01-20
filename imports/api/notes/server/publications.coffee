@@ -15,10 +15,10 @@ Meteor.publish 'notes.children', (noteId) ->
     owner: @userId
     parent: noteId
 
-Meteor.publish 'notes.starred', ->
+Meteor.publish 'notes.favorites', ->
   Notes.find
     owner: @userId
-    starred: true
+    favorite: true
 
 Meteor.publish 'notes.search', (search) ->
   check search, Match.Maybe(String)
