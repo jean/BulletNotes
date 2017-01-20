@@ -34,6 +34,7 @@ Meteor.methods
       owner: @userId
       parent: parent
       level: level
+    , tx: true
 
   'notes.updateTitle': (id, title) ->
     check title, Match.Maybe(String)
@@ -42,10 +43,10 @@ Meteor.methods
     if !@userId
       throw new (Meteor.Error)('not-authorized')
     title = Notes.filterTitle title
-    Notes.update {_id:id}, {$set: {
+    Notes.update id, {$set: {
       title: title
       updatedAt: new Date
-      }}, tx: true
+    }}, tx: true
 
   'notes.favorite': (id) ->
     if !@userId
@@ -58,6 +59,7 @@ Meteor.methods
 
   'notes.updateRanks': (notes, focusedNoteId = null) ->
     # First save new parent IDs
+    tx.start 'update note ranks'
     for ii, note of notes
       if note.parent_id
         noteParentId = note.parent_id
@@ -78,6 +80,7 @@ Meteor.methods
         showChildren: true
         children: count
       }
+    tx.commit()
 
   'notes.updateBody': (id, body) ->
     check body, String
@@ -90,13 +93,16 @@ Meteor.methods
     if !@userId
       throw new (Meteor.Error)('not-authorized')
     tx.start 'delete note'
+    Meteor.call 'notes.removeRun', id
+    tx.commit()
+
+  'notes.removeRun': (id) ->
     children = Notes.find(parent: id)
     children.forEach (child) ->
-      Meteor.call 'notes.remove', child._id
+      Meteor.call 'notes.removeRun', child._id
     note = Notes.findOne(id)
     Notes.update(note.parent, $inc:{children:-1})
     Notes.remove { _id: id }, tx: true
-    tx.commit()
 
   'notes.outdent': (id) ->
     if !@userId
