@@ -68,7 +68,10 @@ Meteor.methods
       else 
         noteParentId = focusedNoteId
 
-      Notes.update note.id, $set: {
+      Notes.update {
+        _id: note.id
+        owner: @userId
+      }, $set: {
         rank: note.left
         parent: noteParentId
       }
@@ -76,7 +79,10 @@ Meteor.methods
     # TODO: Don't do this here.
     for ii, note of notes
       count = Notes.find({parent:note.parent_id}).count()
-      Notes.update note.parent_id, $set: {
+      Notes.update {
+        _id: note.parent_id
+        owner: @userId
+      }, $set: {
         showChildren: true
         children: count
       }
@@ -212,3 +218,18 @@ Meteor.methods
       children.forEach (child) ->
         Meteor.call 'notes.duplicateRun', child._id, newNoteId
 
+  'notes.share': (id) ->
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-"
+    ii = 0
+    key = ''
+    while ii < 10
+      key += chars.charAt(Math.floor(Math.random() * chars.length))
+      ii++
+    Notes.update id, $set: 
+      shared: true
+      shareKey: key
+
+  'notes.stopSharing': (id) ->
+    Notes.update id, $set: 
+      shared: false
+      shareKey: null

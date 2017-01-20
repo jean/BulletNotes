@@ -8,14 +8,16 @@ Template.breadcrumbs.helpers
     if @noteId
       note = Notes.findOne(@noteId)
       if (note)
-        Meteor.subscribe 'notes.view', note.parent
+        Meteor.subscribe 'notes.view', note.parent, FlowRouter.getParam 'shareKey'
         parent = Notes.findOne(note.parent)
         while parent
           parents.unshift parent
-          Meteor.subscribe 'notes.view', parent.parent
+          Meteor.subscribe 'notes.view', parent.parent, FlowRouter.getParam 'shareKey'
           parent = Notes.findOne(parent.parent)
     parents
   focusedTitle: ->
     note = Notes.findOne(@noteId)
     if note
       return note.title
+  shareKey: ->
+    FlowRouter.getParam 'shareKey'

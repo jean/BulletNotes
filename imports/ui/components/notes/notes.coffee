@@ -52,8 +52,8 @@ Template.notes.helpers
     else if Template.currentData().starred
       Meteor.subscribe 'notes.starred'
     else
-      Meteor.subscribe 'notes.view', Template.currentData().noteId
-      Meteor.subscribe 'notes.children', Template.currentData().noteId
+      Meteor.subscribe 'notes.view', Template.currentData().noteId, FlowRouter.getParam 'shareKey'
+      Meteor.subscribe 'notes.children', Template.currentData().noteId, FlowRouter.getParam 'shareKey'
     Session.set 'searchTerm', Template.currentData().searchTerm
 
     if Template.currentData().noteId

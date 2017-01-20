@@ -1,8 +1,9 @@
 template(name='breadcrumbs')
   ol.breadcrumb
-    li
-      a(href='/') Home
+    unless shareKey
+      li
+        a(href='/') Home
     +each parents
       li
-        a(href='/note/{{_id}}') {{{title}}}
+        a(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
     li {{{focusedTitle}}}

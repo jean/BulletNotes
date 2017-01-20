@@ -8,13 +8,16 @@ Template.App_body.onRendered ->
   if !Meteor.userId()
     $.gritter.add
       title: 'Beta Warning'
-      text: 'This site is still under construction! While it should work pretty well, and you can and should export regularly, be aware data loss may occur. <a href="https://github.com/NickBusey/noted/issues" target="_blank">Report Issues on GitHub</a>'
+      text: 'This site is still under construction! While it should work pretty well, and you can and should export regularly, be aware data loss may occur. <a href="https://github.com/NickBusey/BulletNotes/issues" target="_blank">Report Issues on GitHub</a>'
       sticky: true
   $('#undo-redo button').addClass('btn')
   $('#undo-redo br').remove()
 
-Template.App_body.helpers searchTerm: ->
-  Session.get 'searchTerm'
+Template.App_body.helpers
+  searchTerm: ->
+    Session.get 'searchTerm'
+  year: ->
+    moment().format("YYYY")
 
 Template.App_body.events
   'keydown .searchForm': (event) ->

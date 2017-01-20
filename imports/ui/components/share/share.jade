@@ -1,0 +1,17 @@
+template(name='share')
+  .modal.fade(id="share_{{_id}}", tabindex='-1', role='dialog', style='display: none;')
+    .modal-dialog
+      form.modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h4#myModalLabel.modal-title Share
+        .modal-body
+            p Create a view only link
+            if shared
+              a(href='{{shareUrl}}') {{shareUrl}}
+              | - 
+              a.stopSharing Stop Sharing
+        .modal-footer
+          unless shared
+            input(type='submit',value='Share',class='submit form-control btn btn-theme')
+          button.btn.btn-sm(data-dismiss='modal') Cancel

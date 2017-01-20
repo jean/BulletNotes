@@ -19,6 +19,11 @@ FlowRouter.route '/note/:noteId',
   action: ->
     BlazeLayout.render 'App_body', main: 'App_viewNote'
 
+FlowRouter.route '/note/:noteId/:shareKey',
+  name: 'App.viewNote'
+  action: ->
+    BlazeLayout.render 'App_body', main: 'App_viewNote'
+
 FlowRouter.route '/search/:searchTerm',
   name: 'App.search'
   action: ->

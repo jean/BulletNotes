@@ -2,6 +2,7 @@
 { ReactiveDict } = require 'meteor/reactive-dict'
 { Notes } = require '../../../api/notes/notes.coffee'
 require './note.jade'
+require '../share/share.coffee'
 
 Template.note.previewXOffset = 10
 Template.note.previewYOffset = 10
@@ -161,7 +162,7 @@ Template.note.stripTags = (inputText) ->
   inputText
 
 Template.note.helpers
-  'className': ->
+  className: ->
     className = "note"
     if @title
       tags = @title.match(/#\w+/g)
@@ -170,31 +171,32 @@ Template.note.helpers
           className = className + ' tag-' + tag.substr(1).toLowerCase()
     if @favorite
       className = className + ' favorite'
+    if @shared
+      className = className + ' shared'
     className
-  'style': ->
+  style: ->
     margin = 2 * (@level - Session.get('level'))
     'margin-left: ' + margin + 'em'
-  'expandClass': ->
+  expandClass: ->
     if @children > 0 and @showChildren
       'fa-angle-up'
     else if @children > 0
       'fa-angle-down collapsed'
-  'bulletClass': ->
+  bulletClass: ->
     if @children > 0
       return 'hasChildren'
     return
-  'children': ->
+  children: ->
     if @showChildren && !Session.get 'searchTerm'
-      Meteor.subscribe 'notes.children', @_id
+      Meteor.subscribe 'notes.children', @_id, FlowRouter.getParam 'shareKey'
       notes = Notes.find({ parent: @_id }, sort: rank: 1)
       return notes
-  'progress': ->
+  progress: ->
     setTimeout ->
       $('[data-toggle="tooltip"]').tooltip()
     , 100
     Template.notes.getProgress this
-
-  'progressClass': ->
+  progressClass: ->
     pattern = /#pct-([0-9]+)/gim
     match = pattern.exec @title
     if match
@@ -205,3 +207,5 @@ Template.note.helpers
         return 'success'
       else
         return 'warning'
+  shareKey: ->
+    FlowRouter.getParam 'shareKey'
