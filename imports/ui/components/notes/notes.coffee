@@ -96,7 +96,7 @@ Template.notes.events
     switch event.keyCode
       # Enter
       when 13
-        Meteor.call 'notes.insert', event.currentTarget.innerText, null, Template.currentData().noteId, (error) ->
+        Meteor.call 'notes.insert', event.currentTarget.innerText, null, Template.currentData().noteId, FlowRouter.getParam 'shareKey', (error) ->
           if error
             alert error.error
           else
@@ -112,17 +112,6 @@ Template.notes.events
     if event.currentTarget.innerText == ''
       $('#new-note').text newNoteText
     return
-
-Template.notes.calculateRank = ->
-  levelCount = 0
-  maxLevel = 6
-  while levelCount < maxLevel
-    $('#notes .level-' + levelCount).each (ii, el) ->
-      id = Blaze.getData(this)._id
-      Meteor.call 'notes.updateRank', id, ii + 1
-      return
-    levelCount++
-  return
 
 Template.notes.formatText = (inputText) ->
   if !inputText
@@ -162,5 +151,4 @@ Template.notes.rendered = ->
     opacity: .6
     toleranceElement: '> div.noteContainer'
     relocate: ->
-      Meteor.call 'notes.updateRanks', $('.sortable').nestedSortable('toArray'), FlowRouter.getParam 'noteId'
-      return
+      Meteor.call 'notes.updateRanks', $('.sortable').nestedSortable('toArray'), FlowRouter.getParam('noteId'), FlowRouter.getParam('shareKey')

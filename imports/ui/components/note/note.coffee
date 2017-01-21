@@ -33,11 +33,11 @@ Template.note.events
   'click a.delete': (event) ->
     event.preventDefault();
     $(event.currentTarget).closest('.note').remove()
-    Meteor.call 'notes.remove', @_id
+    Meteor.call 'notes.remove', @_id, FlowRouter.getParam 'shareKey'
   'blur p.body': (event, instance) ->
     event.stopImmediatePropagation()
     body = Template.note.stripTags(event.target.innerHTML)
-    Meteor.call 'notes.updateBody', @_id, body
+    Meteor.call 'notes.updateBody', @_id, body, FlowRouter.getParam 'shareKey'
     return
   'blur div.title': (event, instance) ->
     that = this
@@ -82,7 +82,7 @@ Template.note.events
           bottomNote = text.substr(position)
           # Create a new note below the current.
           Meteor.call 'notes.updateTitle', note._id, topNote, FlowRouter.getParam 'shareKey', (err, res) ->
-            Meteor.call 'notes.insert', '', note.rank + .5, note.parent, (err, res) ->
+            Meteor.call 'notes.insert', '', note.rank + .5, note.parent, FlowRouter.getParam 'shareKey', (err, res) ->
               Template.notes.calculateRank()
               setTimeout (->
                 $(event.target).closest('.note').next().find('.title').focus()
@@ -99,15 +99,15 @@ Template.note.events
           Meteor.call 'notes.updateTitle', @_id, title, FlowRouter.getParam 'shareKey'
         parent_id = Blaze.getData($(event.currentTarget).closest('.note').prev().get(0))._id
         if event.shiftKey
-          Meteor.call 'notes.outdent', @_id
+          Meteor.call 'notes.outdent', @_id, FlowRouter.getParam 'shareKey'
         else
-          Meteor.call 'notes.makeChild', @_id, parent_id
+          Meteor.call 'notes.makeChild', @_id, parent_id, FlowRouter.getParam 'shareKey'
         return
       # Backspace / delete
       when 8
         if event.currentTarget.innerText.trim().length == 0
           $(event.currentTarget).closest('.note').prev().find('.title').focus()
-          Meteor.call 'notes.remove', @_id
+          Meteor.call 'notes.remove', @_id, FlowRouter.getParam 'shareKey'
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
           if position == 0
@@ -120,7 +120,7 @@ Template.note.events
             note = this
             console.log note
             Meteor.call 'notes.updateTitle', prevNote._id, prevNote.title + event.target.value, FlowRouter.getParam 'shareKey', (err, res) ->
-              Meteor.call 'notes.remove', note._id, (err, res) ->
+              Meteor.call 'notes.remove', note._id, FlowRouter.getParam 'shareKey', (err, res) ->
                 # Moves the caret to the correct position
                 prev.find('div.title').focus()
                 return

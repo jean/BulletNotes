@@ -5,12 +5,13 @@
 Dropbox = require('dropbox')
 
 Meteor.methods
-  'notes.insert': (title, rank = null, parent = null) ->
+  'notes.insert': (title, rank = null, parent = null, shareKey = null) ->
     check title, String
     check rank, Match.Maybe(Number)
     check parent, Match.Maybe(String)
-    if !@userId
+    if !@userId || !Notes.isEditable parent, shareKey
       throw new (Meteor.Error)('not-authorized')
+
     if !rank
       rank = Notes.find(parent: parent).count() + 1
     level = 0
@@ -21,12 +22,17 @@ Meteor.methods
         $set: showChildren: true
       level = parentNote.level + 1
     title = Notes.filterTitle title
+    sharedNote = Notes.getSharedParent parent, shareKey
+    if sharedNote
+      owner = sharedNote.owner
+    else
+      owner = @userId
     Notes.insert
       title: title
       createdAt: new Date
       updatedAt: new Date
       rank: rank
-      owner: @userId
+      owner: owner
       parent: parent
       level: level
     , tx: true
@@ -35,13 +41,9 @@ Meteor.methods
     check title, Match.Maybe(String)
     if !title
       return false
-    if !@userId
+    if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     title = Notes.filterTitle title
-    sharedNote = Notes.getSharedParent id, shareKey
-    if shareKey
-      if (!sharedNote) || (sharedNote.owner != @userId && !sharedNote.sharedEditable)
-        throw new (Meteor.Error)('not-authorized')
     Notes.update id, {$set: {
       title: title
       updatedAt: new Date
@@ -56,7 +58,10 @@ Meteor.methods
       favoritedAt: new Date
       updatedAt: new Date
 
-  'notes.updateRanks': (notes, focusedNoteId = null) ->
+  'notes.updateRanks': (notes, focusedNoteId = null, shareKey = null) ->
+    if !@userId || !Notes.isEditable focusedNoteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+
     # First save new parent IDs
     tx.start 'update note ranks'
     for ii, note of notes
@@ -69,33 +74,31 @@ Meteor.methods
 
       Notes.update {
         _id: note.id
-        owner: @userId
-      }, $set: {
+      }, {$set: {
         rank: note.left
         parent: noteParentId
-      }
+      }}, tx: true
     # Now update the children count.
     # TODO: Don't do this here.
     for ii, note of notes
       count = Notes.find({parent:note.parent_id}).count()
       Notes.update {
         _id: note.parent_id
-        owner: @userId
-      }, $set: {
+      }, {$set: {
         showChildren: true
         children: count
-      }
+      }}, tx: true
     tx.commit()
 
-  'notes.updateBody': (id, body) ->
+  'notes.updateBody': (id, body, shareKey = null) ->
     check body, String
-    if !@userId
+    if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     Notes.update { _id: id }, { $set: {body: body, updatedAt: new Date} }, tx: true
 
-  'notes.remove': (id) ->
+  'notes.remove': (id, shareKey = null) ->
     check id, String
-    if !@userId
+    if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     tx.start 'delete note'
     Meteor.call 'notes.removeRun', id
@@ -109,34 +112,30 @@ Meteor.methods
     Notes.update(note.parent, $inc:{children:-1})
     Notes.remove { _id: id }, tx: true
 
-  'notes.outdent': (id) ->
-    if !@userId
+  'notes.outdent': (id, shareKey = null) ->
+    if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(id)
     old_parent = Notes.findOne(note.parent)
     Notes.update old_parent._id, $inc: children: -1
     new_parent = Notes.findOne(old_parent.parent)
     if new_parent
-      Meteor.call 'notes.makeChild', note._id, new_parent._id
+      Meteor.call 'notes.makeChild', note._id, new_parent._id, shareKey
     else
       # No parent left to go out to, set things to top level.
       children = Notes.find(parent: note._id)
       children.forEach (child) ->
         Notes.update child._id, $set: level: 1
-        return
       return Notes.update(id, $set:
         level: 0
         parent: null)
-    return
 
-  'notes.makeChild': (id, parent) ->
-    `var parent`
+  'notes.makeChild': (id, parent, shareKey = null) ->
     check parent, String
-    if !@userId
+    if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(id)
     parent = Notes.findOne(parent)
-    console.log parent, '---', note
     if !note or !parent or id == parent._id
       return false
     Notes.update parent._id,
@@ -148,10 +147,10 @@ Meteor.methods
       level: parent.level + 1
     children = Notes.find(parent: id)
     children.forEach (child) ->
-      Meteor.call 'notes.makeChild', child._id, id
+      Meteor.call 'notes.makeChild', child._id, id, shareKey
 
   'notes.showChildren': (id, show = true) ->
-    if !@userId
+    if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     children = Notes.find(parent: id).count()
     Notes.update id, $set:

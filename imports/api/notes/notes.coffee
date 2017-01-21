@@ -3,8 +3,17 @@ Notes = exports.Notes = new Mongo.Collection 'notes'
 # TODO: Heroku deploy didn't like this
 # sanitizeHtml = require('sanitize-html')
 
-Notes.getSharedParent = (noteId, shareKey) ->
-  note = Notes.findOne noteId 
+Notes.isEditable = (id, shareKey) ->
+  sharedNote = Notes.getSharedParent id, shareKey
+  # If we have a shareKey but can't find a valid sharedNote, aren't the sharedNote's owner,
+  # or the sharedNote is not set to sharedEditable, don't allow.
+  if shareKey && (!sharedNote || (sharedNote.owner != @userId && !sharedNote.sharedEditable))
+    return false
+  else
+    return true
+
+Notes.getSharedParent = (id, shareKey) ->
+  note = Notes.findOne id 
   while note && (note.shareKey != shareKey || note.shared == false)
     note = Notes.findOne note.parent
   if (note && note.shareKey == shareKey && note.shared == true)
