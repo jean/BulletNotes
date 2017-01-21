@@ -114,7 +114,7 @@ Template.note.events
         if event.shiftKey
           Meteor.call 'notes.outdent', @_id, FlowRouter.getParam 'shareKey'
         else
-          Meteor.call 'notes.makeChild', @_id, parent_id, FlowRouter.getParam 'shareKey'
+          Meteor.call 'notes.makeChild', @_id, parent_id, null, FlowRouter.getParam 'shareKey'
       # Backspace / delete
       when 8
         if event.currentTarget.innerText.trim().length == 0

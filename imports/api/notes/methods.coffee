@@ -5,24 +5,28 @@
 Dropbox = require('dropbox')
 
 Meteor.methods
-  'notes.insert': (title, rank = null, parent = null, shareKey = null) ->
+  'notes.insert': (title, rank = null, parentId = null, shareKey = null) ->
     check title, String
     check rank, Match.Maybe(Number)
     # check parent, Match.Maybe(String)
-    if !@userId || !Notes.isEditable parent, shareKey
+    if !@userId || !Notes.isEditable parentId, shareKey
       throw new (Meteor.Error)('not-authorized')
 
     if !rank
-      rank = (Notes.find({parent: parent}).count() + 1) * 2
+      prevNote = Notes.findOne({parent: parentId},sort: rank: -1)
+      if prevNote
+        rank = prevNote.rank+1
+      else
+        rank = 0
     level = 0
-    parentNote = Notes.findOne(parent)
+    parentNote = Notes.findOne(parentId)
     if parentNote
       Notes.update parentNote._id,
         $inc: children: 1
         $set: showChildren: true
       level = parentNote.level + 1
     title = Notes.filterTitle title
-    sharedNote = Notes.getSharedParent parent, shareKey
+    sharedNote = Notes.getSharedParent parentId, shareKey
     if sharedNote
       owner = sharedNote.owner
     else
@@ -33,7 +37,7 @@ Meteor.methods
       updatedAt: new Date
       rank: rank
       owner: owner
-      parent: parent
+      parent: parentId
       level: level
     , tx: true
 
@@ -82,7 +86,7 @@ Meteor.methods
     # Now update the children count.
     # TODO: Don't do this here.
     for ii, note of notes
-      count = Notes.find({parent:note.parent_id}).count()
+      count = Notes.find({parent:note.parent}).count()
       Notes.update {
         _id: note.parent_id
       }, {$set: {
@@ -121,7 +125,7 @@ Meteor.methods
     Notes.update old_parent._id, $inc: children: -1
     new_parent = Notes.findOne(old_parent.parent)
     if new_parent
-      Meteor.call 'notes.makeChild', note._id, new_parent._id, shareKey
+      Meteor.call 'notes.makeChild', note._id, new_parent._id, old_parent.rank+1, shareKey
     else
       # No parent left to go out to, set things to top level.
       children = Notes.find(parent: note._id)
@@ -131,38 +135,50 @@ Meteor.methods
         level: 0
         parent: null)
 
-  'notes.makeChild': (id, parent, shareKey = null) ->
-    check parent, String
+  'notes.makeChild': (id, parentId, rank = null, shareKey = null) ->
+    check parentId, String
     if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(id)
-    parent = Notes.findOne(parent)
+    parent = Notes.findOne(parentId)
     if !note or !parent or id == parent._id
       return false
-    Notes.update parent._id,
+    if !rank
+      prevNote = Notes.findOne({parent: parent._id},sort: rank: -1)
+      if prevNote
+        rank = prevNote.rank+1
+      else
+        rank = 0
+    tx.start 'note makeChild'
+    Notes.update parent._id, {
       $inc: children: 1
       $set: showChildren: true
-    Notes.update id, $set:
-      rank: 0
+    }, tx: true
+    Notes.update id, {$set:
+      rank: rank
       parent: parent._id
       level: parent.level + 1
       focusNext: 1
+    }, tx: true
     children = Notes.find(parent: id)
     children.forEach (child) ->
       Meteor.call 'notes.makeChildRun', child._id, id, shareKey
+    tx.commit()
 
   'notes.makeChildRun': (id, parent, shareKey = null) ->
     note = Notes.findOne(id)
     parent = Notes.findOne(parent)
     if !note or !parent or id == parent._id
       return false
-    Notes.update parent._id,
+    Notes.update parent._id, {
       $inc: children: 1
       $set: showChildren: true
-    Notes.update id, $set:
+    }, tx: true
+    Notes.update id, { $set:
       rank: 0
       parent: parent._id
       level: parent.level + 1
+    }, tx: true
     children = Notes.find(parent: id)
     children.forEach (child) ->
       Meteor.call 'notes.makeChildRun', child._id, id, shareKey
