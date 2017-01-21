@@ -145,9 +145,26 @@ Meteor.methods
       rank: 0
       parent: parent._id
       level: parent.level + 1
+      focusNext: 1
     children = Notes.find(parent: id)
     children.forEach (child) ->
-      Meteor.call 'notes.makeChild', child._id, id, shareKey
+      Meteor.call 'notes.makeChildRun', child._id, id, shareKey
+
+  'notes.makeChildRun': (id, parent, shareKey = null) ->
+    note = Notes.findOne(id)
+    parent = Notes.findOne(parent)
+    if !note or !parent or id == parent._id
+      return false
+    Notes.update parent._id,
+      $inc: children: 1
+      $set: showChildren: true
+    Notes.update id, $set:
+      rank: 0
+      parent: parent._id
+      level: parent.level + 1
+    children = Notes.find(parent: id)
+    children.forEach (child) ->
+      Meteor.call 'notes.makeChildRun', child._id, id, shareKey
 
   'notes.showChildren': (id, show = true, shareKey = null) ->
     if !@userId || !Notes.isEditable id, shareKey

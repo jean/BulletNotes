@@ -6,7 +6,10 @@ Template.exporter.events exportContent: ->
   Meteor.call 'notes.export'
 Template.exporter.events 'click input.submit': (event) ->
   event.preventDefault()
+  $('<i class="fa fa-spinner" style="float: left"></i>').insertAfter(event.target)
+  $(event.target).remove()
   Meteor.call 'notes.export', (err, res) ->
     $('.exportContent').val res
+    $('.fa-spinner').remove()
     return
   return

@@ -12,6 +12,8 @@ Template.note.onRendered ->
   $(this.firstNode).find('.title').first().html Template.notes.formatText this.data.title
   if @data.body
     $(this.firstNode).find('.body').first().show().html Template.notes.formatText this.data.body
+  if @data.focusNext
+    $(this.firstNode).find('.title').first().focus()
 
 Template.note.events
   'click .title a': (event) ->
