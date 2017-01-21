@@ -7,10 +7,9 @@ Meteor.publish 'notes.view', (noteId, shareKey = null) ->
   check noteId, Match.Maybe(String)
   check shareKey, Match.Maybe(String)
   if shareKey
-    note = Notes.findOne noteId 
-    while note && (note.shareKey != shareKey || note.shared == false)
-      note = Notes.findOne note.parent
-    if (note && note.shareKey == shareKey && note.shared == true)
+    if Notes.getSharedParent noteId, shareKey
+    # We have a valid shared parent key for this noteid and shareKey
+    # Go ahead and return the requested note.
       return Notes.find _id:noteId 
   else
     note = Notes.find
@@ -23,9 +22,7 @@ Meteor.publish 'notes.children', (noteId, shareKey = null) ->
   if shareKey
     note = Notes.findOne noteId
     # If we don't have a valid shared note, look at the parents, is one of them valid?
-    while note && (note.shareKey != shareKey || note.shared == false)
-      note = Notes.findOne note.parent
-    if (note.shareKey == shareKey && note.shared == true)
+    if Notes.getSharedParent noteId, shareKey
       # One of the parents is validly shared, return the original note
       notes = Notes.find
         parent: noteId

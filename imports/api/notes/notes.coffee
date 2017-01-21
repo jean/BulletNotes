@@ -3,6 +3,13 @@ Notes = exports.Notes = new Mongo.Collection 'notes'
 # TODO: Heroku deploy didn't like this
 # sanitizeHtml = require('sanitize-html')
 
+Notes.getSharedParent = (noteId, shareKey) ->
+  note = Notes.findOne noteId 
+  while note && (note.shareKey != shareKey || note.shared == false)
+    note = Notes.findOne note.parent
+  if (note && note.shareKey == shareKey && note.shared == true)
+    return note
+
 Notes.filterTitle = (title) ->
   title = title.replace(/(\r\n|\n|\r)/gm, '')
   # sanitizeHtml title,

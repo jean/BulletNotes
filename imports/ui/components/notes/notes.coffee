@@ -72,6 +72,11 @@ Template.notes.helpers
       note = Notes.findOne({ parent: Template.currentData().noteId }, sort: rank: 1)
       if (note)
         Session.set 'level', note.level
+      # else
+      #   $.gritter.add
+      #     title: 'Not found'
+      #     text: 'Note not found.'
+      #   FlowRouter.go '/'
       Notes.find { parent: Template.currentData().noteId }, sort: rank: 1
     else if Template.currentData().searchTerm
       Session.set 'level', 0

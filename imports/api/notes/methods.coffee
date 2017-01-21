@@ -31,13 +31,17 @@ Meteor.methods
       level: level
     , tx: true
 
-  'notes.updateTitle': (id, title) ->
+  'notes.updateTitle': (id, title, shareKey = null) ->
     check title, Match.Maybe(String)
     if !title
       return false
     if !@userId
       throw new (Meteor.Error)('not-authorized')
     title = Notes.filterTitle title
+    sharedNote = Notes.getSharedParent id, shareKey
+    if shareKey
+      if (!sharedNote) || (sharedNote.owner != @userId && !sharedNote.sharedEditable)
+        throw new (Meteor.Error)('not-authorized')
     Notes.update id, {$set: {
       title: title
       updatedAt: new Date
@@ -214,7 +218,7 @@ Meteor.methods
       children.forEach (child) ->
         Meteor.call 'notes.duplicateRun', child._id, newNoteId
 
-  'notes.share': (id) ->
+  'notes.share': (id, editable=false) ->
     chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-"
     ii = 0
     key = ''
@@ -224,6 +228,7 @@ Meteor.methods
     Notes.update id, $set: 
       shared: true
       shareKey: key
+      sharedEditable: editable
 
   'notes.stopSharing': (id) ->
     Notes.update id, $set: 

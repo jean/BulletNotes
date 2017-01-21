@@ -44,7 +44,7 @@ Template.note.events
     event.stopImmediatePropagation()
     title = Template.note.stripTags(event.target.innerHTML)
     if title != @title
-      Meteor.call 'notes.updateTitle', @_id, title, (err, res) ->
+      Meteor.call 'notes.updateTitle', @_id, title, FlowRouter.getParam 'shareKey', (err, res) ->
         that.title = title
         $(event.target).html Template.notes.formatText title
         return
@@ -81,7 +81,7 @@ Template.note.events
           topNote = text.substr(0, position)
           bottomNote = text.substr(position)
           # Create a new note below the current.
-          Meteor.call 'notes.updateTitle', note._id, topNote, (err, res) ->
+          Meteor.call 'notes.updateTitle', note._id, topNote, FlowRouter.getParam 'shareKey', (err, res) ->
             Meteor.call 'notes.insert', '', note.rank + .5, note.parent, (err, res) ->
               Template.notes.calculateRank()
               setTimeout (->
@@ -96,7 +96,7 @@ Template.note.events
         # First save the title in case it was changed.
         title = Template.note.stripTags(event.target.innerHTML)
         if title != @title
-          Meteor.call 'notes.updateTitle', @_id, title
+          Meteor.call 'notes.updateTitle', @_id, title, FlowRouter.getParam 'shareKey'
         parent_id = Blaze.getData($(event.currentTarget).closest('.note').prev().get(0))._id
         if event.shiftKey
           Meteor.call 'notes.outdent', @_id
@@ -119,7 +119,7 @@ Template.note.events
             console.log prevNote
             note = this
             console.log note
-            Meteor.call 'notes.updateTitle', prevNote._id, prevNote.title + event.target.value, (err, res) ->
+            Meteor.call 'notes.updateTitle', prevNote._id, prevNote.title + event.target.value, FlowRouter.getParam 'shareKey', (err, res) ->
               Meteor.call 'notes.remove', note._id, (err, res) ->
                 # Moves the caret to the correct position
                 prev.find('div.title').focus()
