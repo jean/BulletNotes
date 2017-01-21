@@ -13,7 +13,7 @@ Meteor.methods
       throw new (Meteor.Error)('not-authorized')
 
     if !rank
-      rank = Notes.find(parent: parent).count() + 1
+      rank = (Notes.find({parent: parent}).count() + 1) * 2
     level = 0
     parentNote = Notes.findOne(parent)
     if parentNote

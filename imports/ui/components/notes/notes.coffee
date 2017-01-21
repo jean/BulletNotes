@@ -105,7 +105,7 @@ Template.notes.events
     switch event.keyCode
       # Enter
       when 13
-        Meteor.call 'notes.insert', event.currentTarget.innerText, null, Template.currentData().noteId, FlowRouter.getParam 'shareKey', (error) ->
+        Meteor.call 'notes.insert', event.currentTarget.innerText, null, Template.currentData().noteId, FlowRouter.getParam('shareKey'), (error) ->
           if error
             alert error.error
           else
