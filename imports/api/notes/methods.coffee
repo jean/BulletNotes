@@ -149,7 +149,7 @@ Meteor.methods
     children.forEach (child) ->
       Meteor.call 'notes.makeChild', child._id, id, shareKey
 
-  'notes.showChildren': (id, show = true) ->
+  'notes.showChildren': (id, show = true, shareKey = null) ->
     if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     children = Notes.find(parent: id).count()

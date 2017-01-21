@@ -28,7 +28,7 @@ Template.note.events
   'click .expand': (event) ->
     event.stopImmediatePropagation()
     event.preventDefault()
-    Meteor.call 'notes.showChildren', @_id, !@showChildren
+    Meteor.call 'notes.showChildren', @_id, !@showChildren, FlowRouter.getParam 'shareKey'
     return
   'click a.delete': (event) ->
     event.preventDefault();
