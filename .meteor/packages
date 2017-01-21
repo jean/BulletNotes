@@ -29,7 +29,6 @@ meteortoys:allthings
 sewdn:collection-behaviours
 accounts-password
 mquandalle:jade
-accounts-ui-unstyled
 reactive-dict
 session
 babrahams:undo-redo
@@ -39,3 +38,5 @@ coffeescript
 email
 percolate:synced-cron
 momentjs:moment
+accounts-google
+accounts-ui
