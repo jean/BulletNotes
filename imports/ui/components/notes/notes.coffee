@@ -13,6 +13,15 @@ Template.notes.urlPattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A
 #URLs starting with "www." (without // before it, or it'd re-link the ones done above).
 Template.notes.urlPattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim
 
+Template.notes.calculateRank = ->
+  levelCount = 0
+  maxLevel = 6
+  while levelCount < maxLevel
+    $('#notes .level-' + levelCount).each (ii, el) ->
+      id = Blaze.getData(this)._id
+      Meteor.call 'notes.updateRank', id, ii + 1
+    levelCount++
+
 Template.notes.getProgress = (note) ->
   if !note
     return

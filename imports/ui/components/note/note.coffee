@@ -12,9 +12,10 @@ Template.note.onRendered ->
   note = this
   Tracker.autorun ->
     newNote = Notes.findOne note.data._id
-    $(note.firstNode).find('.title').first().html Template.notes.formatText newNote.title
-    if newNote.body
-      $(note.firstNode).find('.body').first().show().html Template.notes.formatText newNote.body
+    if newNote
+      $(note.firstNode).find('.title').first().html Template.notes.formatText newNote.title
+      if newNote.body
+        $(note.firstNode).find('.body').first().show().html Template.notes.formatText newNote.body
 
   if @data.focusNext
     $(note.firstNode).find('.title').first().focus()
@@ -48,9 +49,17 @@ Template.note.events
     Session.set 'preEdit', @title
   'blur div.title': (event, instance) ->
     that = this
-    event.stopImmediatePropagation()
+    event.stopPropagation()
+    if Session.get 'indenting'
+      Session.set 'indenting', false
+      return
     title = Template.note.stripTags(event.target.innerHTML)
     if title != @title
+      console.log event
+      console.log this
+      console.log title
+      console.log instance
+      console.log "Blurring"
       Meteor.call 'notes.updateTitle', @_id, title, FlowRouter.getParam 'shareKey', (err, res) ->
         that.title = title
         $(event.target).html Template.notes.formatText title
@@ -86,8 +95,9 @@ Template.note.events
           topNote = text.substr(0, position)
           bottomNote = text.substr(position)
           # Create a new note below the current.
-          Meteor.call 'notes.updateTitle', note._id, topNote, FlowRouter.getParam 'shareKey', (err, res) ->
-            Meteor.call 'notes.insert', '', note.rank + .5, note.parent, FlowRouter.getParam 'shareKey', (err, res) ->
+          Meteor.call 'notes.updateTitle', note._id, topNote, FlowRouter.getParam('shareKey'), (err, res) ->
+            console.log err, res
+            Meteor.call 'notes.insert', '', note.rank + .5, note.parent, FlowRouter.getParam('shareKey'), (err, res) ->
               Template.notes.calculateRank()
               setTimeout (->
                 $(event.target).closest('.note').next().find('.title').focus()
@@ -95,6 +105,7 @@ Template.note.events
       # Tab
       when 9
         event.preventDefault()
+        Session.set 'indenting', true
         # First save the title in case it was changed.
         title = Template.note.stripTags(event.target.innerHTML)
         if title != @title
@@ -143,7 +154,7 @@ Template.note.events
           childNote = $(event.currentTarget).closest('.note').find('ol .note').first()
           nextNote = $(event.currentTarget).closest('.note').next()
           if childNote.length
-            childNote.find('div.title').focus()
+            childNote.find('div.title').first().focus()
           else if nextNote.length
             nextNote.find('div.title').first().focus()
           else

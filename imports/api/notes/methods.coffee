@@ -48,6 +48,7 @@ Meteor.methods
       title: title
       updatedAt: new Date
     }}, tx: true
+    return
 
   'notes.favorite': (id) ->
     if !@userId
@@ -173,6 +174,11 @@ Meteor.methods
     Notes.update id, $set:
       showChildren: show
       children: children
+
+  'notes.focus': (id) ->
+    Notes.update id, $unset:
+      focusNext
+
     
   'notes.export': (id = null, userId = null) ->
     if !userId
