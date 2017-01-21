@@ -130,8 +130,8 @@ Template.notes.formatText = (inputText) ->
   replacePattern2 = undefined
   replacePattern3 = undefined
 
-  replacedText = inputText.replace(Template.notes.urlPattern1, '<a href="$1" target="_blank" class="previewLink">$1</a>')
-  
+  replacedText = inputText.replace(/&nbsp;/gim, ' ')
+  replacedText = replacedText.replace(Template.notes.urlPattern1, '<a href="$1" target="_blank" class="previewLink">$1</a>')
   replacedText = replacedText.replace(Template.notes.urlPattern2, '<a href="http://$2" target="_blank" class="previewLink">$2</a>')
   #Change email addresses to mailto:: links.
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim
@@ -139,7 +139,6 @@ Template.notes.formatText = (inputText) ->
   hashtagPattern = /(^|\s|\>)(([#])([a-z\d-]+))/gim
   searchTerm = Session.get('searchTerm')
   replacedText = replacedText.replace(searchTerm, '<span class=\'searchResult\'>$&</span>')
-  replacedText = replacedText.replace(/&nbsp;/gim, ' ')
 
   replacedText = replacedText.replace(hashtagPattern, (match, p1, p2, p3, p4, offset, string) ->
     className = p4.toLowerCase()

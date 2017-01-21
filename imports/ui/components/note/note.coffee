@@ -55,11 +55,6 @@ Template.note.events
       return
     title = Template.note.stripTags(event.target.innerHTML)
     if title != @title
-      console.log event
-      console.log this
-      console.log title
-      console.log instance
-      console.log "Blurring"
       Meteor.call 'notes.updateTitle', @_id, title, FlowRouter.getParam 'shareKey', (err, res) ->
         that.title = title
         $(event.target).html Template.notes.formatText title
