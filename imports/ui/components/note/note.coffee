@@ -9,11 +9,15 @@ Template.note.previewYOffset = 10
 Template.note.donePattern = /(#done|#complete|#finished)/gim
 
 Template.note.onRendered ->
-  $(this.firstNode).find('.title').first().html Template.notes.formatText this.data.title
-  if @data.body
-    $(this.firstNode).find('.body').first().show().html Template.notes.formatText this.data.body
+  note = this
+  Tracker.autorun ->
+    newNote = Notes.findOne note.data._id
+    $(note.firstNode).find('.title').first().html Template.notes.formatText newNote.title
+    if newNote.body
+      $(note.firstNode).find('.body').first().show().html Template.notes.formatText newNote.body
+
   if @data.focusNext
-    $(this.firstNode).find('.title').first().focus()
+    $(note.firstNode).find('.title').first().focus()
 
 Template.note.events
   'click .title a': (event) ->
@@ -31,7 +35,6 @@ Template.note.events
     event.stopImmediatePropagation()
     event.preventDefault()
     Meteor.call 'notes.showChildren', @_id, !@showChildren, FlowRouter.getParam 'shareKey'
-    return
   'click a.delete': (event) ->
     event.preventDefault();
     $(event.currentTarget).closest('.note').remove()
@@ -40,7 +43,9 @@ Template.note.events
     event.stopImmediatePropagation()
     body = Template.note.stripTags(event.target.innerHTML)
     Meteor.call 'notes.updateBody', @_id, body, FlowRouter.getParam 'shareKey'
-    return
+  'focus div.title': (event, instance) ->
+    event.stopImmediatePropagation()
+    Session.set 'preEdit', @title
   'blur div.title': (event, instance) ->
     that = this
     event.stopImmediatePropagation()
@@ -49,8 +54,6 @@ Template.note.events
       Meteor.call 'notes.updateTitle', @_id, title, FlowRouter.getParam 'shareKey', (err, res) ->
         that.title = title
         $(event.target).html Template.notes.formatText title
-        return
-    return
   'mouseover .previewLink': (event) ->
     @t = @title
     @title = ''
@@ -88,10 +91,7 @@ Template.note.events
               Template.notes.calculateRank()
               setTimeout (->
                 $(event.target).closest('.note').next().find('.title').focus()
-                return
               ), 50
-              return
-            return
       # Tab
       when 9
         event.preventDefault()
@@ -104,7 +104,6 @@ Template.note.events
           Meteor.call 'notes.outdent', @_id, FlowRouter.getParam 'shareKey'
         else
           Meteor.call 'notes.makeChild', @_id, parent_id, FlowRouter.getParam 'shareKey'
-        return
       # Backspace / delete
       when 8
         if event.currentTarget.innerText.trim().length == 0
@@ -125,8 +124,6 @@ Template.note.events
               Meteor.call 'notes.remove', note._id, FlowRouter.getParam 'shareKey', (err, res) ->
                 # Moves the caret to the correct position
                 prev.find('div.title').focus()
-                return
-              return
       # Up
       when 38
         # Command is held
@@ -153,8 +150,8 @@ Template.note.events
             $('#new-note').focus()
       # Escape
       when 27
+        $(event.currentTarget).html Session.get 'preEdit'
         $(event.currentTarget).blur()
-    return
 
 Template.note.stripTags = (inputText) ->
   if !inputText

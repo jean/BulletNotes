@@ -8,7 +8,7 @@ Meteor.methods
   'notes.insert': (title, rank = null, parent = null, shareKey = null) ->
     check title, String
     check rank, Match.Maybe(Number)
-    check parent, Match.Maybe(String)
+    # check parent, Match.Maybe(String)
     if !@userId || !Notes.isEditable parent, shareKey
       throw new (Meteor.Error)('not-authorized')
 
