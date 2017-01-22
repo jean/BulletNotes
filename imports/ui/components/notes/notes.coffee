@@ -131,6 +131,7 @@ Template.notes.formatText = (inputText) ->
   replacePattern3 = undefined
 
   replacedText = inputText.replace(/&nbsp;/gim, ' ')
+  console.log replacedText
   replacedText = replacedText.replace(Template.notes.urlPattern1, '<a href="$1" target="_blank" class="previewLink">$1</a>')
   replacedText = replacedText.replace(Template.notes.urlPattern2, '<a href="http://$2" target="_blank" class="previewLink">$2</a>')
   #Change email addresses to mailto:: links.

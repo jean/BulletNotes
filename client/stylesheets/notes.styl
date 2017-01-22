@@ -60,11 +60,6 @@
     min-width: 40%
     margin: -5px 0 0 20px
   
-  img.image-preview 
-    height: 100px
-    display: block
-  .image-preview:hover
-    height: 600px  
   div.title:focus 
       outline: none
   
@@ -152,3 +147,13 @@
     text-decoration: line-through
     opacity: .5
   
+#preview
+  position:absolute
+  border:1px solid #ccc
+  background:#333
+  padding:5px
+  display:none
+  color:#fff
+  max-width: 400px
+  img 
+    width: 100%

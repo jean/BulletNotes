@@ -8,6 +8,14 @@ Template.note.previewXOffset = 10
 Template.note.previewYOffset = 10
 Template.note.donePattern = /(#done|#complete|#finished)/gim
 
+Template.note.isValidImageUrl = (url, callback) ->
+  $ '<img>',
+    src: url
+    error: ->
+      callback url, false
+    load: ->
+      callback url, true
+
 Template.note.onRendered ->
   note = this
   Tracker.autorun ->
@@ -63,8 +71,11 @@ Template.note.events
     @t = @title
     @title = ''
     c = if @t != '' then '<br/>' + @t else ''
-    $('body').append '<p id=\'preview\'><img src=\'' + event.currentTarget.href + '\' alt=\'Image preview\' />' + c + '</p>'
-    $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css('left', event.pageX + Template.note.previewYOffset + 'px').fadeIn 'fast'
+    url = event.currentTarget.href
+    Template.note.isValidImageUrl url, (url, valid) ->
+      if valid
+        $('body').append '<p id=\'preview\'><img src=\'' + url + '\' alt=\'Image preview\' />' + c + '</p>'
+        $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css('left', event.pageX + Template.note.previewYOffset + 'px').fadeIn 'fast'
   'mousemove .previewLink': (event) ->
     $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css 'left', event.pageX + Template.note.previewYOffset + 'px'
   'mouseleave .previewLink': (event) ->
