@@ -35,7 +35,6 @@ ejson@1.0.13
 email@1.1.18
 es5-shim@4.6.15
 fastclick@1.0.13
-force-ssl@1.0.13
 geojson-utils@1.0.10
 google@1.1.13
 hot-code-push@1.0.4
@@ -129,3 +128,4 @@ underscore@1.0.10
 url@1.0.11
 webapp@1.3.12
 webapp-hashing@1.0.9
+wizonesolutions:canonical@0.0.5
