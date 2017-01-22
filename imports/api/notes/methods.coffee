@@ -192,8 +192,8 @@ Meteor.methods
       children: children
 
   'notes.focus': (id) ->
-    Notes.update id, $unset:
-      focusNext
+    console.log  id
+    Notes.update {_id: id}, {$unset:{focusNext: 1}}
 
     
   'notes.export': (id = null, userId = null, level = 0) ->

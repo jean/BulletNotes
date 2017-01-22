@@ -47,6 +47,7 @@ Template.note.events
   'focus div.title': (event, instance) ->
     event.stopImmediatePropagation()
     Session.set 'preEdit', @title
+    Meteor.call 'notes.focus', @_id
   'blur div.title': (event, instance) ->
     that = this
     event.stopPropagation()
