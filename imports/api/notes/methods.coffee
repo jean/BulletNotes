@@ -115,7 +115,7 @@ Meteor.methods
       Meteor.call 'notes.removeRun', child._id
     note = Notes.findOne(id)
     Notes.update(note.parent, $inc:{children:-1})
-    Notes.remove { _id: id }, tx: true
+    Notes.remove { _id: id }, {tx: true, softDelete: true}
 
   'notes.outdent': (id, shareKey = null) ->
     if !@userId || !Notes.isEditable id, shareKey

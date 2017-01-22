@@ -15,6 +15,7 @@ Meteor.publish 'notes.view', (noteId, shareKey = null) ->
     note = Notes.find
       owner: @userId
       _id: noteId
+      deleted: {$exists: false}
 
 Meteor.publish 'notes.children', (noteId, shareKey = null) ->
   check noteId, Match.Maybe(String)
@@ -26,15 +27,18 @@ Meteor.publish 'notes.children', (noteId, shareKey = null) ->
       # One of the parents is validly shared, return the original note
       notes = Notes.find
         parent: noteId
+        deleted: {$exists: false}
   else
     notes = Notes.find
       owner: @userId
       parent: noteId
+      deleted: {$exists: false}
 
 Meteor.publish 'notes.favorites', ->
   Notes.find
     owner: @userId
     favorite: true
+    deleted: {$exists: false}
 
 Meteor.publish 'notes.search', (search) ->
   Notes.search search, this.userId
