@@ -9,8 +9,8 @@ template(name='settings')
             h4 Dropbox
             p You can link your Dropbox account for a nightly backup. Each backup file can be imported straight into another instance of BulletNotes, or into something like Workflowy.
             if dropbox_token
-              a#deauthlink.button Un-link
+              a#deauthlink.form-control.btn.btn-theme Unlink Dropbox Account
             else
-              a#authlink.button Authenticate
+              a#authlink.form-control.btn.btn-theme Authenticate with Dropbox
         .modal-footer
           button.btn.btn-sm(data-dismiss='modal') Cancel

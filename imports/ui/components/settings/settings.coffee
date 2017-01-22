@@ -9,12 +9,12 @@ Template.settings.events
 
 Template.settings.helpers
   dropbox_token: ->
+    setTimeout ->
+      dbx = new Dropbox(clientId: Meteor.settings.public.dropbox_client_id)
+      authUrl = dbx.getAuthenticationUrl(Meteor.absoluteUrl() + 'dropboxAuth')
+      authLink = document.getElementById('authlink')
+      if authLink
+        authLink.href = authUrl
+    , 100
     if Meteor.user() && Meteor.user().profile
-      setTimeout ->
-        dbx = new Dropbox(clientId: Meteor.settings.public.dropbox_client_id)
-        authUrl = dbx.getAuthenticationUrl(Meteor.absoluteUrl() + 'dropboxAuth')
-        authLink = document.getElementById('authlink')
-        if authLink
-          authLink.href = authUrl
-      , 100
       return Meteor.user().profile.dropbox_token
