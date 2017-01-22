@@ -6,7 +6,7 @@ Meteor.startup ->
   if Notes.find().count() == 0
     data = [
       {
-        title: 'Welcome to Note.d! #orange'
+        title: 'Welcome to BulletNotes! #orange'
         rank: 1
         createdAt: new Date
       }
@@ -16,8 +16,8 @@ Meteor.startup ->
         createdAt: new Date
       }
       {
-        title: 'User Guide: https://github.com/NickBusey/Noted/wiki #blue'
-        body: 'There is plenty to do on Noted. Get started now!'
+        title: 'User Guide: https://github.com/NickBusey/BulletNotes/wiki #blue'
+        body: 'There is plenty to do on BulletNotes. Get started now!'
         rank: 2
         createdAt: new Date
       }
