@@ -134,19 +134,19 @@ Template.notes.formatText = (inputText) ->
   console.log replacedText
   replacedText = replacedText.replace(Template.notes.urlPattern1, '<a href="$1" target="_blank" class="previewLink">$1</a>')
   replacedText = replacedText.replace(Template.notes.urlPattern2, '<a href="http://$2" target="_blank" class="previewLink">$2</a>')
-  #Change email addresses to mailto:: links.
+  # Change email addresses to mailto:: links.
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim
   replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>')
-  hashtagPattern = /(^|\s|\>)(([#])([a-z\d-]+))/gim
+
+  # Highlight Search Terms
   searchTerm = Session.get('searchTerm')
   replacedText = replacedText.replace(searchTerm, '<span class=\'searchResult\'>$&</span>')
 
-  replacedText = replacedText.replace(hashtagPattern, (match, p1, p2, p3, p4, offset, string) ->
-    className = p4.toLowerCase()
-    ' <a href="/search/%23' + p4 + '" class="tagLink tag-' + className + '">#' + p4 + '</a>'
-  )
-  namePattern = /(^|\s)(([@])([a-z\d-]+))/gim
-  replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$4" class="at-$4">@$4</a>')
+  hashtagPattern = /(([#])([a-z\d-]+))/gim
+  replacedText = replacedText.replace(hashtagPattern, ' <a href="/search/%23$3" class="tagLink tag-$3">#$3</a>')
+
+  namePattern = /(([@])([a-z\d-]+))/gim
+  replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$3" class="atLink at-$3">@$3</a>')
 
   return replacedText
 

@@ -1,7 +1,6 @@
 { Mongo } = require 'meteor/mongo'
 Notes = exports.Notes = new Mongo.Collection 'notes'
-# TODO: Heroku deploy didn't like this
-# sanitizeHtml = require('sanitize-html')
+sanitizeHtml = require('sanitize-html')
 
 Notes.isEditable = (id, shareKey) ->
   sharedNote = Notes.getSharedParent id, shareKey
@@ -21,13 +20,13 @@ Notes.getSharedParent = (id, shareKey) ->
 
 Notes.filterTitle = (title) ->
   title = title.replace(/(\r\n|\n|\r)/gm, '')
-  # sanitizeHtml title,
-  #   allowedTags: [
-  #     'b'
-  #     'i'
-  #     'em'
-  #     'strong'
-  #   ]
+  sanitizeHtml title,
+    allowedTags: [
+      'b'
+      'i'
+      'em'
+      'strong'
+    ]
 
 Notes.search = (search, userId = null) ->
   check search, Match.Maybe(String)

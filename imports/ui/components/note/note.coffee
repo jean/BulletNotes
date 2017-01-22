@@ -30,7 +30,7 @@ Template.note.onRendered ->
 
 Template.note.events
   'click .title a': (event) ->
-    if !$(event.target).hasClass('tagLink')
+    if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
       window.open(event.target.href)
   'click .fa-heart': (event) ->
     event.preventDefault()
