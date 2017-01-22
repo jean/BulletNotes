@@ -196,7 +196,7 @@ Meteor.methods
       focusNext
 
     
-  'notes.export': (id = null, userId = null) ->
+  'notes.export': (id = null, userId = null, level = 0) ->
     if !userId
       userId = @userId
     topLevelNotes = Notes.find {
@@ -205,13 +205,11 @@ Meteor.methods
     }, sort: rank: 1
     exportText = ''
     topLevelNotes.forEach (note) ->
-      if !note.level
-        note.level = 0
-      spacing = new Array(note.level * 2).join(' ')
+      spacing = new Array(level * 2).join(' ')
       exportText += spacing + '- ' + note.title.replace(/(\r\n|\n|\r)/gm, '') + '\n'
       if note.body
         exportText += spacing + '  "' + note.body + '"\n'
-      exportText = exportText + Meteor.call('notes.export', note._id, userId)
+      exportText = exportText + Meteor.call('notes.export', note._id, userId, level+1)
     exportText
 
   'notes.dropbox': (userId) ->
