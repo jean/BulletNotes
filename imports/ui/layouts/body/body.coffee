@@ -4,6 +4,10 @@ require '../../components/exporter/exporter.coffee'
 require '../../components/settings/settings.coffee'
 require '../../components/favorites/favorites.coffee'
 
+Template.App_body.onCreated ->
+  Meteor.call 'version', (err, version) ->
+    $('#version').html version
+
 Template.App_body.onRendered ->
   if !Meteor.userId()
     $.gritter.add
