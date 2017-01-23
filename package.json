@@ -26,6 +26,61 @@
     "bcryptjs": "^2.4.0",
     "dropbox": "^2.5.0",
     "meteor-node-stubs": "~0.2.3",
-    "sanitize-html": "^1.14.1"
+    "sanitize-html": "^1.14.1",
+    "faker": "^3.0.1",
+    "autoprefixer": "^6.3.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.1.0",
+    "codacy-coverage": "^2.0.0",
+    "codecov.io": "^0.1.6",
+    "coveralls": "^2.11.11",
+    "eslint": "^2.13.1",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-import-resolver-meteor": "^0.2.4",
+    "eslint-plugin-import": "^1.10.3",
+    "eslint-plugin-jsx-a11y": "^1.5.3",
+    "eslint-plugin-meteor": "^3.6.0",
+    "eslint-plugin-react": "^5.2.2",
+    "shell-source": "^1.1.0",
+    "spacejam": "https://github.com/serut/spacejam/tarball/windows-suppport-rc4"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "allowImportExportEverywhere": true
+    },
+    "plugins": [
+      "meteor"
+    ],
+    "extends": [
+      "airbnb",
+      "plugin:meteor/recommended"
+    ],
+    "rules": {
+      "no-underscore-dangle": "off",
+      "meteor/eventmap-params": [
+        "error",
+        {
+          "eventParamName": "event",
+          "templateInstanceParamName": "instance"
+        }
+      ],
+      "meteor/template-names": [
+        "off"
+      ]
+    },
+    "settings": {
+      "import/resolver": "meteor"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {
+        "browsers": [
+          "last 2 versions"
+        ]
+      }
+    }
   }
 }
