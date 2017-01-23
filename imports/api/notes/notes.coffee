@@ -51,4 +51,5 @@ Notes.search = (search, userId = null) ->
     query =
       title: regex
       owner: userId
+  query.deleted = {$exists: false}
   Notes.find query, projection
