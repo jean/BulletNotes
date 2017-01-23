@@ -64,6 +64,7 @@ Template.calendar.onRendered ->
 Template.calendar.helpers
   calendarTitle: ->
     note = Notes.findOne({ _id:FlowRouter.getParam('noteId') })
-    note.title
+    if note
+      note.title
   unscheduledNotes: ->
     Notes.find { parent: FlowRouter.getParam('noteId'), due: {$exists:false} }, sort: rank: 1
