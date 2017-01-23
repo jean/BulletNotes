@@ -1,23 +1,2 @@
 template(name='App_calendar')
-  .row.mt
-    aside.col-lg-3.mt
-      h4
-        i.fa.fa-angle-right
-        |  Draggable Events
-      #external-events
-        .external-event.label.label-theme My Event 1
-        .external-event.label.label-success My Event 2
-        .external-event.label.label-info My Event 3
-        .external-event.label.label-warning My Event 4
-        .external-event.label.label-danger My Event 5
-        .external-event.label.label-default My Event 6
-        .external-event.label.label-theme My Event 7
-        .external-event.label.label-info My Event 8
-        .external-event.label.label-success My Event 9
-        p.drop-after
-          input#drop-remove(type='checkbox')
-          |                               Remove After Drop
-    aside.col-lg-9.mt
-      section.panel
-        .panel-body
-          #calendar.has-toolbar
+  +calendar

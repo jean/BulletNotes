@@ -1,0 +1,16 @@
+template(name='calendar')
+  .row.mt
+    aside.col-lg-3.mt
+      h4
+        i.fa.fa-angle-right
+        if calendarTitle
+          | {{{calendarTitle}}}
+        else
+          | Home
+      #external-events
+        +each unscheduledNotes
+          .external-event.label.label-theme(data-id="{{_id}}") {{{ title }}}
+    aside.col-lg-9.mt
+      section.panel
+        .panel-body
+          #calendar.has-toolbar

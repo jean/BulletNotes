@@ -21,9 +21,7 @@ template(name='App_body')
                 li.external
                   a(href='#', data-toggle='modal', data-target='#settings') Settings
                 li.external
-                  a(href='#', data-toggle='modal', data-target='#import') Import
-                li.external
-                  a(href='#', data-toggle='modal', data-target='#export') Export
+                  a(href='/calendar') Calendar
                 li.external
                   a(href='/search/last-changed:1hour') Updated in the last hour
                 li.external
@@ -42,8 +40,6 @@ template(name='App_body')
               +undoRedoButtons
     section#main-content
       section.wrapper
-        +importer
-        +exporter
         +settings
         +Template.dynamic(template=main)
     footer.site-footer

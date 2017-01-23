@@ -1,6 +1,4 @@
 require './body.jade'
-require '../../components/importer/importer.coffee'
-require '../../components/exporter/exporter.coffee'
 require '../../components/settings/settings.coffee'
 require '../../components/favorites/favorites.coffee'
 

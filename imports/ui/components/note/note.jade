@@ -14,6 +14,10 @@ template(name='note')
                 i.fa.fa-copy
                 |  Duplicate
             li
+              a.calendar(href='/calendar/{{_id}}')
+                i.fa.fa-calendar
+                |  Calendar
+            li
               a.delete(href='#')
                 i.fa.fa-trash-o
                 |  Delete

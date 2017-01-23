@@ -48,10 +48,21 @@ Meteor.methods
     if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     title = Notes.filterTitle title
-    Notes.update id, {$set: {
-      title: title
-      updatedAt: new Date
-    }}, tx: true
+    match = title.match(/#due-([0-9]+(-?))+/gim)
+    if match
+      date = match[0]
+      Notes.update id, {$set: {
+        title: title
+        due: moment().parse(date)
+        updatedAt: new Date
+      }}, tx: true
+    else
+      Notes.update id, {$set: {
+        title: title
+        updatedAt: new Date
+      },$unset: {
+        due: 1
+      }}, tx: true
     return
 
   'notes.favorite': (id) ->
@@ -270,3 +281,15 @@ Meteor.methods
     Notes.update id, $set: 
       shared: false
       shareKey: null
+
+  'notes.setDueDate': (id, date) ->
+    note = Notes.findOne(id)
+    if note.owner != @userId
+      return
+
+    title = note.title.replace(/#due-([0-9]+(-?))+/gim,'')
+    title = title.trim()
+    title = title+' #due-'+moment(date).format('YYYY-MM-DD')
+    Notes.update id, $set:
+      due: date,
+      title: title

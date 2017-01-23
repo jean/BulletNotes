@@ -3,6 +3,12 @@
 { Match } = require 'meteor/check'
 { Notes } = require '../notes.coffee'
 
+Meteor.publish 'notes.calendar', () ->
+  Notes.find
+    owner: @userId
+    due: {$exists: true}
+    deleted: {$exists: false}
+
 Meteor.publish 'notes.view', (noteId, shareKey = null) ->
   check noteId, Match.Maybe(String)
   check shareKey, Match.Maybe(String)

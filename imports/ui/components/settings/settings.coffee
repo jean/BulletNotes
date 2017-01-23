@@ -1,6 +1,8 @@
 { Template } = require 'meteor/templating'
-require './settings.jade'
 Dropbox = require('dropbox')
+require './settings.jade'
+require '../../components/importer/importer.coffee'
+require '../../components/exporter/exporter.coffee'
 
 Template.settings.events
   'click #deauthlink': (event) ->
