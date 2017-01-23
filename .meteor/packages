@@ -42,3 +42,5 @@ accounts-google
 accounts-ui
 stylus
 wizonesolutions:canonical
+dispatch:mocha-phantomjs
+lmieulet:meteor-coverage

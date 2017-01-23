@@ -29,6 +29,8 @@ ddp-rate-limiter@1.0.6
 ddp-server@1.2.10
 deps@1.0.12
 diff-sequence@1.0.7
+dispatch:mocha-phantomjs@0.1.9
+dispatch:phantomjs-tests@0.0.7
 ecmascript@0.6.1
 ecmascript-runtime@0.3.15
 ejson@1.0.13
@@ -50,11 +52,13 @@ lai:collection-extensions@0.1.4
 launch-screen@1.0.12
 less@2.7.8
 livedata@1.0.18
+lmieulet:meteor-coverage@1.1.4
 localstorage@1.0.12
 logging@1.1.16
 matb33:collection-hooks@0.8.4
 meteor@1.6.0
 meteor-base@1.0.4
+meteorhacks:picker@1.0.3
 meteortoys:allthings@3.0.0
 meteortoys:authenticate@3.0.0
 meteortoys:autopub@3.0.0
