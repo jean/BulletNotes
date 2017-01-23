@@ -5,7 +5,6 @@
   "scripts": {
     "start": "meteor --settings settings.json",
     "ios": "meteor run ios --port 5004",
-
     "pretest": "npm run lint --silent",
     "test": "meteor npm run coverage-app-unit && meteor npm run coverage-app-full && meteor npm run coverage-packages",
     "test:app": "meteor npm run coverage-app-unit && meteor npm run coverage-app-full && meteor npm run coverage-packages",
@@ -24,13 +23,13 @@
     "lint:fix": "eslint --fix ."
   },
   "dependencies": {
-    "babel-runtime": "^6.18.0",
+    "autoprefixer": "^6.3.1",
+    "babel-runtime": "^6.22.0",
     "bcryptjs": "^2.4.0",
     "dropbox": "^2.5.0",
-    "meteor-node-stubs": "~0.2.3",
-    "sanitize-html": "^1.14.1",
     "faker": "^3.0.1",
-    "autoprefixer": "^6.3.1"
+    "meteor-node-stubs": "~0.2.3",
+    "sanitize-html": "^1.14.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.0",
@@ -42,7 +41,7 @@
     "eslint-import-resolver-meteor": "^0.2.4",
     "eslint-plugin-import": "^1.10.3",
     "eslint-plugin-jsx-a11y": "^1.5.3",
-    "eslint-plugin-meteor": "^3.6.0",
+    "eslint-plugin-meteor": "^4.0.1",
     "eslint-plugin-react": "^5.2.2",
     "shell-source": "^1.1.0",
     "spacejam": "https://github.com/serut/spacejam/tarball/windows-suppport-rc4"
