@@ -14,8 +14,10 @@ Template.App_body.onRendered ->
       title: 'Beta Warning'
       text: 'This site is still under construction! While it should work pretty well, and you can and should export regularly, be aware data loss may occur. <a href="https://github.com/NickBusey/BulletNotes/issues" target="_blank">Report Issues on GitHub</a>'
       sticky: true
-  $('#undo-redo button').addClass('btn')
-  $('#undo-redo br').remove()
+  setInterval () ->
+    $('#undo-redo button').addClass('btn')
+    $('#undo-redo br').remove()
+  , 200
 
 Template.App_body.helpers
   searchTerm: ->

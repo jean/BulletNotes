@@ -43,7 +43,10 @@ Template.note.events
   'click .expand': (event) ->
     event.stopImmediatePropagation()
     event.preventDefault()
-    Meteor.call 'notes.showChildren', @_id, !@showChildren, FlowRouter.getParam 'shareKey'
+    if Meteor.userId()
+      Meteor.call 'notes.showChildren', @_id, !@showChildren, FlowRouter.getParam 'shareKey'
+    else
+      Session.set 'expand_'+@_id, !Session.get('expand_'+@_id)
   'click a.delete': (event) ->
     event.preventDefault();
     $(event.currentTarget).closest('.note').remove()
@@ -79,6 +82,7 @@ Template.note.events
   'mousemove .previewLink': (event) ->
     $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css 'left', event.pageX + Template.note.previewYOffset + 'px'
   'mouseleave .previewLink': (event) ->
+    $('#preview img').attr('src','')
     $('#preview').remove()
   'keydown div.title': (event) ->
     note = this
@@ -195,7 +199,7 @@ Template.note.helpers
     margin = 2 * (@level - Session.get('level'))
     'margin-left: ' + margin + 'em'
   expandClass: ->
-    if @children > 0 and @showChildren
+    if @children > 0 and (@showChildren || Session.get('expand_'+@_id))
       'fa-angle-up'
     else if @children > 0
       'fa-angle-down collapsed'
@@ -204,7 +208,9 @@ Template.note.helpers
       return 'hasChildren'
     return
   children: ->
-    if @showChildren && !Session.get 'searchTerm'
+    if Session.get 'searchTerm'
+      return
+    if @showChildren || Session.get 'expand_'+@_id
       Meteor.subscribe 'notes.children', @_id, FlowRouter.getParam 'shareKey'
       notes = Notes.find({ parent: @_id }, sort: rank: 1)
       return notes

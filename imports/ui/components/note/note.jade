@@ -19,7 +19,8 @@ template(name='note')
                 |  Delete
         a.expand(href='#',class='btn btn-xs fa {{expandClass}}')
       .pull-right
-        i.fa.fa-heart
+        if currentUser
+          i.fa.fa-heart
         if this.children
           span.badge {{this.children}}
       .note-title
