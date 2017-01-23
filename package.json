@@ -2,13 +2,6 @@
   "name": "BulletNotes",
   "version": "1.0.0",
   "private": true,
-  // "scripts": {
-  //   "start": "meteor --settings settings.json",
-  //   "test": "meteor test --driver-package practicalmeteor:mocha --port 5000 --settings settings.json",
-  //   "test:cli": "meteor test --once --driver-package dispatch:mocha-phantomjs --port 5001",
-  //   "test:watch": "TEST_WATCH=1 meteor test --driver-package dispatch:mocha-phantomjs --port 5002",
-  //   "ios": "meteor run ios --port 5004"
-  // },
   "scripts": {
     "pretest": "npm run lint --silent",
     "start": "meteor",
