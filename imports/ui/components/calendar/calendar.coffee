@@ -8,6 +8,7 @@ Template.calendar.onRendered ->
 
   Tracker.autorun ->
     events = []
+
     $('#external-events div.external-event').each ->
       # create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
       # it doesn't need to have a start or end
@@ -24,8 +25,6 @@ Template.calendar.onRendered ->
       notes = Notes.find { parent: FlowRouter.getParam('noteId') }
     else
       notes = Notes.find { due: {$exists: true} }
-    if !notes.count()
-      return
     notes.forEach (row) ->
       events.push {
         id: row._id
