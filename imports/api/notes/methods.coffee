@@ -53,7 +53,7 @@ Meteor.methods
       date = match[0]
       Notes.update id, {$set: {
         title: title
-        due: moment().parse(date)
+        due: moment(date).format()
         updatedAt: new Date
       }}, tx: true
     else
@@ -133,13 +133,13 @@ Meteor.methods
       throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(id)
     old_parent = Notes.findOne(note.parent)
-    Notes.update old_parent._id, $inc: children: -1
     new_parent = Notes.findOne(old_parent.parent)
     if new_parent
       Meteor.call 'notes.makeChild', note._id, new_parent._id, old_parent.rank+1, shareKey
     else
       # No parent left to go out to, set things to top level.
       children = Notes.find(parent: note._id)
+      Notes.update old_parent._id, $inc: children: -1
       children.forEach (child) ->
         Notes.update child._id, $set: level: 1
       return Notes.update(id, $set:
@@ -151,6 +151,7 @@ Meteor.methods
     if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(id)
+    oldParent = Notes.findOne(note.parent)
     parent = Notes.findOne(parentId)
     if !note or !parent or id == parent._id
       return false
@@ -161,9 +162,13 @@ Meteor.methods
       else
         rank = 0
     tx.start 'note makeChild'
+    if oldParent
+      Notes.update oldParent._id, {
+        $inc: children: -1
+      }, tx: true
     Notes.update parent._id, {
-      $inc: children: 1
-      $set: showChildren: true
+      $inc: {children: 1}
+      $set: {showChildren: true}
     }, tx: true
     Notes.update id, {$set:
       rank: rank
