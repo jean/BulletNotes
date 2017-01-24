@@ -5,8 +5,12 @@
   "scripts": {
     "start": "meteor --settings settings.json",
     "ios": "meteor run ios --port 5004",
-    "pretest": "npm run lint --silent",
-    "test": "meteor npm run coverage-app-unit && meteor npm run coverage-app-full && meteor npm run coverage-packages",
+    "pretest": "npm run lint --silent && coffeelint imports/",
+
+    "test": "meteor test --driver-package practicalmeteor:mocha --port 5000 --settings settings.json",
+    "test:cli": "meteor test --once --driver-package dispatch:mocha-phantomjs --port 5001",
+    "test:watch": "TEST_WATCH=1 meteor test --driver-package dispatch:mocha-phantomjs --port 5002",
+
     "test:app": "meteor npm run coverage-app-unit && meteor npm run coverage-app-full && meteor npm run coverage-packages",
     "test-app-unit": "spacejam --driver-package=practicalmeteor:mocha-console-runner test",
     "test-app-unit-watch": "meteor --driver-package=practicalmeteor:mocha-console-runner test",

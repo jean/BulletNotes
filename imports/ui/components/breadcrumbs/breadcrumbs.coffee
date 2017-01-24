@@ -1,4 +1,4 @@
-{ Template } = require 'meteor/templating';
+{ Template } = require 'meteor/templating'
 { Notes } = require '../../../api/notes/notes.coffee'
 require './breadcrumbs.jade'
 
@@ -8,11 +8,15 @@ Template.breadcrumbs.helpers
     if @noteId
       note = Notes.findOne(@noteId)
       if (note)
-        Meteor.subscribe 'notes.view', note.parent, FlowRouter.getParam 'shareKey'
+        Meteor.subscribe 'notes.view',
+          note.parent,
+          FlowRouter.getParam 'shareKey'
         parent = Notes.findOne(note.parent)
         while parent
           parents.unshift parent
-          Meteor.subscribe 'notes.view', parent.parent, FlowRouter.getParam 'shareKey'
+          Meteor.subscribe 'notes.view',
+            parent.parent,
+            FlowRouter.getParam 'shareKey'
           parent = Notes.findOne(parent.parent)
     parents
   focusedTitle: ->

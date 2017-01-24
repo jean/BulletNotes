@@ -5,7 +5,9 @@ require './importer.jade'
 Template.importer.events 'click input.submit': (event) ->
   event.preventDefault()
   data = {}
-  data.importLines = $(event.currentTarget).parent().parent().find('textarea').get(0).value.split('\n')
+  data.importLines = $(event.currentTarget)
+    .parent().parent().find('textarea')
+    .get(0).value.split('\n')
   $(event.currentTarget).parent().parent().find('textarea').get(0).value = ''
   data.prevLevel = 0
   data.prevParents = []
@@ -48,12 +50,14 @@ Template.importer.import = (data, row = 0, lastNote = null) ->
     if nextLine and nextLine.trim().substr(0, 1) == '"'
       body = nextLine.trim().substr(1)
       body = body.substr(0, body.length)
-    Meteor.call 'notes.insert', title, data.levelRanks[level], parent, level, (err, res) ->
-      if body
-        Meteor.call 'notes.updateBody', res, body
-      Template.importer.import data, ii + 1, res
-      return
+    Meteor.call 'notes.insert',
+      title,
+      data.levelRanks[level],
+      parent,
+      level,
+      (err, res) ->
+        if body
+          Meteor.call 'notes.updateBody', res, body
+        Template.importer.import data, ii + 1, res
     break
     ii++
-  return
-

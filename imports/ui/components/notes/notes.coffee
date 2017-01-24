@@ -7,11 +7,14 @@ require '../breadcrumbs/breadcrumbs.coffee'
 
 newNoteText = 'New note...'
 
-#URLs starting with http://, https://, or ftp://
-Template.notes.urlPattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+# URLs starting with http://, https://, or ftp://
+Template.notes.urlPattern1 =
+  /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
 
-#URLs starting with "www." (without // before it, or it'd re-link the ones done above).
-Template.notes.urlPattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim
+# URLs starting with "www." (without // before it
+# or it'd re-link the ones done above).
+Template.notes.urlPattern2 =
+  /(^|[^\/])(www\.[\S]+(\b|$))/gim
 
 Template.notes.calculateRank = ->
   levelCount = 0
@@ -44,13 +47,13 @@ Template.notes.getProgress = (note) ->
     return Math.round((done/total)*100)
 
 Template.notes.getProgressClass = (note) ->
-    percent = Template.notes.getProgress note
-    if (percent < 25)
-      return 'danger'
-    else if (percent > 74)
-      return 'success'
-    else
-      return 'warning'
+  percent = Template.notes.getProgress note
+  if (percent < 25)
+    return 'danger'
+  else if (percent > 74)
+    return 'success'
+  else
+    return 'warning'
 
 Template.notes.helpers
   progress: ->
@@ -73,12 +76,18 @@ Template.notes.helpers
     else if Template.currentData().starred
       Meteor.subscribe 'notes.starred'
     else
-      Meteor.subscribe 'notes.view', Template.currentData().noteId, FlowRouter.getParam 'shareKey'
-      Meteor.subscribe 'notes.children', Template.currentData().noteId, FlowRouter.getParam 'shareKey'
+      Meteor.subscribe 'notes.view',
+        Template.currentData().noteId,
+        FlowRouter.getParam 'shareKey'
+      Meteor.subscribe 'notes.children',
+        Template.currentData().noteId
+        FlowRouter.getParam 'shareKey'
     Session.set 'searchTerm', Template.currentData().searchTerm
 
     if Template.currentData().noteId
-      note = Notes.findOne({ parent: Template.currentData().noteId }, sort: rank: 1)
+      note = Notes.findOne {
+        parent: Template.currentData().noteId
+      }, sort: rank: 1
       if (note)
         Session.set 'level', note.level
       # else
@@ -105,12 +114,16 @@ Template.notes.events
     switch event.keyCode
       # Enter
       when 13
-        Meteor.call 'notes.insert', event.currentTarget.innerText, null, Template.currentData().noteId, FlowRouter.getParam('shareKey'), (error) ->
-          if error
-            alert error.error
-          else
-            $('#new-note').text ''
-          return
+        Meteor.call 'notes.insert',
+          event.currentTarget.innerText,
+          null,
+          Template.currentData().noteId,
+          FlowRouter.getParam('shareKey'), (error) ->
+            if error
+              alert error.error
+            else
+              $('#new-note').text ''
+            return
       # Escape
       when 27
         $('#new-note').text(newNoteText).blur()
@@ -137,21 +150,28 @@ Template.notes.formatText = (inputText) ->
   replacePattern3 = undefined
 
   replacedText = inputText.replace(/&nbsp;/gim, ' ')
-  replacedText = replacedText.replace(Template.notes.urlPattern1, '<a href="$1" target="_blank" class="previewLink">$1</a>')
-  replacedText = replacedText.replace(Template.notes.urlPattern2, '<a href="http://$2" target="_blank" class="previewLink">$2</a>')
+  replacedText = replacedText.replace Template.notes.urlPattern1,
+    '<a href="$1" target="_blank" class="previewLink">$1</a>'
+  replacedText = replacedText.replace Template.notes.urlPattern2,
+    '<a href="http://$2" target="_blank" class="previewLink">$2</a>'
+
   # Change email addresses to mailto:: links.
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim
-  replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>')
+  replacedText = replacedText.replace replacePattern3,
+    '<a href="mailto:$1">$1</a>'
 
   # Highlight Search Terms
   searchTerm = Session.get('searchTerm')
-  replacedText = replacedText.replace(searchTerm, '<span class=\'searchResult\'>$&</span>')
+  replacedText = replacedText.replace searchTerm,
+    '<span class=\'searchResult\'>$&</span>'
 
   hashtagPattern = /(([#])([a-z\d-]+))/gim
-  replacedText = replacedText.replace(hashtagPattern, ' <a href="/search/%23$3" class="tagLink tag-$3">#$3</a>')
+  replacedText = replacedText.replace hashtagPattern,
+    ' <a href="/search/%23$3" class="tagLink tag-$3">#$3</a>'
 
   namePattern = /(([@])([a-z\d-]+))/gim
-  replacedText = replacedText.replace(namePattern, ' <a href="/search/%40$3" class="atLink at-$3">@$3</a>')
+  replacedText = replacedText.replace namePattern,
+    ' <a href="/search/%40$3" class="atLink at-$3">@$3</a>'
 
   return replacedText
 
@@ -165,4 +185,7 @@ Template.notes.rendered = ->
     opacity: .6
     toleranceElement: '> div.noteContainer'
     relocate: ->
-      Meteor.call 'notes.updateRanks', $('.sortable').nestedSortable('toArray'), FlowRouter.getParam('noteId'), FlowRouter.getParam('shareKey')
+      Meteor.call 'notes.updateRanks',
+      $('.sortable').nestedSortable('toArray'),
+      FlowRouter.getParam('noteId'),
+      FlowRouter.getParam('shareKey')

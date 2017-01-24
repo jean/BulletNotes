@@ -3,14 +3,15 @@
 require './calendar.jade'
 
 Template.calendar.onRendered ->
-  Meteor.subscribe 'notes.calendar', 
+  Meteor.subscribe 'notes.calendar'
   Meteor.subscribe 'notes.children', FlowRouter.getParam 'noteId'
 
   Tracker.autorun ->
     events = []
 
     $('#external-events div.external-event').each ->
-      # create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+      # create an Event Object
+      # (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
       # it doesn't need to have a start or end
       eventObject = title: $.trim($(this).text())
       # store the Event Object in the DOM element so we can get to it later
@@ -49,13 +50,15 @@ Template.calendar.onRendered ->
         # this function is called when something is dropped
         # retrieve the dropped element's stored Event Object
         originalEventObject = $(this).data('eventObject')
-        # we need to copy it, so that multiple events don't have a reference to the same object
+        # we need to copy it, so that multiple events don't have a reference
+        # to the same object
         copiedEventObject = $.extend({}, originalEventObject)
         # assign it the date that was reported
         copiedEventObject.start = date
         copiedEventObject.allDay = allDay
         # render the event on the calendar
-        # the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+        # the last `true` argument determines if the event "sticks"
+        # (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
         $('#calendar').fullCalendar 'renderEvent', copiedEventObject, true
         # is the "remove after drop" checkbox checked?
         $(this).remove()
@@ -67,4 +70,7 @@ Template.calendar.helpers
     if note
       note.title
   unscheduledNotes: ->
-    Notes.find { parent: FlowRouter.getParam('noteId'), due: {$exists:false} }, sort: rank: 1
+    Notes.find {
+      parent: FlowRouter.getParam('noteId')
+      due: {$exists:false}
+    }, sort: rank: 1

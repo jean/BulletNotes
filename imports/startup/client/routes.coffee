@@ -71,9 +71,10 @@ FlowRouter.route '/dropboxAuth',
         return
       ret
 
-    Meteor.call 'users.setDropboxOauth', parseQueryString(window.location.hash)['access_token']
+    Meteor.call 'users.setDropboxOauth',
+      parseQueryString(window.location.hash)['access_token']
     FlowRouter.redirect '/'
 
 FlowRouter.notFound =
   action: ->
-    BlazeLayout.render('App_body', { main: 'App_notFound' });
+    BlazeLayout.render('App_body', { main: 'App_notFound' })
