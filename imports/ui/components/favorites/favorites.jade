@@ -1,4 +1,10 @@
 template(name='favorites')
-  +each favorites
+  if favorites.count
+    +each favorites
+      li.external
+        a(href='/note/{{_id}}') {{{title}}}
+  else
     li.external
-      a(href='/note/{{_id}}') {{{title}}}
+      a(href='#') None yet. Click the 
+        .fa.fa-heart
+        | icon on a note.
