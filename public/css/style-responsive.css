@@ -322,6 +322,10 @@
         display: none;
     }
 
+    .panel-body, .wrapper {
+        padding: 0;
+    }
+
     .mail-box aside {
         display: block;
     }
