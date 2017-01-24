@@ -39,7 +39,7 @@ Meteor.methods
       owner: owner
       parent: parentId
       level: level
-    , tx: true
+    , {tx: true, instant: true}
 
   'notes.updateTitle': (id, title, shareKey = null) ->
     check title, Match.Maybe(String)

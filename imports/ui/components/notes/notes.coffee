@@ -101,7 +101,7 @@ Template.notes.events
     if event.currentTarget.innerText == newNoteText
       event.currentTarget.innerText = ''
     return
-  'keyup #new-note': (event) ->
+  'keydown #new-note': (event) ->
     switch event.keyCode
       # Enter
       when 13
@@ -114,8 +114,14 @@ Template.notes.events
       # Escape
       when 27
         $('#new-note').text(newNoteText).blur()
+      # Up
       when 38
         $(event.currentTarget).closest('.note').prev().find('div.title').focus()
+      # Tab
+      when 9
+        parentId = Blaze.getData($('#notes > .note').last()[0])._id
+        Meteor.call 'notes.insert', ' ', null, null, (err, res) ->
+          Meteor.call 'notes.makeChild', res, parentId
     return
   'blur #new-note': (event) ->
     if event.currentTarget.innerText == ''
