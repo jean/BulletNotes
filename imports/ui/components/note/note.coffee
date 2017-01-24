@@ -216,7 +216,7 @@ Template.note.helpers
       return notes
   progress: ->
     setTimeout ->
-      $('[data-toggle="tooltip"]').tooltip()
+      $('[data-toggle="tooltip"]').tooltip('destroy').tooltip()
     , 100
     Template.notes.getProgress this
   progressClass: ->
