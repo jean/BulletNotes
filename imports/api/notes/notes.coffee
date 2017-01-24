@@ -38,7 +38,7 @@ Notes.search = (search, userId = null) ->
   query = {}
   projection = limit: 100
   if !userId
-    userId =  Meteor.userId()
+    userId =  @userId
   if search.indexOf('last-changed:') == 0
     myRegexp = /last-changed:([0-9]+)([a-z]+)/gim
     match = myRegexp.exec(search)
