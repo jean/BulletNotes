@@ -77,8 +77,10 @@ Template.note.events
     url = event.currentTarget.href
     Template.note.isValidImageUrl url, (url, valid) ->
       if valid
-        $('body').append '<p id=\'preview\'><img src=\'' + url + '\' alt=\'Image preview\' />' + c + '</p>'
+        $('body').append '<p id=\'preview\'><a href=\'' + url + '\' target=\'_blank\'><img src=\'' + url + '\' alt=\'Image preview\' />' + c + '</p>'
         $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css('left', event.pageX + Template.note.previewYOffset + 'px').fadeIn 'fast'
+        $('#preview img').mouseleave ->
+          $('#preview').remove()
   'mousemove .previewLink': (event) ->
     $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css 'left', event.pageX + Template.note.previewYOffset + 'px'
   'mouseleave .previewLink': (event) ->
