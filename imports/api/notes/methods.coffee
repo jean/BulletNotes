@@ -320,3 +320,11 @@ Meteor.methods
     Notes.update id, $set:
       due: date,
       title: title
+
+  'notes.getCountsByUser': () ->
+    if !@userId
+      throw new (Meteor.Error)('not-authorized')
+    user = Meteor.users.findOne @userId
+    if !user.admin
+      throw new (Meteor.Error)('not-authorized')
+    Notes.aggregate({$group : { _id : '$owner', count : {$sum : 1}}})
