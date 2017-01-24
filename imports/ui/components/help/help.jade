@@ -1,0 +1,18 @@
+template(name='help')
+  .modal.fade(id="help", tabindex='-1', role='dialog', style='display: none;')
+    .modal-dialog
+      form.modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h4#myModalLabel.modal-title Help
+        .modal-body
+          h3 Known Issues
+          p Take a look at the issues we're already aware of and working on.
+          a(href="https://bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA" target="_blank")
+            | 👉 Known Issues and Planned Features list
+          h3 Report an Issue
+          p Having an issue not listed at the link above? 
+          a(href="https://github.com/NickBusey/BulletNotes/issues" target="_blank")
+            | 🐞 Report issues here.
+        .modal-footer
+          button.btn.btn-sm(data-dismiss='modal') Cancel

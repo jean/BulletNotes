@@ -1,6 +1,7 @@
 require './body.jade'
 require '../../components/settings/settings.coffee'
 require '../../components/favorites/favorites.coffee'
+require '../../components/help/help.coffee'
 
 Template.App_body.onCreated ->
   Meteor.call 'version', (err, version) ->
