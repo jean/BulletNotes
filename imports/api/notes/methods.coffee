@@ -142,9 +142,10 @@ Meteor.methods
       Notes.update old_parent._id, $inc: children: -1
       children.forEach (child) ->
         Notes.update child._id, $set: level: 1
-      return Notes.update(id, $set:
+      return Notes.update id, $set:
         level: 0
-        parent: null)
+        parent: null
+        focusNext: 1
 
   'notes.makeChild': (id, parentId, rank = null, shareKey = null) ->
     check parentId, String
