@@ -81,6 +81,12 @@ Template.note.events
         (err, res) ->
           that.title = title
           $(event.target).html Template.notes.formatText title
+  'mouseover .noteContainer': (event) ->
+    event.stopPropagation()
+    $(event.target).find('.fa-heart').addClass('hover')
+  'mouseleave .noteContainer': (event) ->
+    event.stopPropagation()
+    $(event.target).find('.fa-heart').removeClass('hover')
   'mouseover .previewLink': (event) ->
     @t = @title
     @title = ''
