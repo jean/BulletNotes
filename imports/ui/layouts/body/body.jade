@@ -19,6 +19,8 @@ template(name='App_body')
                 li
                   p.green Options
                 li.external
+                  a(href='#', data-toggle='modal', data-target='#help') Help
+                li.external
                   a(href='#', data-toggle='modal', data-target='#settings') Settings
                 li.external
                   a(href='/calendar') Calendar
@@ -41,6 +43,7 @@ template(name='App_body')
     section#main-content
       section.wrapper
         +settings
+        +help
         +Template.dynamic(template=main)
     footer.site-footer
       .text-center
