@@ -13,10 +13,9 @@ Template.App_body.onRendered ->
       title: 'Beta Warning'
       text: 'This site is still under construction!'+
         ' While it should work pretty well, and you can and'+
-        ' should export regularly, be aware data loss may occur.'+
+        ' should use Dropbox to auto-export, be aware data loss may occur.'+
         ' <a href="https://github.com/NickBusey/BulletNotes/issues"'+
         ' target="_blank">Report Issues on GitHub</a>'
-      sticky: true
   setInterval () ->
     $('#undo-redo button').addClass('btn')
     $('#undo-redo br').remove()
