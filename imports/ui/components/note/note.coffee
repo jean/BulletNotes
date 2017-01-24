@@ -162,12 +162,22 @@ Template.note.events
         if event.metaKey
           $(event.currentTarget).closest('.note').find('.expand').trigger 'click'
         else
-          childNote = $(event.currentTarget).closest('.note').find('ol .note').first()
-          nextNote = $(event.currentTarget).closest('.note').next()
-          if childNote.length
-            childNote.find('div.title').first().focus()
-          else if nextNote.length
-            nextNote.find('div.title').first().focus()
+          # Go to a child note if available
+          note = $(event.currentTarget).closest('.note').find('ol .note').first()
+          if !note.length
+            # If not, get the next note on the same level
+            note = $(event.currentTarget).closest('.note').next()
+          if !note.length
+            # Nothing there, keep going up levels.
+            count = 0
+            searchNote = $(event.currentTarget).parent().closest('.note')
+            while note.length < 1 && count < 10
+              note = searchNote.next()
+              if !note.length
+                searchNote = searchNote.parent().closest('.note')
+                count++
+          if note.length
+            note.find('div.title').first().focus()
           else
             $('#new-note').focus()
       # Escape
