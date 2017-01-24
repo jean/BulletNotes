@@ -6,7 +6,7 @@ import { assert } from 'meteor/practicalmeteor:chai';
  
 import { Notes } from './notes.coffee';
 import './methods.coffee';
- 
+
 if (Meteor.isServer) {
   describe('Notes', () => {
     describe('methods', () => {

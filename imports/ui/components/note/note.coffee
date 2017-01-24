@@ -21,9 +21,13 @@ Template.note.onRendered ->
   Tracker.autorun ->
     newNote = Notes.findOne note.data._id
     if newNote
-      $(note.firstNode).find('.title').first().html Template.notes.formatText newNote.title
+      $(note.firstNode).find('.title').first().html(
+        Template.notes.formatText newNote.title
+      )
       if newNote.body
-        $(note.firstNode).find('.body').first().show().html Template.notes.formatText newNote.body
+        $(note.firstNode).find('.body').first().show().html(
+          Template.notes.formatText newNote.body
+        )
 
   if @data.focusNext
     $(note.firstNode).find('.title').first().focus()
@@ -44,11 +48,14 @@ Template.note.events
     event.stopImmediatePropagation()
     event.preventDefault()
     if Meteor.userId()
-      Meteor.call 'notes.showChildren', @_id, !@showChildren, FlowRouter.getParam 'shareKey'
+      Meteor.call 'notes.showChildren',
+        @_id,
+        !@showChildren,
+        FlowRouter.getParam 'shareKey'
     else
       Session.set 'expand_'+@_id, !Session.get('expand_'+@_id)
   'click a.delete': (event) ->
-    event.preventDefault();
+    event.preventDefault()
     $(event.currentTarget).closest('.note').remove()
     Meteor.call 'notes.remove', @_id, FlowRouter.getParam 'shareKey'
   'blur p.body': (event, instance) ->
@@ -67,9 +74,13 @@ Template.note.events
       return
     title = Template.note.stripTags(event.target.innerHTML)
     if title != @title
-      Meteor.call 'notes.updateTitle', @_id, title, FlowRouter.getParam 'shareKey', (err, res) ->
-        that.title = title
-        $(event.target).html Template.notes.formatText title
+      Meteor.call 'notes.updateTitle',
+        @_id,
+        title,
+        FlowRouter.getParam 'shareKey',
+        (err, res) ->
+          that.title = title
+          $(event.target).html Template.notes.formatText title
   'mouseover .previewLink': (event) ->
     @t = @title
     @title = ''
@@ -77,12 +88,17 @@ Template.note.events
     url = event.currentTarget.href
     Template.note.isValidImageUrl url, (url, valid) ->
       if valid
-        $('body').append '<p id=\'preview\'><a href=\'' + url + '\' target=\'_blank\'><img src=\'' + url + '\' alt=\'Image preview\' />' + c + '</p>'
-        $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css('left', event.pageX + Template.note.previewYOffset + 'px').fadeIn 'fast'
+        $('body').append '<p id=\'preview\'><a href=\'' +
+          url + '\' target=\'_blank\'><img src=\'' + url +
+          '\' alt=\'Image preview\' />' + c + '</p>'
+        $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
+          .css('left', event.pageX + Template.note.previewYOffset + 'px')
+          .fadeIn 'fast'
         $('#preview img').mouseleave ->
           $('#preview').remove()
   'mousemove .previewLink': (event) ->
-    $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px').css 'left', event.pageX + Template.note.previewYOffset + 'px'
+    $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
+      .css 'left', event.pageX + Template.note.previewYOffset + 'px'
   'mouseleave .previewLink': (event) ->
     $('#preview img').attr('src','')
     $('#preview').remove()
@@ -108,13 +124,21 @@ Template.note.events
           topNote = text.substr(0, position)
           bottomNote = text.substr(position)
           # Create a new note below the current.
-          Meteor.call 'notes.updateTitle', note._id, topNote, FlowRouter.getParam('shareKey'), (err, res) ->
-            console.log err, res
-            Meteor.call 'notes.insert', '', note.rank + .5, note.parent, FlowRouter.getParam('shareKey'), (err, res) ->
-              Template.notes.calculateRank()
-              setTimeout (->
-                $(event.target).closest('.note').next().find('.title').focus()
-              ), 50
+          Meteor.call 'notes.updateTitle',
+            note._id,
+            topNote,
+            FlowRouter.getParam('shareKey'),
+            (err, res) ->
+              console.log err, res
+              Meteor.call 'notes.insert',
+                '',
+                note.rank + .5,
+                note.parent,
+                FlowRouter.getParam('shareKey'), (err, res) ->
+                  Template.notes.calculateRank()
+                  setTimeout (->
+                    $(event.target).closest('.note').next().find('.title').focus()
+                  ), 50
       # Tab
       when 9
         event.preventDefault()
@@ -122,12 +146,21 @@ Template.note.events
         # First save the title in case it was changed.
         title = Template.note.stripTags(event.target.innerHTML)
         if title != @title
-          Meteor.call 'notes.updateTitle', @_id, title, FlowRouter.getParam 'shareKey'
-        parent_id = Blaze.getData($(event.currentTarget).closest('.note').prev().get(0))._id
+          Meteor.call 'notes.updateTitle',
+            @_id,
+            title,
+            FlowRouter.getParam 'shareKey'
+        parent_id = Blaze.getData(
+          $(event.currentTarget).closest('.note').prev().get(0)
+        )._id
         if event.shiftKey
           Meteor.call 'notes.outdent', @_id, FlowRouter.getParam 'shareKey'
         else
-          Meteor.call 'notes.makeChild', @_id, parent_id, null, FlowRouter.getParam 'shareKey'
+          Meteor.call 'notes.makeChild',
+            @_id,
+            parent_id,
+            null,
+            FlowRouter.getParam 'shareKey'
       # Backspace / delete
       when 8
         if event.currentTarget.innerText.trim().length == 0
@@ -136,7 +169,8 @@ Template.note.events
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
           if position == 0
-            # We're at the start of the note, add this to the note above, and remove it.
+            # We're at the start of the note,
+            # add this to the note above, and remove it.
             console.log event.target.value
             prev = $(event.currentTarget).closest('.note').prev()
             console.log prev
@@ -144,10 +178,17 @@ Template.note.events
             console.log prevNote
             note = this
             console.log note
-            Meteor.call 'notes.updateTitle', prevNote._id, prevNote.title + event.target.value, FlowRouter.getParam 'shareKey', (err, res) ->
-              Meteor.call 'notes.remove', note._id, FlowRouter.getParam 'shareKey', (err, res) ->
-                # Moves the caret to the correct position
-                prev.find('div.title').focus()
+            Meteor.call 'notes.updateTitle',
+              prevNote._id,
+              prevNote.title + event.target.value,
+              FlowRouter.getParam 'shareKey',
+              (err, res) ->
+                Meteor.call 'notes.remove',
+                  note._id,
+                  FlowRouter.getParam 'shareKey',
+                  (err, res) ->
+                    # Moves the caret to the correct position
+                    prev.find('div.title').focus()
       # Up
       when 38
         # Command is held
@@ -158,7 +199,9 @@ Template.note.events
             $(event.currentTarget).closest('.note').prev().find('div.title').focus()
           else
             # There is no previous note in the current sub list, go up a note.
-            $(event.currentTarget).closest('.note').parentsUntil('.note').siblings('.noteContainer').find('div.title').focus()
+            $(event.currentTarget).closest('.note')
+              .parentsUntil('.note').siblings('.noteContainer')
+              .find('div.title').focus()
       # Down
       when 40
         if event.metaKey

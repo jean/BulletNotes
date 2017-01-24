@@ -85,7 +85,7 @@ Meteor.methods
         noteParentId = note.parent_id
       # If we don't have a parentId, we're at the top level.
       # Use the focused note id
-      else 
+      else
         noteParentId = focusedNoteId
 
       Notes.update {
@@ -110,7 +110,12 @@ Meteor.methods
     check body, String
     if !@userId || !Notes.isEditable id, shareKey
       throw new (Meteor.Error)('not-authorized')
-    Notes.update { _id: id }, { $set: {body: body, updatedAt: new Date} }, tx: true
+    Notes.update { _id: id },
+      { $set: {
+        body: body
+        updatedAt: new Date
+        }
+      }, tx: true
 
   'notes.remove': (id, shareKey = null) ->
     check id, String
@@ -135,7 +140,11 @@ Meteor.methods
     old_parent = Notes.findOne(note.parent)
     new_parent = Notes.findOne(old_parent.parent)
     if new_parent
-      Meteor.call 'notes.makeChild', note._id, new_parent._id, old_parent.rank+1, shareKey
+      Meteor.call 'notes.makeChild',
+        note._id,
+        new_parent._id,
+        old_parent.rank+1,
+        shareKey
     else
       # No parent left to go out to, set things to top level.
       children = Notes.find(parent: note._id)
@@ -223,22 +232,32 @@ Meteor.methods
     exportText = ''
     topLevelNotes.forEach (note) ->
       spacing = new Array(level * 2).join(' ')
-      exportText += spacing + '- ' + note.title.replace(/(\r\n|\n|\r)/gm, '') + '\n'
+      exportText += spacing + '- ' +
+        note.title.replace(/(\r\n|\n|\r)/gm, '') + '\n'
       if note.body
         exportText += spacing + '  "' + note.body + '"\n'
-      exportText = exportText + Meteor.call('notes.export', note._id, userId, level+1)
+      exportText = exportText + Meteor.call('notes.export',
+        note._id,
+        userId,
+        level+1
+      )
     exportText
 
   'notes.dropbox': (userId) ->
     if !userId
       userId = @userId
-    if Meteor.users.findOne(userId).profile && Meteor.users.findOne(userId).profile.dropbox_token
+    if (
+      Meteor.users.findOne(userId).profile &&
+      Meteor.users.findOne(userId).profile.dropbox_token
+    )
       exportText = Meteor.call('notes.export',null,userId)
-      dbx = new Dropbox(accessToken: Meteor.users.findOne(userId).profile.dropbox_token)
+      dbx = new Dropbox(
+        accessToken: Meteor.users.findOne(userId).profile.dropbox_token
+      )
       dbx.filesUpload(
         path: '/'+moment().format('YYYY-MM-DD-HH:mm:ss')+'.txt'
         contents: exportText).then((response) ->
-        console.log response
+          console.log response
       ).catch (error) ->
         console.error error
 
@@ -262,12 +281,14 @@ Meteor.methods
       owner: @userId
       parent: parentId
       level: note.level
-    , 
+    ,
       tx: true
       instant: true
     children = Notes.find parent: id
     if children
-      Notes.update newNoteId, $set: showChildren: true, children: children.count()
+      Notes.update newNoteId,
+        $set: showChildren: true,
+        children: children.count()
       children.forEach (child) ->
         Meteor.call 'notes.duplicateRun', child._id, newNoteId
 
@@ -278,13 +299,13 @@ Meteor.methods
     while ii < 10
       key += chars.charAt(Math.floor(Math.random() * chars.length))
       ii++
-    Notes.update id, $set: 
+    Notes.update id, $set:
       shared: true
       shareKey: key
       sharedEditable: editable
 
   'notes.stopSharing': (id) ->
-    Notes.update id, $set: 
+    Notes.update id, $set:
       shared: false
       shareKey: null
 
