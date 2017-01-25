@@ -1,54 +1,31 @@
 {
-  "name": "BulletNotes",
-  "version": "1.0.0",
-  "private": true,
   "scripts": {
-    "start": "meteor --settings settings.json",
-    "ios": "meteor run ios --port 5004",
-    "pretest": "npm run lint --silent && coffeelint imports/",
-
-    "test": "meteor test --driver-package practicalmeteor:mocha --port 5000 --settings settings.json",
-    "test:cli": "meteor test --once --driver-package dispatch:mocha-phantomjs --port 5001",
-    "test:watch": "TEST_WATCH=1 meteor test --driver-package dispatch:mocha-phantomjs --port 5002",
-
-    "test:app": "meteor npm run coverage-app-unit && meteor npm run coverage-app-full && meteor npm run coverage-packages",
-    "test-app-unit": "spacejam --driver-package=practicalmeteor:mocha-console-runner test",
-    "test-app-unit-watch": "meteor --driver-package=practicalmeteor:mocha-console-runner test",
-    "coverage-app-unit": "spacejam --driver-package=practicalmeteor:mocha-console-runner test --coverage 'out_lcovonly out_coverage out_html' -s settings.json",
-    "test-app-full": "spacejam --driver-package=practicalmeteor:mocha-console-runner test --full-app",
-    "test-app-full-watch": "meteor --driver-package=practicalmeteor:mocha-console-runner test --full-app",
-    "test-app-full:dispatch": "meteor test --full-app --once --driver-package dispatch:mocha-phantomjs",
-    "coverage-app-full": "spacejam --driver-package=practicalmeteor:mocha-console-runner test --full-app --coverage 'out_lcovonly out_coverage out_html in_coverage'  -s settings.json",
-    "test-packages": "spacejam --driver-package=practicalmeteor:mocha-console-runner test-packages --full-app",
-    "test-packages-watch": "meteor --driver-package=practicalmeteor:mocha-console-runner test-packages",
-    "coverage-packages": "spacejam --driver-package=practicalmeteor:mocha-console-runner test-packages --coverage 'out_lcovonly out_html out_remap in_coverage'  -s settings.json",
-    "coverage-packages-html": "spacejam --driver-package=practicalmeteor:mocha-console-runner test-packages --coverage out_html",
-    "lint": "eslint . || exit 0;",
-    "lint:fix": "eslint --fix ."
+    "start": "meteor",
+    "pretest": "npm run lint --silent",
+    "test": "meteor test --once --driver-package dispatch:mocha-phantomjs",
+    "test-app": "meteor test --full-app --once --driver-package dispatch:mocha-phantomjs",
+    "test-watch": "meteor test --driver-package practicalmeteor:mocha",
+    "test-app-watch": "meteor test --full-app --driver-package practicalmeteor:mocha",
+    "test-watch-terminal": "TEST_WATCH=1 meteor test --driver-package dispatch:mocha-phantomjs",
+    "test-app-watch-terminal": "TEST_WATCH=1 meteor test --full-app --driver-package dispatch:mocha-phantomjs",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "autoprefixer": "^6.3.1",
-    "babel-runtime": "^6.22.0",
-    "bcryptjs": "^2.4.0",
-    "dropbox": "^2.5.0",
-    "faker": "^3.0.1",
-    "meteor-node-stubs": "~0.2.3",
-    "sanitize-html": "^1.14.1"
+    "autoprefixer": "^6.4.1",
+    "babel-runtime": "^6.18.0",
+    "faker": "^3.0.1"
   },
   "devDependencies": {
-    "babel-eslint": "^6.1.0",
-    "codacy-coverage": "^2.0.0",
-    "codecov.io": "^0.1.6",
-    "coveralls": "^2.11.11",
-    "eslint": "^2.13.1",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-import-resolver-meteor": "^0.2.4",
-    "eslint-plugin-import": "^1.10.3",
-    "eslint-plugin-jsx-a11y": "^1.5.3",
-    "eslint-plugin-meteor": "^4.0.1",
-    "eslint-plugin-react": "^5.2.2",
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^11.1.0",
+    "eslint-import-resolver-meteor": "^0.3.3",
+    "eslint-plugin-import": "^1.15.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-meteor": "^4.0.0",
+    "eslint-plugin-react": "^6.2.2",
     "shell-source": "^1.1.0",
-    "spacejam": "https://github.com/serut/spacejam/tarball/windows-suppport-rc4"
+    "shelljs": "^0.7.4"
   },
   "eslintConfig": {
     "parser": "babel-eslint",
@@ -63,7 +40,16 @@
       "plugin:meteor/recommended"
     ],
     "rules": {
+      "import/no-extraneous-dependencies": "off",
+      "import/prefer-default-export": "off",
       "no-underscore-dangle": "off",
+      "object-shorthand": [
+        "error",
+        "always",
+        {
+          "avoidQuotes": false
+        }
+      ],
       "meteor/eventmap-params": [
         "error",
         {

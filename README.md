@@ -1,30 +1,29 @@
-[![Build Status](https://travis-ci.org/NickBusey/BulletNotes.svg?branch=master)](https://travis-ci.org/NickBusey/BulletNotes)
-[![CircleCI](https://circleci.com/gh/NickBusey/BulletNotes.svg?style=svg)](https://circleci.com/gh/NickBusey/BulletNotes)
-[![Coverage Status](https://coveralls.io/repos/github/NickBusey/BulletNotes/badge.svg?branch=master)](https://coveralls.io/github/NickBusey/BulletNotes?branch=master)
+[![Circle CI](https://circleci.com/gh/meteor/todos.svg?style=svg)](https://circleci.com/gh/meteor/todos)
 
-# BulletNotes
+This is a Todos example app built on the principles described in the [Meteor Guide](http://guide.meteor.com/structure.html). This app uses the module functionality introduced in Meteor 1.3, but everything else should be applicable to Meteor 1.2 as well.
 
-http://www.bulletnotes.io/
+## Versions
 
-## User Guide
+This version (the `master`) branch uses the [Blaze](http://guide.meteor.com/blaze.html) rendering library, with code written in ES2015 JavaScript.
 
-https://github.com/NickBusey/BulletNotes/wiki
+The [`react`](https://github.com/meteor/todos/tree/react) branch implements the same application using [React](http://guide.meteor.com/react.html)
 
-## Goal
+The [`coffeescript`](https://github.com/meteor/todos/tree/coffeescript) branch implements this (the Blaze) version of the app in CoffeeScript.
 
-An open-source, note taking app.
+Note that attempts will be made to keep the branches up to date but this isn't guaranteed.
 
-### Focus
+### Running the app
 
-* Privacy
-* Data Portability
-* Simplicity
+```bash
+meteor npm install
+meteor
+```
 
-## Motivations
+### Scripts
 
-I have become fully reliant on Workflowy for just about every aspect of my life. I don't feel comfortable continuing to use a closed, private platform for this. Also, the rate of development of new features seems to have come to a complete halt at Workflowy. There are features I want, and have been trying to hack in via [Workflowier](http://workflowier.com/) but this is far from ideal.
+To lint:
 
-## Planned Feature List
-
-http://www.bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA
+```bash
+meteor npm run lint
+```
 
