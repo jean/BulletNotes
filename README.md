@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e7f3a2a82e74c5ebddc3253e89d09fd)](https://www.codacy.com/app/NickBusey/BulletNotes?utm_source=github.com&utm_medium=referral&utm_content=NickBusey/BulletNotes&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/NickBusey/BulletNotes.svg?branch=master)](https://travis-ci.org/NickBusey/BulletNotes)
 [![CircleCI](https://circleci.com/gh/NickBusey/BulletNotes.svg?style=svg)](https://circleci.com/gh/NickBusey/BulletNotes)
 [![Coverage Status](https://coveralls.io/repos/github/NickBusey/BulletNotes/badge.svg?branch=master)](https://coveralls.io/github/NickBusey/BulletNotes?branch=master)
