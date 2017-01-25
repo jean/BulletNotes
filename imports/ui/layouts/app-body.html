@@ -39,24 +39,24 @@
           </div>
         {{/if}}
 
-        <div class="list-todos">
-          <a class="js-new-list link-list-new">
+        <div class="note-todos">
+          <a class="js-new-note link-note-new">
             <span class="icon-plus"></span>
-            {{_ 'layouts.appBody.newList'}}
+            {{_ 'layouts.appBody.newNote'}}
           </a>
 
-          {{#each list in lists}}
-            <a href="{{pathFor 'Lists.show' _id=list._id}}" title="{{list.name}}"
-                class="list-todo {{activeListClass list}}">
-              {{#if list.userId}}
+          {{#each note in notes}}
+            <a href="{{pathFor 'Notes.show' _id=note._id}}" title="{{note.name}}"
+                class="note-todo {{activeNoteClass note}}">
+              {{#if note.userId}}
                 <span class="icon-lock"></span>
               {{/if}}
 
-              {{#if list.incompleteCount}}
-                <span class="count-list">{{list.incompleteCount}}</span>
+              {{#if note.incompleteCount}}
+                <span class="count-note">{{note.incompleteCount}}</span>
               {{/if}}
 
-              {{list.name}}
+              {{note.title}}
             </a>
           {{/each}}
         </div>

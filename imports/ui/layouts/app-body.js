@@ -11,8 +11,8 @@ import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { _ } from 'meteor/underscore';
 import { $ } from 'meteor/jquery';
 
-import { Lists } from '../../api/lists/lists.js';
-import { insert } from '../../api/lists/methods.js';
+import { Notes } from '../../api/notes/notes.coffee';
+import { insert } from '../../api/notes/methods.coffee';
 
 import '../components/loading.js';
 import './app-body.html';
@@ -36,8 +36,7 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-  this.subscribe('lists.public');
-  this.subscribe('lists.private');
+  this.subscribe('notes.children', null);
 
   this.state = new ReactiveDict();
   this.state.setDefault({
@@ -62,15 +61,15 @@ Template.App_body.helpers({
     const instance = Template.instance();
     return instance.state.get('userMenuOpen');
   },
-  lists() {
-    return Lists.find({ $or: [
+  notes() {
+    return Notes.find({ $or: [
       { userId: { $exists: false } },
       { userId: Meteor.userId() },
     ] });
   },
-  activeListClass(list) {
-    const active = ActiveRoute.name('Lists.show')
-      && FlowRouter.getParam('_id') === list._id;
+  activeNoteClass(note) {
+    const active = ActiveRoute.name('Notes.show')
+      && FlowRouter.getParam('_id') === note._id;
 
     return active && 'active';
   },
@@ -120,28 +119,28 @@ Template.App_body.events({
   'click .js-logout'() {
     Meteor.logout();
 
-    // if we are on a private list, we'll need to go to a public one
-    if (ActiveRoute.name('Lists.show')) {
+    // if we are on a private note, we'll need to go to a public one
+    if (ActiveRoute.name('Notes.show')) {
       // TODO -- test this code path
-      const list = Lists.findOne(FlowRouter.getParam('_id'));
-      if (list.userId) {
-        FlowRouter.go('Lists.show', Lists.findOne({ userId: { $exists: false } }));
+      const note = Notes.findOne(FlowRouter.getParam('_id'));
+      if (note.userId) {
+        FlowRouter.go('Notes.show', Notes.findOne({ userId: { $exists: false } }));
       }
     }
   },
 
-  'click .js-new-list'() {
-    const listId = insert.call({ language: TAPi18n.getLanguage() }, (err) => {
+  'click .js-new-note'() {
+    const noteId = insert.call({ language: TAPi18n.getLanguage() }, (err) => {
       if (err) {
-        // At this point, we have already redirected to the new list page, but
-        // for some reason the list didn't get created. This should almost never
+        // At this point, we have already redirected to the new note page, but
+        // for some reason the note didn't get created. This should almost never
         // happen, but it's good to handle it anyway.
         FlowRouter.go('App.home');
-        alert(TAPi18n.__('layouts.appBody.newListError')); // eslint-disable-line no-alert
+        alert(TAPi18n.__('layouts.appBody.newNoteError')); // eslint-disable-line no-alert
       }
     });
 
-    FlowRouter.go('Lists.show', { _id: listId });
+    FlowRouter.go('Notes.show', { _id: noteId });
   },
 
   'click .js-toggle-language'(event) {
