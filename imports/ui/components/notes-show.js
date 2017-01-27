@@ -20,11 +20,8 @@ import {
   makePublic,
   makePrivate,
   remove,
-} from '../../api/notes/methods.js';
-
-import {
   insert,
-} from '../../api/todos/methods.js';
+} from '../../api/notes/methods.js';
 
 import { displayError } from '../lib/errors.js';
 

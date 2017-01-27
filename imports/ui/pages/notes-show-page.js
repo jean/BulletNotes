@@ -14,7 +14,7 @@ Template.Notes_show_page.onCreated(function notesShowPageOnCreated() {
   this.getNoteId = () => FlowRouter.getParam('_id');
 
   this.autorun(() => {
-    this.subscribe('todos.inNote', { noteId: this.getNoteId() });
+    this.subscribe('notes.inNote', { parent: this.getNoteId() });
   });
 });
 

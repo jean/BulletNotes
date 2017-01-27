@@ -4,10 +4,9 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import faker from 'faker';
 // import incompleteCountDenormalizer from './incompleteCountDenormalizer.js';
 
-import { Lists } from '../lists/lists.js';
-
 class NotesCollection extends Mongo.Collection {
   insert(doc, callback) {
+    console.log(doc);
     const ourDoc = doc;
     ourDoc.createdAt = ourDoc.createdAt || new Date();
     const result = super.insert(ourDoc, callback);
@@ -41,23 +40,18 @@ Notes.schema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id,
   },
-  listId: {
+  parent: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
-    denyUpdate: true,
+    optional: true,
   },
-  text: {
+  title: {
     type: String,
-    max: 100,
     optional: true,
   },
   createdAt: {
     type: Date,
     denyUpdate: true,
-  },
-  checked: {
-    type: Boolean,
-    defaultValue: false,
   },
 });
 
@@ -67,10 +61,9 @@ Notes.attachSchema(Notes.schema);
 // to the client. If we add secret properties to List objects, don't list
 // them here to keep them private to the server.
 Notes.publicFields = {
-  listId: 1,
-  text: 1,
+  parent: 1,
+  title: 1,
   createdAt: 1,
-  checked: 1,
 };
 
 // NOTE This factory has a name - do we have a code style for this?
@@ -78,7 +71,7 @@ Notes.publicFields = {
 //   'note', 'emptyNote', 'checkedNote'
 Factory.define('note', Notes, {
   listId: () => Factory.get('list'),
-  text: () => faker.lorem.sentence(),
+  title: () => faker.lorem.sentence(),
   createdAt: () => new Date(),
 });
 

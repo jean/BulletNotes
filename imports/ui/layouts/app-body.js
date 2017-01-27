@@ -130,7 +130,8 @@ Template.App_body.events({
   },
 
   'click .js-new-note'() {
-    const noteId = insert.call({ language: TAPi18n.getLanguage() }, (err) => {
+    const noteId = insert.call({ title: "New list" }, (err) => {
+      console.log(err);
       if (err) {
         // At this point, we have already redirected to the new note page, but
         // for some reason the note didn't get created. This should almost never

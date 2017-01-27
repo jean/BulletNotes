@@ -5,50 +5,24 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 
 import { Notes } from './notes.js';
-import { Lists } from '../lists/lists.js';
 
 export const insert = new ValidatedMethod({
   name: 'notes.insert',
   validate: Notes.simpleSchema().pick(['title']).validator({ clean: true, filter: false }),
   run({ title }) {
-    const list = Lists.findOne(listId);
+    // const note = Notes.findOne(noteId);
 
-    if (list.isPrivate() && list.userId !== this.userId) {
-      throw new Meteor.Error('notes.insert.accessDenied',
-        'Cannot add notes to a private list that is not yours');
-    }
-
+    // if (note.isPrivate() && note.userId !== this.userId) {
+    //   throw new Meteor.Error('notes.insert.accessDenied',
+    //     'Cannot add notes to a private note that is not yours');
+    // }
     const note = {
       title,
       createdAt: new Date(),
     };
+    console.log(note);
 
     Notes.insert(note);
-  },
-});
-
-export const setCheckedStatus = new ValidatedMethod({
-  name: 'notes.makeChecked',
-  validate: new SimpleSchema({
-    noteId: Notes.simpleSchema().schema('_id'),
-    newCheckedStatus: Notes.simpleSchema().schema('checked'),
-  }).validator({ clean: true, filter: false }),
-  run({ noteId, newCheckedStatus }) {
-    const note = Notes.findOne(noteId);
-
-    if (note.checked === newCheckedStatus) {
-      // The status is already what we want, let's not do any extra work
-      return;
-    }
-
-    if (!note.editableBy(this.userId)) {
-      throw new Meteor.Error('notes.setCheckedStatus.accessDenied',
-        'Cannot edit checked status in a private list that is not yours');
-    }
-
-    Notes.update(noteId, { $set: {
-      checked: newCheckedStatus,
-    } });
   },
 });
 
@@ -56,7 +30,7 @@ export const updateText = new ValidatedMethod({
   name: 'notes.updateText',
   validate: new SimpleSchema({
     noteId: Notes.simpleSchema().schema('_id'),
-    newText: Notes.simpleSchema().schema('text'),
+    newTitle: Notes.simpleSchema().schema('title'),
   }).validator({ clean: true, filter: false }),
   run({ noteId, newText }) {
     // This is complex auth stuff - perhaps denormalizing a userId onto notes
@@ -65,7 +39,7 @@ export const updateText = new ValidatedMethod({
 
     if (!note.editableBy(this.userId)) {
       throw new Meteor.Error('notes.updateText.accessDenied',
-        'Cannot edit notes in a private list that is not yours');
+        'Cannot edit notes in a private note that is not yours');
     }
 
     Notes.update(noteId, {
@@ -86,17 +60,16 @@ export const remove = new ValidatedMethod({
 
     if (!note.editableBy(this.userId)) {
       throw new Meteor.Error('notes.remove.accessDenied',
-        'Cannot remove notes in a private list that is not yours');
+        'Cannot remove notes in a private note that is not yours');
     }
 
     Notes.remove(noteId);
   },
 });
 
-// Get list of all method names on Notes
+// Get note of all method names on Notes
 const NOTES_METHODS = _.pluck([
   insert,
-  setCheckedStatus,
   updateText,
   remove,
 ], 'name');
