@@ -2,6 +2,11 @@
 { check } = require 'meteor/check'
 { Match } = require 'meteor/check'
 { Notes } = require './notes.coffee'
+{ _ } = require 'meteor/underscore'
+{ ValidatedMethod } = require 'meteor/mdg:validated-method'
+{ SimpleSchema } = require 'meteor/aldeed:simple-schema'
+{ DDPRateLimiter } = require 'meteor/ddp-rate-limiter'
+
 Dropbox = require('dropbox')
 
 Meteor.methods

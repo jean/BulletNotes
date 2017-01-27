@@ -1,12 +1,12 @@
 @import '../stylesheets/utils.less';
 
-.page.lists-show {
+.page.notes-show {
   .content-scrollable {
     background: @color-empty;
     top: 5em !important;
   }
 
-  // Custom nav for lists-show
+  // Custom nav for notes-show
   nav {
     background: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
     height: 5em;
@@ -34,7 +34,7 @@
         max-width: 100%;
       }
 
-      .count-list {
+      .count-note {
         background: @color-primary;
         border-radius: 1em;
         color: @color-empty;
@@ -57,7 +57,7 @@
         padding-top: .25em;
       }
     }
-    form.list-edit-form {
+    form.note-edit-form {
       position: relative;
 
       input[type="text"] {
@@ -69,7 +69,7 @@
       }
     }
 
-    select.list-edit {
+    select.note-edit {
       .font-s2;
       .position(absolute, 0,0,0,0);
       background: transparent;

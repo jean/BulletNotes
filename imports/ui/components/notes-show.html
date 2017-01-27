@@ -1,15 +1,15 @@
-<template name="Lists_show">
-  <div class="page lists-show">
+<template name="Notes_show">
+  <div class="page notes-show">
     <nav class="js-title-nav">
       {{#momentum plugin="fade"}}
         {{#if editing}}
-          <form class="js-edit-form list-edit-form">
+          <form class="js-edit-form note-edit-form">
             <input type="text" name="name" value="{{name}}">
             <div class="nav-group right">
               <a href="#" class="js-cancel nav-item">
                 <span
                   class="icon-close js-cancel"
-                  title={{_ 'lists.show.cancel'}}>
+                  title={{_ 'notes.show.cancel'}}>
                 </span>
               </a>
             </div>
@@ -18,51 +18,51 @@
           <div class="nav-group">
             <a href="#" class="js-menu nav-item">
               <span
-                class="icon-list-unordered"
-                title={{_ 'lists.show.showMenu'}}>
+                class="icon-note-unordered"
+                title={{_ 'notes.show.showMenu'}}>
               </span>
             </a>
           </div>
 
-          <h1 class="js-edit-list title-page">
-            <span class="title-wrapper">{{list.name}}</span>
-            <span class="count-list">{{list.incompleteCount}}</span>
+          <h1 class="js-edit-note title-page">
+            <span class="title-wrapper">{{note.name}}</span>
+            <span class="count-note">{{note.incompleteCount}}</span>
           </h1>
 
           <div class="nav-group right">
             <div class="nav-item options-mobile">
-              <select class="list-edit">
+              <select class="note-edit">
                 <option disabled selected>
-                  {{_ 'lists.show.selectAction'}}
+                  {{_ 'notes.show.selectAction'}}
                 </option>
-                {{#if list.userId}}
-                  <option value="public">{{_ 'lists.show.makePublic'}}</option>
+                {{#if note.userId}}
+                  <option value="public">{{_ 'notes.show.makePublic'}}</option>
                 {{else}}
-                  <option value="private">{{_ 'lists.show.makePrivate'}}</option>
+                  <option value="private">{{_ 'notes.show.makePrivate'}}</option>
                 {{/if}}
-                <option value="delete">{{_ 'lists.show.delete'}}</option>
+                <option value="delete">{{_ 'notes.show.delete'}}</option>
               </select>
               <span class="icon-cog"></span>
             </div>
             <div class="options-web">
-              <a class="js-toggle-list-privacy nav-item">
-                {{#if list.userId}}
+              <a class="js-toggle-note-privacy nav-item">
+                {{#if note.userId}}
                   <span
                     class="icon-lock"
-                    title={{_ 'lists.show.makeListPublic'}}>
+                    title={{_ 'notes.show.makeNotePublic'}}>
                   </span>
                 {{else}}
                   <span
                     class="icon-unlock"
-                    title={{_ 'lists.show.makeListPrivate'}}>
+                    title={{_ 'notes.show.makeNotePrivate'}}>
                   </span>
                 {{/if}}
               </a>
 
-              <a class="js-delete-list nav-item">
+              <a class="js-delete-note nav-item">
                 <span
                   class="icon-trash"
-                  title={{_ 'lists.show.deleteList'}}>
+                  title={{_ 'notes.show.deleteNote'}}>
                 </span>
               </a>
             </div>
@@ -73,25 +73,25 @@
       <form class="js-todo-new todo-new input-symbol">
         <input
           type="text"
-          placeholder={{_ 'lists.show.typeToAdd'}}
+          placeholder={{_ 'notes.show.typeToAdd'}}
         />
         <span class="icon-add js-todo-add"></span>
       </form>
     </nav>
 
-    <div class="content-scrollable list-items">
-      {{#if todosReady}}
-        {{#each todo in todos}}
+    <div class="content-scrollable note-items">
+      {{#if childrenReady}}
+        {{#each todo in children}}
           {{> Todos_item (todoArgs todo)}}
         {{else}}
           <div class="wrapper-message">
-            <div class="title-message">{{_ 'lists.show.noTasks'}}</div>
-            <div class="subtitle-message">{{_ 'lists.show.addAbove'}}</div>
+            <div class="title-message">{{_ 'notes.show.noTasks'}}</div>
+            <div class="subtitle-message">{{_ 'notes.show.addAbove'}}</div>
           </div>
         {{/each}}
       {{else}}
         <div class="wrapper-message">
-          <div class="title-message">{{_ 'lists.show.loading'}}</div>
+          <div class="title-message">{{_ 'notes.show.loading'}}</div>
         </div>
       {{/if}}
     </div>

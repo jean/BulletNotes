@@ -62,8 +62,8 @@
       "logout": "Logout",
       "login": "Sign In",
       "join": "Join",
-      "newList": "New List",
-      "newListError": "Could not create list.",
+      "newNote": "New Note",
+      "newNoteError": "Could not create note.",
       "tryingToConnect": "Trying to connect",
       "connectionIssue": "There seems to be a connection issue"
     }

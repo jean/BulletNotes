@@ -62,8 +62,8 @@
       "logout": "Se déconnecter",
       "login": "Se connecter",
       "join": "Joindre",
-      "newList": "Nouvelle liste",
-      "newListError": "La liste ne peut être créé.",
+      "newNote": "Nouvelle note",
+      "newNoteError": "La note ne peut être créé.",
       "tryingToConnect": "Tentative de connexion",
       "connectionIssue": "Il semble y avoir un problème de connexion"
     }

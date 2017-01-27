@@ -10,7 +10,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { TAPi18n } from 'meteor/tap:i18n';
 
-import './lists-show.html';
+import './notes-show.html';
 
 // Component used in the template
 import './todos-item.js';
@@ -20,7 +20,7 @@ import {
   makePublic,
   makePrivate,
   remove,
-} from '../../api/lists/methods.js';
+} from '../../api/notes/methods.js';
 
 import {
   insert,
@@ -28,12 +28,12 @@ import {
 
 import { displayError } from '../lib/errors.js';
 
-Template.Lists_show.onCreated(function listShowOnCreated() {
+Template.Notes_show.onCreated(function noteShowOnCreated() {
   this.autorun(() => {
     new SimpleSchema({
-      list: { type: Function },
-      todosReady: { type: Boolean },
-      todos: { type: Mongo.Cursor },
+      note: { type: Function },
+      childrenReady: { type: Boolean },
+      children: { type: Mongo.Cursor },
     }).validate(Template.currentData());
   });
 
@@ -43,19 +43,19 @@ Template.Lists_show.onCreated(function listShowOnCreated() {
     editingTodo: false,
   });
 
-  this.saveList = () => {
+  this.saveNote = () => {
     this.state.set('editing', false);
 
     const newName = this.$('[name=name]').val().trim();
     if (newName) {
       updateName.call({
-        listId: this.data.list()._id,
+        noteId: this.data.note()._id,
         newName,
       }, displayError);
     }
   };
 
-  this.editList = () => {
+  this.editNote = () => {
     this.state.set('editing', true);
 
     // force the template to redraw based on the reactive change
@@ -66,13 +66,13 @@ Template.Lists_show.onCreated(function listShowOnCreated() {
     }, 400);
   };
 
-  this.deleteList = () => {
-    const list = this.data.list();
-    const message = `${TAPi18n.__('lists.remove.confirm')} "${list.name}"?`;
+  this.deleteNote = () => {
+    const note = this.data.note();
+    const message = `${TAPi18n.__('notes.remove.confirm')} "${note.name}"?`;
 
     if (confirm(message)) { // eslint-disable-line no-alert
       remove.call({
-        listId: list._id,
+        noteId: note._id,
       }, displayError);
 
       FlowRouter.go('App.home');
@@ -82,17 +82,17 @@ Template.Lists_show.onCreated(function listShowOnCreated() {
     return false;
   };
 
-  this.toggleListPrivacy = () => {
-    const list = this.data.list();
-    if (list.userId) {
-      makePublic.call({ listId: list._id }, displayError);
+  this.toggleNotePrivacy = () => {
+    const note = this.data.note();
+    if (note.userId) {
+      makePublic.call({ noteId: note._id }, displayError);
     } else {
-      makePrivate.call({ listId: list._id }, displayError);
+      makePrivate.call({ noteId: note._id }, displayError);
     }
   };
 });
 
-Template.Lists_show.helpers({
+Template.Notes_show.helpers({
   todoArgs(todo) {
     const instance = Template.instance();
     return {
@@ -109,7 +109,7 @@ Template.Lists_show.helpers({
   },
 });
 
-Template.Lists_show.events({
+Template.Notes_show.events({
   'click .js-cancel'(event, instance) {
     instance.state.set('editing', false);
   },
@@ -125,13 +125,13 @@ Template.Lists_show.events({
   'blur input[type=text]'(event, instance) {
     // if we are still editing (we haven't just clicked the cancel button)
     if (instance.state.get('editing')) {
-      instance.saveList();
+      instance.saveNote();
     }
   },
 
   'submit .js-edit-form'(event, instance) {
     event.preventDefault();
-    instance.saveList();
+    instance.saveNote();
   },
 
   // handle mousedown otherwise the blur handler above will swallow the click
@@ -142,29 +142,29 @@ Template.Lists_show.events({
   },
 
   // This is for the mobile dropdown
-  'change .list-edit'(event, instance) {
+  'change .note-edit'(event, instance) {
     const target = event.target;
     if ($(target).val() === 'edit') {
-      instance.editList();
+      instance.editNote();
     } else if ($(target).val() === 'delete') {
-      instance.deleteList();
+      instance.deleteNote();
     } else {
-      instance.toggleListPrivacy();
+      instance.toggleNotePrivacy();
     }
 
     target.selectedIndex = 0;
   },
 
-  'click .js-edit-list'(event, instance) {
-    instance.editList();
+  'click .js-edit-note'(event, instance) {
+    instance.editNote();
   },
 
-  'click .js-toggle-list-privacy'(event, instance) {
-    instance.toggleListPrivacy();
+  'click .js-toggle-note-privacy'(event, instance) {
+    instance.toggleNotePrivacy();
   },
 
-  'click .js-delete-list'(event, instance) {
-    instance.deleteList();
+  'click .js-delete-note'(event, instance) {
+    instance.deleteNote();
   },
 
   'click .js-todo-add'(event, instance) {
@@ -180,7 +180,7 @@ Template.Lists_show.events({
     }
 
     insert.call({
-      listId: this.list()._id,
+      noteId: this.note()._id,
       text: $input.val(),
     }, displayError);
 

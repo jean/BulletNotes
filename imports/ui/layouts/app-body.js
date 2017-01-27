@@ -11,8 +11,8 @@ import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import { _ } from 'meteor/underscore';
 import { $ } from 'meteor/jquery';
 
-import { Notes } from '../../api/notes/notes.coffee';
-import { insert } from '../../api/notes/methods.coffee';
+import { Notes } from '../../api/notes/notes.js';
+import { insert } from '../../api/notes/methods.js';
 
 import '../components/loading.js';
 import './app-body.html';
