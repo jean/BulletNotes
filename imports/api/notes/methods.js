@@ -19,6 +19,7 @@ export const insert = new ValidatedMethod({
     const note = {
       title,
       parent,
+      owner: this.userId,
       createdAt: new Date(),
     };
 
@@ -62,7 +63,6 @@ export const remove = new ValidatedMethod({
       throw new Meteor.Error('notes.remove.accessDenied',
         'Cannot remove notes in a private note that is not yours');
     }
-
 
     Notes.remove(noteId);
   },

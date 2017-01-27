@@ -16,7 +16,7 @@ import './notes-show.html';
 import './notes-item.js';
 
 import {
-  updateName,
+  updateTitle,
   makePublic,
   makePrivate,
   remove,
@@ -45,11 +45,11 @@ Template.Notes_show.onCreated(function noteShowOnCreated() {
   this.saveNote = () => {
     this.state.set('editing', false);
 
-    const newName = this.$('[name=name]').val().trim();
-    if (newName) {
-      updateName.call({
+    const newTitle = this.$('[name=title]').val().trim();
+    if (newTitle) {
+      updateTitle.call({
         noteId: this.data.note()._id,
-        newName,
+        newTitle,
       }, displayError);
     }
   };
@@ -67,7 +67,7 @@ Template.Notes_show.onCreated(function noteShowOnCreated() {
 
   this.deleteNote = () => {
     const note = this.data.note();
-    const message = `${TAPi18n.__('notes.remove.confirm')} "${note.name}"?`;
+    const message = `${TAPi18n.__('notes.remove.confirm')} "${note.title}"?`;
 
     if (confirm(message)) { // eslint-disable-line no-alert
       remove.call({

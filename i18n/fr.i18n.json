@@ -27,7 +27,7 @@
       "makeNotePrivate": "Fermer la note au public",
       "deleteNote": "Effacer la note",
       "typeToAdd": "Tapez pour ajouter de nouvelles tâches",
-      "noTasks": "Aucune tâche ici",
+      "noNotes": "Aucune tâche ici",
       "addAbove": "Ajouter de nouvelles tâches ci-dessus",
       "loading": "Chargement sauvé tâches..."
     },
@@ -42,7 +42,7 @@
       "accessDenied": "Vous ne pouvez pas modifier notes dans une note privée qui ne vous appartient pas"
     },
     "item": {
-      "taskName": "Nom de la tâche"
+      "noteName": "Nom de la tâche"
     }
   },
   "useraccounts": {

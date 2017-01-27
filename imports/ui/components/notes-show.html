@@ -4,7 +4,7 @@
       {{#momentum plugin="fade"}}
         {{#if editing}}
           <form class="js-edit-form note-edit-form">
-            <input type="text" name="name" value="{{name}}">
+            <input type="text" name="title" value="{{note.title}}">
             <div class="nav-group right">
               <a href="#" class="js-cancel nav-item">
                 <span
@@ -45,20 +45,6 @@
               <span class="icon-cog"></span>
             </div>
             <div class="options-web">
-              <a class="js-toggle-note-privacy nav-item">
-                {{#if note.userId}}
-                  <span
-                    class="icon-lock"
-                    title={{_ 'notes.show.makeNotePublic'}}>
-                  </span>
-                {{else}}
-                  <span
-                    class="icon-unlock"
-                    title={{_ 'notes.show.makeNotePrivate'}}>
-                  </span>
-                {{/if}}
-              </a>
-
               <a class="js-delete-note nav-item">
                 <span
                   class="icon-trash"
@@ -85,7 +71,7 @@
           {{> Notes_item (noteArgs note)}}
         {{else}}
           <div class="wrapper-message">
-            <div class="title-message">{{_ 'notes.show.noTasks'}}</div>
+            <div class="title-message">{{_ 'notes.show.noNotes'}}</div>
             <div class="subtitle-message">{{_ 'notes.show.addAbove'}}</div>
           </div>
         {{/each}}

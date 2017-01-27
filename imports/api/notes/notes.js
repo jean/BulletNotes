@@ -53,6 +53,7 @@ Notes.schema = new SimpleSchema({
     type: Date,
     denyUpdate: true,
   },
+  owner: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
 });
 
 Notes.attachSchema(Notes.schema);
@@ -64,6 +65,7 @@ Notes.publicFields = {
   parent: 1,
   title: 1,
   createdAt: 1,
+  owner: 1
 };
 
 // NOTE This factory has a name - do we have a code style for this?
