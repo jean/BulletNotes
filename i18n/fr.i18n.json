@@ -1,8 +1,8 @@
 {
-  "lists": {
+  "notes": {
     "makePrivate": {
       "notLoggedIn": "Doit être connecté pour réaliser des notes privées.",
-      "lastPublicList": "Vous ne pouvez pas faire la dernière note publique privée."
+      "lastPublicNote": "Vous ne pouvez pas faire la dernière note publique privée."
     },
     "makePublic": {
       "notLoggedIn": "Doit être connecté.",
@@ -13,7 +13,7 @@
     },
     "remove": {
       "accessDenied": "'Vous n'êtes pas autorisé à supprimer cette note.'",
-      "lastPublicList": "Vous ne pouvez pas supprimer la dernière note publique.",
+      "lastPublicNote": "Vous ne pouvez pas supprimer la dernière note publique.",
       "confirm": "Etes-vous sûr de vouloir supprimer la note"
     },
     "show": {
@@ -23,20 +23,16 @@
       "makePublic": "Rendre publique",
       "makePrivate": "Rendre privé",
       "delete": "Effacer",
-      "makeListPublic": "Ouvrir la note pour le public",
-      "makeListPrivate": "Fermer la note au public",
-      "deleteList": "Effacer la note",
+      "makeNotePublic": "Ouvrir la note pour le public",
+      "makeNotePrivate": "Fermer la note au public",
+      "deleteNote": "Effacer la note",
       "typeToAdd": "Tapez pour ajouter de nouvelles tâches",
       "noTasks": "Aucune tâche ici",
       "addAbove": "Ajouter de nouvelles tâches ci-dessus",
       "loading": "Chargement sauvé tâches..."
     },
     "insert": {
-      "list": "Note"
-    }
-  },
-  "notes": {
-    "insert": {
+      "note": "Note",
       "accessDenied": "Vous ne pouvez pas ajouter note à une note privée qui ne vous appartient pas"
     },
     "setCheckedStatus": {
@@ -44,9 +40,6 @@
     },
     "updateText": {
       "accessDenied": "Vous ne pouvez pas modifier notes dans une note privée qui ne vous appartient pas"
-    },
-    "remove": {
-      "accessDenied": "Vous ne pouvez pas supprimer notes dans une note privée qui ne vous appartient pas"
     },
     "item": {
       "taskName": "Nom de la tâche"
@@ -63,7 +56,7 @@
       "login": "Se connecter",
       "join": "Joindre",
       "newNote": "Nouvelle liste",
-      "newNoteError": "La note ne peut être créé.",
+      "newListError": "La note ne peut être créé.",
       "tryingToConnect": "Tentative de connexion",
       "connectionIssue": "Il semble y avoir un problème de connexion"
     }
