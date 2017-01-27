@@ -32,11 +32,7 @@
       "loading": "Loading notes..."
     },
     "insert": {
-      "note": "Note"
-    }
-  },
-  "notes": {
-    "insert": {
+      "note": "Note",
       "accessDenied": "Cannot add notes to a private note that is not yours"
     },
     "setCheckedStatus": {
@@ -44,9 +40,6 @@
     },
     "updateText": {
       "accessDenied": "Cannot edit notes in a private note that is not yours"
-    },
-    "remove": {
-      "accessDenied": "Cannot remove notes in a private note that is not yours"
     },
     "item": {
       "noteName": "Note name"

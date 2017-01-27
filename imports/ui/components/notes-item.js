@@ -8,7 +8,7 @@ import { Notes } from '../../api/notes/notes.js';
 
 import {
   setCheckedStatus,
-  updateText,
+  updateTitle,
   remove,
 } from '../../api/notes/methods.js';
 
@@ -65,9 +65,9 @@ Template.Notes_item.events({
   // we don't flood the server with updates (handles the event at most once
   // every 300ms)
   'keyup input[type=text]': _.throttle(function notesItemKeyUpInner(event) {
-    updateText.call({
+    updateTitle.call({
       noteId: this.note._id,
-      newText: event.target.value,
+      newTitle: event.target.value,
     }, displayError);
   }, 300),
 

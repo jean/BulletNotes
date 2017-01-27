@@ -26,25 +26,25 @@ export const insert = new ValidatedMethod({
   },
 });
 
-export const updateText = new ValidatedMethod({
-  name: 'notes.updateText',
+export const updateTitle = new ValidatedMethod({
+  name: 'notes.updateTitle',
   validate: new SimpleSchema({
     noteId: Notes.simpleSchema().schema('_id'),
     newTitle: Notes.simpleSchema().schema('title'),
   }).validator({ clean: true, filter: false }),
-  run({ noteId, newText }) {
+  run({ noteId, newTitle }) {
     // This is complex auth stuff - perhaps denormalizing a userId onto notes
     // would be correct here?
     const note = Notes.findOne(noteId);
 
     if (!note.editableBy(this.userId)) {
-      throw new Meteor.Error('notes.updateText.accessDenied',
+      throw new Meteor.Error('notes.updateTitle.accessDenied',
         'Cannot edit notes in a private note that is not yours');
     }
 
     Notes.update(noteId, {
       $set: {
-        text: (_.isUndefined(newText) ? null : newText),
+        title: (_.isUndefined(newTitle) ? null : newTitle),
       },
     });
   },
@@ -63,6 +63,7 @@ export const remove = new ValidatedMethod({
         'Cannot remove notes in a private note that is not yours');
     }
 
+
     Notes.remove(noteId);
   },
 });
@@ -70,7 +71,7 @@ export const remove = new ValidatedMethod({
 // Get note of all method names on Notes
 const NOTES_METHODS = _.pluck([
   insert,
-  updateText,
+  updateTitle,
   remove,
 ], 'name');
 
