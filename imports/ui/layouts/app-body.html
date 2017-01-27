@@ -39,7 +39,7 @@
           </div>
         {{/if}}
 
-        <div class="note-todos">
+        <div class="parentNotes">
           <a class="js-new-note link-note-new">
             <span class="icon-plus"></span>
             {{_ 'layouts.appBody.newNote'}}
@@ -47,7 +47,7 @@
 
           {{#each note in notes}}
             <a href="{{pathFor 'Notes.show' _id=note._id}}" title="{{note.name}}"
-                class="note-todo {{activeNoteClass note}}">
+                class="parentNote {{activeNoteClass note}}">
               {{#if note.userId}}
                 <span class="icon-lock"></span>
               {{/if}}
