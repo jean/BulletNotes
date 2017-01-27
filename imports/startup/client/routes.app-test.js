@@ -10,8 +10,7 @@ import { $ } from 'meteor/jquery';
 
 import { denodeify } from '../../utils/denodeify';
 import { generateData } from './../../api/generate-data.app-tests.js';
-import { Lists } from '../../api/lists/lists.js';
-import { Todos } from '../../api/todos/todos.js';
+import { Notes } from '../../api/notes/notes.js';
 
 
 // Utility -- returns a promise which resolves when all subscriptions are done
@@ -38,19 +37,19 @@ if (Meteor.isClient) {
         .then(waitForSubscriptions));
 
     describe('when logged out', () => {
-      it('has all public lists at homepage', () => {
-        assert.equal(Lists.find().count(), 3);
+      it('has all public notes at homepage', () => {
+        assert.equal(Notes.find().count(), 3);
       });
 
-      it('renders the correct list when routed to', () => {
-        const list = Lists.findOne();
-        FlowRouter.go('Lists.show', { _id: list._id });
+      it('renders the correct note when routed to', () => {
+        const note = Notes.findOne();
+        FlowRouter.go('Notes.show', { _id: note._id });
 
         return afterFlushPromise()
           .then(waitForSubscriptions)
           .then(() => {
-            assert.equal($('.title-wrapper').html(), list.name);
-            assert.equal(Todos.find({ listId: list._id }).count(), 3);
+            assert.equal($('.title-wrapper').html(), note.name);
+            assert.equal(Notes.find({ noteId: note._id }).count(), 3);
           });
       });
     });

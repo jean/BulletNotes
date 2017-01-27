@@ -14,18 +14,17 @@ import { sinon } from 'meteor/practicalmeteor:sinon';
 
 
 import { withRenderedTemplate } from '../../test-helpers.js';
-import '../lists-show-page.js';
+import '../notes-show-page.js';
 
-import { Todos } from '../../../api/todos/todos.js';
-import { Lists } from '../../../api/lists/lists.js';
+import { Notes } from '../../../api/notes/notes.js';
 
-describe('Lists_show_page', function () {
-  const listId = Random.id();
+describe('Notes_show_page', function () {
+  const noteId = Random.id();
 
   beforeEach(function () {
-    StubCollections.stub([Todos, Lists]);
+    StubCollections.stub([Notes]);
     Template.registerHelper('_', key => key);
-    sinon.stub(FlowRouter, 'getParam', () => listId);
+    sinon.stub(FlowRouter, 'getParam', () => noteId);
     sinon.stub(Meteor, 'subscribe', () => ({
       subscriptionId: 0,
       ready: () => true,
@@ -40,19 +39,19 @@ describe('Lists_show_page', function () {
   });
 
   it('renders correctly with simple data', function () {
-    Factory.create('list', { _id: listId });
+    Factory.create('note', { _id: noteId });
     const timestamp = new Date();
-    const todos = _.times(3, i => Factory.create('todo', {
-      listId,
+    const notes = _.times(3, i => Factory.create('note', {
+      noteId,
       createdAt: new Date(timestamp - (3 - i)),
     }));
 
-    withRenderedTemplate('Lists_show_page', {}, (el) => {
-      const todosText = todos.map(t => t.text).reverse();
-      const renderedText = $(el).find('.list-items input[type=text]')
+    withRenderedTemplate('Notes_show_page', {}, (el) => {
+      const notesText = notes.map(t => t.text).reverse();
+      const renderedText = $(el).find('.note-items input[type=text]')
         .map((i, e) => $(e).val())
         .toArray();
-      chai.assert.deepEqual(renderedText, todosText);
+      chai.assert.deepEqual(renderedText, notesText);
     });
   });
 });

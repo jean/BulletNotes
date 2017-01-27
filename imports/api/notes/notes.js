@@ -6,7 +6,6 @@ import faker from 'faker';
 
 class NotesCollection extends Mongo.Collection {
   insert(doc, callback) {
-    console.log(doc);
     const ourDoc = doc;
     ourDoc.createdAt = ourDoc.createdAt || new Date();
     const result = super.insert(ourDoc, callback);
@@ -19,7 +18,7 @@ class NotesCollection extends Mongo.Collection {
     return result;
   }
   remove(selector) {
-    const notes = this.find(selector).fetch();
+    // const notes = this.find(selector).fetch();
     const result = super.remove(selector);
     // incompleteCountDenormalizer.afterRemoveNotes(notes);
     return result;
@@ -65,7 +64,7 @@ Notes.publicFields = {
   parent: 1,
   title: 1,
   createdAt: 1,
-  owner: 1
+  owner: 1,
 };
 
 // NOTE This factory has a name - do we have a code style for this?

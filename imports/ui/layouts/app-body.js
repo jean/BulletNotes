@@ -62,10 +62,12 @@ Template.App_body.helpers({
     return instance.state.get('userMenuOpen');
   },
   notes() {
-    return Notes.find({ $or: [
-      { userId: { $exists: false } },
-      { userId: Meteor.userId() },
-    ] });
+    return Notes.find({
+      parent: null,
+      $or: [
+        { userId: { $exists: false } },
+        { userId: Meteor.userId() },
+      ] });
   },
   activeNoteClass(note) {
     const active = ActiveRoute.name('Notes.show')
@@ -130,8 +132,7 @@ Template.App_body.events({
   },
 
   'click .js-new-note'() {
-    const noteId = insert.call({ title: "New list 1" }, (err) => {
-      console.log(err);
+    const noteId = insert.call({ title: 'New list 1' }, (err) => {
       if (err) {
         // At this point, we have already redirected to the new note page, but
         // for some reason the note didn't get created. This should almost never

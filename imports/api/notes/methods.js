@@ -8,7 +8,7 @@ import { Notes } from './notes.js';
 
 export const insert = new ValidatedMethod({
   name: 'notes.insert',
-  validate: Notes.simpleSchema().pick(['title','parent']).validator({ clean: true, filter: false }),
+  validate: Notes.simpleSchema().pick(['title', 'parent']).validator({ clean: true, filter: false }),
   run({ title, parent }) {
     // const note = Notes.findOne(noteId);
 
