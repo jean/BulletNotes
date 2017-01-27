@@ -1,6 +1,3 @@
-// This defines a starting set of data to be loaded if the app is loaded with an empty db.
-import './fixtures.js';
-
 // This file configures the Accounts package to define the UI of the reset password email.
 import './reset-password-email.js';
 

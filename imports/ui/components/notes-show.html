@@ -25,7 +25,7 @@
           </div>
 
           <h1 class="js-edit-note title-page">
-            <span class="title-wrapper">{{note.title}}</span>
+            <span class="title-wrapper">{{{note.title}}}</span>
             <span class="count-note">{{note.incompleteCount}}</span>
           </h1>
 
@@ -70,19 +70,19 @@
         {{/if}}
       {{/momentum}}
 
-      <form class="js-todo-new todo-new input-symbol">
+      <form class="js-note-new note-new input-symbol">
         <input
           type="text"
           placeholder={{_ 'notes.show.typeToAdd'}}
         />
-        <span class="icon-add js-todo-add"></span>
+        <span class="icon-add js-note-add"></span>
       </form>
     </nav>
 
     <div class="content-scrollable note-items">
       {{#if childrenReady}}
-        {{#each todo in children}}
-          {{> Todos_item (todoArgs todo)}}
+        {{#each note in children}}
+          {{> Notes_item (noteArgs note)}}
         {{else}}
           <div class="wrapper-message">
             <div class="title-message">{{_ 'notes.show.noTasks'}}</div>

@@ -8,8 +8,8 @@ import { Notes } from './notes.js';
 
 export const insert = new ValidatedMethod({
   name: 'notes.insert',
-  validate: Notes.simpleSchema().pick(['title']).validator({ clean: true, filter: false }),
-  run({ title }) {
+  validate: Notes.simpleSchema().pick(['title','parent']).validator({ clean: true, filter: false }),
+  run({ title, parent }) {
     // const note = Notes.findOne(noteId);
 
     // if (note.isPrivate() && note.userId !== this.userId) {
@@ -18,9 +18,9 @@ export const insert = new ValidatedMethod({
     // }
     const note = {
       title,
+      parent,
       createdAt: new Date(),
     };
-    console.log(note);
 
     Notes.insert(note);
   },

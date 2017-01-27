@@ -13,7 +13,7 @@ import { TAPi18n } from 'meteor/tap:i18n';
 import './notes-show.html';
 
 // Component used in the template
-import './todos-item.js';
+import './notes-item.js';
 
 import {
   updateName,
@@ -26,6 +26,8 @@ import {
 import { displayError } from '../lib/errors.js';
 
 Template.Notes_show.onCreated(function noteShowOnCreated() {
+  this.subscribe('notes.children', this.data.note()._id);
+
   this.autorun(() => {
     new SimpleSchema({
       note: { type: Function },
@@ -37,7 +39,7 @@ Template.Notes_show.onCreated(function noteShowOnCreated() {
   this.state = new ReactiveDict();
   this.state.setDefault({
     editing: false,
-    editingTodo: false,
+    editingNote: false,
   });
 
   this.saveNote = () => {
@@ -90,13 +92,13 @@ Template.Notes_show.onCreated(function noteShowOnCreated() {
 });
 
 Template.Notes_show.helpers({
-  todoArgs(todo) {
+  noteArgs(note) {
     const instance = Template.instance();
     return {
-      todo,
-      editing: instance.state.equals('editingTodo', todo._id),
+      note,
+      editing: instance.state.equals('editingNote', note._id),
       onEditingChange(editing) {
-        instance.state.set('editingTodo', editing ? todo._id : false);
+        instance.state.set('editingNote', editing ? note._id : false);
       },
     };
   },
@@ -164,11 +166,11 @@ Template.Notes_show.events({
     instance.deleteNote();
   },
 
-  'click .js-todo-add'(event, instance) {
-    instance.$('.js-todo-new input').focus();
+  'click .js-note-add'(event, instance) {
+    instance.$('.js-note-new input').focus();
   },
 
-  'submit .js-todo-new'(event) {
+  'submit .js-note-new'(event) {
     event.preventDefault();
 
     const $input = $(event.target).find('[type=text]');
@@ -177,8 +179,8 @@ Template.Notes_show.events({
     }
 
     insert.call({
-      noteId: this.note()._id,
-      text: $input.val(),
+      parent: this.note()._id,
+      title: $input.val(),
     }, displayError);
 
     $input.val('');

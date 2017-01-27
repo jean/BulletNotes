@@ -3,36 +3,35 @@
 import { Meteor } from 'meteor/meteor';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import { Todos } from '../todos.js';
-import { Lists } from '../../lists/lists.js';
+import { Notes } from '../notes.js';
 
-Meteor.publishComposite('todos.inList', function todosInList(params) {
+Meteor.publishComposite('notes.inNote', function notesInNote(params) {
   new SimpleSchema({
-    listId: { type: String },
+    noteId: { type: String },
   }).validate(params);
 
-  const { listId } = params;
+  const { noteId } = params;
   const userId = this.userId;
 
   return {
     find() {
       const query = {
-        _id: listId,
+        _id: noteId,
         $or: [{ userId: { $exists: false } }, { userId }],
       };
 
       // We only need the _id field in this query, since it's only
-      // used to drive the child queries to get the todos
+      // used to drive the child queries to get the notes
       const options = {
         fields: { _id: 1 },
       };
 
-      return Lists.find(query, options);
+      return Notes.find(query, options);
     },
 
     children: [{
-      find(list) {
-        return Todos.find({ listId: list._id }, { fields: Todos.publicFields });
+      find(note) {
+        return Notes.find({ noteId: note._id }, { fields: Notes.publicFields });
       },
     }],
   };

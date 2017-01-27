@@ -62,7 +62,7 @@
       "logout": "Logout",
       "login": "Sign In",
       "join": "Join",
-      "newNote": "New Note",
+      "newNote": "New List",
       "newNoteError": "Could not create note.",
       "tryingToConnect": "Trying to connect",
       "connectionIssue": "There seems to be a connection issue"
