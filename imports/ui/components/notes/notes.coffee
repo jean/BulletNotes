@@ -10,7 +10,8 @@
 
 require './notes.html'
 
-import '../note/note.coffee'
+import '/imports/ui/components/footer/footer.coffee'
+import '/imports/ui/components/note/note.coffee'
 
 import {
   updateTitle,
