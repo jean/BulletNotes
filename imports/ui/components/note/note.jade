@@ -4,5 +4,5 @@ template(name='note')
     .title(contenteditable='true') {{{this.title}}}
     a.js-delete-item.delete-item(href='#')
       span.icon-trash
-    +each this.children
+    +each children
       +note

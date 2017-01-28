@@ -24,13 +24,6 @@ import {
 
 Template.notes.onCreated ->
   @subscribe 'notes.children', @data
-  # this.autorun(() => {
-  #   new SimpleSchema({
-  #     note: { type: Function },
-  #     childrenReady: { type: Boolean },
-  #     children: { type: Mongo.Cursor },
-  #   }).validate(Template.currentData());
-  # });
   @state = new ReactiveDict
   @state.setDefault
     editing: false

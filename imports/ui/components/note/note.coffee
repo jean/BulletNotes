@@ -7,13 +7,12 @@ require './note.jade'
 import { displayError } from '../../lib/errors.js';
 
 Template.note.onCreated ->
-  console.log @data
-  @subscribe 'notes.children', @data
+  @subscribe 'notes.children', @data._id
   return
 Template.note.helpers
   children: (note) ->
-    console.log note, note.children()
-    note.children()
+    console.log note, this
+    Notes.find { parent: @_id }, sort: {rank: 1}
   checkedClass: (note) ->
     note.checked and 'checked'
   editingClass: (editing) ->
