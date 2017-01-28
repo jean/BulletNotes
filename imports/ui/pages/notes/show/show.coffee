@@ -17,10 +17,10 @@ import '/imports/ui/components/notes/notes.coffee'
 #       noteRenderHold.release()
 
 Template.Notes_show.helpers
-  # noteIdArray: ->
-    # instance = Template.instance()
-    # noteId = FlowRouter.getParam('noteId')
-    # if Notes.findOne(noteId) then [ noteId ] else []
+  noteIdArray: ->
+    instance = Template.instance()
+    noteId = FlowRouter.getParam('_id')
+    if Notes.findOne(noteId) then [ noteId ] else []
   noteArgs: (noteId) ->
     instance = Template.instance()
     # By finding the note with only the `_id` field set, we don't create a

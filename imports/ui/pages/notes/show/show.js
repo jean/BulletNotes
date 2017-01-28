@@ -1,15 +1,15 @@
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import { Notes } from '../../api/notes/notes.js';
+import { Notes } from '/imports/api/notes/notes.js';
 
-import './notes-show-page.html';
+import './show.jade';
 
 // Components used inside the template
-import './app-not-found.js';
-import '../components/notes/notes.coffee';
+import '/imports/ui/pages/app-not-found.js';
+import '/imports/ui/components/notes/notes.coffee';
 
-Template.Notes_show_page.onCreated(function notesShowPageOnCreated() {
+Template.Notes_show.onCreated(function notesShowPageOnCreated() {
   this.getNoteId = () => FlowRouter.getParam('_id');
 
   this.autorun(() => {
@@ -17,7 +17,7 @@ Template.Notes_show_page.onCreated(function notesShowPageOnCreated() {
   });
 });
 
-Template.Notes_show_page.helpers({
+Template.Notes_show.helpers({
   // We use #each on an array of one item so that the "note" template is
   // removed and a new copy is added when changing notes, which is
   // important for animation purposes.

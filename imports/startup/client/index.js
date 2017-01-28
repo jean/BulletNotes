@@ -1,1 +1,1 @@
-import './routes.js';
+import './routes.coffee';
