@@ -8,7 +8,7 @@ import './notes-show-page.html';
 
 // Components used inside the template
 import './app-not-found.js';
-import '../components/notes-show.js';
+import '../components/notes/notes.coffee';
 
 Template.Notes_show_page.onCreated(function notesShowPageOnCreated() {
   this.getNoteId = () => FlowRouter.getParam('_id');

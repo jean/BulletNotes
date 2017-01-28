@@ -1,7 +1,7 @@
 <template name="Notes_show_page">
   {{#if noteIdArray}}
     {{#each noteId in noteIdArray}}
-      {{> Notes_show (noteArgs noteId)}}
+      {{> notes (noteId)}}
     {{/each}}
   {{else}}
     {{> App_notFound}}

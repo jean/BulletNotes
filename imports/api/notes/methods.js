@@ -34,14 +34,12 @@ export const updateTitle = new ValidatedMethod({
     newTitle: Notes.simpleSchema().schema('title'),
   }).validator({ clean: true, filter: false }),
   run({ noteId, newTitle }) {
-    // This is complex auth stuff - perhaps denormalizing a userId onto notes
-    // would be correct here?
     const note = Notes.findOne(noteId);
 
-    if (!note.editableBy(this.userId)) {
-      throw new Meteor.Error('notes.updateTitle.accessDenied',
-        'Cannot edit notes in a private note that is not yours');
-    }
+    // if (!note.editableBy(this.userId)) {
+    //   throw new Meteor.Error('notes.updateTitle.accessDenied',
+    //     'Cannot edit notes in a private note that is not yours');
+    // }
 
     Notes.update(noteId, {
       $set: {

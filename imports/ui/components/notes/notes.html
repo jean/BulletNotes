@@ -1,4 +1,4 @@
-<template name="Notes_show">
+<template name="notes">
   <div class="page notes-show">
     <nav class="js-title-nav">
       {{#momentum plugin="fade"}}
@@ -66,9 +66,10 @@
     </nav>
 
     <div class="content-scrollable note-items">
-      {{#if childrenReady}}
-        {{#each note in children}}
-          {{> Notes_item (noteArgs note)}}
+      {{#if true}}
+        {{#each notes}}
+          {{> note}}
+          
         {{else}}
           <div class="wrapper-message">
             <div class="title-message">{{_ 'notes.show.noNotes'}}</div>
