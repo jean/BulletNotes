@@ -3,7 +3,6 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { Notes } from '../../api/notes/notes.js';
 
-import { noteRenderHold } from '../launch-screen.js';
 import './notes-show-page.html';
 
 // Components used inside the template
@@ -14,15 +13,7 @@ Template.Notes_show_page.onCreated(function notesShowPageOnCreated() {
   this.getNoteId = () => FlowRouter.getParam('_id');
 
   this.autorun(() => {
-    this.subscribe('notes.inNote', { parent: this.getNoteId() });
-  });
-});
-
-Template.Notes_show_page.onRendered(function notesShowPageOnRendered() {
-  this.autorun(() => {
-    if (this.subscriptionsReady()) {
-      noteRenderHold.release();
-    }
+    this.subscribe('notes.children', { parent: this.getNoteId() });
   });
 });
 
@@ -55,3 +46,4 @@ Template.Notes_show_page.helpers({
     };
   },
 });
+

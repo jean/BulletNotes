@@ -25,8 +25,8 @@
           </div>
 
           <h1 class="js-edit-note title-page">
-            <span class="title-wrapper">{{{note.title}}}</span>
-            <span class="count-note">{{note.incompleteCount}}</span>
+            <span class="title-wrapper">{{{focusedNote.title}}}</span>
+            <span class="count-note">5</span>
           </h1>
 
           <div class="nav-group right">
@@ -66,7 +66,7 @@
     </nav>
 
     <div class="content-scrollable note-items">
-      {{#if true}}
+      {{#if notesReady}}
         {{#each notes}}
           {{> note}}
           

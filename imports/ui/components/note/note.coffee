@@ -4,20 +4,21 @@
 require './note.jade'
 # require '../share/share.coffee'
 
+import { noteRenderHold } from '../../launch-screen.js';
 import { displayError } from '../../lib/errors.js';
 
 Template.note.onCreated ->
   @subscribe 'notes.children', @data._id
-  return
 
 Template.note.helpers
   children: (note) ->
-    console.log note, this
     Notes.find { parent: @_id }, sort: {rank: 1}
   checkedClass: (note) ->
     note.checked and 'checked'
   editingClass: (editing) ->
     editing and 'editing'
+  style: () ->
+    return 'margin-left:'+(@level)+'em;'
 
 Template.note.events
   'change [type=checkbox]': (event) ->

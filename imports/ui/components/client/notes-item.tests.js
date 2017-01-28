@@ -14,7 +14,7 @@ import '../notes-item.js';
 
 import { Notes } from '../../../api/notes/notes.js';
 
-describe('Notes_item', function () {
+describe('note @watch', function () {
   beforeEach(function () {
     Template.registerHelper('_', key => key);
   });
@@ -23,7 +23,7 @@ describe('Notes_item', function () {
     Template.deregisterHelper('_');
   });
 
-  it('renders correctly with simple data', function () {
+  it('renders correctly with simple data @watch', function () {
     const note = Factory.build('note', { checked: false });
     const data = {
       note: Notes._transform(note),

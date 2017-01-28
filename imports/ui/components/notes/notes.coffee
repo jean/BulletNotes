@@ -28,10 +28,18 @@ Template.notes.onCreated ->
   @state.setDefault
     editing: false
     editingNote: false
-  return
-Template.notes.helpers 'notes': ->
-  console.log Template.currentData()
-  Notes.find { parent: Template.currentData() }, sort: rank: 1
+    notesReady: false
+
+Template.notes.helpers
+  notes: ->
+    Notes.find { parent: Template.currentData() }, sort: rank: 1
+  focusedNote: ->
+    Notes.findOne Template.currentData()
+  notesReady: ->
+    # Template.instance().state.get 'notesReady'
+    Template.instance().subscriptionsReady()
+
+
 Template.notes.events
   'click .js-cancel': (event, instance) ->
     instance.state.set 'editing', false
@@ -83,7 +91,7 @@ Template.notes.events
     if !$input.val()
       return
     insert.call {
-      parent: @note()._id
+      parent: Template.instance().data
       title: $input.val()
     }, displayError
     $input.val ''
