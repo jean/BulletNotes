@@ -9,6 +9,7 @@ import { displayError } from '../../lib/errors.js';
 Template.note.onCreated ->
   @subscribe 'notes.children', @data._id
   return
+
 Template.note.helpers
   children: (note) ->
     console.log note, this
@@ -17,6 +18,7 @@ Template.note.helpers
     note.checked and 'checked'
   editingClass: (editing) ->
     editing and 'editing'
+
 Template.note.events
   'change [type=checkbox]': (event) ->
     checked = $(event.target).is(':checked')
