@@ -9,7 +9,7 @@
 { TAPi18n } = require 'meteor/tap:i18n'
 sanitizeHtml = require('sanitize-html')
 
-require './notes.html'
+require './notes.jade'
 require './notes.styl'
 
 import '/imports/ui/components/breadcrumbs/breadcrumbs.coffee'

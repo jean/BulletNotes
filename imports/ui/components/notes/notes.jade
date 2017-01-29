@@ -1,0 +1,23 @@
+template(name='notes')
+  .page.notes-show
+    nav.js-title-nav
+      +momentum(plugin="fade")
+        +breadcrumbs
+        h1.js-edit-note.title-page
+          +if focusedNote
+            .title-wrapper(contenteditable='true') {{{focusedNote.title}}}
+            span.count-note.pull-right {{focusedNote.children}}
+          else
+            .title-wrapper(style='opacity:.5;cursor:default') Home
+    ol#notes.content-scrollable.note-items.sortable
+      +if notesReady
+        +each notes
+          +note
+        +else
+          .wrapper-message
+            .title-message {{_ 'notes.show.noNotes'}}
+            .subtitle-message {{_ 'notes.show.addAbove'}}
+      +else
+        .wrapper-message
+          .title-message {{_ 'notes.show.loading'}}
+      +footer
