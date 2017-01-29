@@ -4,11 +4,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import { SimpleSchema } from 'meteor/aldeed:simple-schema'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 
-import { Notes } from './notes.js'
-
-
-
-
+import { Notes } from './notes.coffee'
 
 export insert = new ValidatedMethod
   name: 'notes.insert'
@@ -43,11 +39,11 @@ export updateTitle = new ValidatedMethod
   name: 'notes.updateTitle'
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
-    newTitle: Notes.simpleSchema().schema('title')
+    title: Notes.simpleSchema().schema('title')
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, newTitle }) ->
+  run: ({ noteId, title }) ->
     # This is complex auth stuff - perhaps denormalizing a userId onto notes
     # would be correct here?
     note = Notes.findOne noteId
@@ -55,10 +51,29 @@ export updateTitle = new ValidatedMethod
     # unless note.editableBy(@userId)
     #   throw new Meteor.Error 'notes.updateTitle.accessDenied', 'Cannot edit notes in a private note that is not yours'
 
-    Notes.update noteId,
-      $set:
-        title: if _.isUndefined(newTitle) then null else newTitle
+    title = Notes.filterTitle title
+    match = title.match(/#due-([0-9]+(-?))+/gim)
+    if match
+      date = match[0]
+      Notes.update noteId, {$set: {
+        title: title
+        due: moment(date).format()
+        updatedAt: new Date
+      }}, tx: true
+    else
+      Notes.update noteId, {$set: {
+        title: title
+        updatedAt: new Date
+      }}, tx: true
 
+
+removeRun = (id) ->
+  children = Notes.find(parent: id)
+  children.forEach (child) ->
+    removeRun child._id
+  note = Notes.findOne(id)
+  Notes.update(note.parent, $inc:{children:-1})
+  Notes.remove { _id: id }, {tx: true, softDelete: true}
 
 export remove = new ValidatedMethod
   name: 'notes.remove'
@@ -70,10 +85,15 @@ export remove = new ValidatedMethod
   run: ({ noteId }) ->
     note = Notes.findOne noteId
 
-    unless note.editableBy(@userId)
-      throw new Meteor.Error 'notes.remove.accessDenied', 'Cannot remove notes in a private note that is not yours'
+    # unless note.editableBy(@userId)
+    #   throw new Meteor.Error 'notes.remove.accessDenied', 'Cannot remove notes in a private note that is not yours'
 
-    Notes.remove noteId
+    # if !@userId || !Notes.isEditable id, shareKey
+    #   throw new (Meteor.Error)('not-authorized')
+
+    tx.start 'delete note'
+    removeRun noteId
+    tx.commit()
 
 
 # Get note of all method names on Notes

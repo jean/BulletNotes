@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { Notes } from '../../api/notes/notes.js';
+import { Notes } from '/imports/api/notes/notes.coffee';
 
 import './root-redirector.html';
 

@@ -1,5 +1,5 @@
 { Template } = require 'meteor/templating'
-{ Notes } = require '/imports/api/notes/notes.js'
+{ Notes } = require '/imports/api/notes/notes.coffee'
 
 import {
   insert,

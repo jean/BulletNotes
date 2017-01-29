@@ -1,4 +1,4 @@
-{ Notes } = require '/imports/api/notes/notes.js'
+{ Notes } = require '/imports/api/notes/notes.coffee'
 { Meteor } = require 'meteor/meteor'
 { Mongo } = require 'meteor/mongo'
 { ReactiveDict } = require 'meteor/reactive-dict'
@@ -7,10 +7,11 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 { TAPi18n } = require 'meteor/tap:i18n'
+sanitizeHtml = require('sanitize-html')
 
 require './notes.html'
 
-#import '/imports/ui/components/footer/footer.coffee'
+import '/imports/ui/components/footer/footer.coffee'
 import '/imports/ui/components/note/note.coffee'
 
 import {
@@ -31,6 +32,18 @@ Template.notes.onCreated ->
     editingNote: false
     notesReady: false
 
+  @deleteNote = =>
+    note = @data.note()
+    title = sanitizeHtml note.title,
+      allowedTags: []
+    message = "#{TAPi18n.__('notes.remove.confirm')} “"+title+"”?"
+    if confirm(message)
+      remove.call { noteId: note._id }, displayError
+
+      FlowRouter.go 'App.home'
+      return yes
+    return no
+
 Template.notes.helpers
   notes: ->
     Notes.find { parent: Template.currentData().note()._id }, sort: rank: 1
@@ -39,7 +52,6 @@ Template.notes.helpers
   notesReady: ->
     # Template.instance().state.get 'notesReady'
     Template.instance().subscriptionsReady()
-
 
 Template.notes.events
   'click .js-cancel': (event, instance) ->
@@ -80,7 +92,7 @@ Template.notes.events
     if title != @title
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data.note()._id
-        newTitle: title
+        title: title
         # FlowRouter.getParam 'shareKey',
       }, (err, res) ->
         $(event.target).html Template.notes.formatText title
@@ -89,7 +101,6 @@ Template.notes.events
     return
   'click .js-delete-note': (event, instance) ->
     instance.deleteNote()
-    return
   'click .js-note-add': (event, instance) ->
     instance.$('.js-note-new input').focus()
     return

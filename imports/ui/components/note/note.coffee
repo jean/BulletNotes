@@ -1,6 +1,6 @@
 { Template } = require 'meteor/templating'
 { ReactiveDict } = require 'meteor/reactive-dict'
-{ Notes } = require '../../../api/notes/notes.js'
+{ Notes } = require '../../../api/notes/notes.coffee'
 require './note.jade'
 # require '../share/share.coffee'
 
@@ -165,7 +165,7 @@ Template.note.events
     if title != @title
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
-        newTitle: title
+        title: title
         # FlowRouter.getParam 'shareKey',
       }, (err, res) ->
         that.title = title

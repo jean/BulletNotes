@@ -1,7 +1,7 @@
 { Meteor } = require 'meteor/meteor'
 { check } = require 'meteor/check'
 { Match } = require 'meteor/check'
-{ Notes } = require '../notes.js'
+{ Notes } = require '../notes.coffee'
 
 Meteor.publish 'notes.calendar', () ->
   Notes.find

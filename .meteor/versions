@@ -13,6 +13,8 @@ audit-argument-checks@1.0.7
 autoupdate@1.2.11
 babel-compiler@6.13.0
 babel-runtime@1.0.1
+babrahams:transactions@0.8.0
+babrahams:undo-redo@0.3.0
 base64@1.0.10
 binary-heap@1.0.10
 blaze@2.1.9
@@ -33,6 +35,7 @@ coffeescript@1.11.1_4
 crosswalk@1.7.0
 dburles:collection-helpers@1.1.0
 dburles:factory@1.1.0
+dburles:mongo-collection-instances@0.3.5
 ddp@1.2.5
 ddp-client@1.2.9
 ddp-common@1.2.8
@@ -61,6 +64,7 @@ jquery@1.11.10
 juliancwirko:postcss@1.2.0
 kadira:blaze-layout@2.3.0
 kadira:flow-router@2.12.1
+lai:collection-extensions@0.2.1_1
 launch-screen@1.0.12
 less@2.7.8
 livedata@1.0.18
@@ -132,6 +136,7 @@ simple:rest@1.1.1
 simple:rest-accounts-password@1.1.2
 simple:rest-bearer-token-parser@1.0.1
 simple:rest-json-error-handler@1.0.1
+socialize:server-time@0.1.2
 softwarerero:accounts-t9n@1.3.5
 spacebars@1.0.13
 spacebars-compiler@1.0.13

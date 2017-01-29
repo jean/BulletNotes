@@ -1,7 +1,7 @@
 import { Template } from 'meteor/templating'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 
-import { Notes } from '../../api/notes/notes.js'
+import { Notes } from '/imports/api/notes/notes.coffee'
 
 import { noteRenderHold } from '/imports/ui/launch-screen.js'
 import './notes-show-page.html'
