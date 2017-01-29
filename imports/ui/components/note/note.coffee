@@ -2,8 +2,9 @@
 { ReactiveDict } = require 'meteor/reactive-dict'
 { Notes } = require '../../../api/notes/notes.coffee'
 require './note.jade'
-# require '../share/share.coffee'
+require './note.styl'
 
+# require '../share/share.coffee'
 import { noteRenderHold } from '../../launch-screen.js';
 import { displayError } from '../../lib/errors.js';
 
@@ -36,9 +37,23 @@ Template.note.helpers
     console.log this
     if @children > 0
       if @showChildren || Session.get('expand_'+@_id)
-        'icon-arrow-up'
+        'glyphicon glyphicon-minus'
       else
-        'icon-arrow-down'
+        'glyphicon glyphicon-plus'
+  className: ->
+    className = "note"
+    if @title
+      tags = @title.match(/#\w+/g)
+      if tags
+        tags.forEach (tag) ->
+          className = className + ' tag-' + tag.substr(1).toLowerCase()
+    if @favorite
+      className = className + ' favorite'
+    if !@showChildren && @children > 0
+      className = className + ' hasHiddenChildren'
+    if @shared
+      className = className + ' shared'
+    className
 
 Template.note.events
   'keydown .title': (event) ->

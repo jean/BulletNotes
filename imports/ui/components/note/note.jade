@@ -3,7 +3,7 @@ template(name='note')
     .noteContainer
       .options.pull-left
         if currentUser
-          a.glyphicon.glyphicon-option-vertical(href='/note/{{_id}}/{{shareKey}}')
+          a.handle.glyphicon.glyphicon-option-vertical(href='/note/{{_id}}/{{shareKey}}')
           ul.dropdown-menu
             li
               a.share(href='#', data-toggle='modal', data-target='#share_{{_id}}')
@@ -22,11 +22,11 @@ template(name='note')
                 i.fa.fa-trash-o
                 |  Delete
       .pull-right
+        a(href='#',class='glyphicon expand {{expandClass}}')
         if currentUser
           i.fa.fa-heart
         if this.children
           span.badge {{this.children}}
-        a(href='#',class='icon expand {{expandClass}}')
       .note-title
         div(class='title task-title-sp', contenteditable='true')
         if (progress)

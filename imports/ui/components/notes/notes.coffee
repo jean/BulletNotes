@@ -172,7 +172,7 @@ Template.notes.formatText = (inputText) ->
 
 Template.notes.rendered = ->
   $('.sortable').nestedSortable
-    handle: '.glyphicon-option-vertical'
+    handle: '.handle'
     items: 'li.note-item'
     placeholder: 'placeholder'
     forcePlaceholderSize: true
