@@ -1,7 +1,7 @@
 template(name='note')
   .note-item(style='{{style}}')
-    a(href='/note/{{this._id}}')
-      span.icon-plus
+    a(href='#',class='expand {{expandClass}}')
+    a(href='/note/{{this._id}}') Zoom
     .title(contenteditable='true') {{{this.title}}}
     a.js-delete-item.delete-item(href='#')
       span.icon-trash

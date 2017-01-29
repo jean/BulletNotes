@@ -190,6 +190,21 @@ export outdent = new ValidatedMethod
         parent: null
         focusNext: 1
 
+export setShowChildren = new ValidatedMethod
+  name: 'notes.setShowChildren'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    show: type: Boolean
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId, show = true }) ->
+    # if !@userId || !Notes.isEditable id, shareKey
+    #   throw new (Meteor.Error)('not-authorized')
+    children = Notes.find(parent: noteId).count()
+    Notes.update noteId, $set:
+      showChildren: show
+      children: children
 
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
@@ -198,6 +213,7 @@ NOTES_METHODS = _.pluck([
   remove
   makeChild
   outdent
+  setShowChildren
 ], 'name')
 
 if Meteor.isServer

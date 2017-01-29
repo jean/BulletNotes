@@ -7,23 +7,40 @@ require './note.jade'
 import { noteRenderHold } from '../../launch-screen.js';
 import { displayError } from '../../lib/errors.js';
 
-Template.note.onCreated ->
-  @subscribe 'notes.children', @data._id
+Template.note.onRendered ->
+  note = this
+  Tracker.autorun ->
+    newNote = Notes.findOne note.data._id
+    if newNote
+      $(note.firstNode).find('.title').first().html(
+        Template.notes.formatText newNote.title
+      )
+      if newNote.body
+        $(note.firstNode).find('.body').first().show().html(
+          Template.notes.formatText newNote.body
+        )
+
+  if @data.focusNext
+    $(note.firstNode).find('.title').first().focus()
 
 Template.note.helpers
-  children: (note) ->
-    Notes.find { parent: @_id }, sort: {rank: 1}
-  checkedClass: (note) ->
-    note.checked and 'checked'
+  children: () ->
+    if @showChildren
+      Meteor.subscribe 'notes.children', @_id
+      Notes.find { parent: @_id }, sort: {rank: 1}
   editingClass: (editing) ->
     editing and 'editing'
   style: () ->
     return 'margin-left:'+(@level)+'em;'
+  expandClass: () ->
+    console.log this
+    if @children > 0
+      if @showChildren || Session.get('expand_'+@_id)
+        'icon-arrow-up'
+      else
+        'icon-arrow-down'
 
 Template.note.events
-  'change [type=checkbox]': (event) ->
-    checked = $(event.target).is(':checked')
-
   'keydown .title': (event) ->
     note = this
     event.stopImmediatePropagation()
@@ -177,9 +194,18 @@ Template.note.events
       }, (err, res) ->
         that.title = title
         $(event.target).html Template.notes.formatText title
-  'mousedown .js-delete-item, click .js-delete-item': ->
-    remove.call { noteId: @note._id }, displayError
-    return
+
+  'click .expand': (event) ->
+    event.stopImmediatePropagation()
+    event.preventDefault()
+    if Meteor.userId()
+      Meteor.call 'notes.setShowChildren', {
+        noteId: @_id
+        show: !@showChildren
+      }
+        # FlowRouter.getParam 'shareKey'
+    else
+      Session.set 'expand_'+@_id, !Session.get('expand_'+@_id)
 
 Template.note.stripTags = (inputText) ->
   if !inputText
