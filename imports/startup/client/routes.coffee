@@ -9,11 +9,16 @@ require '../../ui/layouts/app-body.js'
 require '../../ui/pages/root-redirector.js'
 # require '../../ui/pages/notes/show/show.coffee'
 # require '../../ui/pages/notes/show/show.js'
-require '../../ui/pages/notes-show-page.js'
+require '/imports/ui/pages/notes-show-page.coffee'
 require '../../ui/pages/app-not-found.js'
 
 # Import to override accounts templates
 require '../../ui/accounts/accounts-templates.js'
+
+FlowRouter.route '/',
+  name: 'App.home'
+  action: ->
+    BlazeLayout.render('App_body', { main: 'app_rootRedirector' })
 
 FlowRouter.route '/note/:_id',
   name: 'Notes.show'

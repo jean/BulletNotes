@@ -2,58 +2,44 @@
   <div class="page notes-show">
     <nav class="js-title-nav">
       {{#momentum plugin="fade"}}
-        {{#if editing}}
-          <form class="js-edit-form note-edit-form">
-            <input type="text" name="title" value="{{note.title}}">
-            <div class="nav-group right">
-              <a href="#" class="js-cancel nav-item">
-                <span
-                  class="icon-close js-cancel"
-                  title={{_ 'notes.show.cancel'}}>
-                </span>
-              </a>
-            </div>
-          </form>
-        {{else}}
-          <div class="nav-group">
-            <a href="#" class="js-menu nav-item">
+        <div class="nav-group">
+          <a href="#" class="js-menu nav-item">
+            <span
+              class="icon-list-unordered"
+              title={{_ 'notes.show.showMenu'}}>
+            </span>
+          </a>
+        </div>
+
+        <h1 class="js-edit-note title-page">
+          <div class="title-wrapper" contenteditable="true">{{{focusedNote.title}}}</div>
+          <span class="count-note">5</span>
+        </h1>
+
+        <div class="nav-group right">
+          <div class="nav-item options-mobile">
+            <select class="note-edit">
+              <option disabled selected>
+                {{_ 'notes.show.selectAction'}}
+              </option>
+              {{#if note.userId}}
+                <option value="public">{{_ 'notes.show.makePublic'}}</option>
+              {{else}}
+                <option value="private">{{_ 'notes.show.makePrivate'}}</option>
+              {{/if}}
+              <option value="delete">{{_ 'notes.show.delete'}}</option>
+            </select>
+            <span class="icon-cog"></span>
+          </div>
+          <div class="options-web">
+            <a class="js-delete-note nav-item">
               <span
-                class="icon-list-unordered"
-                title={{_ 'notes.show.showMenu'}}>
+                class="icon-trash"
+                title={{_ 'notes.show.deleteNote'}}>
               </span>
             </a>
           </div>
-
-          <h1 class="js-edit-note title-page">
-            <span class="title-wrapper">{{{focusedNote.title}}}</span>
-            <span class="count-note">5</span>
-          </h1>
-
-          <div class="nav-group right">
-            <div class="nav-item options-mobile">
-              <select class="note-edit">
-                <option disabled selected>
-                  {{_ 'notes.show.selectAction'}}
-                </option>
-                {{#if note.userId}}
-                  <option value="public">{{_ 'notes.show.makePublic'}}</option>
-                {{else}}
-                  <option value="private">{{_ 'notes.show.makePrivate'}}</option>
-                {{/if}}
-                <option value="delete">{{_ 'notes.show.delete'}}</option>
-              </select>
-              <span class="icon-cog"></span>
-            </div>
-            <div class="options-web">
-              <a class="js-delete-note nav-item">
-                <span
-                  class="icon-trash"
-                  title={{_ 'notes.show.deleteNote'}}>
-                </span>
-              </a>
-            </div>
-          </div>
-        {{/if}}
+        </div>
       {{/momentum}}
 
       <form class="js-note-new note-new input-symbol">
@@ -81,7 +67,7 @@
           <div class="title-message">{{_ 'notes.show.loading'}}</div>
         </div>
       {{/if}}
-      {{> footer}}
+      <!-- {{> footer}} -->
     </div>
   </div>
 </template>
