@@ -76,16 +76,14 @@ Template.notes.events
     target.selectedIndex = 0
     return
   'blur .title-wrapper': (event, instance) ->
-    that = this
     event.stopPropagation()
     title = Template.note.stripTags(event.target.innerHTML)
     if title != @title
       Meteor.call 'notes.updateTitle', {
-        noteId: instance.data
+        noteId: instance.data.note()._id
         newTitle: title
         # FlowRouter.getParam 'shareKey',
       }, (err, res) ->
-        that.title = title
         $(event.target).html Template.notes.formatText title
   'click .js-toggle-note-privacy': (event, instance) ->
     instance.toggleNotePrivacy()

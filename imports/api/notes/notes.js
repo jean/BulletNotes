@@ -66,8 +66,8 @@ Notes.schema = new SimpleSchema({
 
 Notes.attachSchema(Notes.schema);
 
-// This represents the keys from Lists objects that should be published
-// to the client. If we add secret properties to List objects, don't list
+// This represents the keys from Notes objects that should be published
+// to the client. If we add secret properties to Note objects, don't note
 // them here to keep them private to the server.
 Notes.publicFields = {
   parent: 1,
@@ -81,7 +81,7 @@ Notes.publicFields = {
 //   - usually I've used the singular, sometimes you have more than one though, like
 //   'note', 'emptyNote', 'checkedNote'
 Factory.define('note', Notes, {
-  listId: () => Factory.get('list'),
+  noteId: () => Factory.get('note'),
   title: () => faker.lorem.sentence(),
   createdAt: () => new Date(),
 });
@@ -92,8 +92,5 @@ Notes.helpers({
   },
   children() {
     return Notes.find({ parent: this._id }, { sort: { createdAt: -1 } });
-  },
-  editableBy(userId) {
-    return this.list().editableBy(userId);
   },
 });

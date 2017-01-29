@@ -36,7 +36,7 @@ export insert = new ValidatedMethod
 
 
 export updateTitle = new ValidatedMethod
-  name: 'notes.updateTtile'
+  name: 'notes.updateTitle'
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
     newTitle: Notes.simpleSchema().schema('title')
@@ -48,8 +48,8 @@ export updateTitle = new ValidatedMethod
     # would be correct here?
     note = Notes.findOne noteId
 
-    unless note.editableBy(@userId)
-      throw new Meteor.Error 'notes.updateTitle.accessDenied', 'Cannot edit notes in a private note that is not yours'
+    # unless note.editableBy(@userId)
+    #   throw new Meteor.Error 'notes.updateTitle.accessDenied', 'Cannot edit notes in a private note that is not yours'
 
     Notes.update noteId,
       $set:
