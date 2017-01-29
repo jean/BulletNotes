@@ -1,13 +1,16 @@
 @import './utils.less';
 
+.placeholder {
+  outline: 1px dashed #4183C4
+}
+
 .note-items .note-item {
+  .options, .badge {
+    margin: .75em;
+  }
   .font-s2;
 
-  // Layout of list-item children
-  display: flex;
-  flex-wrap: wrap;
-  // height: 3rem;
-  width: 100%;
+  position: relative;
   a.icon {
     margin: 1em .1em;
   }
@@ -15,8 +18,9 @@
     border: dotted 1px;
     border-radius: 5px;
   }
-  .icon-arrow-down,.icon-arrow-up {
-    opacity: 0;
+  .expand {
+    position: absolute;
+    right: .5em;
   }
   .checkbox {
     flex: 0, 0, 44px;
@@ -60,9 +64,4 @@
   // Editing
   .delete-item { display: none; }
   &.editing .delete-item { display: inline-block; }
-}
-
-.note-item:hover > .icon-arrow-down,
-.note-item:hover > .icon-arrow-up {
-    opacity: 1;
 }

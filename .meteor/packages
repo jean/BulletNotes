@@ -12,7 +12,7 @@ check@1.2.4
 tracker@1.1.1
 
 # standard libraries
-jquery@1.11.10
+jquery
 underscore@1.0.10
 less@2.7.8
 
@@ -83,3 +83,7 @@ momentjs:moment
 babrahams:undo-redo
 session
 accounts-google
+mrt:jquery-ui
+dsyko:jquery-ui-touch-punch
+stylus
+twbs:bootstrap

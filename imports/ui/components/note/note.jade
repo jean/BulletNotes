@@ -1,9 +1,42 @@
 template(name='note')
-  .note-item(style='{{style}}')
-    a(href='#',class='icon expand {{expandClass}}')
-    a(href='/note/{{this._id}}', class='icon icon-plus')
-    .title(contenteditable='true') {{{this.title}}}
-    a.js-delete-item.delete-item(href='#')
-      span.icon-trash
-    +each children
-      +note
+  li.note-item(style='{{style}}',class='{{className}}',id="menuItem_{{_id}}")
+    .noteContainer
+      .options.pull-left
+        if currentUser
+          a.glyphicon.glyphicon-option-vertical(href='/note/{{_id}}/{{shareKey}}')
+          ul.dropdown-menu
+            li
+              a.share(href='#', data-toggle='modal', data-target='#share_{{_id}}')
+                i.fa.fa-share
+                |  Share
+            li
+              a.duplicate(href='#')
+                i.fa.fa-copy
+                |  Duplicate
+            li
+              a.calendar(href='/calendar/{{_id}}')
+                i.fa.fa-calendar
+                |  Calendar
+            li
+              a.delete(href='#')
+                i.fa.fa-trash-o
+                |  Delete
+      .pull-right
+        if currentUser
+          i.fa.fa-heart
+        if this.children
+          span.badge {{this.children}}
+        a(href='#',class='icon expand {{expandClass}}')
+      .note-title
+        div(class='title task-title-sp', contenteditable='true')
+        if (progress)
+          .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
+            .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
+              span.sr-only {{progress}}% Complete (success)
+        p.body(contenteditable='true',style='display:none')
+        p {{text}}
+    //- +share
+    if children
+      ol
+        each children
+          +note

@@ -96,6 +96,10 @@ Template.App_body.helpers({
   isActiveLanguage(language) {
     return (TAPi18n.getLanguage() === language);
   },
+  expandClass() {
+    const instance = Template.instance();
+    return (instance.state.get('menuOpen') ? 'expanded' : '');
+  }
 });
 
 Template.App_body.events({

@@ -1,0 +1,253 @@
+#notes 
+  list-style-type: none
+  margin: 6em 0 0
+  padding: 0
+  width: 100%
+
+.expanded
+  transform: rotate(180deg)
+  left: 280px !important
+
+.note 
+  border-left: solid 4px
+  font-size: 12px
+  padding: 0px
+  position: relative
+  background: #f5f6f8
+  margin-bottom: 2px
+  border-bottom: none !important
+  .progress 
+    margin: 10px 0 0
+  
+  .noteContainer 
+    padding: 10px 0 10px 35px
+  
+  .options:hover > ul.dropdown-menu 
+    display: block
+    top: 2.2em
+  
+  .expand 
+    text-decoration: none
+    font-weight: bold
+    position: absolute
+    left: 2.25em
+    margin-top: 1px
+  
+  .expand.fa-angle-up:hover,
+  .expand.fa-angle-down:hover
+  
+    border: dashed 1px red
+  
+  .expand.collapsed 
+    border: dashed 1px #777
+  
+  .fa.fa-ellipsis-v 
+    position: absolute
+    left: 5px
+    padding: 4px 9px
+    cursor: move
+    border-radius: 10px
+    border: dashed 1px rgba(255, 255, 255, 0)
+  
+  .fa-ellipsis-v:hover 
+    //background-color: #ccc
+    border: dashed 1px red
+  
+  .fa.fa-arrows 
+    position: absolute
+    left: 25px
+  
+  div.title 
+    display: block
+    font-size: 1.4em
+    color: black
+    min-width: 40%
+    margin: -5px 0 0 20px
+  
+  div.title:focus 
+      outline: none
+  
+  p 
+    margin: .5em .5em .5em 20px
+    opacity: .8
+    font-size: 1.2em
+    color: black
+  
+  a 
+    cursor: pointer
+  
+  .fa-heart 
+    margin: 0 1em
+    opacity: 0
+    cursor: pointer
+    z-index: 10
+    position: relative
+  
+  .thumb 
+    margin: -15px 0 0 25px
+  
+  .badge 
+    margin-right: 1em
+
+.note .fa-heart.hover 
+    color: #f78a09
+    opacity: .7
+
+.note.favorite > .noteContainer .fa-heart, .note:hover.favorite > .noteContainer .fa-heart 
+    color: #f78a09
+    opacity: 1
+
+
+.note.shared .fa-ellipsis-v 
+  border-color: purple
+
+
+.tagLink, .atLink
+  border-width: 1px
+  padding: .25em 
+  border-radius: 10px
+  border-style: solid
+  box-shadow: 1px 1px 2px #8e8e8e
+
+.tagLink:hover, .atLink:hover 
+  box-shadow: 2px 2px 3px #8e8e8e
+
+.tag-red
+  border-color: #FF2020 
+.tag-orange  
+  border-color: #FFD8B5 
+.tag-yellow  
+  border-color: #FFFAB5 
+.tag-lime  
+  border-color: #E1FFB5 
+.tag-olive  
+  border-color: #B5FFC9 
+.tag-green  
+  border-color: #CCFFB5 
+.tag-teal  
+  border-color: #B5FFD7 
+.tag-aqua  
+  border-color: #B5FFFC 
+.tag-blue  
+  border-color: #B5E8FF 
+.tag-navy  
+  border-color: #B9B5FF 
+.tag-fuchia  
+  border-color: #F1B5FF 
+.tag-purple  
+  border-color: #D3B5FF 
+.tag-maroon  
+  border-color: #C08F8F 
+.tag-silver  
+  border-color: silver 
+.tag-gray  
+  border-color: gray 
+.tag-complete, .tag-done, .tag-finished 
+  .title 
+    text-decoration: line-through
+    opacity: .5
+  
+#preview
+  position:absolute
+  border:1px solid #ccc
+  background:#333
+  padding:5px
+  display:none
+  color:#fff
+  max-width: 400px
+  img 
+    width: 100%
+
+
+// .page.notes-show {
+//   .content-scrollable {
+//     background: #fff;
+//     top: 5em !important;
+//   }
+
+//   // Custom nav for notes-show
+//   nav {
+//     background: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
+//     height: 5em;
+
+//     text-align: center;
+//     @media screen and (min-width: 40em) { text-align: left; }
+
+//     .title-page {
+//       .position(absolute, 0, 3rem, auto, 3rem);
+//       @media screen and (min-width: 40em) {
+//         left: 1rem;
+//         right: 6rem;
+//       }
+
+//       cursor: pointer;
+//       font-size: 1.125em; // 18px
+//       white-space: nowrap;
+
+//       .title-wrapper {
+//         .ellipsized;
+//         color: @color-ancillary;
+//         display: inline-block;
+//         padding-right: 1.5rem;
+//         vertical-align: top;
+//         max-width: 100%;
+//       }
+
+//       .count-note {
+//         background: @color-primary;
+//         border-radius: 1em;
+//         color: @color-empty;
+//         display: inline-block;
+//         font-size: .7rem;
+//         line-height: 1;
+//         margin-left: -1.25rem;
+//         margin-top: -4px;
+//         padding: .3em .5em;
+//         vertical-align: middle;
+//       }
+//     }
+//     form.note-new {
+//       .position(absolute, 3em, 0, auto, 0);
+
+//       input[type="text"] {
+//         background: transparent;
+//         padding-bottom: .25em;
+//         padding-left: 44px !important;
+//         padding-top: .25em;
+//       }
+//     }
+//     form.note-edit-form {
+//       position: relative;
+
+//       input[type="text"] {
+//         background: transparent;
+//         font-size: 1.125em; // 18px
+//         width: 100%;
+//         padding-right: 3em;
+//         padding-left: 1rem;
+//       }
+//     }
+
+//     select.note-edit {
+//       .font-s2;
+//       .position(absolute, 0,0,0,0);
+//       background: transparent;
+//       opacity: 0; // allows the cog to appear
+//     }
+
+.options-web 
+  display: none
+
+  .nav-item 
+    .font-s3
+      width: 2rem
+
+    &:last-child
+      margin-right: .5rem
+
+// Hide & show options and nav icons
+// @media screen and (min-width: 40em) {
+//   .nav-group:not(.right) { display: none !important; }
+//   .options-mobile { display: none; }
+//   .options-web {  display: block; }
+// }

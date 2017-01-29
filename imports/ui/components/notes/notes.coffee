@@ -10,6 +10,7 @@
 sanitizeHtml = require('sanitize-html')
 
 require './notes.html'
+require './notes.styl'
 
 import '/imports/ui/components/footer/footer.coffee'
 import '/imports/ui/components/note/note.coffee'
@@ -168,3 +169,18 @@ Template.notes.formatText = (inputText) ->
     ' <a href="/search/%40$3" class="atLink at-$3">@$3</a>'
 
   return replacedText
+
+Template.notes.rendered = ->
+  $('.sortable').nestedSortable
+    handle: '.glyphicon-option-vertical'
+    items: 'li.note-item'
+    placeholder: 'placeholder'
+    forcePlaceholderSize: true
+    opacity: .6
+    toleranceElement: '> div.noteContainer'
+    relocate: ->
+      console.log "DO ET"
+      Meteor.call 'notes.updateRanks',
+      $('.sortable').nestedSortable('toArray'),
+      FlowRouter.getParam('noteId'),
+      FlowRouter.getParam('shareKey')
