@@ -181,6 +181,6 @@ Template.notes.rendered = ->
     relocate: ->
       console.log "DO ET"
       Meteor.call 'notes.updateRanks',
-      $('.sortable').nestedSortable('toArray'),
-      FlowRouter.getParam('noteId'),
-      FlowRouter.getParam('shareKey')
+        $('.sortable').nestedSortable('toArray'),
+        FlowRouter.getParam('noteId'),
+        FlowRouter.getParam('shareKey')

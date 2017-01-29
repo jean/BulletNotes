@@ -209,6 +209,41 @@ export setShowChildren = new ValidatedMethod
       showChildren: show
       children: children
 
+Meteor.methods
+  'notes.updateRanks': (notes, focusedNoteId = null, shareKey = null) ->
+    if !@userId || !Notes.isEditable focusedNoteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+
+    # First save new parent IDs
+    tx.start 'update note ranks'
+    for ii, note of notes
+      if note.parent_id
+        noteParentId = note.parent_id
+      # If we don't have a parentId, we're at the top level.
+      # Use the focused note id
+      else
+        noteParentId = focusedNoteId
+
+      Notes.update {
+        _id: note.id
+      }, {$set: {
+        rank: note.left
+        parent: noteParentId
+      }}, tx: true
+    # Now update the children count.
+    # TODO: Don't do this here.
+    for ii, note of notes
+      count = Notes.find({parent:note.parent}).count()
+      Notes.update {
+        _id: note.parent_id
+      }, {$set: {
+        showChildren: true
+        children: count
+      }}, tx: true
+    tx.commit()
+
+
+
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
   # insert

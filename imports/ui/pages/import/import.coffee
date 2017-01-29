@@ -17,7 +17,6 @@ Template.Notes_import.events
     data.prevLevel = 0
     data.prevParents = []
     data.levelRanks = []
-    console.log data
     Template.Notes_import.import data
 
 Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
@@ -27,7 +26,6 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
     Template.Notes_import.import data, ii + 1, res
     return
   leadingSpaceCount = line.match(/^(\s*)/)[1].length
-  console.log leadingSpaceCount, line
   level = leadingSpaceCount / 2
   parent = null
   if level > 0
@@ -39,7 +37,6 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
     else
       #  We have moved back out to a higher level
       parent = data.prevParents[level]
-  console.log level
   data.prevLevel = level
   if data.levelRanks[level]
     data.levelRanks[level]++
@@ -60,7 +57,6 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
     rank: data.levelRanks[level]
     parent: parent
   }, (err, res) ->
-    console.log err, res
     if !level
       FlowRouter.go('/')
 

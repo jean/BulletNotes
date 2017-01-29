@@ -31,10 +31,7 @@ Template.note.helpers
       Notes.find { parent: @_id }, sort: {rank: 1}
   editingClass: (editing) ->
     editing and 'editing'
-  style: () ->
-    return 'margin-left:'+(@level)+'em;'
   expandClass: () ->
-    console.log this
     if @children > 0
       if @showChildren || Session.get('expand_'+@_id)
         'glyphicon glyphicon-minus'
