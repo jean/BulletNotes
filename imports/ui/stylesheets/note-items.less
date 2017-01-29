@@ -8,7 +8,16 @@
   flex-wrap: wrap;
   // height: 3rem;
   width: 100%;
-
+  a.icon {
+    margin: 1em .1em;
+  }
+  .icon-arrow-down {
+    border: dotted 1px;
+    border-radius: 5px;
+  }
+  .icon-arrow-down,.icon-arrow-up {
+    opacity: 0;
+  }
   .checkbox {
     flex: 0, 0, 44px;
     cursor: pointer;
@@ -51,4 +60,9 @@
   // Editing
   .delete-item { display: none; }
   &.editing .delete-item { display: inline-block; }
+}
+
+.note-item:hover > .icon-arrow-down,
+.note-item:hover > .icon-arrow-up {
+    opacity: 1;
 }
