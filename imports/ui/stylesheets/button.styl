@@ -1,16 +1,17 @@
-@import './utils.less';
+@import './utils.styl';
 
 [class^="btn-"],
 [class*=" btn-"] {
   // Sizing
-  .font-s2;
+  @extend .font-s2
+
   line-height: 20px !important; //override line-height always so we can use em's to size
   padding: 1em 1.25em; // 48px tall
 
   // Style
-  .title-caps;
+  @extend .title-caps;
   transition: all 200ms ease-in;
-  color: @color-empty;
+  color: color-empty;
   display: inline-block;
   position: relative;
   text-align: center;
@@ -19,10 +20,10 @@
   white-space: nowrap;
 
   &[class*="primary"] {
-    background-color: @color-primary;
-    color: @color-empty;
+    background-color: color-primary
+    color: color-empty
 
-    &:hover { background-color: darken(@color-primary, 5%); }
+    // &:hover { background-color: darken(color-primary, 5%); }
     &:active { box-shadow: rgba(0,0,0,.3) 0 1px 3px 0 inset; }
   }
 
@@ -47,7 +48,7 @@
   width: 100%;
 
   [class*="btn-"] {
-    .ellipsized;
+    @extend .ellipsized;
     flex: 1;
 
     & + [class*="btn-"] { margin-left: -1px; }

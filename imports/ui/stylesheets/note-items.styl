@@ -1,4 +1,4 @@
-@import './utils.less';
+@import './utils'
 
 .placeholder {
   outline: 1px dashed #4183C4
@@ -8,7 +8,7 @@
   .options, .badge {
     margin: .75em;
   }
-  .font-s2;
+  @extend .font-s2;
 
   position: relative;
   a.icon {
@@ -37,12 +37,12 @@
   }
 
   .delete-item {
-    color: @color-medium-rare;
+    color: color-medium-rare;
     line-height: 3rem;
     text-align: center;
 
-    &:hover { color: @color-primary; }
-    &:active { color: @color-well; }
+    &:hover { color: color-primary; }
+    &:active { color: color-well; }
     .icon-trash { font-size: 1.1em; }
   }
 
@@ -53,7 +53,7 @@
   // Checked
   &.checked {
     input[type="text"] {
-      color: @color-medium-rare;
+      color: color-medium-rare;
       text-decoration: line-through;
     }
 

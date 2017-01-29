@@ -1,3 +1,5 @@
+@import '{}/imports/ui/stylesheets/utils'
+
 #notes 
   list-style-type: none
   margin: 6em 0 0
@@ -8,85 +10,80 @@
   ol 
     padding-left: 25px
 
-.expanded
-  transform: rotate(180deg)
-  left: 280px !important
+.page.notes-show {
+  background: #fff;
 
-// .page.notes-show {
-//   .content-scrollable {
-//     background: #fff;
-//     top: 5em !important;
-//   }
+  // Custom nav for notes-show
+  nav {
+    background: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
+    height: 5em;
 
-//   // Custom nav for notes-show
-//   nav {
-//     background: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
-//     height: 5em;
+    text-align: center;
+    @media screen and (min-width: 40em) { text-align: left; }
 
-//     text-align: center;
-//     @media screen and (min-width: 40em) { text-align: left; }
+    .title-page {
+      position(absolute, 2.5em, 3rem, auto, 3rem)
+      @media screen and (min-width: 40em) {
+        left: 1rem;
+        right: 6rem;
+      }
 
-//     .title-page {
-//       .position(absolute, 0, 3rem, auto, 3rem);
-//       @media screen and (min-width: 40em) {
-//         left: 1rem;
-//         right: 6rem;
-//       }
+      cursor: pointer;
+      font-size: 1.125em; // 18px
+      white-space: nowrap;
 
-//       cursor: pointer;
-//       font-size: 1.125em; // 18px
-//       white-space: nowrap;
+      .title-wrapper {
+        @extend .ellipsized;
+        color: @color-ancillary;
+        display: inline-block;
+        padding-right: 1.5rem;
+        vertical-align: top;
+        max-width: 100%;
+      }
 
-//       .title-wrapper {
-//         .ellipsized;
-//         color: @color-ancillary;
-//         display: inline-block;
-//         padding-right: 1.5rem;
-//         vertical-align: top;
-//         max-width: 100%;
-//       }
+      .count-note {
+        background: @color-primary;
+        border-radius: 1em;
+        color: @color-empty;
+        display: inline-block;
+        font-size: .7rem;
+        line-height: 1;
+        margin-left: -1.25rem;
+        margin-top: -4px;
+        padding: .3em .5em;
+        vertical-align: middle;
+      }
+    }
+    form.note-new {
+      position(absolute, 3em, 0, auto, 0)
 
-//       .count-note {
-//         background: @color-primary;
-//         border-radius: 1em;
-//         color: @color-empty;
-//         display: inline-block;
-//         font-size: .7rem;
-//         line-height: 1;
-//         margin-left: -1.25rem;
-//         margin-top: -4px;
-//         padding: .3em .5em;
-//         vertical-align: middle;
-//       }
-//     }
-//     form.note-new {
-//       .position(absolute, 3em, 0, auto, 0);
+      input[type="text"] {
+        background: transparent;
+        padding-bottom: .25em;
+        padding-left: 44px !important;
+        padding-top: .25em;
+      }
+    }
+    form.note-edit-form {
+      position: relative;
 
-//       input[type="text"] {
-//         background: transparent;
-//         padding-bottom: .25em;
-//         padding-left: 44px !important;
-//         padding-top: .25em;
-//       }
-//     }
-//     form.note-edit-form {
-//       position: relative;
+      input[type="text"] {
+        background: transparent;
+        font-size: 1.125em; // 18px
+        width: 100%;
+        padding-right: 3em;
+        padding-left: 1rem;
+      }
+    }
 
-//       input[type="text"] {
-//         background: transparent;
-//         font-size: 1.125em; // 18px
-//         width: 100%;
-//         padding-right: 3em;
-//         padding-left: 1rem;
-//       }
-//     }
-
-//     select.note-edit {
-//       .font-s2;
-//       .position(absolute, 0,0,0,0);
-//       background: transparent;
-//       opacity: 0; // allows the cog to appear
-//     }
+    select.note-edit {
+      @extend .font-s2;
+      position(absolute, 0,0,0,0)
+      background: transparent;
+      opacity: 0; // allows the cog to appear
+    }
+  }
+}
 
 .options-web 
   display: none
@@ -97,10 +94,3 @@
 
     &:last-child
       margin-right: .5rem
-
-// Hide & show options and nav icons
-// @media screen and (min-width: 40em) {
-//   .nav-group:not(.right) { display: none !important; }
-//   .options-mobile { display: none; }
-//   .options-web {  display: block; }
-// }

@@ -14,7 +14,7 @@ import { $ } from 'meteor/jquery';
 import { Notes } from '/imports/api/notes/notes.coffee';
 import { insert } from '/imports/api/notes/methods.coffee';
 
-import '../components/loading.js';
+import '../components/loading/loading.coffee';
 import './app-body.html';
 
 const CONNECTION_ISSUE_TIMEOUT = 5000;
@@ -36,7 +36,7 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-  this.subscribe('notes.children', null);
+  this.subscribe('notes.all');
 
   this.state = new ReactiveDict();
   this.state.setDefault({

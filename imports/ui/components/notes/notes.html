@@ -2,16 +2,14 @@
   <div class="page notes-show">
     <nav class="js-title-nav">
       {{#momentum plugin="fade"}}
-
+        {{> breadcrumbs}}
         <h1 class="js-edit-note title-page">
-          <a href='/' class="homeLink" style='display: inline-block;margin-left: 1.5em;'>Home</a>
-        {{#if focusedNote}}
-          <div class="title-wrapper" contenteditable="true">{{{focusedNote.title}}}</div>
-        {{/if}}
+          {{#if focusedNote}}
+            <div class="title-wrapper" contenteditable="true">{{{focusedNote.title}}}</div>
+          {{/if}}
           <span class="count-note">5</span>
         </h1>
-
-        <div class="nav-group right">
+<!--         <div class="nav-group right">
           <div class="nav-item options-mobile">
             <select class="note-edit">
               <option disabled selected>
@@ -34,7 +32,7 @@
               </span>
             </a>
           </div>
-        </div>
+        </div> -->
       {{/momentum}}
     </nav>
 
