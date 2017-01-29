@@ -19,7 +19,7 @@ require '../../ui/accounts/accounts-templates.js'
 FlowRouter.route '/',
   name: 'App.home'
   action: ->
-    BlazeLayout.render('App_body', { main: 'app_rootRedirector' })
+    BlazeLayout.render 'App_body', main: 'Notes_show_page', params: noteId: 0
 
 FlowRouter.route '/note/:_id',
   name: 'Notes.show'

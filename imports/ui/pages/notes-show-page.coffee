@@ -18,12 +18,10 @@ Template.Notes_show_page.onCreated ->
   @autorun =>
     @subscribe 'notes.children', @getNoteId()
 
-
 Template.Notes_show_page.onRendered ->
   @autorun =>
     if @subscriptionsReady()
       noteRenderHold.release()
-
 
 Template.Notes_show_page.helpers
   # We use #each on an array of one item so that the "note" template is
@@ -32,7 +30,11 @@ Template.Notes_show_page.helpers
   noteIdArray: ->
     instance = Template.instance()
     noteId = instance.getNoteId()
-    if Notes.findOne(noteId) then [ noteId ] else []
+    console.log noteId, Notes.findOne(noteId)
+    if noteId
+      if Notes.findOne(noteId) then [ noteId ] else []
+    else
+      [ 0 ]
 
   noteArgs: (noteId) ->
     instance = Template.instance()

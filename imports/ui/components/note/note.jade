@@ -1,6 +1,7 @@
 template(name='note')
   .note-item(style='{{style}}')
-    label.checkbox
+    a(href='/note/{{this._id}}')
+      span.icon-plus
     .title(contenteditable='true') {{{this.title}}}
     a.js-delete-item.delete-item(href='#')
       span.icon-trash

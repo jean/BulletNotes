@@ -25,7 +25,10 @@ import {
 { displayError } = '../../lib/errors.js'
 
 Template.notes.onCreated ->
-  @subscribe 'notes.children', @data.note()._id
+  if @data.note()
+    @noteId = @data.note()._id
+  else
+    @noteId = null
   @state = new ReactiveDict
   @state.setDefault
     editing: false
@@ -45,8 +48,33 @@ Template.notes.onCreated ->
     return no
 
 Template.notes.helpers
+  # notes: () ->
+  #   Notes.find { parent: parentId }, sort: rank: 1
   notes: ->
-    Notes.find { parent: Template.currentData().note()._id }, sort: rank: 1
+    parentId = null
+    if @note()
+      parentId = @note()._id
+
+    if Template.currentData().searchTerm
+      Meteor.subscribe 'notes.search', Template.currentData().searchTerm
+    else
+      Meteor.subscribe 'notes.view',
+        parentId
+        # FlowRouter.getParam 'shareKey'
+      Meteor.subscribe 'notes.children',
+        parentId
+        # FlowRouter.getParam 'shareKey'
+    Session.set 'searchTerm', Template.currentData().searchTerm
+
+    if parentId
+      Session.set 'level', @note().level
+      Notes.find { parent: parentId }, sort: rank: 1
+    else if Template.currentData().searchTerm
+      Session.set 'level', 0
+      Notes.search Template.currentData().searchTerm
+    else
+      Session.set 'level', 0
+      Notes.find { parent: null }, sort: rank: 1
   focusedNote: ->
     Notes.findOne Template.currentData().note()
   notesReady: ->
@@ -62,15 +90,6 @@ Template.notes.events
     if event.which == 27
       event.preventDefault()
       $(event.target).blur()
-    return
-  'blur input[type=text]': (event, instance) ->
-    # if we are still editing (we haven't just clicked the cancel button)
-    if instance.state.get('editing')
-      instance.saveNote()
-    return
-  'submit .js-edit-form': (event, instance) ->
-    event.preventDefault()
-    instance.saveNote()
     return
   'mousedown .js-cancel, click .js-cancel': (event, instance) ->
     event.preventDefault()
@@ -110,9 +129,8 @@ Template.notes.events
     if !$input.val()
       return
     insert.call {
-      parent: Template.instance().data.note()._id
+      parent: Template.instance().noteId
       title: $input.val()
-      level: Template.instance().data.note().level+1
     }, displayError
     $input.val ''
     return

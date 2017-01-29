@@ -11,21 +11,27 @@ export insert = new ValidatedMethod
   validate: Notes.simpleSchema().pick([
     'title'
     'rank'
-    'level'
     'parent'
   ]).validator
     clean: yes
     filter: no
-  run: ({ title, rank, level, parent }) ->
-    note = Notes.findOne parent
+  run: ({ title, rank, parent }) ->
+    parent = Notes.findOne parent
 
     # if note.isPrivate() and note.userId isnt @userId
     #   throw new Meteor.Error 'notes.insert.accessDenied', 'Cannot add notes to a private note that is not yours'
 
+    parentId = null
+    level = 0
+
+    if parentId
+      parentId = parent._id
+      level = parent.level+1
+
     note =
       owner: @userId
       title: title
-      parent: parent
+      parent: parentId
       rank: rank
       level: level
       createdAt: new Date()
@@ -153,12 +159,45 @@ export remove = new ValidatedMethod
     removeRun noteId
     tx.commit()
 
+export outdent = new ValidatedMethod
+  name: 'notes.outdent'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId }) ->
+    # if !@userId || !Notes.isEditable noteId, shareKey
+    #   throw new (Meteor.Error)('not-authorized')
+    note = Notes.findOne(noteId)
+    old_parent = Notes.findOne(note.parent)
+    new_parent = Notes.findOne(old_parent.parent)
+    if new_parent
+      Meteor.call 'notes.makeChild', {
+        noteId: note._id
+        parent: new_parent._id
+        rank: old_parent.rank+1
+        # shareKey
+      }
+    else
+      # No parent left to go out to, set things to top level.
+      children = Notes.find(parent: note._id)
+      Notes.update old_parent._id, $inc: children: -1
+      children.forEach (child) ->
+        Notes.update child._id, $set: level: 1
+      return Notes.update noteId, $set:
+        level: 0
+        parent: null
+        focusNext: 1
+
 
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
   insert
   updateTitle
   remove
+  makeChild
+  outdent
 ], 'name')
 
 if Meteor.isServer

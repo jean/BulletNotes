@@ -76,12 +76,15 @@ Template.note.events
           $(event.currentTarget).closest('.note-item').prev().get(0)
         )._id
         if event.shiftKey
-          Meteor.call 'notes.outdent', @_id, FlowRouter.getParam 'shareKey'
+          Meteor.call 'notes.outdent', {
+            noteId: @_id
+            # FlowRouter.getParam 'shareKey'
+          }
         else
           Meteor.call 'notes.makeChild', {
-            noteId: @_id,
-            parent: parent_id,
-            rank: null,
+            noteId: @_id
+            parent: parent_id
+            rank: null
             # FlowRouter.getParam 'shareKey'
           }
       # Backspace / delete

@@ -12,7 +12,10 @@
         </div>
 
         <h1 class="js-edit-note title-page">
+          <a href='/'><div class="homeLink">Home</div></a>
+        {{#if focusedNote}}
           <div class="title-wrapper" contenteditable="true">{{{focusedNote.title}}}</div>
+        {{/if}}
           <span class="count-note">5</span>
         </h1>
 
