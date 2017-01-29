@@ -59,7 +59,7 @@ Template.note.events
                 FlowRouter.getParam('shareKey'), (err, res) ->
                   Template.notes.calculateRank()
                   setTimeout (->
-                    $(event.target).closest('.note').next().find('.title').focus()
+                    $(event.target).closest('.note-item').next().find('.title').focus()
                   ), 50
       # Tab
       when 9
@@ -73,20 +73,21 @@ Template.note.events
             title,
             FlowRouter.getParam 'shareKey'
         parent_id = Blaze.getData(
-          $(event.currentTarget).closest('.note').prev().get(0)
+          $(event.currentTarget).closest('.note-item').prev().get(0)
         )._id
         if event.shiftKey
           Meteor.call 'notes.outdent', @_id, FlowRouter.getParam 'shareKey'
         else
-          Meteor.call 'notes.makeChild',
-            @_id,
-            parent_id,
-            null,
-            FlowRouter.getParam 'shareKey'
+          Meteor.call 'notes.makeChild', {
+            noteId: @_id,
+            parent: parent_id,
+            rank: null,
+            # FlowRouter.getParam 'shareKey'
+          }
       # Backspace / delete
       when 8
         if event.currentTarget.innerText.trim().length == 0
-          $(event.currentTarget).closest('.note').prev().find('.title').focus()
+          $(event.currentTarget).closest('.note-item').prev().find('.title').focus()
           Meteor.call 'notes.remove', @_id, FlowRouter.getParam 'shareKey'
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
@@ -94,7 +95,7 @@ Template.note.events
             # We're at the start of the note,
             # add this to the note above, and remove it.
             console.log event.target.value
-            prev = $(event.currentTarget).closest('.note').prev()
+            prev = $(event.currentTarget).closest('.note-item').prev()
             console.log prev
             prevNote = Blaze.getData(prev.get(0))
             console.log prevNote
@@ -115,33 +116,33 @@ Template.note.events
       when 38
         # Command is held
         if event.metaKey
-          $(event.currentTarget).closest('.note').find('.expand').trigger 'click'
+          $(event.currentTarget).closest('.note-item').find('.expand').trigger 'click'
         else
-          if $(event.currentTarget).closest('.note').prev().length
-            $(event.currentTarget).closest('.note').prev().find('div.title').focus()
+          if $(event.currentTarget).closest('.note-item').prev().length
+            $(event.currentTarget).closest('.note-item').prev().find('div.title').focus()
           else
             # There is no previous note in the current sub list, go up a note.
-            $(event.currentTarget).closest('.note')
-              .parentsUntil('.note').siblings('.noteContainer')
+            $(event.currentTarget).closest('.note-item')
+              .parentsUntil('.note-item').siblings('.noteContainer')
               .find('div.title').focus()
       # Down
       when 40
         if event.metaKey
-          $(event.currentTarget).closest('.note').find('.expand').trigger 'click'
+          $(event.currentTarget).closest('.note-item').find('.expand').trigger 'click'
         else
           # Go to a child note if available
-          note = $(event.currentTarget).closest('.note').find('ol .note').first()
+          note = $(event.currentTarget).closest('.note-item').find('ol .note').first()
           if !note.length
             # If not, get the next note on the same level
-            note = $(event.currentTarget).closest('.note').next()
+            note = $(event.currentTarget).closest('.note-item').next()
           if !note.length
             # Nothing there, keep going up levels.
             count = 0
-            searchNote = $(event.currentTarget).parent().closest('.note')
+            searchNote = $(event.currentTarget).parent().closest('.note-item')
             while note.length < 1 && count < 10
               note = searchNote.next()
               if !note.length
-                searchNote = searchNote.parent().closest('.note')
+                searchNote = searchNote.parent().closest('.note-item')
                 count++
           if note.length
             note.find('div.title').first().focus()

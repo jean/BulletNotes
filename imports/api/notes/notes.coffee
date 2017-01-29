@@ -100,6 +100,7 @@ Notes.schema = new SimpleSchema
   parent:
     type: String
     regEx: SimpleSchema.RegEx.Id
+    optional: yes
   title:
     type: String
     optional: yes

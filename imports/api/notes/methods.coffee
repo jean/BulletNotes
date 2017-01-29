@@ -30,10 +30,7 @@ export insert = new ValidatedMethod
       level: level
       createdAt: new Date()
 
-    Notes.insert note
-
-
-
+    Notes.insert note, tx: true
 
 export updateTitle = new ValidatedMethod
   name: 'notes.updateTitle'
@@ -66,6 +63,67 @@ export updateTitle = new ValidatedMethod
         updatedAt: new Date
       }}, tx: true
 
+makeChildRun = (id, parent, shareKey = null) ->
+  note = Notes.findOne(id)
+  parent = Notes.findOne(parent)
+  if !note or !parent or id == parent._id
+    return false
+  Notes.update parent._id, {
+    $inc: children: 1
+    $set: showChildren: true
+  }, tx: true
+  Notes.update id, { $set:
+    rank: 0
+    parent: parent._id
+    level: parent.level + 1
+  }, tx: true
+  children = Notes.find(parent: id)
+  children.forEach (child) ->
+    makeChildRun child._id, id, shareKey
+
+export makeChild = new ValidatedMethod
+  name: 'notes.makeChild'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    parent: Notes.simpleSchema().schema('parent')
+    rank: Notes.simpleSchema().schema('rank')
+    # shareKey: Notes.simpleSchema().schema('shareKey')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId, parent, rank }) ->
+    # if !@userId || !Notes.isEditable id, shareKey
+    #   throw new (Meteor.Error)('not-authorized')
+    note = Notes.findOne(noteId)
+    oldParent = Notes.findOne(note.parent)
+    parent = Notes.findOne(parent)
+    if !note or !parent or noteId == parent._id
+      return false
+    if !rank
+      prevNote = Notes.findOne({parent: parent._id},sort: rank: -1)
+      if prevNote
+        rank = prevNote.rank+1
+      else
+        rank = 0
+    tx.start 'note makeChild'
+    if oldParent
+      Notes.update oldParent._id, {
+        $inc: children: -1
+      }, tx: true
+    Notes.update parent._id, {
+      $inc: {children: 1}
+      $set: {showChildren: true}
+    }, tx: true
+    Notes.update noteId, {$set:
+      rank: rank
+      parent: parent._id
+      level: parent.level + 1
+      focusNext: 1
+    }, tx: true
+    children = Notes.find(parent: noteId)
+    children.forEach (child) ->
+      makeChildRun child._id, noteId#, shareKey
+    tx.commit()
 
 removeRun = (id) ->
   children = Notes.find(parent: id)

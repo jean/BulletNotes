@@ -112,6 +112,7 @@ Template.notes.events
     insert.call {
       parent: Template.instance().data.note()._id
       title: $input.val()
+      level: Template.instance().data.note().level+1
     }, displayError
     $input.val ''
     return
