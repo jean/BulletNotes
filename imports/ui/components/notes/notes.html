@@ -36,14 +36,6 @@
           </div>
         </div>
       {{/momentum}}
-
-      <form class="js-note-new note-new input-symbol">
-        <input
-          type="text"
-          placeholder={{_ 'notes.show.typeToAdd'}}
-        />
-        <span class="icon-add js-note-add"></span>
-      </form>
     </nav>
 
     <ol id="notes" class="content-scrollable note-items sortable">
@@ -62,7 +54,7 @@
           <div class="title-message">{{_ 'notes.show.loading'}}</div>
         </div>
       {{/if}}
-      <!-- {{> footer}} -->
+      {{> footer}}
     </ol>
   </div>
 </template>

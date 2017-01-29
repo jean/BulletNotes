@@ -17,54 +17,56 @@ Template.Notes_import.events
     data.prevLevel = 0
     data.prevParents = []
     data.levelRanks = []
+    console.log data
     Template.Notes_import.import data
 
-Template.Notes_import.import = (data, row = 0, lastNote = null) ->
-  ii = row
-  while ii < data.importLines.length
-    line = data.importLines[ii]
-    if line.trim().substr(0, 1) != '-'
-      # Invalid line
-      ii++
-      continue
-    leadingSpaceCount = line.match(/^(\s*)/)[1].length
-    level = leadingSpaceCount / 2
-    parent = null
-    if level > 0
-      # Calculate parent
-      if level > data.prevLevel
-        # This is a new depth, look at the last added note
-        parent = lastNote
-        data.prevParents[level] = parent
-      else
-        #  We have moved back out to a higher level
-        parent = data.prevParents[level]
-    data.prevLevel = level
-    if data.levelRanks[level]
-      data.levelRanks[level]++
+Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
+  line = data.importLines[ii]
+  if line.trim().substr(0, 1) != '-'
+    # Invalid line
+    Template.Notes_import.import data, ii + 1, res
+    return
+  leadingSpaceCount = line.match(/^(\s*)/)[1].length
+  console.log leadingSpaceCount, line
+  level = leadingSpaceCount / 2
+  parent = null
+  if level > 0
+    # Calculate parent
+    if level > data.prevLevel
+      # This is a new depth, look at the last added note
+      parent = lastNote
+      data.prevParents[level] = parent
     else
-      data.levelRanks[level] = 1
-    title = line.substr(2 + level * 2)
-    # Replace Workflowy [COMPLETE] tag with a #done tag.
-    title = title.replace(/(\[COMPLETE\])/,'#done')
-    # Check if the next line is a body
-    nextLine = data.importLines[ii + 1]
-    body = null
-    if nextLine and nextLine.trim().substr(0, 1) == '"'
-      body = nextLine.trim().substr(1)
-      body = body.substr(0, body.length)
+      #  We have moved back out to a higher level
+      parent = data.prevParents[level]
+  console.log level
+  data.prevLevel = level
+  if data.levelRanks[level]
+    data.levelRanks[level]++
+  else
+    data.levelRanks[level] = 1
+  title = line.substr(2 + level * 2)
+  # Replace Workflowy [COMPLETE] tag with a #done tag.
+  title = title.replace(/(\[COMPLETE\])/,'#done')
+  # Check if the next line is a body
+  nextLine = data.importLines[ii + 1]
+  body = null
+  if nextLine and nextLine.trim().substr(0, 1) == '"'
+    body = nextLine.trim().substr(1)
+    body = body.substr(0, body.length)
 
-    insert.call {
-      title: title
-      rank: data.levelRanks[level]
-      level: level
-      parent: parent
-    }, (err, res) ->
-      if !level
-        FlowRouter.go('/note/'+res)
+  insert.call {
+    title: title
+    rank: data.levelRanks[level]
+    parent: parent
+  }, (err, res) ->
+    console.log err, res
+    if !level
+      FlowRouter.go('/')
 
-      # if body
-      #   Meteor.call 'notes.updateBody', res, body
-      Template.Notes_import.import data, ii + 1, res
-    # This break is needed for the while loop above to work on invalid lines
-    break
+    if body
+      updateBody.call {
+        noteId: res
+        body: body
+      }
+    Template.Notes_import.import data, ii + 1, res

@@ -3,6 +3,7 @@ import { _ } from 'meteor/underscore'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import { SimpleSchema } from 'meteor/aldeed:simple-schema'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
+import childCountDenormalizer from './childCountDenormalizer.coffee'
 
 import { Notes } from './notes.coffee'
 
@@ -36,7 +37,9 @@ export insert = new ValidatedMethod
       level: level
       createdAt: new Date()
 
-    Notes.insert note, tx: true
+    note = Notes.insert note#, tx: tx
+    childCountDenormalizer.afterInsertNote parentId
+    note
 
 export updateTitle = new ValidatedMethod
   name: 'notes.updateTitle'
@@ -208,7 +211,7 @@ export setShowChildren = new ValidatedMethod
 
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
-  insert
+  # insert
   updateTitle
   remove
   makeChild

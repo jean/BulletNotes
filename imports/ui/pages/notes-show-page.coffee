@@ -30,7 +30,6 @@ Template.Notes_show_page.helpers
   noteIdArray: ->
     instance = Template.instance()
     noteId = instance.getNoteId()
-    console.log noteId, Notes.findOne(noteId)
     if noteId
       if Notes.findOne(noteId) then [ noteId ] else []
     else

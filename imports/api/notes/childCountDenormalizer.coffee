@@ -13,8 +13,8 @@ export default incompleteCountDenormalizer =
     Notes.update noteId, $set: children: childCount
 
 
-  afterInsertNote: (note) ->
-    @_updateNote note.noteId
+  afterInsertNote: (noteId) ->
+    @_updateNote noteId
 
 
   afterUpdateNote: (selector, modifier) ->
