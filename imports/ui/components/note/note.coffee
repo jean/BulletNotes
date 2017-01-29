@@ -91,7 +91,10 @@ Template.note.events
       when 8
         if event.currentTarget.innerText.trim().length == 0
           $(event.currentTarget).closest('.note-item').prev().find('.title').focus()
-          Meteor.call 'notes.remove', @_id, FlowRouter.getParam 'shareKey'
+          Meteor.call 'notes.remove', {
+            noteId: @_id
+            # FlowRouter.getParam 'shareKey'
+          }
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
           if position == 0

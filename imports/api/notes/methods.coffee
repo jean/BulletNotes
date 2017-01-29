@@ -24,7 +24,7 @@ export insert = new ValidatedMethod
     parentId = null
     level = 0
 
-    if parentId
+    if parent
       parentId = parent._id
       level = parent.level+1
 
