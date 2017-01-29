@@ -13,21 +13,25 @@ import { Notes } from './notes.js'
 export insert = new ValidatedMethod
   name: 'notes.insert'
   validate: Notes.simpleSchema().pick([
-    'parent'
     'title'
+    'rank'
+    'level'
+    'parent'
   ]).validator
     clean: yes
     filter: no
-  run: ({ noteId, text }) ->
-    note = Notes.findOne noteId
+  run: ({ title, rank, level, parent }) ->
+    note = Notes.findOne parent
 
-    if note.isPrivate() and note.userId isnt @userId
-      throw new Meteor.Error 'notes.insert.accessDenied', 'Cannot add notes to a private note that is not yours'
+    # if note.isPrivate() and note.userId isnt @userId
+    #   throw new Meteor.Error 'notes.insert.accessDenied', 'Cannot add notes to a private note that is not yours'
 
     note =
-      noteId: noteId
-      text: text
-      checked: no
+      owner: @userId
+      title: title
+      parent: parent
+      rank: rank
+      level: level
       createdAt: new Date()
 
     Notes.insert note

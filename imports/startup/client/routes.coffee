@@ -11,6 +11,7 @@ require '../../ui/pages/root-redirector.js'
 # require '../../ui/pages/notes/show/show.js'
 require '/imports/ui/pages/notes-show-page.coffee'
 require '../../ui/pages/app-not-found.js'
+require '../../ui/pages/import/import.coffee'
 
 # Import to override accounts templates
 require '../../ui/accounts/accounts-templates.js'
@@ -24,6 +25,11 @@ FlowRouter.route '/note/:_id',
   name: 'Notes.show'
   action: ->
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
+
+FlowRouter.route '/import',
+  name: 'Notes.import'
+  action: ->
+    BlazeLayout.render 'App_body', main: 'Notes_import'
 
 FlowRouter.route '/note/:noteId/:shareKey',
   name: 'App.viewNote'

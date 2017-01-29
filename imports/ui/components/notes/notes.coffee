@@ -19,12 +19,11 @@ import {
   makePrivate,
   remove,
   insert,
-} from '../../../api/notes/methods.js'
+} from '/imports/api/notes/methods.coffee'
 
 { displayError } = '../../lib/errors.js'
 
 Template.notes.onCreated ->
-  console.log @data.note()._id
   @subscribe 'notes.children', @data.note()._id
   @state = new ReactiveDict
   @state.setDefault
@@ -100,7 +99,7 @@ Template.notes.events
     if !$input.val()
       return
     insert.call {
-      parent: Template.instance().data
+      parent: Template.instance().data.note()._id
       title: $input.val()
     }, displayError
     $input.val ''
