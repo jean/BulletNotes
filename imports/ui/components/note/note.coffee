@@ -49,7 +49,7 @@ Template.note.helpers
         tags.forEach (tag) ->
           className = className + ' tag-' + tag.substr(1).toLowerCase()
     if @favorite
-      className = className + ' favorite'
+      className = className + ' favorited'
     if !@showChildren && @children > 0
       className = className + ' hasHiddenChildren'
     if @shared
