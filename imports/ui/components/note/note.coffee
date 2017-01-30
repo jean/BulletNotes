@@ -8,6 +8,10 @@ require './note.styl'
 import { noteRenderHold } from '../../launch-screen.js';
 import { displayError } from '../../lib/errors.js';
 
+import {
+  favorite
+} from '/imports/api/notes/methods.coffee'
+
 Template.note.onRendered ->
   note = this
   Tracker.autorun ->
@@ -53,6 +57,18 @@ Template.note.helpers
     className
 
 Template.note.events
+  'click .favorite': (event, instance) ->
+    console.log instance
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    favorite.call
+      noteId: instance.data._id
+
+  'click .duplicate': (event) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    Meteor.call 'notes.duplicate', @_id
+
   'click a.delete': (event) ->
     event.preventDefault()
     $(event.currentTarget).closest('.note').remove()

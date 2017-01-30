@@ -63,11 +63,8 @@ Template.App_body.helpers({
   },
   notes() {
     return Notes.find({
-      parent: null,
-      $or: [
-        { userId: { $exists: false } },
-        { userId: Meteor.userId() },
-      ] });
+      favorite: true
+    },{sort:{favoritedAt:-1}});
   },
   activeNoteClass(note) {
     const active = ActiveRoute.name('Notes.show')

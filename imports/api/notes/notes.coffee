@@ -130,6 +130,12 @@ Notes.schema = new SimpleSchema
   showChildren:
     type: Boolean
     optional: yes
+  favorite:
+    type: Boolean
+    optional: yes
+  favoritedAt:
+    type: Date
+    optional: yes
 
 Notes.attachSchema Notes.schema
 

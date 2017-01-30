@@ -7,24 +7,24 @@ template(name='note')
           ul.dropdown-menu
             li
               a.share(href='#', data-toggle='modal', data-target='#share_{{_id}}')
-                i.fa.fa-share
+                i.glyphicon.glyphicon-share
                 |  Share
             li
               a.duplicate(href='#')
-                i.fa.fa-copy
+                i.glyphicon.glyphicon-duplicate
                 |  Duplicate
             li
               a.calendar(href='/calendar/{{_id}}')
-                i.fa.fa-calendar
+                i.glyphicon.glyphicon-calendar
                 |  Calendar
             li
               a.delete(href='#')
-                i.fa.fa-trash-o
+                i.glyphicon.glyphicon-trash
                 |  Delete
       .pull-right
         a(href='#',class='glyphicon expand {{expandClass}}')
         if currentUser
-          i.fa.fa-heart
+          i.glyphicon.glyphicon-heart.favorite
         if this.children
           span.badge {{this.children}}
       .note-title

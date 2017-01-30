@@ -41,6 +41,23 @@ export insert = new ValidatedMethod
     childCountDenormalizer.afterInsertNote parentId
     note
 
+export favorite = new ValidatedMethod
+  name: 'notes.favorite'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId }) ->
+    if !@userId
+      throw new (Meteor.Error)('not-authorized')
+    note = Notes.findOne(noteId)
+    console.log note
+    Notes.update noteId, $set:
+      favorite: !note.favorite
+      favoritedAt: new Date
+      updatedAt: new Date
+
 export updateTitle = new ValidatedMethod
   name: 'notes.updateTitle'
   validate: new SimpleSchema
@@ -239,6 +256,37 @@ Meteor.methods
       }}, tx: true
     tx.commit()
 
+  'notes.duplicate': (id, parentId = null) ->
+    tx.start 'duplicate note'
+    Meteor.call 'notes.duplicateRun', id
+    tx.commit()
+
+  'notes.duplicateRun': (id, parentId = null) ->
+    console.log id, parentId
+    note = Notes.findOne(id)
+    if !note
+      return false
+    if !parentId
+      parentId = note.parent
+    newNoteId = Notes.insert
+      title: note.title
+      createdAt: new Date
+      updatedAt: new Date
+      rank: note.rank+.5
+      owner: @userId
+      parent: parentId
+      level: note.level
+    ,
+      tx: true
+      instant: true
+    children = Notes.find parent: id
+    if children
+      Notes.update newNoteId,
+        $set: showChildren: true,
+        children: children.count()
+      children.forEach (child) ->
+        Meteor.call 'notes.duplicateRun', child._id, newNoteId
+
 
 
 # Get note of all method names on Notes
@@ -249,6 +297,7 @@ NOTES_METHODS = _.pluck([
   makeChild
   outdent
   setShowChildren
+  favorite
 ], 'name')
 
 if Meteor.isServer
