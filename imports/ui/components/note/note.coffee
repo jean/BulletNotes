@@ -75,18 +75,19 @@ Template.note.events
           topNote = text.substr(0, position)
           bottomNote = text.substr(position)
           # Create a new note below the current.
-          Meteor.call 'notes.updateTitle',
-            note._id,
-            topNote,
-            FlowRouter.getParam('shareKey'),
-            (err, res) ->
+          Meteor.call 'notes.updateTitle', {
+              noteId: note._id,
+              title: topNote
+              # shareKey: FlowRouter.getParam('shareKey')
+            }, (err, res) ->
               console.log err, res
-              Meteor.call 'notes.insert',
-                '',
-                note.rank + .5,
-                note.parent,
-                FlowRouter.getParam('shareKey'), (err, res) ->
-                  Template.notes.calculateRank()
+              Meteor.call 'notes.insert', {
+                title: ''
+                rank: note.rank + .5
+                parent: note.parent
+                # shareKey: FlowRouter.getParam('shareKey')
+              }, (err, res) ->
+                  # Template.notes.calculateRank()
                   setTimeout (->
                     $(event.target).closest('.note-item').next().find('.title').focus()
                   ), 50
@@ -98,9 +99,10 @@ Template.note.events
         title = Template.note.stripTags(event.target.innerHTML)
         if title != @title
           Meteor.call 'notes.updateTitle',
-            @_id,
-            title,
-            FlowRouter.getParam 'shareKey'
+            noteId: @_id
+            title: title
+
+            # FlowRouter.getParam 'shareKey'
         parent_id = Blaze.getData(
           $(event.currentTarget).closest('.note-item').prev().get(0)
         )._id

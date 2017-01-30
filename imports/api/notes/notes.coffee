@@ -123,6 +123,7 @@ Notes.schema = new SimpleSchema
   rank:
     type: Number
     optional: yes
+    decimal: true
   due:
     type: Date
     optional: yes
