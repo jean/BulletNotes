@@ -1,6 +1,6 @@
 <template name="App_body">
   {{#HammerTouchArea gestureMap=templateGestures}}
-    <div id="container" class="{{menuOpen}} {{cordova}}">
+    <div id="container" class="{{menuOpen}} {{wrapClasses}}">
       <section id="menu">
         <div class="language-toggle">
           {{#each language in languages}}
@@ -16,9 +16,9 @@
           <div class="btns-group-vertical">
             <a href="#" class="js-user-menu btn-secondary">
               {{#if userMenuOpen}}
-                <span class="icon-arrow-up"></span>
+                <span class="glyphicon glyphicon-chevron-up"></span>
                 {{else}}
-                <span class="icon-arrow-down"></span>
+                <span class="glyphicon glyphicon-chevron-down"></span>
               {{/if}}
 
               {{emailLocalPart}}
@@ -67,7 +67,7 @@
       {{#unless connected}}
         <div class="notifications">
           <div class="notification">
-            <span class="icon-sync"></span>
+            <span class="glyphicon glyphicon-refresh"></span>
             <div class="meta">
               <div class="title-notification">
                 {{_ 'layouts.appBody.tryingToConnect'}}
@@ -79,6 +79,36 @@
           </div>
         </div>
       {{/unless}}
+
+      <div class="notifications betaWarning">
+        <div class="notification">
+          <span class="glyphicon glyphicon-warning-sign"></span>
+          <div class="meta">
+            <div class="title-notification">
+              {{_ 'layouts.appBody.devWarning'}}
+            </div>
+            <div class="description">
+              {{{_ 'layouts.appBody.betaWarningBody'}}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{#if dev}}
+        <div class="notifications devWarning">
+          <div class="notification">
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            <div class="meta">
+              <div class="title-notification">
+                {{_ 'layouts.appBody.devWarning'}}
+              </div>
+              <div class="description">
+                {{_ 'layouts.appBody.devWarningBody'}}
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/if}}
 
       <div class="nav-group {{expandClass}}">
         <a href="#" class="js-menu nav-item">

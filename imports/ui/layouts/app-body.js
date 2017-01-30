@@ -43,6 +43,14 @@ Template.App_body.onCreated(function appBodyOnCreated() {
     menuOpen: false,
     userMenuOpen: false,
   });
+
+  setTimeout(function() {
+    $('.betaWarning').fadeOut();
+  },5000);
+
+  setTimeout(function() {
+    $('.devWarning').fadeOut();
+  },10000);
 });
 
 Template.App_body.helpers({
@@ -50,8 +58,15 @@ Template.App_body.helpers({
     const instance = Template.instance();
     return instance.state.get('menuOpen') && 'menu-open';
   },
-  cordova() {
-    return Meteor.isCordova && 'cordova';
+  wrapClasses() {
+      classname = '';
+      if (Meteor.isCordova) {
+        classname += 'cordova';
+      }
+      if (Meteor.settings.public.dev) {
+        classname += ' dev';
+      }
+      return classname;
   },
   emailLocalPart() {
     const email = Meteor.user().emails[0].address;
@@ -60,6 +75,9 @@ Template.App_body.helpers({
   userMenuOpen() {
     const instance = Template.instance();
     return instance.state.get('userMenuOpen');
+  },
+  dev() {
+    return Meteor.settings.public.dev;
   },
   notes() {
     return Notes.find({

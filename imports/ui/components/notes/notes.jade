@@ -8,7 +8,7 @@ template(name='notes')
             .title-wrapper(contenteditable='true') {{{focusedNote.title}}}
             span.count-note.pull-right {{focusedNote.children}}
           else
-            .title-wrapper(style='opacity:.5;cursor:default') Home
+            .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
     ol#notes.content-scrollable.note-items.sortable
       +if notesReady
         +each notes
