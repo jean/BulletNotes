@@ -152,11 +152,8 @@ export remove = new ValidatedMethod
   run: ({ noteId }) ->
     note = Notes.findOne noteId
 
-    # unless note.editableBy(@userId)
-    #   throw new Meteor.Error 'notes.remove.accessDenied', 'Cannot remove notes in a private note that is not yours'
-
-    # if !@userId || !Notes.isEditable id, shareKey
-    #   throw new (Meteor.Error)('not-authorized')
+    if !@userId #|| !Notes.isEditable id, shareKey
+      throw new (Meteor.Error)('not-authorized')
 
     tx.start 'delete note'
     removeRun noteId

@@ -53,6 +53,13 @@ Template.note.helpers
     className
 
 Template.note.events
+  'click a.delete': (event) ->
+    event.preventDefault()
+    $(event.currentTarget).closest('.note').remove()
+    Meteor.call 'notes.remove',
+      noteId: @_id
+      # shareKey: FlowRouter.getParam 'shareKey'
+
   'keydown .title': (event) ->
     note = this
     event.stopImmediatePropagation()
@@ -122,10 +129,10 @@ Template.note.events
       when 8
         if event.currentTarget.innerText.trim().length == 0
           $(event.currentTarget).closest('.note-item').prev().find('.title').focus()
-          Meteor.call 'notes.remove', {
+          console.log "Remove: ",this
+          Meteor.call 'notes.remove',
             noteId: @_id
             # FlowRouter.getParam 'shareKey'
-          }
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
           if position == 0
