@@ -3,6 +3,7 @@
 
 import {
   insert,
+  updateBody
 } from '/imports/api/notes/methods.coffee'
 
 require './import.jade'
@@ -23,10 +24,11 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
   line = data.importLines[ii]
   if line.trim().substr(0, 1) != '-'
     # Invalid line
-    Template.Notes_import.import data, ii + 1, res
+    console.log line
+    Template.Notes_import.import data, ii + 1, lastNote
     return
   leadingSpaceCount = line.match(/^(\s*)/)[1].length
-  level = leadingSpaceCount / 2
+  level = leadingSpaceCount / 4
   parent = null
   if level > 0
     # Calculate parent
@@ -50,7 +52,7 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
   body = null
   if nextLine and nextLine.trim().substr(0, 1) == '"'
     body = nextLine.trim().substr(1)
-    body = body.substr(0, body.length)
+    body = body.substr(0, body.length-1)
 
   insert.call {
     title: title
@@ -64,5 +66,7 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
       updateBody.call {
         noteId: res
         body: body
-      }
-    Template.Notes_import.import data, ii + 1, res
+      }, (err, bodyRes) ->
+        Template.Notes_import.import data, ii + 1, res
+    else
+      Template.Notes_import.import data, ii + 1, res

@@ -58,6 +58,22 @@ export favorite = new ValidatedMethod
       favoritedAt: new Date
       updatedAt: new Date
 
+export updateBody = new ValidatedMethod
+  name: 'notes.updateBody'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    body: Notes.simpleSchema().schema('body')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId, body }) ->
+    note = Notes.findOne noteId
+
+    Notes.update noteId, {$set: {
+      body: body
+      updatedAt: new Date
+    }}, tx: true
+
 export updateTitle = new ValidatedMethod
   name: 'notes.updateTitle'
   validate: new SimpleSchema
@@ -288,12 +304,11 @@ Meteor.methods
       children.forEach (child) ->
         Meteor.call 'notes.duplicateRun', child._id, newNoteId
 
-
-
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
   # insert
   updateTitle
+  updateBody
   remove
   makeChild
   outdent

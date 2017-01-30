@@ -14,6 +14,7 @@ import {
 
 Template.note.onRendered ->
   note = this
+  console.log note
   Tracker.autorun ->
     newNote = Notes.findOne note.data._id
     if newNote
@@ -57,6 +58,10 @@ Template.note.helpers
     className
 
 Template.note.events
+  'click .noteContainer a': (event) ->
+    if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
+      window.open(event.target.href)
+
   'click .favorite': (event, instance) ->
     console.log instance
     event.preventDefault()

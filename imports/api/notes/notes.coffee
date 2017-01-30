@@ -136,6 +136,12 @@ Notes.schema = new SimpleSchema
   favoritedAt:
     type: Date
     optional: yes
+  admin:
+    type: Boolean
+    optional: yes
+  body:
+    type: String
+    optional: yes
 
 Notes.attachSchema Notes.schema
 
@@ -151,6 +157,8 @@ Notes.publicFields =
   rank: 1
   due: 1
   showChildren: 1
+  favorite: 1
+  body: 1
 
 # NOTE This factory has a name - do we have a code style for this?
 #   - usually I've used the singular, sometimes you have more than one though, like
