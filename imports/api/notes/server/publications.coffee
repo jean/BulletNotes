@@ -6,6 +6,7 @@
 Meteor.publish 'notes.all', () ->
   Notes.find
     owner: @userId
+    deleted: {$exists: false}
 
 Meteor.publish 'notes.calendar', () ->
   Notes.find

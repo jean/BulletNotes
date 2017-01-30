@@ -26,6 +26,15 @@ import {
 
 { displayError } = '../../lib/errors.js'
 
+# URLs starting with http://, https://, or ftp://
+Template.notes.urlPattern1 =
+  /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
+
+# URLs starting with "www." (without // before it
+# or it'd re-link the ones done above).
+Template.notes.urlPattern2 =
+  /(^|[^\/])(www\.[\S]+(\b|$))/gim
+
 Template.notes.onCreated ->
   if @data.note()
     @noteId = @data.note()._id

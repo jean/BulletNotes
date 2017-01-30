@@ -152,7 +152,8 @@ export makeChild = new ValidatedMethod
     tx.commit()
 
 removeRun = (id) ->
-  children = Notes.find(parent: id)
+  children = Notes.find
+    parent: id
   children.forEach (child) ->
     removeRun child._id
   note = Notes.findOne(id)

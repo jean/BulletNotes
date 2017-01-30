@@ -159,19 +159,15 @@ Factory.define 'note', Notes,
   noteId: ->
     Factory.get 'note'
 
-
   text: ->
     faker.lorem.sentence()
-
 
   createdAt: ->
     new Date()
 
-
 Notes.helpers
   note: ->
     Notes.findOne @noteId
-
 
   editableBy: (userId) ->
     @note().editableBy userId
