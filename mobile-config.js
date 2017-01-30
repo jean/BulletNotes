@@ -2,11 +2,11 @@
 /* eslint-disable quote-props */
 
 App.info({
-  name: 'Todos',
+  name: 'BulletNotes',
   description: 'A simple todo list app built in Meteor.',
   author: 'Percolate Studio Team',
   email: 'us@percolatestudio.com',
-  website: 'http://percolatestudio.com',
+  website: 'http://bulletnotes.io',
   version: '0.0.1',
 });
 
