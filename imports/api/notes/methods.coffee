@@ -41,6 +41,8 @@ export insert = new ValidatedMethod
     childCountDenormalizer.afterInsertNote parentId
     note
 
+  
+
 export favorite = new ValidatedMethod
   name: 'notes.favorite'
   validate: new SimpleSchema
@@ -231,7 +233,6 @@ export setShowChildren = new ValidatedMethod
     show: type: Boolean
   .validator
     clean: yes
-    filter: no
   run: ({ noteId, show = true }) ->
     # if !@userId || !Notes.isEditable id, shareKey
     #   throw new (Meteor.Error)('not-authorized')
@@ -240,11 +241,49 @@ export setShowChildren = new ValidatedMethod
       showChildren: show
       children: children
 
-Meteor.methods
-  'notes.updateRanks': (notes, focusedNoteId = null, shareKey = null) ->
-    if !@userId || !Notes.isEditable focusedNoteId, shareKey
+export notesExport = new ValidatedMethod
+  name: 'notes.export'
+  validate: new SimpleSchema
+    noteId:
+      type: String
+      optional: true
+    userId: Notes.simpleSchema().schema('owner')
+    level: Notes.simpleSchema().schema('level')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId = null, userId = null, level = 0 }) ->
+    if !userId
+      userId = @userId
+    if !userId
       throw new (Meteor.Error)('not-authorized')
 
+    topLevelNotes = Notes.find {
+      parent: noteId
+      owner: userId
+      deleted: {$exists: false}
+    }, sort: rank: 1
+    exportText = ''
+    topLevelNotes.forEach (note) ->
+      spacing = new Array(level * 5).join(' ')
+      exportText += spacing + '- ' +
+        note.title.replace(/(\r\n|\n|\r)/gm, '') + '\n'
+      if note.body
+        exportText += spacing + '  "' + note.body + '"\n'
+      exportText = exportText + notesExport.call {
+        noteId: note._id
+        userId: userId
+        level: level+1
+      }
+    exportText
+
+export updateRanks = new ValidatedMethod
+  name: 'notes.updateRanks'
+  validate: null
+  run: ({notes, focusedNoteId = null, shareKey = null}) ->
+    if !@userId #|| !Notes.isEditable focusedNoteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+    console.log notes
     # First save new parent IDs
     tx.start 'update note ranks'
     for ii, note of notes
@@ -272,6 +311,8 @@ Meteor.methods
         children: count
       }}, tx: true
     tx.commit()
+
+Meteor.methods
 
   'notes.duplicate': (id, parentId = null) ->
     tx.start 'duplicate note'
@@ -314,6 +355,8 @@ NOTES_METHODS = _.pluck([
   outdent
   setShowChildren
   favorite
+  notesExport
+  updateRanks
 ], 'name')
 
 if Meteor.isServer

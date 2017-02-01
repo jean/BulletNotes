@@ -97,6 +97,7 @@ Notes.schema = new SimpleSchema
   _id:
     type: String
     regEx: SimpleSchema.RegEx.Id
+    optional: yes
   parent:
     type: String
     regEx: SimpleSchema.RegEx.Id

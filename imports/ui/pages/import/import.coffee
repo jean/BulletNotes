@@ -22,6 +22,8 @@ Template.Notes_import.events
 
 Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
   line = data.importLines[ii]
+  if !line
+    return
   if line.trim().substr(0, 1) != '-'
     # Invalid line
     console.log line
@@ -44,7 +46,7 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
     data.levelRanks[level]++
   else
     data.levelRanks[level] = 1
-  title = line.substr(2 + level * 2)
+  title = line.substr(2 + level * 4)
   # Replace Workflowy [COMPLETE] tag with a #done tag.
   title = title.replace(/(\[COMPLETE\])/,'#done')
   # Check if the next line is a body

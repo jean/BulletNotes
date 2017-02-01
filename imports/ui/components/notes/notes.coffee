@@ -22,6 +22,7 @@ import {
   makePrivate,
   remove,
   insert,
+  updateRanks
 } from '/imports/api/notes/methods.coffee'
 
 { displayError } = '../../lib/errors.js'
@@ -189,8 +190,7 @@ Template.notes.rendered = ->
     opacity: .6
     toleranceElement: '> div.noteContainer'
     relocate: ->
-      consol
-      Meteor.call 'notes.updateRanks',
-        $('.sortable').nestedSortable('toArray'),
-        FlowRouter.getParam('_id'),
-        FlowRouter.getParam('shareKey')
+      updateRanks.call 
+        notes: $('.sortable').nestedSortable('toArray')
+        focusedNoteId: FlowRouter.getParam('_id'),
+        shareKey: FlowRouter.getParam('shareKey')
