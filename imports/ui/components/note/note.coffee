@@ -13,7 +13,6 @@ import {
 
 Template.note.onRendered ->
   note = this
-  console.log note
   Tracker.autorun ->
     newNote = Notes.findOne note.data._id
     if newNote

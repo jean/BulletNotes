@@ -18,7 +18,7 @@ template(name='App_body')
                     span.glyphicon.glyphicon-chevron-up
                   +else
                     span.glyphicon.glyphicon-chevron-down
-                    +emailLocalPart
+                    | {{emailLocalPart}}
                 +if userMenuOpen
                   a.btn-secondary(href='/import') {{_ 'layouts.appBody.import'}}
                   a.js-logout.btn-secondary {{_ 'layouts.appBody.logout'}}
@@ -28,54 +28,48 @@ template(name='App_body')
                   | {{_ 'layouts.appBody.login'}}
                 a.btn-secondary(href="{{pathFor 'join'}}")
                   | {{_ 'layouts.appBody.join'}}
-              .parentNotes
-                a.js-new-note.link-note-new
-                  span.icon-plus
-                  |                 {{_ 'layouts.appBody.newNote'}}
-                +each note in notes}}
-                  a.parentNote(href="{{pathFor 'Notes.show' _id=note._id}}", title='{{note.name}}', class='{{activeNoteClass note}}')
-                  +if note.userId
-                    span.icon-lock
-                  if note.incompleteCount
-                    span.count-note {{note.incompleteCount}}
-                  |                   {{{note.title}}}
+            .parentNotes
+              h4 Favorites
+              +each note in notes}}
+                a.parentNote(href="{{pathFor 'Notes.show' _id=note._id}}", title='{{note.name}}', class='{{activeNoteClass note}}')
+                  | {{{note.title}}}
 
-    +unless connected
-      .notifications
-        .notification
-          span.glyphicon.glyphicon-refresh.glyphicon-spin
-          .meta
-            .title-notification
-              | {{_ 'layouts.appBody.tryingToConnect'}}
-            .description
-              | {{_ 'layouts.appBody.connectionIssue'}}
-    +if dev
-      .notifications.devWarning
-        .notification
-          span.glyphicon.glyphicon-warning-sign
-          .meta
-            .title-notification
-              | {{_ 'layouts.appBody.devWarning'}}
-            .description
-              | {{_ 'layouts.appBody.devWarningBody'}}
-    +else
-      .notifications.betaWarning
-        .notification
-          span.glyphicon.glyphicon-warning-sign
-          .meta
-            .title-notification
-              | {{_ 'layouts.appBody.devWarning'}}
-            .description
-              | {{{_ 'layouts.appBody.betaWarningBody'}}}
-    +momentum(plugin="fade")
-      +if Template.subscriptionsReady
-        .nav-group(class='{{expandClass}}')
-          a.js-menu.nav-item(href='#')
-            span.glyphicon.glyphicon-menu-right
-    .content-overlay
-    #content-container
-      +momentum plugin="fade"
+      +unless connected
+        .notifications
+          .notification
+            span.glyphicon.glyphicon-refresh.glyphicon-spin
+            .meta
+              .title-notification
+                | {{_ 'layouts.appBody.tryingToConnect'}}
+              .description
+                | {{_ 'layouts.appBody.connectionIssue'}}
+      +if dev
+        .notifications.devWarning
+          .notification
+            span.glyphicon.glyphicon-warning-sign
+            .meta
+              .title-notification
+                | {{_ 'layouts.appBody.devWarning'}}
+              .description
+                | {{_ 'layouts.appBody.devWarningBody'}}
+      +else
+        .notifications.betaWarning
+          .notification
+            span.glyphicon.glyphicon-warning-sign
+            .meta
+              .title-notification
+                | {{_ 'layouts.appBody.devWarning'}}
+              .description
+                | {{{_ 'layouts.appBody.betaWarningBody'}}}
+      +momentum(plugin="fade")
         +if Template.subscriptionsReady
-          +Template.dynamic(template=main)
-        +else
-          +App_loading
+          .nav-group(class='{{expandClass}}')
+            a.js-menu.nav-item(href='#')
+              span.glyphicon.glyphicon-menu-right
+      .content-overlay
+      #content-container
+        +momentum plugin="fade"
+          +if Template.subscriptionsReady
+            +Template.dynamic(template=main)
+          +else
+            +App_loading
