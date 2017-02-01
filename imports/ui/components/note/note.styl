@@ -5,8 +5,14 @@
   position: relative
   margin-bottom: 2px
   border-bottom: none !important
+  line-height: 1.75
   .favorite
     opacity: .1
+    padding: .5em;
+    position: absolute;
+    right: 3em;
+    top: .7em;
+    cursor: pointer
   &.favorited
     .favorite
       opacity: 1
@@ -29,8 +35,9 @@
     text-decoration: none
     font-weight: bold
     position: absolute
-    top: 1em
-    right: 4em
+    top: .6em
+    right: 5em
+    padding: .5em
   
   .expand.fa-angle-up:hover,
   .expand.fa-angle-down:hover
@@ -40,28 +47,13 @@
   .expand.collapsed 
     border: dashed 1px #777
   
-  .fa.fa-ellipsis-v 
-    position: absolute
-    left: 5px
-    padding: 4px 9px
-    cursor: move
-    border-radius: 10px
-    border: dashed 1px rgba(255, 255, 255, 0)
-  
-  .fa-ellipsis-v:hover 
-    //background-color: #ccc
-    border: dashed 1px red
-  
-  .fa.fa-arrows 
-    position: absolute
-    left: 25px
-  
   div.title 
     display: block
     font-size: 1.4em
     color: black
     min-width: 40%
-    margin: -5px 0 0 20px
+    margin: -5px 5em 0 20px
+    line-height: 1.75
   
   div.title:focus 
       outline: none
@@ -75,18 +67,11 @@
   a 
     cursor: pointer
   
-  .fa-heart 
-    margin: 0 1em
-    opacity: 0
-    cursor: pointer
-    z-index: 10
-    position: relative
-  
   .thumb 
     margin: -15px 0 0 25px
   
   .badge 
-    margin-right: 1em
+    margin-right: .1em
 
 .note-item.hasHiddenChildren
   .handle
@@ -107,7 +92,7 @@
 
 .tagLink, .atLink
   border-width: 1px
-  padding: .25em 
+  padding: .1em .25em 
   border-radius: 10px
   border-style: solid
   box-shadow: 1px 1px 2px #8e8e8e

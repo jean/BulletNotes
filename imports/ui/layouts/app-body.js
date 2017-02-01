@@ -15,7 +15,7 @@ import { Notes } from '/imports/api/notes/notes.coffee';
 import { insert } from '/imports/api/notes/methods.coffee';
 
 import '../components/loading/loading.coffee';
-import './app-body.html';
+import './app-body.jade';
 
 const CONNECTION_ISSUE_TIMEOUT = 5000;
 

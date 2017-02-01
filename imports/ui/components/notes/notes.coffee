@@ -10,7 +10,6 @@
 sanitizeHtml = require('sanitize-html')
 
 require './notes.jade'
-require './notes.styl'
 
 import '/imports/ui/components/breadcrumbs/breadcrumbs.coffee'
 import '/imports/ui/components/footer/footer.coffee'
