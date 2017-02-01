@@ -189,8 +189,8 @@ Template.notes.rendered = ->
     opacity: .6
     toleranceElement: '> div.noteContainer'
     relocate: ->
-      console.log "DO ET"
+      consol
       Meteor.call 'notes.updateRanks',
         $('.sortable').nestedSortable('toArray'),
-        FlowRouter.getParam('noteId'),
+        FlowRouter.getParam('_id'),
         FlowRouter.getParam('shareKey')
