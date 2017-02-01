@@ -58,7 +58,7 @@ Template.note.helpers
     className
 
 Template.note.events
-  'click .noteContainer a': (event) ->
+  'click .title a': (event) ->
     if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
       window.open(event.target.href)
 
