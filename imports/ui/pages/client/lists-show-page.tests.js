@@ -13,10 +13,10 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { sinon } from 'meteor/practicalmeteor:sinon';
 
 
-import { withRenderedTemplate } from '../../test-helpers.js';
-import '../notes-show-page.js';
+import { withRenderedTemplate } from '/imports/ui/test-helpers.js';
+import '../notes-show-page.coffee';
 
-import { Notes } from '../../../api/notes/notes.js';
+import { Notes } from '/imports/api/notes/notes.coffee';
 
 describe('Notes_show_page', function () {
   const noteId = Random.id();

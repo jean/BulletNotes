@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "meteor -s settings.json",
-    "test": "meteor test --once --driver-package dispatch:mocha-phantomjs",
+    "pretest": "coffeelint imports/",
+    "test": "meteor reset; meteor test --once --driver-package dispatch:mocha-phantomjs --port 3333",
     "test-app": "meteor test --full-app --once --driver-package dispatch:mocha-phantomjs",
     "test-watch": "meteor test --driver-package practicalmeteor:mocha",
     "test-app-watch": "meteor test --full-app --driver-package practicalmeteor:mocha",
