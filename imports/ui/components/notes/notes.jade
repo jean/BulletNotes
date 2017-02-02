@@ -30,7 +30,7 @@ template(name='notes')
         +each notes
           +note
         +else
-          .wrapper-message
+          .noNoteMessage
             .title-message {{_ 'notes.show.noNotes'}}
             .subtitle-message {{_ 'notes.show.addAbove'}}
       +else
