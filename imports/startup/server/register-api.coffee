@@ -1,7 +1,4 @@
-require '../../api/app/methods.coffee'
+import '/imports/api/app/methods.coffee'
 
-require '../../api/notes/methods.coffee'
-require '../../api/notes/server/publications.coffee'
-
-require '../../api/users/methods.coffee'
-
+import '/imports/api/notes/methods.coffee'
+import '/imports/api/notes/server/publications.coffee'

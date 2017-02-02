@@ -5,19 +5,18 @@ require './breadcrumbs.jade'
 Template.breadcrumbs.helpers
   parents: ->
     parents = []
-    if @noteId
-      note = Notes.findOne(@noteId)
-      if (note)
+    note = Template.instance().data.note()
+    if note
+      Meteor.subscribe 'notes.view',
+        note.parent,
+        FlowRouter.getParam 'shareKey'
+      parent = Notes.findOne(note.parent)
+      while parent
+        parents.unshift parent
         Meteor.subscribe 'notes.view',
-          note.parent,
+          parent.parent,
           FlowRouter.getParam 'shareKey'
-        parent = Notes.findOne(note.parent)
-        while parent
-          parents.unshift parent
-          Meteor.subscribe 'notes.view',
-            parent.parent,
-            FlowRouter.getParam 'shareKey'
-          parent = Notes.findOne(parent.parent)
+        parent = Notes.findOne(parent.parent)
     parents
   focusedTitle: ->
     note = Notes.findOne(@noteId)

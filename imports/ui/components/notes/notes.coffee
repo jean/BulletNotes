@@ -1,11 +1,30 @@
 { Notes } = require '/imports/api/notes/notes.coffee'
 { Meteor } = require 'meteor/meteor'
+{ Mongo } = require 'meteor/mongo'
+{ ReactiveDict } = require 'meteor/reactive-dict'
+{ Tracker } = require 'meteor/tracker'
+{ $ } = require 'meteor/jquery'
+{ FlowRouter } = require 'meteor/kadira:flow-router'
+{ SimpleSchema } = require 'meteor/aldeed:simple-schema'
+{ TAPi18n } = require 'meteor/tap:i18n'
+sanitizeHtml = require('sanitize-html')
 
 require './notes.jade'
-require '../note/note.coffee'
-require '../breadcrumbs/breadcrumbs.coffee'
 
-newNoteText = 'New note...'
+import '/imports/ui/components/breadcrumbs/breadcrumbs.coffee'
+import '/imports/ui/components/footer/footer.coffee'
+import '/imports/ui/components/note/note.coffee'
+
+import {
+  updateTitle,
+  makePublic,
+  makePrivate,
+  remove,
+  insert,
+  updateRanks
+} from '/imports/api/notes/methods.coffee'
+
+{ displayError } = '../../lib/errors.js'
 
 # URLs starting with http://, https://, or ftp://
 Template.notes.urlPattern1 =
@@ -16,129 +35,115 @@ Template.notes.urlPattern1 =
 Template.notes.urlPattern2 =
   /(^|[^\/])(www\.[\S]+(\b|$))/gim
 
-Template.notes.calculateRank = ->
-  levelCount = 0
-  maxLevel = 6
-  while levelCount < maxLevel
-    $('#notes .level-' + levelCount).each (ii, el) ->
-      id = Blaze.getData(this)._id
-      Meteor.call 'notes.updateRank', id, ii + 1
-    levelCount++
-
-Template.notes.getProgress = (note) ->
-  if !note
-    return
-  pattern = /#pct-([0-9]+)/gim
-  match = pattern.exec note.title
-  if match
-    match[1]
+Template.notes.onCreated ->
+  if @data.note()
+    @noteId = @data.note()._id
   else
-    # If there is not a defined percent tag (e.g., #pct-20)
-    # then calculate the #done rate of notes
-    notes = Notes.find({ parent: note._id }, sort: rank: 1)
-    total = 0
-    done = 0
-    notes.forEach (note) ->
-      total++
-      if note.title
-        match = note.title.match Template.note.donePattern
-        if match
-          done++
-    return Math.round((done/total)*100)
+    @noteId = null
+  @state = new ReactiveDict
+  @state.setDefault
+    editing: false
+    editingNote: false
+    notesReady: false
 
-Template.notes.getProgressClass = (note) ->
-  percent = Template.notes.getProgress note
-  if (percent < 25)
-    return 'danger'
-  else if (percent > 74)
-    return 'success'
-  else
-    return 'warning'
+  @deleteNote = =>
+    note = @data.note()
+    title = sanitizeHtml note.title,
+      allowedTags: []
+    message = "#{TAPi18n.__('notes.remove.confirm')} “"+title+"”?"
+    if confirm(message)
+      remove.call { noteId: note._id }, displayError
+
+      FlowRouter.go 'App.home'
+      return yes
+    return no
 
 Template.notes.helpers
-  progress: ->
-    setTimeout ->
-      $('[data-toggle="tooltip"]').tooltip()
-    , 100
-    note = Notes.findOne(Template.currentData().noteId)
-    Template.notes.getProgress note
-  progressClass: ->
-    note = Notes.findOne(Template.currentData().noteId)
-    Template.notes.getProgressClass note
-  focusedNoteTitle: ->
-    if Template.currentData().noteId
-      note = Notes.findOne(Template.currentData().noteId)
-      if note
-        Template.notes.formatText note.title
+  # notes: () ->
+  #   Notes.find { parent: parentId }, sort: rank: 1
   notes: ->
+    parentId = null
+    if @note()
+      parentId = @note()._id
+
     if Template.currentData().searchTerm
       Meteor.subscribe 'notes.search', Template.currentData().searchTerm
-    else if Template.currentData().starred
-      Meteor.subscribe 'notes.starred'
     else
       Meteor.subscribe 'notes.view',
-        Template.currentData().noteId,
-        FlowRouter.getParam 'shareKey'
+        parentId
+        # FlowRouter.getParam 'shareKey'
       Meteor.subscribe 'notes.children',
-        Template.currentData().noteId
-        FlowRouter.getParam 'shareKey'
+        parentId
+        # FlowRouter.getParam 'shareKey'
     Session.set 'searchTerm', Template.currentData().searchTerm
 
-    if Template.currentData().noteId
-      note = Notes.findOne {
-        parent: Template.currentData().noteId
-      }, sort: rank: 1
-      if (note)
-        Session.set 'level', note.level
-      # else
-      #   $.gritter.add
-      #     title: 'Not found'
-      #     text: 'Note not found.'
-      #   FlowRouter.go '/'
-      Notes.find { parent: Template.currentData().noteId }, sort: rank: 1
+    if parentId
+      Session.set 'level', @note().level
+      Notes.find { parent: parentId }, sort: rank: 1
     else if Template.currentData().searchTerm
       Session.set 'level', 0
       Notes.search Template.currentData().searchTerm
     else
       Session.set 'level', 0
       Notes.find { parent: null }, sort: rank: 1
-  newNoteText: ->
-    newNoteText
-    
+  focusedNote: ->
+    Notes.findOne Template.currentData().note()
+  notesReady: ->
+    # Template.instance().state.get 'notesReady'
+    Template.instance().subscriptionsReady()
+
 Template.notes.events
-  'focus #new-note': (event) ->
-    if event.currentTarget.innerText == newNoteText
-      event.currentTarget.innerText = ''
+  'click .js-cancel': (event, instance) ->
+    instance.state.set 'editing', false
     return
-  'keydown #new-note': (event) ->
-    switch event.keyCode
-      # Enter
-      when 13
-        Meteor.call 'notes.insert',
-          event.currentTarget.innerText,
-          null,
-          Template.currentData().noteId,
-          FlowRouter.getParam('shareKey'), (error) ->
-            if error
-              alert error.error
-            else
-              $('#new-note').text ''
-            return
-      # Escape
-      when 27
-        $('#new-note').text(newNoteText).blur()
-      # Up
-      when 38
-        $(event.currentTarget).closest('.note').prev().find('div.title').focus()
-      # Tab
-      when 9
-        parentId = Blaze.getData($('#notes > .note').last()[0])._id
-        Meteor.call 'notes.insert', ' ', null, null, (err, res) ->
-          Meteor.call 'notes.makeChild', res, parentId
+  'keydown input[type=text]': (event) ->
+    # ESC
+    if event.which == 27
+      event.preventDefault()
+      $(event.target).blur()
     return
-  'blur #new-note': (event) ->
-    if event.currentTarget.innerText == ''
-      $('#new-note').text newNoteText
+  'mousedown .js-cancel, click .js-cancel': (event, instance) ->
+    event.preventDefault()
+    instance.state.set 'editing', false
+    return
+  'change .note-edit': (event, instance) ->
+    target = event.target
+    if $(target).val() == 'edit'
+      instance.editNote()
+    else if $(target).val() == 'delete'
+      instance.deleteNote()
+    else
+      instance.toggleNotePrivacy()
+    target.selectedIndex = 0
+    return
+  'blur .title-wrapper': (event, instance) ->
+    event.stopPropagation()
+    title = Template.note.stripTags(event.target.innerHTML)
+    if title != @title
+      Meteor.call 'notes.updateTitle', {
+        noteId: instance.data.note()._id
+        title: title
+        # FlowRouter.getParam 'shareKey',
+      }, (err, res) ->
+        $(event.target).html Template.notes.formatText title
+  'click .js-toggle-note-privacy': (event, instance) ->
+    instance.toggleNotePrivacy()
+    return
+  'click .js-delete-note': (event, instance) ->
+    instance.deleteNote()
+  'click .js-note-add': (event, instance) ->
+    instance.$('.js-note-new input').focus()
+    return
+  'submit .js-note-new': (event) ->
+    event.preventDefault()
+    $input = $(event.target).find('[type=text]')
+    if !$input.val()
+      return
+    insert.call {
+      parent: Template.instance().noteId
+      title: $input.val()
+    }, displayError
+    $input.val ''
     return
 
 Template.notes.formatText = (inputText) ->
@@ -176,16 +181,15 @@ Template.notes.formatText = (inputText) ->
   return replacedText
 
 Template.notes.rendered = ->
-  #$( ".selectable" ).selectable()
   $('.sortable').nestedSortable
-    handle: '.fa-ellipsis-v'
-    items: 'li.note'
+    handle: '.handle'
+    items: 'li.note-item'
     placeholder: 'placeholder'
     forcePlaceholderSize: true
     opacity: .6
     toleranceElement: '> div.noteContainer'
     relocate: ->
-      Meteor.call 'notes.updateRanks',
-      $('.sortable').nestedSortable('toArray'),
-      FlowRouter.getParam('noteId'),
-      FlowRouter.getParam('shareKey')
+      updateRanks.call
+        notes: $('.sortable').nestedSortable('toArray')
+        focusedNoteId: FlowRouter.getParam('_id')
+        shareKey: FlowRouter.getParam('shareKey')

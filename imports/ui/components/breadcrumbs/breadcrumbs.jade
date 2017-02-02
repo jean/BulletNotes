@@ -2,7 +2,7 @@ template(name='breadcrumbs')
   ol.breadcrumb
     unless shareKey
       li
-        a(href='/') Home
+        a(href='/') {{_ 'layouts.appBody.home'}}
     +each parents
       li
         a(href='/note/{{_id}}/{{shareKey}}') {{{title}}}

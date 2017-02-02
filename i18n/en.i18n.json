@@ -1,0 +1,74 @@
+{
+  "notes": {
+    "makePrivate": {
+      "notLoggedIn": "Must be logged in to make private notes.",
+      "lastPublicNote": "Cannot make the last public note private."
+    },
+    "makePublic": {
+      "notLoggedIn": "Must be logged in.",
+      "accessDenied": "You don't have permission to edit this note."
+    },
+    "updateName": {
+      "accessDenied": "You don't have permission to edit this note."
+    },
+    "remove": {
+      "accessDenied": "'You don't have permission to remove this note.'",
+      "lastPublicNote": "Cannot delete the last public note.",
+      "confirm": "Are you sure you want to delete the note"
+    },
+    "show": {
+      "cancel": "Cancel",
+      "showMenu": "Show Menu",
+      "selectAction": "Select an action",
+      "makePublic": "Make Public",
+      "makePrivate": "Make Private",
+      "delete": "Delete",
+      "makeNotePublic": "Make note public",
+      "makeNotePrivate": "Make note private",
+      "deleteNote": "Delete note",
+      "typeToAdd": "Type to add new notes",
+      "noNotes": "No notes here",
+      "addAbove": "Add new notes using the field above",
+      "loading": "Loading notes..."
+    },
+    "insert": {
+      "note": "Note",
+      "accessDenied": "Cannot add notes to a private note that is not yours"
+    },
+    "setCheckedStatus": {
+      "accessDenied": "Cannot edit notes in a private note that is not yours"
+    },
+    "updateText": {
+      "accessDenied": "Cannot edit notes in a private note that is not yours"
+    },
+    "item": {
+      "noteName": "Note name"
+    }
+  },
+  "useraccounts": {
+    "atTitle": {
+      "subtitle": "Signing in allows you to have private notes"
+    }
+  },
+  "layouts": {
+    "appBody": {
+      "logout": "Logout",
+      "login": "Sign In",
+      "join": "Join",
+      "newNote": "New List",
+      "newNoteError": "Could not create note.",
+      "tryingToConnect": "Trying to connect",
+      "connectionIssue": "There seems to be a connection issue",
+      "devWarning": "Warning!",
+      "import": "Import",
+      "home": "Home",
+      "devWarningBody": "This is a development server. Data loss is assured.",
+      "betaWarningBody": "This site is still under construction! While it should work pretty well, and you can and should export regularly, be aware data loss may occur. <a href='https://github.com/NickBusey/noted/issues' target='_blank'>Report Issues on GitHub</a>"
+    }
+  },
+  "pages": {
+    "appNotFound": {
+      "pageNotFound": "Page not found"
+    }
+  }
+}

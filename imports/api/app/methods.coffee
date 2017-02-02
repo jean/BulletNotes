@@ -1,4 +1,4 @@
-pjson = require('../../../package.json')
+pjson = require('/package.json')
 { Meteor } = require 'meteor/meteor'
 
 Meteor.methods
