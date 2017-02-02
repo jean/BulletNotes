@@ -32,14 +32,14 @@ Meteor.publish 'notes.children', (noteId, shareKey = null) ->
   check noteId, Match.Maybe(String)
   check shareKey, Match.Maybe(String)
   if shareKey
-    note = Notes.findOne noteId
+    # note = Notes.findOne noteId
     # If we don't have a valid shared note, look at the parents,
     # is one of them valid?
-    if Notes.getSharedParent noteId, shareKey
+    # if Notes.getSharedParent noteId, shareKey
       # One of the parents is validly shared, return the original note
-      notes = Notes.find
-        parent: noteId
-        deleted: {$exists: false}
+    notes = Notes.find
+      parent: noteId
+      deleted: {$exists: false}
   else
     notes = Notes.find
       owner: @userId

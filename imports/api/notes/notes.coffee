@@ -166,7 +166,7 @@ Notes.publicFields =
 #   - usually I've used the singular, sometimes you have more than one though, like
 #   'note', 'emptyNote', 'checkedNote'
 Factory.define 'note', Notes,
-  text: ->
+  title: ->
     faker.lorem.sentence()
 
   createdAt: ->

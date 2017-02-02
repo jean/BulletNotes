@@ -20,10 +20,10 @@ describe('notes', function () {
   it('leaves createdAt on update', function () {
     const createdAt = new Date(new Date() - 1000);
     let note = Factory.create('note', { createdAt });
-    const text = 'some new text';
-    Notes.update(note, { $set: { text } });
+    const title = 'some new text';
+    Notes.update(note, { $set: { title } });
     note = Notes.findOne(note._id);
-    assert.equal(note.text, text);
+    assert.equal(note.title, title);
     assert.equal(note.createdAt.getTime(), createdAt.getTime());
   });
   describe('publications', function () {
@@ -33,19 +33,19 @@ describe('notes', function () {
     before(function () {
       userId = Random.id();
       publicNote = Factory.create('note');
-      privateNote = Factory.create('note', { userId });
+      privateNote = Factory.create('note', { owner: userId });
       _.times(3, () => {
-        Factory.create('note', { noteId: publicNote._id });
+        Factory.create('note', { parent: publicNote._id });
         // NOTE get rid of userId, https://github.com/meteor/notes/pull/49
-        Factory.create('note', { noteId: privateNote._id, userId });
+        Factory.create('note', { parent: privateNote._id, owner: userId });
       });
     });
-    describe('notes.inNote', function () {
+    describe('notes.children', function () {
       it('sends all notes for a public note', function (done) {
         const collector = new PublicationCollector();
         collector.collect(
-          'notes.inNote',
-          { noteId: publicNote._id },
+          'notes.children',
+          publicNote._id,
           (collections) => {
             chai.assert.equal(collections.notes.length, 3);
             done();
@@ -55,8 +55,9 @@ describe('notes', function () {
       it('sends all notes for a public note when logged in', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect(
-          'notes.inNote',
-          { noteId: publicNote._id },
+          'notes.children',
+          publicNote._id,
+          'ShareKey12',
           (collections) => {
             chai.assert.equal(collections.notes.length, 3);
             done();
@@ -66,8 +67,8 @@ describe('notes', function () {
       it('sends all notes for a private note when logged in as owner', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect(
-          'notes.inNote',
-          { noteId: privateNote._id },
+          'notes.children',
+          privateNote._id,
           (collections) => {
             chai.assert.equal(collections.notes.length, 3);
             done();
@@ -77,10 +78,10 @@ describe('notes', function () {
       it('sends no notes for a private note when not logged in', function (done) {
         const collector = new PublicationCollector();
         collector.collect(
-          'notes.inNote',
-          { noteId: privateNote._id },
+          'notes.children',
+          privateNote._id,
           (collections) => {
-            chai.assert.isUndefined(collections.notes);
+            chai.assert.deepEqual(collections.notes,[]);
             done();
           }
         );
@@ -88,10 +89,10 @@ describe('notes', function () {
       it('sends no notes for a private note when logged in as another user', function (done) {
         const collector = new PublicationCollector({ userId: Random.id() });
         collector.collect(
-          'notes.inNote',
-          { noteId: privateNote._id },
+          'notes.children',
+          privateNote._id,
           (collections) => {
-            chai.assert.isUndefined(collections.notes);
+            chai.assert.deepEqual(collections.notes,[]);
             done();
           }
         );
