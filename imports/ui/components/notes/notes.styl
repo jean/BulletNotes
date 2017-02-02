@@ -83,27 +83,21 @@
     position: absolute
     top: .5em
     right: .5em
-    opacity: 1
-    @media screen and (min-width: 40em) 
-      opacity: 0
 
-select.list-edit {
-  @extend .font-m2;
+select.list-edit 
+  @extend .font-m2
   position(absolute, 0,0,0,0)
-  background: transparent;
-  opacity: 0; // allows the cog to appear
-}
+  background: transparent
+  opacity: 0 // allows the cog to appear
 
-.options-web {
-  display: none;
+.options-web
+  display: none
 
-  .nav-item {
-    @extend .font-m3;
-    width: 2rem;
+  .nav-item
+    @extend .font-m3
+    width: 2rem
 
     &:last-child { margin-right: .5rem; }
-  }
-}
 
 // Hide & show options and nav icons
 @media screen and (min-width: 40em) {

@@ -5,7 +5,7 @@ template(name='note')
         if currentUser
           a.handle.glyphicon.glyphicon-option-vertical(href='/note/{{_id}}/{{shareKey}}')
           ul.dropdown-menu
-            li
+            //- li
               a.share(href='#', data-toggle='modal', data-target='#share_{{_id}}')
                 i.glyphicon.glyphicon-share
                 |  Share
@@ -13,7 +13,7 @@ template(name='note')
               a.duplicate(href='#')
                 i.glyphicon.glyphicon-duplicate
                 |  Duplicate
-            li
+            //- li
               a.calendar(href='/calendar/{{_id}}')
                 i.glyphicon.glyphicon-calendar
                 |  Calendar
