@@ -10,11 +10,11 @@
   ol 
     padding-left: 25px
 
-.page.notes-show {
+.page.notes-show
   background: #fff;
 
   // Custom nav for notes-show
-  nav {
+  nav
     background: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
     height: 5em;
 
@@ -71,21 +71,53 @@
       }
     }
 
-    select.note-edit {
+    select.note-edit
       @extend .font-s2;
       position(absolute, 0,0,0,0)
-      background: transparent;
-      opacity: 0; // allows the cog to appear
-    }
+      background: transparent
+      opacity: 0 // allows the cog to appear
+      z-index: 100
+
+  .glyphicon-cog
+    color: gray
+    position: absolute
+    top: .5em
+    right: .5em
+    opacity: 1
+    @media screen and (min-width: 40em) 
+      opacity: 0
+
+select.list-edit {
+  @extend .font-m2;
+  position(absolute, 0,0,0,0)
+  background: transparent;
+  opacity: 0; // allows the cog to appear
+}
+
+.options-web {
+  display: none;
+
+  .nav-item {
+    @extend .font-m3;
+    width: 2rem;
+
+    &:last-child { margin-right: .5rem; }
   }
+}
+
+// Hide & show options and nav icons
+@media screen and (min-width: 40em) {
+  .nav-group:not(.right) { display: none !important; }
+  .options-mobile { display: none; }
+  .options-web {  display: block; }
 }
 
 .options-web 
   display: none
 
   .nav-item 
-    .font-s3
-      width: 2rem
+    @extend .font-m3;
+    width: 2rem
 
     &:last-child
       margin-right: .5rem

@@ -189,7 +189,7 @@ Template.notes.rendered = ->
     opacity: .6
     toleranceElement: '> div.noteContainer'
     relocate: ->
-      updateRanks.call 
+      updateRanks.call
         notes: $('.sortable').nestedSortable('toArray')
-        focusedNoteId: FlowRouter.getParam('_id'),
+        focusedNoteId: FlowRouter.getParam('_id')
         shareKey: FlowRouter.getParam('shareKey')

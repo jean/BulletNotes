@@ -20,7 +20,8 @@ export insert = new ValidatedMethod
     parent = Notes.findOne parent
 
     # if note.isPrivate() and note.userId isnt @userId
-    #   throw new Meteor.Error 'notes.insert.accessDenied', 'Cannot add notes to a private note that is not yours'
+    #   throw new Meteor.Error 'notes.insert.accessDenied',
+    # 'Cannot add notes to a private note that is not yours'
 
     parentId = null
     level = 0
@@ -90,7 +91,8 @@ export updateTitle = new ValidatedMethod
     note = Notes.findOne noteId
 
     # unless note.editableBy(@userId)
-    #   throw new Meteor.Error 'notes.updateTitle.accessDenied', 'Cannot edit notes in a private note that is not yours'
+    #   throw new Meteor.Error 'notes.updateTitle.accessDenied',
+    #'Cannot edit notes in a private note that is not yours'
 
     title = Notes.filterTitle title
     match = title.match(/#due-([0-9]+(-?))+/gim)

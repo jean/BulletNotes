@@ -86,7 +86,8 @@ Notes.search = (search, userId = null) ->
   query.deleted = {$exists: false}
   Notes.find query, projection
 
-# Deny all client-side updates since we will be using methods to manage this collection
+# Deny all client-side updates since we will
+# be using methods to manage this collection
 Notes.deny
   insert: -> yes
   update: -> yes

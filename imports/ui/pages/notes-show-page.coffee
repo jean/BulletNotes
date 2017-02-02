@@ -37,7 +37,8 @@ Template.Notes_show_page.helpers
 
   noteArgs: (noteId) ->
     instance = Template.instance()
-    # By finding the note with only the `_id` field set, we don't create a dependency on the
+    # By finding the note with only the `_id` field set,
+    # we don't create a dependency on the
     # `note.incompleteCount`, and avoid re-rendering the todos when it changes
     note = Notes.findOne noteId,
       fields:

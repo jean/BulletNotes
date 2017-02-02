@@ -9,6 +9,22 @@ template(name='notes')
             span.count-note.pull-right {{focusedNote.children}}
           else
             .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
+      +if focusedNote
+        .nav-group.right
+          .nav-item.options-mobile
+            select.note-edit
+              option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
+              option(value='delete') {{_ 'notes.show.delete'}}
+            span.glyphicon.glyphicon-cog
+          .options-web
+            a.js-toggle-note-privacy.nav-item
+              +if note.userId
+                span.icon-lock(title='')
+              +else
+                span.icon-unlock(title='')
+            a.js-delete-note.nav-item
+              span.icon-trash(title='')
+
     ol#notes.content-scrollable.note-items.sortable
       +if notesReady
         +each notes

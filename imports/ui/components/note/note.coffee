@@ -4,8 +4,8 @@
 require './note.jade'
 
 # require '../share/share.coffee'
-import { noteRenderHold } from '../../launch-screen.js';
-import { displayError } from '../../lib/errors.js';
+{ noteRenderHold } = require '../../launch-screen.js'
+{ displayError } = require '../../lib/errors.js'
 
 import {
   favorite
@@ -102,21 +102,22 @@ Template.note.events
           bottomNote = text.substr(position)
           # Create a new note below the current.
           Meteor.call 'notes.updateTitle', {
-              noteId: note._id,
-              title: topNote
+            noteId: note._id
+            title: topNote
+            # shareKey: FlowRouter.getParam('shareKey')
+          }, (err, res) ->
+            console.log err, res
+            Meteor.call 'notes.insert', {
+              title: ''
+              rank: note.rank + .5
+              parent: note.parent
               # shareKey: FlowRouter.getParam('shareKey')
             }, (err, res) ->
-              console.log err, res
-              Meteor.call 'notes.insert', {
-                title: ''
-                rank: note.rank + .5
-                parent: note.parent
-                # shareKey: FlowRouter.getParam('shareKey')
-              }, (err, res) ->
-                  # Template.notes.calculateRank()
-                  setTimeout (->
-                    $(event.target).closest('.note-item').next().find('.title').focus()
-                  ), 50
+              # Template.notes.calculateRank()
+              setTimeout (->
+                $(event.target).closest('.note-item')
+                  .next().find('.title').focus()
+              ), 50
       # Tab
       when 9
         event.preventDefault()
@@ -179,10 +180,12 @@ Template.note.events
       when 38
         # Command is held
         if event.metaKey
-          $(event.currentTarget).closest('.note-item').find('.expand').trigger 'click'
+          $(event.currentTarget).closest('.note-item')
+            .find('.expand').trigger 'click'
         else
           if $(event.currentTarget).closest('.note-item').prev().length
-            $(event.currentTarget).closest('.note-item').prev().find('div.title').focus()
+            $(event.currentTarget).closest('.note-item')
+              .prev().find('div.title').focus()
           else
             # There is no previous note in the current sub list, go up a note.
             $(event.currentTarget).closest('.note-item')
@@ -191,10 +194,12 @@ Template.note.events
       # Down
       when 40
         if event.metaKey
-          $(event.currentTarget).closest('.note-item').find('.expand').trigger 'click'
+          $(event.currentTarget).closest('.note-item')
+            .find('.expand').trigger 'click'
         else
           # Go to a child note if available
-          note = $(event.currentTarget).closest('.note-item').find('ol .note').first()
+          note = $(event.currentTarget).closest('.note-item')
+            .find('ol .note').first()
           if !note.length
             # If not, get the next note on the same level
             note = $(event.currentTarget).closest('.note-item').next()
@@ -215,6 +220,11 @@ Template.note.events
       when 27
         $(event.currentTarget).html Session.get 'preEdit'
         $(event.currentTarget).blur()
+
+  'focus div.title': (event, instance) ->
+    event.stopImmediatePropagation()
+    Session.set 'preEdit', @title
+    Meteor.call 'notes.focus', @_id
 
   'blur .title': (event, instance) ->
     that = this
