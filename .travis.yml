@@ -1,0 +1,23 @@
+language: node_js
+
+cache:
+  directories:
+    - $HOME/.meteor
+    - $HOME/.npm
+
+before_cache:
+  - rm -f $HOME/.meteor/log/*.log
+
+before_install:
+  - PATH=$PATH:$HOME/.meteor
+  # Download Meteor
+  - if [ ! -e $HOME/.meteor/meteor ]; then curl https://install.meteor.com | sh; fi
+  - meteor npm install
+
+script:
+    # Run all tests:  Unit test, Integration test, Package test
+  - npm test
+    # Save coverage now
+  #- cat .coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js || true # ignore coveralls error
+  #- cat .coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js || true # ignore codecov error
+  #- cat .coverage/lcov.info | ./node_modules/codecov.io/bin/codacy-coverage || true # ignore codacy error
