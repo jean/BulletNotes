@@ -13,7 +13,7 @@ describe('note ui', () => {
     browser.url('http://localhost:3100');
   });
 
-  it('can create a note', () => {
+  xit('can create a note', () => {
     const initialCount = countNotes();
 
     browser.click('.js-new-note');
