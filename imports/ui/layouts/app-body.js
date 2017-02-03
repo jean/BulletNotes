@@ -36,7 +36,7 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-  this.subscribe('notes.all');
+  this.subscribe('notes.children');
 
   this.state = new ReactiveDict();
   this.state.setDefault({
