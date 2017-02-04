@@ -235,7 +235,7 @@ Template.note.events
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
         title: title
-        # FlowRouter.getParam 'shareKey',
+        shareKey: FlowRouter.getParam 'shareKey'
       }, (err, res) ->
         that.title = title
         $(event.target).html Template.notes.formatText title

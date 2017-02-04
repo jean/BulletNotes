@@ -1,6 +1,7 @@
 { Template } = require 'meteor/templating'
 import {
-  share
+  share,
+  stopSharing
 } from '/imports/api/notes/methods.coffee'
 require './share.jade'
 
@@ -21,7 +22,8 @@ Template.share.events
       editable: true
   'click .stopSharing': (event) ->
     event.preventDefault()
-    Meteor.call 'notes.stopSharing', this._id
+    stopSharing.call
+      noteId: this._id
   'click .fa-copy': (event) ->
     copyTextarea = document.querySelector('.shareUrl')
     copyTextarea.select()

@@ -50,6 +50,10 @@ Notes.getSharedParent = (id, shareKey) ->
   if (note && note.shareKey == shareKey && note.shared == true)
     return note
 
+Notes.isOwner = (id) ->
+  note = Notes.findOne id
+  note && Meteor.user()._id == note.owner
+
 Notes.filterTitle = (title) ->
   title = title.replace(/(\r\n|\n|\r)/gm, '')
   sanitizeHtml title,

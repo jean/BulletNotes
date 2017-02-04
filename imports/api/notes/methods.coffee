@@ -97,22 +97,37 @@ export updateBody = new ValidatedMethod
       updatedAt: new Date
     }}, tx: true
 
+export stopSharing = new ValidatedMethod
+  name: 'notes.stopSharing'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId }) ->
+    if !Notes.isOwner noteId
+      throw new (Meteor.Error)('not-authorized')
+
+    Notes.update noteId, $unset:
+      shared: 1
+      shareKey: 1
+
 export updateTitle = new ValidatedMethod
   name: 'notes.updateTitle'
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
     title: Notes.simpleSchema().schema('title')
+    shareKey: Notes.simpleSchema().schema('shareKey')
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, title }) ->
+  run: ({ noteId, title, shareKey = null }) ->
     # This is complex auth stuff - perhaps denormalizing a userId onto notes
     # would be correct here?
     note = Notes.findOne noteId
 
-    # unless note.editableBy(@userId)
-    #   throw new Meteor.Error 'notes.updateTitle.accessDenied',
-    #'Cannot edit notes in a private note that is not yours'
+    if !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
 
     title = Notes.filterTitle title
     match = title.match(/#due-([0-9]+(-?))+/gim)
@@ -124,6 +139,7 @@ export updateTitle = new ValidatedMethod
         updatedAt: new Date
       }}, tx: true
     else
+      console.log "Ok! Update title: ",title
       Notes.update noteId, {$set: {
         title: title
         updatedAt: new Date
