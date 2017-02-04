@@ -3,6 +3,8 @@ import { _ } from 'meteor/underscore'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import { SimpleSchema } from 'meteor/aldeed:simple-schema'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
+import { Random } from 'meteor/random'
+
 import childCountDenormalizer from './childCountDenormalizer.coffee'
 
 import { Notes } from './notes.coffee'
@@ -42,7 +44,25 @@ export insert = new ValidatedMethod
     childCountDenormalizer.afterInsertNote parentId
     note
 
-  
+export share = new ValidatedMethod
+  name: 'notes.share'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    editable:
+        type: Boolean
+        optional: true
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId, editable = true }) ->
+    if !@userId
+      throw new (Meteor.Error)('not-authorized')
+    Notes.update noteId, $set:
+      shared: true
+      shareKey: Random.id()
+      sharedEditable: editable
+      sharedAt: new Date
+      updatedAt: new Date
 
 export favorite = new ValidatedMethod
   name: 'notes.favorite'
@@ -77,22 +97,37 @@ export updateBody = new ValidatedMethod
       updatedAt: new Date
     }}, tx: true
 
+export stopSharing = new ValidatedMethod
+  name: 'notes.stopSharing'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId }) ->
+    if !Notes.isOwner noteId
+      throw new (Meteor.Error)('not-authorized')
+
+    Notes.update noteId, $unset:
+      shared: 1
+      shareKey: 1
+
 export updateTitle = new ValidatedMethod
   name: 'notes.updateTitle'
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
     title: Notes.simpleSchema().schema('title')
+    shareKey: Notes.simpleSchema().schema('shareKey')
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, title }) ->
+  run: ({ noteId, title, shareKey = null }) ->
     # This is complex auth stuff - perhaps denormalizing a userId onto notes
     # would be correct here?
     note = Notes.findOne noteId
 
-    # unless note.editableBy(@userId)
-    #   throw new Meteor.Error 'notes.updateTitle.accessDenied',
-    #'Cannot edit notes in a private note that is not yours'
+    if !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
 
     title = Notes.filterTitle title
     match = title.match(/#due-([0-9]+(-?))+/gim)
@@ -104,6 +139,7 @@ export updateTitle = new ValidatedMethod
         updatedAt: new Date
       }}, tx: true
     else
+      console.log "Ok! Update title: ",title
       Notes.update noteId, {$set: {
         title: title
         updatedAt: new Date
@@ -164,7 +200,6 @@ export makeChild = new ValidatedMethod
       rank: rank
       parent: parent._id
       level: parent.level + 1
-      focusNext: 1
     }, tx: true
     children = Notes.find(parent: noteId)
     children.forEach (child) ->
@@ -205,8 +240,8 @@ export outdent = new ValidatedMethod
     clean: yes
     filter: no
   run: ({ noteId }) ->
-    # if !@userId || !Notes.isEditable noteId, shareKey
-    #   throw new (Meteor.Error)('not-authorized')
+    if !@userId || !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(noteId)
     old_parent = Notes.findOne(note.parent)
     new_parent = Notes.findOne(old_parent.parent)
@@ -226,7 +261,6 @@ export outdent = new ValidatedMethod
       return Notes.update noteId, $set:
         level: 0
         parent: null
-        focusNext: 1
 
 export setShowChildren = new ValidatedMethod
   name: 'notes.setShowChildren'

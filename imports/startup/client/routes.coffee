@@ -5,24 +5,27 @@
 # require '../../ui/pages/calendar/calendar.coffee'
 
 # Import to load these templates
-require '../../ui/layouts/app-body.js'
-require '../../ui/pages/root-redirector.js'
-# require '../../ui/pages/notes/show/show.coffee'
-# require '../../ui/pages/notes/show/show.js'
+require '/imports/ui/layouts/app-body.js'
+require '/imports/ui/pages/root-redirector.js'
 require '/imports/ui/pages/notes-show-page.coffee'
-require '../../ui/pages/app-not-found.js'
-require '../../ui/pages/import/import.coffee'
+require '/imports/ui/pages/app-not-found.coffee'
+require '/imports/ui/pages/import/import.coffee'
 
 # Import to override accounts templates
-require '../../ui/accounts/accounts-templates.js'
+require '/imports/ui/accounts/accounts-templates.js'
 
 FlowRouter.route '/',
   name: 'App.home'
   action: ->
-    BlazeLayout.render 'App_body', main: 'Notes_show_page', params: noteId: 0
+    BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
-FlowRouter.route '/note/:_id',
+FlowRouter.route '/note/:noteId',
   name: 'Notes.show'
+  action: ->
+    BlazeLayout.render 'App_body', main: 'Notes_show_page'
+
+FlowRouter.route '/note/:noteId/:shareKey',
+  name: 'Notes.showShared'
   action: ->
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
@@ -30,11 +33,6 @@ FlowRouter.route '/import',
   name: 'Notes.import'
   action: ->
     BlazeLayout.render 'App_body', main: 'Notes_import'
-
-FlowRouter.route '/note/:noteId/:shareKey',
-  name: 'App.viewNote'
-  action: ->
-    BlazeLayout.render 'App_body', main: 'App_viewNote'
 
 # FlowRouter.route '/search/:searchTerm',
 #   name: 'App.search'

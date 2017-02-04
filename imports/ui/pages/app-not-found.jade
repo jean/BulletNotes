@@ -1,0 +1,10 @@
+template(name='App_notFound')
+  .page.not-found
+    nav
+      .nav-group
+        a.js-menu.nav-item(href='#')
+          span.icon-list-unordered
+    .content-scrollable
+      .wrapper-message
+        .title-message {{_ 'pages.appNotFound.pageNotFound'}}
+        a(href='/') Home

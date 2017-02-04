@@ -5,7 +5,7 @@
 import './show.jade'
 
 # Components used inside the template
-import '/imports/ui/pages/app-not-found.js'
+import '/imports/ui/pages/app-not-found.coffee'
 import '/imports/ui/components/notes/notes.coffee'
 
 { noteRenderHold } = require '/imports/ui/launch-screen.js'
@@ -19,9 +19,11 @@ import '/imports/ui/components/notes/notes.coffee'
 Template.Notes_show.helpers
   noteIdArray: ->
     instance = Template.instance()
-    noteId = FlowRouter.getParam('_id')
+    noteId = FlowRouter.getParam('noteId')
+    console.log "Show note:", noteIdArray
     if Notes.findOne(noteId) then [ noteId ] else []
   noteArgs: (noteId) ->
+    console.log "Note Args: ",noteId
     instance = Template.instance()
     # By finding the note with only the `_id` field set, we don't create a
     # dependency on the `note.incompleteCount`, and avoid

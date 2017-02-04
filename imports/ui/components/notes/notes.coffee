@@ -66,15 +66,6 @@ Template.notes.helpers
     if @note()
       parentId = @note()._id
 
-    if Template.currentData().searchTerm
-      Meteor.subscribe 'notes.search', Template.currentData().searchTerm
-    else
-      Meteor.subscribe 'notes.view',
-        parentId
-        # FlowRouter.getParam 'shareKey'
-      Meteor.subscribe 'notes.children',
-        parentId
-        # FlowRouter.getParam 'shareKey'
     Session.set 'searchTerm', Template.currentData().searchTerm
 
     if parentId

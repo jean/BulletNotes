@@ -50,6 +50,10 @@ Notes.getSharedParent = (id, shareKey) ->
   if (note && note.shareKey == shareKey && note.shared == true)
     return note
 
+Notes.isOwner = (id) ->
+  note = Notes.findOne id
+  note && Meteor.user()._id == note.owner
+
 Notes.filterTitle = (title) ->
   title = title.replace(/(\r\n|\n|\r)/gm, '')
   sanitizeHtml title,
@@ -143,6 +147,18 @@ Notes.schema = new SimpleSchema
     optional: yes
   body:
     type: String
+    optional: yes
+  shared:
+    type: Boolean
+    optional: yes
+  shareKey:
+    type: String
+    optional: yes
+  sharedEditable:
+    type: Boolean
+    optional: yes
+  sharedAt:
+    type: Date
     optional: yes
 
 Notes.attachSchema Notes.schema

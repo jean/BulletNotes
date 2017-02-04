@@ -6,7 +6,7 @@ import { Notes } from '/imports/api/notes/notes.js';
 import './show.jade';
 
 // Components used inside the template
-import '/imports/ui/pages/app-not-found.js';
+import '/imports/ui/pages/app-not-found.coffee';
 import '/imports/ui/components/notes/notes.coffee';
 
 Template.Notes_show.onCreated(function notesShowPageOnCreated() {

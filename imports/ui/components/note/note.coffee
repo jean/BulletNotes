@@ -3,7 +3,7 @@
 { Notes } = require '../../../api/notes/notes.coffee'
 require './note.jade'
 
-# require '../share/share.coffee'
+require '/imports/ui/components/share/share.coffee'
 { noteRenderHold } = require '../../launch-screen.js'
 { displayError } = require '../../lib/errors.js'
 
@@ -30,7 +30,7 @@ Template.note.onRendered ->
 Template.note.helpers
   children: () ->
     if @showChildren
-      Meteor.subscribe 'notes.children', @_id
+      Meteor.subscribe 'notes.children', @_id, FlowRouter.getParam 'shareKey'
       Notes.find { parent: @_id }, sort: {rank: 1}
   editingClass: (editing) ->
     editing and 'editing'
@@ -221,11 +221,6 @@ Template.note.events
         $(event.currentTarget).html Session.get 'preEdit'
         $(event.currentTarget).blur()
 
-  'focus div.title': (event, instance) ->
-    event.stopImmediatePropagation()
-    Session.set 'preEdit', @title
-    Meteor.call 'notes.focus', @_id
-
   'blur .title': (event, instance) ->
     that = this
     event.stopPropagation()
@@ -240,7 +235,7 @@ Template.note.events
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
         title: title
-        # FlowRouter.getParam 'shareKey',
+        shareKey: FlowRouter.getParam 'shareKey'
       }, (err, res) ->
         that.title = title
         $(event.target).html Template.notes.formatText title
