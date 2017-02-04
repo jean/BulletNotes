@@ -3,6 +3,8 @@ import { _ } from 'meteor/underscore'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import { SimpleSchema } from 'meteor/aldeed:simple-schema'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
+import { Random } from 'meteor/random'
+
 import childCountDenormalizer from './childCountDenormalizer.coffee'
 
 import { Notes } from './notes.coffee'
@@ -42,7 +44,25 @@ export insert = new ValidatedMethod
     childCountDenormalizer.afterInsertNote parentId
     note
 
-  
+export share = new ValidatedMethod
+  name: 'notes.share'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    editable:
+        type: Boolean
+        optional: true
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId, editable = true }) ->
+    if !@userId
+      throw new (Meteor.Error)('not-authorized')
+    Notes.update noteId, $set:
+      shared: true
+      shareKey: Random.id()
+      sharedEditable: editable
+      sharedAt: new Date
+      updatedAt: new Date
 
 export favorite = new ValidatedMethod
   name: 'notes.favorite'
@@ -164,7 +184,6 @@ export makeChild = new ValidatedMethod
       rank: rank
       parent: parent._id
       level: parent.level + 1
-      focusNext: 1
     }, tx: true
     children = Notes.find(parent: noteId)
     children.forEach (child) ->
@@ -205,8 +224,8 @@ export outdent = new ValidatedMethod
     clean: yes
     filter: no
   run: ({ noteId }) ->
-    # if !@userId || !Notes.isEditable noteId, shareKey
-    #   throw new (Meteor.Error)('not-authorized')
+    if !@userId || !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(noteId)
     old_parent = Notes.findOne(note.parent)
     new_parent = Notes.findOne(old_parent.parent)
@@ -226,7 +245,6 @@ export outdent = new ValidatedMethod
       return Notes.update noteId, $set:
         level: 0
         parent: null
-        focusNext: 1
 
 export setShowChildren = new ValidatedMethod
   name: 'notes.setShowChildren'

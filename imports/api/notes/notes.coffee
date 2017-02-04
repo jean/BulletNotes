@@ -144,6 +144,18 @@ Notes.schema = new SimpleSchema
   body:
     type: String
     optional: yes
+  shared:
+    type: Boolean
+    optional: yes
+  shareKey:
+    type: String
+    optional: yes
+  sharedEditable:
+    type: Boolean
+    optional: yes
+  sharedAt:
+    type: Date
+    optional: yes
 
 Notes.attachSchema Notes.schema
 

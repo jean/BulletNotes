@@ -8,12 +8,12 @@ import './notes-show-page.jade'
 
 # Components used inside the template
 import '/imports/ui/pages/app-not-found.coffee'
-import '../components/notes/notes.coffee'
+import '/imports/ui/components/notes/notes.coffee'
 
 
 Template.Notes_show_page.onCreated ->
   @getNoteId = ->
-    FlowRouter.getParam '_id'
+    FlowRouter.getParam 'noteId'
 
   @autorun =>
     @subscribe 'notes.children', @getNoteId()
@@ -28,6 +28,17 @@ Template.Notes_show_page.helpers
   # removed and a new copy is added when changing notes, which is
   # important for animation purposes.
   noteIdArray: ->
+    if Template.currentData().searchTerm
+      Meteor.subscribe 'notes.search', Template.currentData().searchTerm
+    else
+      console.log FlowRouter.getParam 'shareKey'
+      Meteor.subscribe 'notes.view',
+        FlowRouter.getParam 'noteId'
+        FlowRouter.getParam 'shareKey'
+      Meteor.subscribe 'notes.children',
+        FlowRouter.getParam 'noteId'
+        FlowRouter.getParam 'shareKey'
+
     instance = Template.instance()
     noteId = instance.getNoteId()
     if noteId
