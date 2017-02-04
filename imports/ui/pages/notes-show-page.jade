@@ -1,0 +1,6 @@
+template(name='Notes_show_page')
+  +if noteIdArray
+    +each noteId in noteIdArray
+      +notes (noteArgs noteId)
+  +else
+    +App_notFound

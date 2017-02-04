@@ -18,7 +18,7 @@ template(name='App_body')
                     span.glyphicon.glyphicon-chevron-up
                   +else
                     span.glyphicon.glyphicon-chevron-down
-                    | {{emailLocalPart}}
+                    | {{displayName}}
                 +if userMenuOpen
                   a.btn-secondary(href='/import') {{_ 'layouts.appBody.import'}}
                   a.js-logout.btn-secondary {{_ 'layouts.appBody.logout'}}
@@ -30,9 +30,12 @@ template(name='App_body')
                   | {{_ 'layouts.appBody.join'}}
             .parentNotes
               h4 Favorites
-              +each note in notes}}
-                a.parentNote(href="{{pathFor 'Notes.show' _id=note._id}}", title='{{note.name}}', class='{{activeNoteClass note}}')
-                  | {{{note.title}}}
+              +if notes.count
+                +each note in notes
+                  a.parentNote(href="{{pathFor 'Notes.show' _id=note._id}}", title='{{note.name}}', class='{{activeNoteClass note}}')
+                    | {{{note.title}}}
+              +else
+                | No favorites yet, click the icon on some notes to the right.
 
       +unless connected
         .notifications

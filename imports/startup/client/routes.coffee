@@ -7,10 +7,8 @@
 # Import to load these templates
 require '../../ui/layouts/app-body.js'
 require '../../ui/pages/root-redirector.js'
-# require '../../ui/pages/notes/show/show.coffee'
-# require '../../ui/pages/notes/show/show.js'
 require '/imports/ui/pages/notes-show-page.coffee'
-require '../../ui/pages/app-not-found.js'
+require '../../ui/pages/app-not-found.coffee'
 require '../../ui/pages/import/import.coffee'
 
 # Import to override accounts templates

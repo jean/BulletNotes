@@ -68,9 +68,15 @@ Template.App_body.helpers({
       }
       return classname;
   },
-  emailLocalPart() {
-    const email = Meteor.user().emails[0].address;
-    return email.substring(0, email.indexOf('@'));
+  displayName() {
+    let displayName = '';
+    if (Meteor.user().emails) {
+      const email = Meteor.user().emails[0].address;
+      displayName = email.substring(0, email.indexOf('@'));
+    } else {
+      displayName = Meteor.user().profile.name;
+    }
+    return displayName;
   },
   userMenuOpen() {
     const instance = Template.instance();

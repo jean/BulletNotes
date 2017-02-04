@@ -88,3 +88,5 @@ mrt:jquery-ui
 dsyko:jquery-ui-touch-punch
 stylus
 twbs:bootstrap
+accounts-ui
+service-configuration
