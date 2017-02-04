@@ -4,10 +4,10 @@
 App.info({
   name: 'BulletNotes',
   description: 'A simple todo list app built in Meteor.',
-  author: 'Percolate Studio Team',
-  email: 'us@percolatestudio.com',
+  author: 'Nick Busey',
+  email: 'admin@bulletnotes.io',
   website: 'http://bulletnotes.io',
-  version: '0.0.1',
+  version: '1.1.2',
 });
 
 App.icons({
