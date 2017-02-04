@@ -30,34 +30,37 @@ describe('notes', function () {
     let publicNote;
     let privateNote;
     let userId;
+    let shareKey;
     before(function () {
       userId = Random.id();
-      publicNote = Factory.create('note');
+      shareKey = Random.id();
+      sharedNote = Factory.create('note', { owner: userId, shareKey: shareKey, shared: true });
       privateNote = Factory.create('note', { owner: userId });
       _.times(3, () => {
-        Factory.create('note', { parent: publicNote._id });
-        // NOTE get rid of userId, https://github.com/meteor/notes/pull/49
+        Factory.create('note', { parent: sharedNote._id, owner: userId });
+        // NOTE get rid of userId, https://github.com/meteor/todos/pull/49
         Factory.create('note', { parent: privateNote._id, owner: userId });
       });
     });
     describe('notes.children', function () {
-      it('sends all notes for a public note', function (done) {
+      it('sends all notes for a shared note', function (done) {
         const collector = new PublicationCollector();
         collector.collect(
           'notes.children',
-          publicNote._id,
+          sharedNote._id,
+          shareKey,
           (collections) => {
             chai.assert.equal(collections.notes.length, 3);
             done();
           }
         );
       });
-      it('sends all notes for a public note when logged in', function (done) {
+      it('sends all notes for a shared note when logged in', function (done) {
         const collector = new PublicationCollector({ userId });
         collector.collect(
           'notes.children',
-          publicNote._id,
-          'ShareKey12',
+          sharedNote._id,
+          shareKey,
           (collections) => {
             chai.assert.equal(collections.notes.length, 3);
             done();
@@ -91,6 +94,28 @@ describe('notes', function () {
         collector.collect(
           'notes.children',
           privateNote._id,
+          (collections) => {
+            chai.assert.deepEqual(collections.notes,[]);
+            done();
+          }
+        );
+      });
+      it('sends no notes for a shared note without a key when not logged in', function (done) {
+        const collector = new PublicationCollector();
+        collector.collect(
+          'notes.children',
+          sharedNote._id,
+          (collections) => {
+            chai.assert.deepEqual(collections.notes,[]);
+            done();
+          }
+        );
+      });
+      it('sends no notes for a shared note without a key when logged in as another user', function (done) {
+        const collector = new PublicationCollector({ userId: Random.id() });
+        collector.collect(
+          'notes.children',
+          sharedNote._id,
           (collections) => {
             chai.assert.deepEqual(collections.notes,[]);
             done();

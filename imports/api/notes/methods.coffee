@@ -49,8 +49,8 @@ export share = new ValidatedMethod
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
     editable:
-        type: Boolean
-        optional: true
+      type: Boolean
+      optional: true
   .validator
     clean: yes
     filter: no
