@@ -54,6 +54,8 @@ Template.note.helpers
     if @shared
       className = className + ' shared'
     className
+  userOwnsNote: ->
+    Meteor.userId() == @owner
 
 Template.note.events
   'click .title a': (event) ->
