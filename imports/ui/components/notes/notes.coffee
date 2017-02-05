@@ -182,5 +182,5 @@ Template.notes.rendered = ->
     relocate: ->
       updateRanks.call
         notes: $('.sortable').nestedSortable('toArray')
-        focusedNoteId: FlowRouter.getParam('_id')
+        focusedNoteId: FlowRouter.getParam('noteId')
         shareKey: FlowRouter.getParam('shareKey')
