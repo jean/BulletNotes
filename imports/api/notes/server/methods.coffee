@@ -90,16 +90,17 @@ export summary = new ValidatedMethod
     if !userId || (@userId && userId != @userId)
       throw new (Meteor.Error)('not-authorized summary')
     user = Meteor.users.findOne userId
-    email = user.emails[0].address
-    notes = Notes.search 'last-changed:24h', userId
-    SSR.compileTemplate( 'Email_summary', Assets.getText( 'email/summary.html' ) )
-    html = SSR.render( 'Email_summary', { site_url: Meteor.absoluteUrl(), notes: notes } )
-    Email.send({
-      to: email,
-      from: "BulletNotes.io <admin@bulletnotes.io>",
-      subject: "Daily Activity Summary",
-      html: html
-    })
+    if user.emails
+      email = user.emails[0].address
+      notes = Notes.search 'last-changed:24h', userId
+      SSR.compileTemplate( 'Email_summary', Assets.getText( 'email/summary.html' ) )
+      html = SSR.render( 'Email_summary', { site_url: Meteor.absoluteUrl(), notes: notes } )
+      Email.send({
+        to: email,
+        from: "BulletNotes.io <admin@bulletnotes.io>",
+        subject: "Daily Activity Summary",
+        html: html
+      })
 
 
 # Get note of all method names on Notes
