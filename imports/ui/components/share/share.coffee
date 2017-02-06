@@ -6,7 +6,6 @@ import {
 require './share.jade'
 
 Template.share.onRendered ->
-  console.log "Share rendered"
   checkeventcount = 1
   prevTarget = undefined
 

@@ -35,6 +35,8 @@ Template.notes.urlPattern1 =
 Template.notes.urlPattern2 =
   /(^|[^\/])(www\.[\S]+(\b|$))/gim
 
+Template.notes.donePattern = /(#done|#complete|#finished)/gim
+
 Template.notes.onCreated ->
   if @data.note()
     @noteId = @data.note()._id
@@ -80,8 +82,16 @@ Template.notes.helpers
   focusedNote: ->
     Notes.findOne Template.currentData().note()
   notesReady: ->
-    # Template.instance().state.get 'notesReady'
     Template.instance().subscriptionsReady()
+  progress: ->
+    setTimeout ->
+      $('[data-toggle="tooltip"]').tooltip()
+    , 100
+    note = Notes.findOne(Template.currentData().note())
+    Template.notes.getProgress note
+  progressClass: ->
+    note = Notes.findOne(Template.currentData().note())
+    Template.notes.getProgressClass note
 
 Template.notes.events
   'click .js-cancel': (event, instance) ->
@@ -184,3 +194,33 @@ Template.notes.rendered = ->
         notes: $('.sortable').nestedSortable('toArray')
         focusedNoteId: FlowRouter.getParam('noteId')
         shareKey: FlowRouter.getParam('shareKey')
+
+Template.notes.getProgress = (note) ->
+  if !note
+    return
+  pattern = /#pct-([0-9]+)/gim
+  match = pattern.exec note.title
+  if match
+    match[1]
+  else
+    # If there is not a defined percent tag (e.g., #pct-20)
+    # then calculate the #done rate of notes
+    notes = Notes.find({ parent: note._id }, sort: rank: 1)
+    total = 0
+    done = 0
+    notes.forEach (note) ->
+      total++
+      if note.title
+        match = note.title.match Template.notes.donePattern
+        if match
+          done++
+    return Math.round((done/total)*100)
+
+Template.notes.getProgressClass = (note) ->
+  percent = Template.notes.getProgress note
+  if (percent < 25)
+    return 'danger'
+  else if (percent > 74)
+    return 'success'
+  else
+    return 'warning'

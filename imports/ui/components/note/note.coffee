@@ -30,7 +30,6 @@ Template.note.onRendered ->
 Template.note.helpers
   children: () ->
     if @showChildren
-      Meteor.subscribe 'notes.children', @_id, FlowRouter.getParam 'shareKey'
       Notes.find { parent: @_id }, sort: {rank: 1}
   editingClass: (editing) ->
     editing and 'editing'
@@ -56,6 +55,13 @@ Template.note.helpers
     className
   userOwnsNote: ->
     Meteor.userId() == @owner
+  progress: ->
+    setTimeout ->
+      $('[data-toggle="tooltip"]').tooltip('destroy').tooltip()
+    , 100
+    Template.notes.getProgress this
+  progressClass: ->
+    Template.notes.getProgressClass this
 
 Template.note.events
   'click .title a': (event) ->

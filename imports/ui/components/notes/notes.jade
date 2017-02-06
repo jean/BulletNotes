@@ -4,12 +4,12 @@ template(name='notes')
       +momentum(plugin="fade")
         +breadcrumbs
         h1.js-edit-note.title-page
-          +if focusedNote
+          if focusedNote
             .title-wrapper(contenteditable='true') {{{focusedNote.title}}}
             span.count-note.pull-right {{focusedNote.children}}
           else
             .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
-      +if focusedNote
+      if focusedNote
         .nav-group.right
           .nav-item.options-mobile
             select.note-edit
@@ -18,22 +18,26 @@ template(name='notes')
             span.glyphicon.glyphicon-cog
           .options-web
             a.js-toggle-note-privacy.nav-item
-              +if note.userId
+              if note.userId
                 span.icon-lock(title='')
-              +else
+              else
                 span.icon-unlock(title='')
             a.js-delete-note.nav-item
               span.icon-trash(title='')
+      if progress
+        .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
+          .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
+            span.sr-only {{progress}}% Complete (success)
 
     ol#notes.content-scrollable.note-items.sortable
-      +if notesReady
-        +each notes
+      if notesReady
+        each notes
           +note
-        +else
+        else
           .noNoteMessage
             .title-message {{_ 'notes.show.noNotes'}}
             .subtitle-message {{_ 'notes.show.addAbove'}}
-      +else
+      else
         .wrapper-message
           .title-message {{_ 'notes.show.loading'}}
       +footer

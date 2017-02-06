@@ -15,9 +15,6 @@ Template.Notes_show_page.onCreated ->
   @getNoteId = ->
     FlowRouter.getParam 'noteId'
 
-  @autorun =>
-    @subscribe 'notes.children', @getNoteId()
-
 Template.Notes_show_page.onRendered ->
   @autorun =>
     if @subscriptionsReady()
@@ -28,16 +25,6 @@ Template.Notes_show_page.helpers
   # removed and a new copy is added when changing notes, which is
   # important for animation purposes.
   noteIdArray: ->
-    if Template.currentData().searchTerm
-      Meteor.subscribe 'notes.search', Template.currentData().searchTerm
-    else
-      Meteor.subscribe 'notes.view',
-        FlowRouter.getParam 'noteId'
-        FlowRouter.getParam 'shareKey'
-      Meteor.subscribe 'notes.children',
-        FlowRouter.getParam 'noteId'
-        FlowRouter.getParam 'shareKey'
-
     instance = Template.instance()
     noteId = instance.getNoteId()
     if noteId

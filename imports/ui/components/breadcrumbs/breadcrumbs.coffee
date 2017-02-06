@@ -7,15 +7,9 @@ Template.breadcrumbs.helpers
     parents = []
     note = Template.instance().data.note()
     if note
-      Meteor.subscribe 'notes.view',
-        note.parent,
-        FlowRouter.getParam 'shareKey'
       parent = Notes.findOne(note.parent)
       while parent
         parents.unshift parent
-        Meteor.subscribe 'notes.view',
-          parent.parent,
-          FlowRouter.getParam 'shareKey'
         parent = Notes.findOne(parent.parent)
     parents
   focusedTitle: ->

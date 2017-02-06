@@ -11,6 +11,6 @@ Meteor.methods
     Email.send({  
       to: email,
       from: "BulletNotes.io <admin@bulletnotes.io>",
-      subject: "Activity",
+      subject: "Daily Activity Summary",
       html: html
     });

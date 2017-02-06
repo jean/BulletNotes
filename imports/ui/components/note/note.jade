@@ -32,7 +32,7 @@ template(name='note')
           span.badge {{this.children}}
       .note-title
         div(class='title task-title-sp', contenteditable='true') {{{title}}}
-        if (progress)
+        if progress
           .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
             .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
               span.sr-only {{progress}}% Complete (success)
