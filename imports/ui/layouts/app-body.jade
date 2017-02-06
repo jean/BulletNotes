@@ -29,6 +29,8 @@ template(name='App_body')
                 a.btn-secondary(href="{{pathFor 'join'}}")
                   | {{_ 'layouts.appBody.join'}}
             .parentNotes
+              h4
+                a(href='/') Home
               h4 Favorites
               if notes.count
                 each note in notes

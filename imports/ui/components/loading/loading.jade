@@ -1,3 +1,7 @@
 template(name="App_loading")
   img(src="/logo-todos.svg", class="loading-app")
-  | Loading ...
+  .wrapper-message
+    .title-message.loading.pulse
+      i.glyphicon.glyphicon-refresh.glyphicon-spin
+      br
+      | Loading . . .
