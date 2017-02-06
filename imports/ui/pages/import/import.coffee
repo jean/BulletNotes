@@ -8,6 +8,9 @@ import {
 
 require './import.jade'
 
+Template.Notes_import.onRendered ->
+  NProgress.done()
+
 Template.Notes_import.events
   'submit .importForm': (event, instance) ->
     event.preventDefault()

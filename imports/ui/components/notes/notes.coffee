@@ -111,8 +111,6 @@ Template.notes.events
       instance.editNote()
     else if $(target).val() == 'delete'
       instance.deleteNote()
-    else
-      instance.toggleNotePrivacy()
     target.selectedIndex = 0
     return
   'blur .title-wrapper': (event, instance) ->
@@ -125,25 +123,6 @@ Template.notes.events
         # FlowRouter.getParam 'shareKey',
       }, (err, res) ->
         $(event.target).html Template.notes.formatText title
-  'click .js-toggle-note-privacy': (event, instance) ->
-    instance.toggleNotePrivacy()
-    return
-  'click .js-delete-note': (event, instance) ->
-    instance.deleteNote()
-  'click .js-note-add': (event, instance) ->
-    instance.$('.js-note-new input').focus()
-    return
-  'submit .js-note-new': (event) ->
-    event.preventDefault()
-    $input = $(event.target).find('[type=text]')
-    if !$input.val()
-      return
-    insert.call {
-      parent: Template.instance().noteId
-      title: $input.val()
-    }, displayError
-    $input.val ''
-    return
 
 Template.notes.formatText = (inputText) ->
   if !inputText
@@ -180,6 +159,7 @@ Template.notes.formatText = (inputText) ->
   return replacedText
 
 Template.notes.rendered = ->
+  NProgress.done()
   $('.sortable').nestedSortable
     handle: '.handle'
     items: 'li.note-item'

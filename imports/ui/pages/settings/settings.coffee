@@ -3,6 +3,9 @@ Dropbox = require('dropbox')
 
 require './settings.jade'
 
+Template.App_settings.onRendered ->
+  NProgress.done()
+
 Template.App_settings.events
   'click #deauthLink': (event) ->
     event.preventDefault()

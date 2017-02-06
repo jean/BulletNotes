@@ -2,7 +2,7 @@
 { BlazeLayout } = require 'meteor/kadira:blaze-layout'
 
 # Import to load these templates
-require '/imports/ui/layouts/app-body.js'
+require '/imports/ui/layouts/app-body.coffee'
 require '/imports/ui/pages/root-redirector.js'
 require '/imports/ui/pages/notes-show-page.coffee'
 require '/imports/ui/pages/app-not-found.coffee'
@@ -15,31 +15,37 @@ require '/imports/ui/accounts/accounts-templates.js'
 FlowRouter.route '/',
   name: 'App.home'
   action: ->
+    NProgress.start()
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/note/:noteId',
   name: 'Notes.show'
   action: ->
+    NProgress.start()
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/note/:noteId/:shareKey',
   name: 'Notes.showShared'
   action: ->
+    NProgress.start()
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/import',
   name: 'Notes.import'
   action: ->
+    NProgress.start()
     BlazeLayout.render 'App_body', main: 'Notes_import'
 
 FlowRouter.route '/settings',
   name: 'App.settings'
   action: ->
+    NProgress.start()
     BlazeLayout.render 'App_body', main: 'App_settings'
 
 FlowRouter.route '/search/:searchTerm',
   name: 'App.search'
   action: ->
+    NProgress.start()
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 # FlowRouter.route '/calendar',

@@ -24,7 +24,7 @@ export notesExport = new ValidatedMethod
     if !userId
       userId = @userId
     if !userId
-      throw new (Meteor.Error)('not-authorized')
+      throw new (Meteor.Error)('not-authorized - no userId')
 
     topLevelNotes = Notes.find {
       parent: noteId
@@ -57,7 +57,7 @@ export dropbox = new ValidatedMethod
     if !userId
       userId = @userId
     if !userId
-      throw new (Meteor.Error)('not-authorized')
+      throw new (Meteor.Error)('Dropbox not-authorized')
     if (
       Meteor.users.findOne(userId).profile &&
       Meteor.users.findOne(userId).profile.dropbox_token
@@ -75,7 +75,7 @@ export dropbox = new ValidatedMethod
       ).catch (error) ->
         console.error error
     else
-      throw new (Meteor.Error)('not-authorized')
+      throw new (Meteor.Error)('No dropbox token')
 
 export summary = new ValidatedMethod
   name: 'notes.summary'
@@ -87,8 +87,8 @@ export summary = new ValidatedMethod
   run: ({ userId = null }) ->
     if !userId
       userId = @userId
-    if !userId || userId != @userId
-      throw new (Meteor.Error)('not-authorized')
+    if !userId || (@userId && userId != @userId)
+      throw new (Meteor.Error)('not-authorized summary')
     user = Meteor.users.findOne userId
     email = user.emails[0].address
     notes = Notes.search 'last-changed:24h', userId
