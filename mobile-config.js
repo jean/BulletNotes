@@ -7,7 +7,7 @@ App.info({
   author: 'Nick Busey',
   email: 'admin@bulletnotes.io',
   website: 'http://bulletnotes.io',
-  version: '1.1.2',
+  version: '1.1.4',
 });
 
 App.icons({
