@@ -77,6 +77,31 @@ export dropbox = new ValidatedMethod
     else
       throw new (Meteor.Error)('not-authorized')
 
+export summary = new ValidatedMethod
+  name: 'notes.summary'
+  validate: new SimpleSchema
+    userId: Notes.simpleSchema().schema('owner')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ userId = null }) ->
+    if !userId
+      userId = @userId
+    if !userId || userId != @userId
+      throw new (Meteor.Error)('not-authorized')
+    user = Meteor.users.findOne userId
+    email = user.emails[0].address
+    notes = Notes.search 'last-changed:24h', userId
+    SSR.compileTemplate( 'Email_summary', Assets.getText( 'email/summary.html' ) )
+    html = SSR.render( 'Email_summary', { site_url: Meteor.absoluteUrl(), notes: notes } )
+    Email.send({
+      to: email,
+      from: "BulletNotes.io <admin@bulletnotes.io>",
+      subject: "Daily Activity Summary",
+      html: html
+    })
+
+
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
   notesExport

@@ -115,11 +115,11 @@
                 <td>
                   <!-- COPY -->
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
+                    <!-- <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
                         <img style="width: 100%; max-width: 270px;" src="https://tmc-post-content.s3.amazonaws.com/banana-co-logo.png" alt="Banana Co.">
                       </td>
-                    </tr>
+                    </tr> -->
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Howdy!</td>
                     </tr>
@@ -129,8 +129,9 @@
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
                         <ul>
-                          <li>One thing</li>
-                          <li>And another thing.</li>
+                          {{#each note in notes}}
+                            <li>{{note.title}}</li>
+                          {{/each}}
                         </ul>
                       </td>
                     </tr>

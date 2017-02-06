@@ -66,8 +66,9 @@
       "home": "Home",
       "devWarningBody": "This is a development server. Data loss is assured.",
       "betaWarningBody": "This site is still under construction! While it should work pretty well, and you can and should export regularly, be aware data loss may occur. <a href='https://github.com/NickBusey/noted/issues' target='_blank'>Report Issues on GitHub</a>",
-      "lastHour": "Last hour",
-      "lastDay": "Last day"
+      "lastHour": "Previous hour",
+      "lastDay": "Previous day",
+      "oldItems": "Month old notes"
     }
   },
   "pages": {
