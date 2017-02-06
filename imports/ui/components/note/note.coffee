@@ -141,14 +141,14 @@ Template.note.events
         if event.shiftKey
           Meteor.call 'notes.outdent', {
             noteId: @_id
-            # FlowRouter.getParam 'shareKey'
+            shareKey: FlowRouter.getParam 'shareKey'
           }
         else
           Meteor.call 'notes.makeChild', {
             noteId: @_id
             parent: parent_id
             rank: null
-            # FlowRouter.getParam 'shareKey'
+            shareKey: FlowRouter.getParam 'shareKey'
           }
       # Backspace / delete
       when 8

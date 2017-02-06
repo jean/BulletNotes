@@ -167,7 +167,7 @@ export makeChild = new ValidatedMethod
     noteId: Notes.simpleSchema().schema('_id')
     parent: Notes.simpleSchema().schema('parent')
     rank: Notes.simpleSchema().schema('rank')
-    # shareKey: Notes.simpleSchema().schema('shareKey')
+    shareKey: Notes.simpleSchema().schema('shareKey')
   .validator
     clean: yes
     filter: no
@@ -234,10 +234,11 @@ export outdent = new ValidatedMethod
   name: 'notes.outdent'
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
+    shareKey: Notes.simpleSchema().schema('shareKey')
   .validator
     clean: yes
     filter: no
-  run: ({ noteId }) ->
+  run: ({ noteId, shareKey = null }) ->
     if !@userId || !Notes.isEditable noteId, shareKey
       throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(noteId)
@@ -248,7 +249,7 @@ export outdent = new ValidatedMethod
         noteId: note._id
         parent: new_parent._id
         rank: old_parent.rank+1
-        # shareKey
+        shareKey
       }
     else
       # No parent left to go out to, set things to top level.
