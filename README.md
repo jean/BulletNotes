@@ -6,10 +6,6 @@
 
 http://www.bulletnotes.io/
 
-## User Guide
-
-https://github.com/NickBusey/BulletNotes/wiki
-
 ## Goal
 
 An open-source, fully featured note taking, journaling, self quantification app.
@@ -23,6 +19,23 @@ An open-source, fully featured note taking, journaling, self quantification app.
 * Ease of Use
  * Point and click friendliness for less technical users. API and CLI interface for more technical users. (Coming Soon)
 
-## Planned Feature List
+## User Guide, Planned Feature List, and Bug Tracker
 
 http://www.bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA
+
+## Local Development Instructions
+
+Install Meteor.
+
+Clone the repo.
+
+```
+cd BulletNotes
+npm start
+```
+
+That's it!
+
+## Heroku Deployment
+
+Create a Heroku app. Add an mLab addon for your database. Fork this repo and deploy your forked branch to Heroku as normal, as per Heroku's documentation. Set your buildpack to https://github.com/AdmitHub/meteor-buildpack-horse.git
