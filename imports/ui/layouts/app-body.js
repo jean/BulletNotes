@@ -134,6 +134,14 @@ Template.App_body.helpers({
 });
 
 Template.App_body.events({
+  'submit .searchForm'(event, instance) {
+    event.preventDefault();
+    console.log($(event.target));
+    var input = $(event.target).find('input');
+    FlowRouter.go('/search/'+encodeURIComponent(input.val()));
+    input.val('');
+    $('.nav-item').trigger('click');
+  },
   'click .js-menu'(event, instance) {
     instance.state.set('menuOpen', !instance.state.get('menuOpen'));
   },

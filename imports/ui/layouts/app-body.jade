@@ -28,6 +28,9 @@ template(name='App_body')
                   | {{_ 'layouts.appBody.login'}}
                 a.btn-secondary(href="{{pathFor 'join'}}")
                   | {{_ 'layouts.appBody.join'}}
+            form.searchForm
+              input.search(placeholder='Search...')
+              submit(style='visibility:hidden')
             .parentNotes
               h4
                 a(href='/') Home
