@@ -12,8 +12,8 @@ Meteor.startup ->
     schedule: (parser) ->
       # parser is a later.parse object
       # 4:20 am MST, 7 hours off. Lazy fix. Sue me.
-      # parser.text 'at 11:20 am'
-      parser.text 'every 5 minutes'
+      parser.text 'at 11:20 am'
+      # parser.text 'every 5 minutes'
     job: ->
       users = Meteor.users.find({})
       users.forEach (user) ->

@@ -165,7 +165,7 @@ Template.notes.formatText = (inputText) ->
     '<a href="mailto:$1">$1</a>'
 
   # Highlight Search Terms
-  searchTerm = Session.get('searchTerm')
+  searchTerm = new RegExp(FlowRouter.getParam('searchTerm'),"gi")
   replacedText = replacedText.replace searchTerm,
     '<span class=\'searchResult\'>$&</span>'
 
