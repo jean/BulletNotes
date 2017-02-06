@@ -31,7 +31,6 @@ Template.Notes_show_page.helpers
     if Template.currentData().searchTerm
       Meteor.subscribe 'notes.search', Template.currentData().searchTerm
     else
-      console.log FlowRouter.getParam 'shareKey'
       Meteor.subscribe 'notes.view',
         FlowRouter.getParam 'noteId'
         FlowRouter.getParam 'shareKey'

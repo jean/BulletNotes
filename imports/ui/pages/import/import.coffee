@@ -26,7 +26,6 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
     return
   if line.trim().substr(0, 1) != '-'
     # Invalid line
-    console.log line
     Template.Notes_import.import data, ii + 1, lastNote
     return
   leadingSpaceCount = line.match(/^(\s*)/)[1].length

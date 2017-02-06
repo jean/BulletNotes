@@ -36,8 +36,9 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-  console.log("App_body created");
-  this.subscribe('notes.all');
+  NoteSubs = new SubsManager()
+
+  NoteSubs.subscribe('notes.all');
 
   this.state = new ReactiveDict();
   this.state.setDefault({
@@ -156,21 +157,6 @@ Template.App_body.events({
         FlowRouter.go('Notes.show', Notes.findOne({ userId: { $exists: false } }));
       }
     }
-  },
-
-  'click .js-new-note'() {
-    const noteId = insert.call({ title: 'New list 1', level: 0 }, (err) => {
-      if (err) {
-        console.log(err);
-        // At this point, we have already redirected to the new note page, but
-        // for some reason the note didn't get created. This should almost never
-        // happen, but it's good to handle it anyway.
-        FlowRouter.go('App.home');
-        alert(TAPi18n.__('layouts.appBody.newNoteError')); // eslint-disable-line no-alert
-      }
-    });
-
-    FlowRouter.go('Notes.show', { _id: noteId });
   },
 
   'click .js-toggle-language'(event) {

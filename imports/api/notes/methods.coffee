@@ -75,7 +75,6 @@ export favorite = new ValidatedMethod
     if !@userId
       throw new (Meteor.Error)('not-authorized')
     note = Notes.findOne(noteId)
-    console.log note
     Notes.update noteId, $set:
       favorite: !note.favorite
       favoritedAt: new Date
@@ -139,7 +138,6 @@ export updateTitle = new ValidatedMethod
         updatedAt: new Date
       }}, tx: true
     else
-      console.log "Ok! Update title: ",title
       Notes.update noteId, {$set: {
         title: title
         updatedAt: new Date
@@ -319,7 +317,6 @@ export updateRanks = new ValidatedMethod
   run: ({notes, focusedNoteId = null, shareKey = null}) ->
     if !@userId #|| !Notes.isEditable focusedNoteId, shareKey
       throw new (Meteor.Error)('not-authorized')
-    console.log notes
     # First save new parent IDs
     tx.start 'update note ranks'
     for ii, note of notes
@@ -356,7 +353,6 @@ Meteor.methods
     tx.commit()
 
   'notes.duplicateRun': (id, parentId = null) ->
-    console.log id, parentId
     note = Notes.findOne(id)
     if !note
       return false

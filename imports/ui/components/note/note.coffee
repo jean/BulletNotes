@@ -63,7 +63,6 @@ Template.note.events
       window.open(event.target.href)
 
   'click .favorite': (event, instance) ->
-    console.log instance
     event.preventDefault()
     event.stopImmediatePropagation()
     favorite.call
@@ -106,20 +105,18 @@ Template.note.events
           Meteor.call 'notes.updateTitle', {
             noteId: note._id
             title: topNote
-            # shareKey: FlowRouter.getParam('shareKey')
-          }, (err, res) ->
-            console.log err, res
-            Meteor.call 'notes.insert', {
-              title: ''
-              rank: note.rank + .5
-              parent: note.parent
-              # shareKey: FlowRouter.getParam('shareKey')
-            }, (err, res) ->
-              # Template.notes.calculateRank()
-              setTimeout (->
-                $(event.target).closest('.note-item')
-                  .next().find('.title').focus()
-              ), 50
+            shareKey: FlowRouter.getParam('shareKey')
+          }
+          Meteor.call 'notes.insert', {
+            title: ''
+            rank: note.rank + .5
+            parent: note.parent
+            shareKey: FlowRouter.getParam('shareKey')
+          }
+          setTimeout (->
+            $(event.target).closest('.note-item')
+              .next().find('.title').focus()
+          ), 50
       # Tab
       when 9
         event.preventDefault()
@@ -151,10 +148,10 @@ Template.note.events
       when 8
         if event.currentTarget.innerText.trim().length == 0
           $(event.currentTarget).closest('.note-item').prev().find('.title').focus()
-          console.log "Remove: ",this
+          $(event.currentTarget).closest('.note-item').fadeOut()
           Meteor.call 'notes.remove',
             noteId: @_id
-            # FlowRouter.getParam 'shareKey'
+            FlowRouter.getParam 'shareKey'
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
           if position == 0
