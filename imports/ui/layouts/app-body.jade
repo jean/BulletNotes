@@ -2,27 +2,27 @@ template(name='App_body')
   +HammerTouchArea(gestureMap=templateGestures)
     #container(class='{{menuOpen}} {{wrapClasses}}')
       +momentum(plugin="fade")
-        +if Template.subscriptionsReady
+        if ready
           section#menu
             .language-toggle
-              +each language in languages
-                +if isActiveLanguage language
+              each language in languages
+                if isActiveLanguage language
                   span.active {{language}}
-                +else
+                else
                   a.js-toggle-language(href='#') {{language}}
             +undoRedoButtons
-            +if currentUser
+            if currentUser
               .btns-group-vertical
                 a.js-user-menu.btn-secondary(href='#')
-                  +if userMenuOpen
+                  if userMenuOpen
                     span.glyphicon.glyphicon-chevron-up
-                  +else
+                  else
                     span.glyphicon.glyphicon-chevron-down
-                    | {{displayName}}
-                +if userMenuOpen
-                  a.btn-secondary(href='/import') {{_ 'layouts.appBody.import'}}
+                  | {{displayName}}
+                if userMenuOpen
+                  a.btn-secondary(href='/settings') {{_ 'layouts.appBody.settings'}}
                   a.js-logout.btn-secondary {{_ 'layouts.appBody.logout'}}
-            +else
+            else
               .btns-group
                 a.btn-secondary(href="{{pathFor 'signin'}}")
                   | {{_ 'layouts.appBody.login'}}
@@ -30,11 +30,11 @@ template(name='App_body')
                   | {{_ 'layouts.appBody.join'}}
             .parentNotes
               h4 Favorites
-              +if notes.count
-                +each note in notes
+              if notes.count
+                each note in notes
                   a.parentNote(href="{{pathFor 'Notes.show' _id=note._id}}", title='{{note.name}}', class='{{activeNoteClass note}}')
                     | {{{note.title}}}
-              +else
+              else
                 | No favorites yet, click the icon on some notes to the right.
 
       +unless connected
@@ -46,7 +46,7 @@ template(name='App_body')
                 | {{_ 'layouts.appBody.tryingToConnect'}}
               .description
                 | {{_ 'layouts.appBody.connectionIssue'}}
-      +if dev
+      if dev
         .notifications.devWarning
           .notification
             span.glyphicon.glyphicon-warning-sign
@@ -55,7 +55,7 @@ template(name='App_body')
                 | {{_ 'layouts.appBody.devWarning'}}
               .description
                 | {{_ 'layouts.appBody.devWarningBody'}}
-      +else
+      else
         .notifications.betaWarning
           .notification
             span.glyphicon.glyphicon-warning-sign
@@ -65,14 +65,14 @@ template(name='App_body')
               .description
                 | {{{_ 'layouts.appBody.betaWarningBody'}}}
       +momentum(plugin="fade")
-        +if Template.subscriptionsReady
+        if ready
           .nav-group(class='{{expandClass}}')
             a.js-menu.nav-item(href='#')
               span.glyphicon.glyphicon-menu-right
       .content-overlay
       #content-container
         +momentum plugin="fade"
-          +if Template.subscriptionsReady
+          if ready
             +Template.dynamic(template=main)
-          +else
+          else
             +App_loading

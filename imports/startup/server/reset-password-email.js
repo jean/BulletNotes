@@ -1,24 +1,24 @@
 import { Accounts } from 'meteor/accounts-base';
 
 
-Accounts.emailTemplates.siteName = 'Meteor Guide Todos Example';
-Accounts.emailTemplates.from = 'Meteor Todos Accounts <accounts@example.com>';
+Accounts.emailTemplates.siteName = 'BulletNotes.io';
+Accounts.emailTemplates.from = 'BulletNotes <accounts@bulletnotes.io>';
 
 Accounts.emailTemplates.resetPassword = {
   subject() {
-    return 'Reset your password on Meteor Todos';
+    return 'Reset your password on BulletNotes.io';
   },
   text(user, url) {
     return `Hello!
 
-Click the link below to reset your password on Meteor Todos.
+Click the link below to reset your password on BulletNotes.
 
 ${url}
 
 If you didn't request this email, please ignore it.
 
 Thanks,
-The Meteor Todos team
+The BulletNotes.io team
 `;
   },
 //   html(user, url) {

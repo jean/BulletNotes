@@ -61,6 +61,8 @@
       "connectionIssue": "There seems to be a connection issue",
       "devWarning": "Warning!",
       "import": "Import",
+      "export": "Export",
+      "settings": "Settings",
       "home": "Home",
       "devWarningBody": "This is a development server. Data loss is assured.",
       "betaWarningBody": "This site is still under construction! While it should work pretty well, and you can and should export regularly, be aware data loss may occur. <a href='https://github.com/NickBusey/noted/issues' target='_blank'>Report Issues on GitHub</a>"

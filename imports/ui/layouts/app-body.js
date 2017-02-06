@@ -36,9 +36,13 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-  NoteSubs = new SubsManager()
-
-  NoteSubs.subscribe('notes.all');
+  var NoteSubs = new SubsManager()
+  var self = this;
+  self.ready = new ReactiveVar();
+  self.autorun(function() {
+      var handle = NoteSubs.subscribe('notes.all');
+      self.ready.set(handle.ready());
+  });
 
   this.state = new ReactiveDict();
   this.state.setDefault({
@@ -122,6 +126,10 @@ Template.App_body.helpers({
   expandClass() {
     const instance = Template.instance();
     return (instance.state.get('menuOpen') ? 'expanded' : '');
+  },
+  ready() {
+    const instance = Template.instance();
+    return instance.ready.get();
   }
 });
 

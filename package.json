@@ -16,7 +16,7 @@
   "dependencies": {
     "autoprefixer": "^6.4.1",
     "babel-runtime": "^6.18.0",
-    "dropbox": "^2.5.0",
+    "dropbox": "^2.5.1",
     "faker": "^3.0.1",
     "meteor-node-stubs": "^0.2.5",
     "sanitize-html": "^1.14.1"

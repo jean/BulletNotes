@@ -93,3 +93,4 @@ service-configuration
 meteorhacks:subs-manager
 email
 meteorhacks:ssr
+percolate:synced-cron

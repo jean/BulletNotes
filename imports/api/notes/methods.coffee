@@ -275,42 +275,6 @@ export setShowChildren = new ValidatedMethod
       showChildren: show
       children: children
 
-export notesExport = new ValidatedMethod
-  name: 'notes.export'
-  validate: new SimpleSchema
-    noteId:
-      type: String
-      optional: true
-    userId: Notes.simpleSchema().schema('owner')
-    level: Notes.simpleSchema().schema('level')
-  .validator
-    clean: yes
-    filter: no
-  run: ({ noteId = null, userId = null, level = 0 }) ->
-    if !userId
-      userId = @userId
-    if !userId
-      throw new (Meteor.Error)('not-authorized')
-
-    topLevelNotes = Notes.find {
-      parent: noteId
-      owner: userId
-      deleted: {$exists: false}
-    }, sort: rank: 1
-    exportText = ''
-    topLevelNotes.forEach (note) ->
-      spacing = new Array(level * 5).join(' ')
-      exportText += spacing + '- ' +
-        note.title.replace(/(\r\n|\n|\r)/gm, '') + '\n'
-      if note.body
-        exportText += spacing + '  "' + note.body + '"\n'
-      exportText = exportText + notesExport.call {
-        noteId: note._id
-        userId: userId
-        level: level+1
-      }
-    exportText
-
 export updateRanks = new ValidatedMethod
   name: 'notes.updateRanks'
   validate: null
@@ -387,7 +351,6 @@ NOTES_METHODS = _.pluck([
   outdent
   setShowChildren
   favorite
-  notesExport
   updateRanks
 ], 'name')
 

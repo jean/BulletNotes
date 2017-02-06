@@ -1,0 +1,16 @@
+template(name="App_settings")
+  .wrapper-message
+    .title-message {{_ 'layouts.appBody.settings'}}
+    .subtitle-message
+      h4 {{_ 'layouts.appBody.import'}}/{{_ 'layouts.appBody.export'}}
+      a#importLink.form-control.btn.btn-theme.btn-primary(href='/import') {{_ 'layouts.appBody.import'}}
+      a#exportLink.form-control.btn.btn-theme.btn-primary(href='#') {{_ 'layouts.appBody.export'}}
+      #exportSpinner(style='display:none')
+        i.glyphicon.glyphicon-refresh.glyphicon-spin
+      textarea#exportResult(style='display:none')
+      h4 Dropbox
+      p You can link your Dropbox account for a nightly backup. Each backup file can be imported straight into another instance of BulletNotes, or into something like Workflowy.
+      if dropbox_token
+        a#deauthLink.form-control.btn.btn-theme.btn-primary Unlink Dropbox Account
+      else
+        a#authlink.form-control.btn.btn-theme.btn-primary Authenticate with Dropbox
