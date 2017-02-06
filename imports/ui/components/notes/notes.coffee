@@ -68,14 +68,12 @@ Template.notes.helpers
     if @note()
       parentId = @note()._id
 
-    Session.set 'searchTerm', Template.currentData().searchTerm
-
     if parentId
       Session.set 'level', @note().level
       Notes.find { parent: parentId }, sort: rank: 1
-    else if Template.currentData().searchTerm
+    else if FlowRouter.getParam 'searchTerm'
       Session.set 'level', 0
-      Notes.search Template.currentData().searchTerm
+      Notes.search FlowRouter.getParam 'searchTerm'
     else
       Session.set 'level', 0
       Notes.find { parent: null }, sort: rank: 1

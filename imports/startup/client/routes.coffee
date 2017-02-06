@@ -1,9 +1,6 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { BlazeLayout } = require 'meteor/kadira:blaze-layout'
 
-# require '../../ui/pages/search/search.coffee'
-# require '../../ui/pages/calendar/calendar.coffee'
-
 # Import to load these templates
 require '/imports/ui/layouts/app-body.js'
 require '/imports/ui/pages/root-redirector.js'
@@ -40,10 +37,10 @@ FlowRouter.route '/settings',
   action: ->
     BlazeLayout.render 'App_body', main: 'App_settings'
 
-# FlowRouter.route '/search/:searchTerm',
-#   name: 'App.search'
-#   action: ->
-#     BlazeLayout.render 'App_body', main: 'App_search'
+FlowRouter.route '/search/:searchTerm',
+  name: 'App.search'
+  action: ->
+    BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 # FlowRouter.route '/calendar',
 #   name: 'App.calendar'
