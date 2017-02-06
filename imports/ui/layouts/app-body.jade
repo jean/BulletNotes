@@ -21,6 +21,8 @@ template(name='App_body')
                   | {{displayName}}
                 if userMenuOpen
                   a.btn-secondary(href='/settings') {{_ 'layouts.appBody.settings'}}
+                  a.btn-secondary(href='/search/last-changed%3a1h') {{_ 'layouts.appBody.lastHour'}}
+                  a.btn-secondary(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
                   a.js-logout.btn-secondary {{_ 'layouts.appBody.logout'}}
             else
               .btns-group
