@@ -40,7 +40,7 @@ template(name='App_body')
               h4 Favorites
               if notes.count
                 each note in notes
-                  a.parentNote(href="{{pathFor 'Notes.show' _id=note._id}}", title='{{note.name}}', class='{{activeNoteClass note}}')
+                  a.parentNote(href="{{pathFor 'Notes.show' noteId=note._id}}", title='{{note.name}}', class='{{activeNoteClass note}}')
                     | {{{note.title}}}
               else
                 | No favorites yet, click the icon on some notes to the right.
