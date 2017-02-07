@@ -29,7 +29,11 @@ Template.note.onRendered ->
 
 Template.note.helpers
   children: () ->
-    if @showChildren
+    Meteor.subscribe 'notes.children',
+      @_id,
+      FlowRouter.getParam 'shareKey'
+
+    if @showChildren || Session.get 'expand_'+@_id
       Notes.find { parent: @_id }, sort: {rank: 1}
   editingClass: (editing) ->
     editing and 'editing'

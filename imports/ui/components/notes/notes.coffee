@@ -48,6 +48,13 @@ Template.notes.onCreated ->
     editingNote: false
     notesReady: false
 
+  Meteor.subscribe 'notes.view',
+    FlowRouter.getParam 'noteId',
+    FlowRouter.getParam 'shareKey'
+  Meteor.subscribe 'notes.children',
+    FlowRouter.getParam 'noteId',
+    FlowRouter.getParam 'shareKey'
+
   @deleteNote = =>
     note = @data.note()
     title = sanitizeHtml note.title,
@@ -61,13 +68,10 @@ Template.notes.onCreated ->
     return no
 
 Template.notes.helpers
-  # notes: () ->
-  #   Notes.find { parent: parentId }, sort: rank: 1
   notes: ->
     parentId = null
     if @note()
       parentId = @note()._id
-
     if parentId
       Session.set 'level', @note().level
       Notes.find { parent: parentId }, sort: rank: 1
