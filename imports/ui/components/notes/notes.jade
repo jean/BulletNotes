@@ -31,6 +31,7 @@ template(name='notes')
 
     ol#notes.content-scrollable.note-items.sortable
       if notesReady
+        | Huh
         each notes
           +note
         else

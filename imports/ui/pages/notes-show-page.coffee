@@ -12,6 +12,13 @@ import '/imports/ui/components/notes/notes.coffee'
 
 
 Template.Notes_show_page.onCreated ->
+  Meteor.subscribe 'notes.view',
+    FlowRouter.getParam 'noteId'
+    FlowRouter.getParam 'shareKey'
+  Meteor.subscribe 'notes.children',
+    FlowRouter.getParam 'noteId'
+    FlowRouter.getParam 'shareKey'
+    
   @getNoteId = ->
     FlowRouter.getParam 'noteId'
 
