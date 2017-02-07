@@ -1,7 +1,6 @@
 {
   "public": {
     "dropbox_client_id": "5vu0jz3onu0jcq8",
-    "dev": 1,
-    "cronTime": "every 1 minutes"
+    "dev": 1
   }
 }

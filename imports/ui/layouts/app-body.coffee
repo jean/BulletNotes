@@ -97,7 +97,6 @@ Template.App_body.loadFavorite = (number) ->
   editingNote = $(document.activeElement).hasClass('title')
   menuVisible = $('#container').hasClass('menu-open')
   if !editingNote
-    NProgress.start()
     FlowRouter.go $($('.parentNote').get(number-1)).attr 'href'
     if menuVisible 
       $('.nav-item').trigger 'click'
@@ -153,9 +152,8 @@ Template.App_body.helpers
     instance = Template.instance()
     instance.ready.get()
 Template.App_body.events
-  'submit .searchForm': (event, instance) ->
+  'submit #searchForm': (event, instance) ->
     event.preventDefault()
-    console.log $(event.target)
     input = $(event.target).find('input')
     FlowRouter.go '/search/' + encodeURIComponent(input.val())
     input.val ''

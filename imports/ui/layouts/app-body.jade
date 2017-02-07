@@ -31,12 +31,11 @@ template(name='App_body')
                   | {{_ 'layouts.appBody.login'}}
                 a.btn-secondary(href="{{pathFor 'join'}}")
                   | {{_ 'layouts.appBody.join'}}
-            form.searchForm
-              input.search(placeholder='Search...')
+            form#searchForm
+              input.search.form-control(placeholder='Search...')
               submit(style='visibility:hidden')
             .parentNotes
-              h4
-                a(href='/') Home
+              a(href='/') Home
               h4 Favorites
               if notes.count
                 each note in notes

@@ -19,7 +19,7 @@ textarea {
   border: none;
   border-radius: 0;
   box-sizing: border-box;
-  color: @color-full;
+  color: color-full;
   outline: none;
 
   &[disabled] { opacity: .5; }
@@ -27,7 +27,7 @@ textarea {
 
 // Remove chrome/saf autofill yellow background
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px @color-empty inset;
+  -webkit-box-shadow: 0 0 0 1000px color-empty inset;
 }
 
 // Custom checkbox
@@ -81,7 +81,7 @@ input:-webkit-autofill {
 
   &.error [class^="icon-"],
   &.error [class*=" icon-"] {
-    color: @color-negative;
+    color: color-negative;
   }
 
   // Position & padding

@@ -22,14 +22,14 @@
     @media screen and (min-width: 40em) { text-align: left; }
 
     .title-page {
-      position(absolute, 2.5em, 3rem, auto, 3rem)
+      position(absolute, 2rem, 3rem, auto, 3rem)
 
       font-size: 1.125em; // 18px
       white-space: nowrap;
 
       .title-wrapper {
         @extend .ellipsized;
-        color: @color-ancillary;
+        color: color-ancillary;
         display: inline-block;
         padding-right: 1.5rem;
         vertical-align: top;
@@ -37,14 +37,14 @@
       }
 
       .count-note {
-        background: @color-primary;
+        background: color-primary;
         border-radius: 1em;
-        color: @color-empty;
+        color: color-empty;
         display: inline-block;
         font-size: .7rem;
         line-height: 1;
         margin-left: -1.25rem;
-        margin-top: -4px;
+        margin-top: 1em;
         padding: .3em .5em;
         vertical-align: middle;
       }
