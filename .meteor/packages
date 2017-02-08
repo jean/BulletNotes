@@ -78,7 +78,6 @@ dburles:factory
 # security
 audit-argument-checks@1.0.7
 coffeescript
-meteortoys:allthings
 mquandalle:jade
 momentjs:moment
 babrahams:undo-redo
@@ -95,3 +94,4 @@ email
 meteorhacks:ssr
 percolate:synced-cron
 mrt:nprogress
+meteortoys:allthings

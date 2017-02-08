@@ -152,16 +152,12 @@ Template.App_body.helpers
     instance = Template.instance()
     instance.ready.get()
 Template.App_body.events
-  'submit #searchForm': (event, instance) ->
-    event.preventDefault()
-    input = $(event.target).find('input')
-    FlowRouter.go '/search/' + encodeURIComponent(input.val())
-    input.val ''
-    $('.nav-item').trigger 'click'
-    return
+  'keyup #searchForm': (event, instance) ->
+    Session.set 'searchTerm', $(event.target).val()
+
   'click .js-menu': (event, instance) ->
     instance.state.set 'menuOpen', !instance.state.get('menuOpen')
-    return
+
   'click .content-overlay': (event, instance) ->
     instance.state.set 'menuOpen', false
     event.preventDefault()

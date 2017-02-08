@@ -59,11 +59,6 @@ Template.note.helpers
     className
   userOwnsNote: ->
     Meteor.userId() == @owner
-  progress: ->
-    setTimeout ->
-      $('[data-toggle="tooltip"]').tooltip('destroy').tooltip()
-    , 100
-    Template.notes.getProgress this
   progressClass: ->
     Template.notes.getProgressClass this
 
@@ -229,6 +224,11 @@ Template.note.events
       when 27
         $(event.currentTarget).html Session.get 'preEdit'
         $(event.currentTarget).blur()
+        window.getSelection().removeAllRanges()
+
+  'focus div.title': (event, instance) ->
+    event.stopImmediatePropagation()
+    Session.set 'preEdit', @title
 
   'blur .title': (event, instance) ->
     that = this
