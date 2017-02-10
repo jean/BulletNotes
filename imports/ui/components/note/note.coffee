@@ -93,7 +93,7 @@ Template.note.events
       noteId: @_id
       # shareKey: FlowRouter.getParam 'shareKey'
 
-  'keydown .title': (event) ->
+  'keydown .title': (event, instance) ->
     note = this
     event.stopImmediatePropagation()
     switch event.keyCode
@@ -206,8 +206,7 @@ Template.note.events
       # Down
       when 40
         if event.metaKey
-          $(event.currentTarget).closest('.note-item')
-            .find('.expand').trigger 'click'
+          Template.note.toggleChildren(instance)
         else
           # Go to a child note if available
           note = $(event.currentTarget).closest('.note-item')
@@ -257,17 +256,20 @@ Template.note.events
         that.title = title
         $(event.target).html Template.notes.formatText title
 
-  'click .expand': (event) ->
+  'click .expand': (event, instance) ->
     event.stopImmediatePropagation()
     event.preventDefault()
-    if Meteor.userId()
-      Meteor.call 'notes.setShowChildren', {
-        noteId: @_id
-        show: !@showChildren
-      }
-        # FlowRouter.getParam 'shareKey'
-    else
-      Session.set 'expand_'+@_id, !Session.get('expand_'+@_id)
+    Template.note.toggleChildren(instance)
+
+Template.note.toggleChildren = (instance) ->
+  if Meteor.userId()
+    Meteor.call 'notes.setShowChildren', {
+      noteId: instance.data._id
+      show: !instance.data.showChildren
+      shareKey: FlowRouter.getParam 'shareKey'
+    }
+  else
+    Session.set 'expand_'+instance.data._id, !Session.get('expand_'+instance.data._id)
 
 Template.note.stripTags = (inputText) ->
   if !inputText
