@@ -29,7 +29,8 @@
       "typeToAdd": "Type to add new notes",
       "noNotes": "No notes here",
       "addAbove": "Add new notes using the field above",
-      "loading": "Loading notes..."
+      "loading": "Loading notes...",
+      "favorite": "Favorite"
     },
     "insert": {
       "note": "Note",

@@ -53,6 +53,10 @@ Template.notes.onCreated ->
     FlowRouter.getParam 'noteId',
     FlowRouter.getParam 'shareKey'
 
+  @favoriteNote = =>
+    Meteor.call 'notes.favorite', 
+      noteId: @data.note()._id
+
   @deleteNote = =>
     note = @data.note()
     title = sanitizeHtml note.title,
@@ -83,6 +87,9 @@ Template.notes.helpers
     Notes.findOne Template.currentData().note()
   notesReady: ->
     Template.instance().subscriptionsReady()
+  favorited: ->
+    if Template.currentData().note().favorite
+      'favorited'
   progress: ->
     setTimeout ->
       $('[data-toggle="tooltip"]').tooltip()
@@ -113,12 +120,16 @@ Template.notes.events
     event.preventDefault()
     instance.state.set 'editing', false
     return
+  'click .favorite': (event, instance) ->
+    instance.favoriteNote()
   'change .note-edit': (event, instance) ->
     target = event.target
     if $(target).val() == 'edit'
       instance.editNote()
     else if $(target).val() == 'delete'
       instance.deleteNote()
+    else if $(target).val() == 'favorite'
+      instance.favoriteNote()
     target.selectedIndex = 0
     return
   'blur .title-wrapper': (event, instance) ->

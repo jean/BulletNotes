@@ -5,6 +5,7 @@ template(name='notes')
         +breadcrumbs
         h1.js-edit-note.title-page
           if focusedNote
+            i.glyphicon.glyphicon-heart.favorite(class='{{favorited}}')
             .title-wrapper(contenteditable='true') {{{focusedNote.title}}}
           else
             .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
@@ -15,6 +16,7 @@ template(name='notes')
             select.note-edit
               option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
               option(value='delete') {{_ 'notes.show.delete'}}
+              option(value='favorite') {{_ 'notes.show.favorite'}}
             span.glyphicon.glyphicon-cog
           .options-web
             a.js-toggle-note-privacy.nav-item
@@ -31,7 +33,6 @@ template(name='notes')
 
     ol#notes.content-scrollable.note-items.sortable
       if notesReady
-        | Huh
         each notes
           +note
         else

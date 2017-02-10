@@ -22,7 +22,7 @@
     @media screen and (min-width: 40em)
       text-align: left
 
-    .title-page {
+    .title-page
       position(absolute, 2rem, .5rem, auto, 3rem)
 
       font-size: 1.125em; // 18px
@@ -49,7 +49,14 @@
         padding: .3em .5em;
         vertical-align: middle;
       }
-    }
+
+      .favorite
+        position: absolute;
+        right: 2em;
+        top: .75rem;
+      .favorited
+        color: #f33288;
+
     form.note-new {
       position(absolute, 3em, 0, auto, 0)
 
