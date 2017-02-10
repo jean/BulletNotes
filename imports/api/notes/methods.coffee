@@ -40,7 +40,7 @@ export insert = new ValidatedMethod
       level: level
       createdAt: new Date()
 
-    note = Notes.insert note#, tx: tx
+    note = Notes.insert note, {tx: tx, softDelete: true}
     childCountDenormalizer.afterInsertNote parentId
     note
 
@@ -174,17 +174,18 @@ makeChildRun = (id, parent, shareKey = null) ->
   if !note or !parent or id == parent._id
     return false
   Notes.update parent._id, {
-    $inc: children: 1
     $set: showChildren: true
   }, tx: true
   Notes.update id, { $set:
     rank: 0
     parent: parent._id
     level: parent.level + 1
+    focusNext: true
   }, tx: true
   children = Notes.find(parent: id)
   children.forEach (child) ->
     makeChildRun child._id, id, shareKey
+  childCountDenormalizer.afterInsertNote parent._id
 
 export makeChild = new ValidatedMethod
   name: 'notes.makeChild'
@@ -213,21 +214,26 @@ export makeChild = new ValidatedMethod
     tx.start 'note makeChild'
     if oldParent
       Notes.update oldParent._id, {
-        $inc: children: -1
       }, tx: true
     Notes.update parent._id, {
-      $inc: {children: 1}
       $set: {showChildren: true}
     }, tx: true
     Notes.update noteId, {$set:
       rank: rank
       parent: parent._id
       level: parent.level + 1
+      focusNext: true
     }, tx: true
+
     children = Notes.find(parent: noteId)
     children.forEach (child) ->
       makeChildRun child._id, noteId#, shareKey
     tx.commit()
+    if oldParent
+      childCountDenormalizer.afterInsertNote oldParent._id
+    if prevNote
+      childCountDenormalizer.afterInsertNote prevNote._id
+    childCountDenormalizer.afterInsertNote parent._id
 
 removeRun = (id) ->
   children = Notes.find
@@ -235,8 +241,8 @@ removeRun = (id) ->
   children.forEach (child) ->
     removeRun child._id
   note = Notes.findOne(id)
-  Notes.update(note.parent, $inc:{children:-1}, {tx: true})
-  Notes.remove { _id: id }, {tx: true, softDelete: true}
+  childCountDenormalizer.afterInsertNote note.parent
+  Notes.remove { _id: id }, {tx: true, softDelete: true, instant: true}
 
 export remove = new ValidatedMethod
   name: 'notes.remove'
@@ -283,12 +289,14 @@ export outdent = new ValidatedMethod
     else
       # No parent left to go out to, set things to top level.
       children = Notes.find(parent: note._id)
-      Notes.update old_parent._id, $inc: children: -1
       children.forEach (child) ->
         Notes.update child._id, $set: level: 1
-      return Notes.update noteId, $set:
+      Notes.update noteId, $set:
+        focusNext: true
         level: 0
         parent: null
+        rank: old_parent.rank+1
+    childCountDenormalizer.afterInsertNote old_parent._id
 
 export setShowChildren = new ValidatedMethod
   name: 'notes.setShowChildren'
@@ -340,6 +348,17 @@ export updateRanks = new ValidatedMethod
         children: count
       }}, tx: true
     tx.commit()
+
+export focus = new ValidatedMethod
+  name: 'notes.focus'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+  run: ({noteId}) ->
+    if !@userId
+      throw new (Meteor.Error)('not-authorized')
+    Notes.update {_id: noteId}, {$unset:{focusNext: 1}}
 
 Meteor.methods
 

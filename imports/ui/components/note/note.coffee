@@ -25,7 +25,7 @@ Template.note.onRendered ->
         )
 
   if @data.focusNext
-    $(note.firstNode).find('.title').first().focus()
+    $(note.firstNode).find('.title').first().get(0).focus()
 
 Template.note.helpers
   children: () ->
@@ -239,6 +239,8 @@ Template.note.events
   'focus div.title': (event, instance) ->
     event.stopImmediatePropagation()
     Session.set 'preEdit', @title
+    Meteor.call 'notes.focus',
+      noteId: @_id
 
   'blur .title': (event, instance) ->
     that = this

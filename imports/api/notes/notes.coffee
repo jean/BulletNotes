@@ -163,6 +163,12 @@ Notes.schema = new SimpleSchema
   progress:
     type: Number
     optional: yes
+  focusNext:
+    type: Boolean
+    optional: yes
+  noCheck:
+    type: Boolean
+    optional: yes
 
 Notes.attachSchema Notes.schema
 
