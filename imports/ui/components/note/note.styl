@@ -13,12 +13,13 @@
     
   .favorite
     opacity: .1
-    padding: .5em
+    padding: .7em
     position: absolute
     right: 3em
     top: .7em
     cursor: pointer
     color: black
+    transition: all 200ms ease-in;
 
   &.favorited
     .favorite
@@ -26,10 +27,14 @@
       color: #ff0072
 
   .handle
-    border-radius: 10px;
-    padding: 0.35em;
-    margin: -.35em;
-    text-decoration: none;
+    position: absolute
+    left: 2.5em
+    top: 1em
+    border-radius: 10px
+    padding: 0.35em
+    margin: -.35em
+    text-decoration: none
+
   .progress 
     margin: 10px 0 0
   
@@ -46,7 +51,7 @@
     font-weight: bold
     position: absolute
     top: .6em
-    right: 5em
+    left: 0
     padding: .5em
   
   .expand.fa-angle-up:hover,
@@ -62,7 +67,7 @@
     font-size: 1.4em
     color: black
     min-width: 40%
-    margin: -5px 5em 0 20px
+    margin: -5px 5em 0 3em
     line-height: 1.75
   
   div.title:focus 
@@ -81,7 +86,8 @@
     margin: -15px 0 0 25px
   
   .badge 
-    margin-right: .1em
+    margin-right: .5em
+    background: color-primary
     
   .dropdown-menu
     margin-top: -2px
@@ -90,11 +96,11 @@
   .handle
     background-color: #d2d5ff
 
-.note .fa-heart.hover 
+.note .favorite:hover 
     color: #f78a09
     opacity: .7
 
-.note.favorite > .noteContainer .fa-heart, .note:hover.favorite > .noteContainer .fa-heart 
+.favorited .favorite, .favorited .favorite:hover
     color: #f78a09
     opacity: 1
 

@@ -6,9 +6,9 @@ template(name='notes')
         h1.js-edit-note.title-page
           if focusedNote
             .title-wrapper(contenteditable='true') {{{focusedNote.title}}}
-            span.count-note.pull-right {{focusedNote.children}}
           else
             .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
+          span.count-note.pull-right {{childNoteCount}}
       if focusedNote
         .nav-group.right
           .nav-item.options-mobile

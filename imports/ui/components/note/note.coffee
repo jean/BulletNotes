@@ -50,8 +50,6 @@ Template.note.helpers
       if tags
         tags.forEach (tag) ->
           className = className + ' tag-' + tag.substr(1).toLowerCase()
-    if @favorite
-      className = className + ' favorited'
     if !@showChildren && @children > 0
       className = className + ' hasHiddenChildren'
     if @shared
@@ -59,6 +57,16 @@ Template.note.helpers
     className
   userOwnsNote: ->
     Meteor.userId() == @owner
+  favoriteClass: ->
+    if @favorite
+      'favorited'
+  progress: ->
+    setTimeout ->
+      $('[data-toggle="tooltip"]').tooltip()
+    , 100
+    note = Notes.findOne(Template.currentData().note())
+    if note
+      note.progress
   progressClass: ->
     Template.notes.getProgressClass this
 

@@ -88,10 +88,16 @@ Template.notes.helpers
       $('[data-toggle="tooltip"]').tooltip()
     , 100
     note = Notes.findOne(Template.currentData().note())
-    Template.notes.getProgress note
+    if note
+      note.progress
   progressClass: ->
     note = Notes.findOne(Template.currentData().note())
     Template.notes.getProgressClass note
+  childNoteCount: ->
+    if Template.currentData().note()
+      Notes.find({parent:Template.currentData().note()._id}).count()
+    else
+      Notes.find({parent:null}).count()
 
 Template.notes.events
   'click .js-cancel': (event, instance) ->
