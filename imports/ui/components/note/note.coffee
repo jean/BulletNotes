@@ -91,7 +91,10 @@ Template.note.events
     $(event.currentTarget).closest('.note').remove()
     Meteor.call 'notes.remove',
       noteId: @_id
-      # shareKey: FlowRouter.getParam 'shareKey'
+      shareKey: FlowRouter.getParam 'shareKey'
+    , (err, res) ->
+      if err
+        window.location = window.location
 
   'keydown .title': (event, instance) ->
     note = this

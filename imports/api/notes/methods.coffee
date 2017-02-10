@@ -235,21 +235,25 @@ removeRun = (id) ->
   children.forEach (child) ->
     removeRun child._id
   note = Notes.findOne(id)
-  Notes.update(note.parent, $inc:{children:-1})
+  Notes.update(note.parent, $inc:{children:-1}, {tx: true})
   Notes.remove { _id: id }, {tx: true, softDelete: true}
 
 export remove = new ValidatedMethod
   name: 'notes.remove'
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
+    shareKey: Notes.simpleSchema().schema('shareKey')
   .validator
     clean: yes
     filter: no
-  run: ({ noteId }) ->
+  run: ({ noteId, shareKey = null }) ->
     note = Notes.findOne noteId
 
-    if !@userId #|| !Notes.isEditable id, shareKey
+    if !@userId || !Notes.isEditable noteId, shareKey
       throw new (Meteor.Error)('not-authorized')
+
+    if Notes.find({owner:@userId}).count() == 1
+      throw new (Meteor.Error)('Can\'t delete last note')
 
     tx.start 'delete note'
     removeRun noteId
@@ -300,6 +304,8 @@ export setShowChildren = new ValidatedMethod
     Notes.update noteId, $set:
       showChildren: show
       children: children
+
+    childCountDenormalizer.afterInsertNote noteId
 
 export updateRanks = new ValidatedMethod
   name: 'notes.updateRanks'
