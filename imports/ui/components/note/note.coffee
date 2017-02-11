@@ -152,10 +152,11 @@ Template.note.events
             shareKey: FlowRouter.getParam 'shareKey'
           }
         else
+          childCount = Notes.find({parent: parent_id}).count()
           Meteor.call 'notes.makeChild', {
             noteId: @_id
             parent: parent_id
-            rank: null
+            rank: (childCount*2)+1
             shareKey: FlowRouter.getParam 'shareKey'
           }
       # Backspace / delete

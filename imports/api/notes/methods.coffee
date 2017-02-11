@@ -194,10 +194,11 @@ export makeChild = new ValidatedMethod
     parent: Notes.simpleSchema().schema('parent')
     shareKey: Notes.simpleSchema().schema('shareKey')
     upperSibling: Notes.simpleSchema().schema('_id')
+    rank: Notes.simpleSchema().schema('rank')
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, parent = null, shareKey = null, upperSibling = null }) ->
+  run: ({ noteId, parent = null, shareKey = null, upperSibling = null, rank = null }) ->
     if !@userId || !Notes.isEditable noteId, shareKey
       throw new (Meteor.Error)('not-authorized')
 
@@ -209,7 +210,8 @@ export makeChild = new ValidatedMethod
     if upperSibling
       upperSibling = Notes.findOne(upperSibling)
       rank = upperSibling.rank + 1
-    else
+
+    if !rank
       rank = 1
 
     console.log "Rank: ",rank
@@ -302,7 +304,6 @@ export outdent = new ValidatedMethod
       Meteor.call 'notes.makeChild', {
         noteId: note._id
         parent: new_parent._id
-        rank: old_parent.rank+1
         shareKey
       }
     else
