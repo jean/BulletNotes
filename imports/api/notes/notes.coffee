@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo'
 import { Factory } from 'meteor/dburles:factory'
-import { SimpleSchema } from 'meteor/aldeed:simple-schema'
+import SimpleSchema from 'simpl-schema'
 import faker from 'faker'
 import childCountDenormalizer from './childCountDenormalizer.coffee'
 sanitizeHtml = require('sanitize-html')
@@ -129,7 +129,6 @@ Notes.schema = new SimpleSchema
   rank:
     type: Number
     optional: yes
-    decimal: true
   due:
     type: Date
     optional: yes

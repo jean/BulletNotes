@@ -25,8 +25,6 @@ percolate:momentum
 
 # data
 mongo@1.1.14
-aldeed:simple-schema
-aldeed:collection2
 dburles:collection-helpers
 reywood:publish-composite
 mdg:validated-method
@@ -96,3 +94,5 @@ percolate:synced-cron
 mrt:nprogress
 meteortoys:allthings
 google-config-ui
+aldeed:collection2-core@2.0.0
+aldeed:schema-deny

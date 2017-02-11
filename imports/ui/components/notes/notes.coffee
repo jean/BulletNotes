@@ -5,7 +5,7 @@
 { Tracker } = require 'meteor/tracker'
 { $ } = require 'meteor/jquery'
 { FlowRouter } = require 'meteor/kadira:flow-router'
-{ SimpleSchema } = require 'meteor/aldeed:simple-schema'
+import SimpleSchema from 'simpl-schema'
 { TAPi18n } = require 'meteor/tap:i18n'
 sanitizeHtml = require('sanitize-html')
 
