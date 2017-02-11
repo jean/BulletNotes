@@ -21,7 +21,7 @@ import {
   makePrivate,
   remove,
   insert,
-  updateRanks
+  makeChild
 } from '/imports/api/notes/methods.coffee'
 
 { displayError } = '../../lib/errors.js'
@@ -183,14 +183,24 @@ Template.notes.rendered = ->
     handle: '.handle'
     items: 'li.note-item'
     placeholder: 'placeholder'
-    forcePlaceholderSize: true
     opacity: .6
     toleranceElement: '> div.noteContainer'
-    relocate: ->
-      updateRanks.call
-        notes: $('.sortable').nestedSortable('toArray')
-        focusedNoteId: FlowRouter.getParam('noteId')
+    stop: (event, ui) ->
+      console.log event, ui
+      parent = $(event.toElement).closest('ol').closest('li').data('id')
+      upperSibling = $(event.toElement).closest('li').prev('li').data('id')
+      console.log parent, upperSibling
+      console.log $(event.toElement).closest('li')
+      makeChild.call
+        noteId: $(event.toElement).closest('li').data('id')
         shareKey: FlowRouter.getParam('shareKey')
+        upperSibling: upperSibling
+        parent: parent
+    # relocate: ->
+    #   updateRanks.call
+    #     notes: $('.sortable').nestedSortable('toArray')
+    #     focusedNoteId: FlowRouter.getParam('noteId')
+    #     shareKey: FlowRouter.getParam('shareKey')
 
 Template.notes.getProgressClass = (note) ->
   if (note.progress < 25)

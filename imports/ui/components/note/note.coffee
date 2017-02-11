@@ -195,8 +195,7 @@ Template.note.events
       when 38
         # Command is held
         if event.metaKey
-          $(event.currentTarget).closest('.note-item')
-            .find('.expand').trigger 'click'
+          Template.note.toggleChildren(instance)
         else
           if $(event.currentTarget).closest('.note-item').prev().length
             $(event.currentTarget).closest('.note-item')

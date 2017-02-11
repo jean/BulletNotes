@@ -192,48 +192,67 @@ export makeChild = new ValidatedMethod
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
     parent: Notes.simpleSchema().schema('parent')
-    rank: Notes.simpleSchema().schema('rank')
     shareKey: Notes.simpleSchema().schema('shareKey')
+    upperSibling: Notes.simpleSchema().schema('_id')
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, parent, rank }) ->
-    # if !@userId || !Notes.isEditable id, shareKey
-    #   throw new (Meteor.Error)('not-authorized')
+  run: ({ noteId, parent = null, shareKey = null, upperSibling = null }) ->
+    if !@userId || !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+
     note = Notes.findOne(noteId)
+    if !note 
+      throw new (Meteor.Error)('note-not-found')
     oldParent = Notes.findOne(note.parent)
     parent = Notes.findOne(parent)
-    if !note or !parent or noteId == parent._id
-      return false
-    if !rank
-      prevNote = Notes.findOne({parent: parent._id},sort: rank: -1)
-      if prevNote
-        rank = prevNote.rank+1
-      else
-        rank = 0
+    if upperSibling
+      upperSibling = Notes.findOne(upperSibling)
+      rank = upperSibling.rank + 1
+    else
+      rank = 1
+
+    console.log "Rank: ",rank
     tx.start 'note makeChild'
-    if oldParent
-      Notes.update oldParent._id, {
+    parentId = null
+    level = 0
+    if parent
+      Notes.update parent._id, {
+        $set: {showChildren: true}
       }, tx: true
-    Notes.update parent._id, {
-      $set: {showChildren: true}
-    }, tx: true
+      parentId = parent._id
+      level = parent.level + 1
     Notes.update noteId, {$set:
       rank: rank
-      parent: parent._id
-      level: parent.level + 1
+      parent: parentId
+      level: level
       focusNext: true
-    }, tx: true
+    }, {tx: true, instant: true}
 
+    console.log "Update children"
     children = Notes.find(parent: noteId)
     children.forEach (child) ->
-      makeChildRun child._id, noteId#, shareKey
+      makeChildRun child._id, noteId, shareKey
+
+    console.log "Update siblings"
+    siblings = Notes.find { parent: parentId }, sort: rank: 1
+    count = 0
+    # console.log siblings
+    console.log "do em"
+    siblings.forEach (bro) ->
+      count = count + 2
+      console.log bro, count
+      Notes.update bro._id, {$set:
+        rank: count
+      }, tx: true
+
+    console.log "Commit"
+
     tx.commit()
     if oldParent
       childCountDenormalizer.afterInsertNote oldParent._id
-    if prevNote
-      childCountDenormalizer.afterInsertNote prevNote._id
-    childCountDenormalizer.afterInsertNote parent._id
+    if parent
+      childCountDenormalizer.afterInsertNote parent._id
 
 removeRun = (id) ->
   children = Notes.find
@@ -315,40 +334,6 @@ export setShowChildren = new ValidatedMethod
 
     childCountDenormalizer.afterInsertNote noteId
 
-export updateRanks = new ValidatedMethod
-  name: 'notes.updateRanks'
-  validate: null
-  run: ({notes, focusedNoteId = null, shareKey = null}) ->
-    if !@userId #|| !Notes.isEditable focusedNoteId, shareKey
-      throw new (Meteor.Error)('not-authorized')
-    # First save new parent IDs
-    tx.start 'update note ranks'
-    for ii, note of notes
-      if note.parent_id
-        noteParentId = note.parent_id
-      # If we don't have a parentId, we're at the top level.
-      # Use the focused note id
-      else
-        noteParentId = focusedNoteId
-
-      Notes.update {
-        _id: note.id
-      }, {$set: {
-        rank: note.left
-        parent: noteParentId
-      }}, tx: true
-    # Now update the children count.
-    # TODO: Don't do this here.
-    for ii, note of notes
-      count = Notes.find({parent:note.parent}).count()
-      Notes.update {
-        _id: note.parent_id
-      }, {$set: {
-        showChildren: true
-        children: count
-      }}, tx: true
-    tx.commit()
-
 export focus = new ValidatedMethod
   name: 'notes.focus'
   validate: new SimpleSchema
@@ -402,7 +387,6 @@ NOTES_METHODS = _.pluck([
   outdent
   setShowChildren
   favorite
-  updateRanks
 ], 'name')
 
 if Meteor.isServer
