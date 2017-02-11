@@ -64,9 +64,7 @@ Template.note.helpers
     setTimeout ->
       $('[data-toggle="tooltip"]').tooltip()
     , 100
-    note = Notes.findOne(Template.currentData().note())
-    if note
-      note.progress
+    @progress
   progressClass: ->
     Template.notes.getProgressClass this
 
