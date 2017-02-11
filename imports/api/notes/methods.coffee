@@ -214,7 +214,6 @@ export makeChild = new ValidatedMethod
     if !rank
       rank = 1
 
-    console.log "Rank: ",rank
     tx.start 'note makeChild'
     parentId = null
     level = 0
@@ -231,24 +230,17 @@ export makeChild = new ValidatedMethod
       focusNext: true
     }, {tx: true, instant: true}
 
-    console.log "Update children"
     children = Notes.find(parent: noteId)
     children.forEach (child) ->
       makeChildRun child._id, noteId, shareKey
 
-    console.log "Update siblings"
     siblings = Notes.find { parent: parentId }, sort: rank: 1
     count = 0
-    # console.log siblings
-    console.log "do em"
     siblings.forEach (bro) ->
       count = count + 2
-      console.log bro, count
       Notes.update bro._id, {$set:
         rank: count
       }, tx: true
-
-    console.log "Commit"
 
     tx.commit()
     if oldParent
@@ -304,6 +296,7 @@ export outdent = new ValidatedMethod
       Meteor.call 'notes.makeChild', {
         noteId: note._id
         parent: new_parent._id
+        rank: old_parent.rank + 1
         shareKey
       }
     else
@@ -313,7 +306,6 @@ export outdent = new ValidatedMethod
         Notes.update child._id, $set: level: 1
       Notes.update noteId, $set:
         focusNext: true
-        level: 0
         parent: null
         rank: old_parent.rank+1
     childCountDenormalizer.afterInsertNote old_parent._id
