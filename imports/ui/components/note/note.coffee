@@ -11,6 +11,17 @@ import {
   favorite
 } from '/imports/api/notes/methods.coffee'
 
+Template.note.previewXOffset = 10
+Template.note.previewYOffset = 10
+
+Template.note.isValidImageUrl = (url, callback) ->
+  $ '<img>',
+    src: url
+    error: ->
+      callback url, false
+    load: ->
+      callback url, true
+
 Template.note.onRendered ->
   note = this
   Tracker.autorun ->
@@ -93,6 +104,30 @@ Template.note.events
     , (err, res) ->
       if err
         window.location = window.location
+
+  'mouseover .previewLink': (event) ->
+    @t = @title
+    @title = ''
+    c = if @t != '' then '<br/>' + @t else ''
+    url = event.currentTarget.href
+    Template.note.isValidImageUrl url, (url, valid) ->
+      if valid
+        $('body').append '<p id=\'preview\'><a href=\'' +
+          url + '\' target=\'_blank\'><img src=\'' + url +
+          '\' alt=\'Image preview\' />' + c + '</p>'
+        $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
+          .css('left', event.pageX + Template.note.previewYOffset + 'px')
+          .fadeIn 'fast'
+        $('#preview img').mouseleave ->
+          $('#preview').remove()
+
+  'mousemove .previewLink': (event) ->
+    $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
+      .css 'left', event.pageX + Template.note.previewYOffset + 'px'
+
+  'mouseleave .previewLink': (event) ->
+    $('#preview img').attr('src','')
+    $('#preview').remove()
 
   'keydown .title': (event, instance) ->
     note = this
@@ -250,7 +285,10 @@ Template.note.events
       Session.set 'indenting', false
       return
     title = Template.note.stripTags(event.target.innerHTML)
-    if title != @title
+    console.log Template.note.stripTags(@title)
+    console.log title
+    console.log (title.trim() != Template.note.stripTags(@title).trim())
+    if title.trim() != Template.note.stripTags(@title).trim()
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
         title: title
@@ -278,5 +316,6 @@ Template.note.stripTags = (inputText) ->
   if !inputText
     return
   inputText = inputText.replace(/<\/?span[^>]*>/g, '')
+  inputText = inputText.replace(/&nbsp;/g, ' ')
   inputText = inputText.replace(/<\/?a[^>]*>/g, '')
   inputText
