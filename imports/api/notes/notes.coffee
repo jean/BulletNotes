@@ -55,6 +55,8 @@ Notes.isOwner = (id) ->
   note && Meteor.user()._id == note.owner
 
 Notes.filterTitle = (title) ->
+  if !title
+    return false
   title = title.replace(/(\r\n|\n|\r)/gm, '')
   sanitizeHtml title,
     allowedTags: [

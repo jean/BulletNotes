@@ -3,7 +3,7 @@ import { check } from 'meteor/check'
 
 import { Notes } from './notes.coffee'
 
-export default incompleteCountDenormalizer =
+export default childCountDenormalizer =
   _updateNote: (noteId) ->
     # Recalculate the correct incomplete count direct from MongoDB
     childCount = Notes.find

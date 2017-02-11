@@ -6,19 +6,21 @@ import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 import { Random } from 'meteor/random'
 
 import childCountDenormalizer from './childCountDenormalizer.coffee'
+import rankDenormalizer from './rankDenormalizer.coffee'
 
 import { Notes } from './notes.coffee'
 
 export insert = new ValidatedMethod
   name: 'notes.insert'
-  validate: Notes.simpleSchema().pick([
-    'title'
-    'rank'
-    'parent'
-  ]).validator
+  validate: new SimpleSchema
+    title: Notes.simpleSchema().schema('title')
+    rank: Notes.simpleSchema().schema('rank')
+    parent: Notes.simpleSchema().schema('parent')
+    shareKey: Notes.simpleSchema().schema('shareKey')
+  .validator
     clean: yes
     filter: no
-  run: ({ title, rank, parent }) ->
+  run: ({ title, rank, parent, shareKey = null }) ->
     parent = Notes.findOne parent
 
     # if note.isPrivate() and note.userId isnt @userId
@@ -41,7 +43,10 @@ export insert = new ValidatedMethod
       createdAt: new Date()
 
     note = Notes.insert note, {tx: tx, softDelete: true}
+
     childCountDenormalizer.afterInsertNote parentId
+    rankDenormalizer.updateSiblings parentId
+
     note
 
 export share = new ValidatedMethod
@@ -129,7 +134,10 @@ export updateTitle = new ValidatedMethod
       throw new (Meteor.Error)('not-authorized')
 
     title = Notes.filterTitle title
-    match = title.match(/#due-([0-9]+(-?))+/gim)
+    if title
+      match = title.match(/#due-([0-9]+(-?))+/gim)
+    else
+      title = ''
     if match
       date = match[0]
       Notes.update noteId, {$set: {
@@ -177,7 +185,6 @@ makeChildRun = (id, parent, shareKey = null) ->
     $set: showChildren: true
   }, tx: true
   Notes.update id, { $set:
-    rank: 0
     parent: parent._id
     level: parent.level + 1
     focusNext: true
@@ -234,13 +241,7 @@ export makeChild = new ValidatedMethod
     children.forEach (child) ->
       makeChildRun child._id, noteId, shareKey
 
-    siblings = Notes.find { parent: parentId }, sort: rank: 1
-    count = 0
-    siblings.forEach (bro) ->
-      count = count + 2
-      Notes.update bro._id, {$set:
-        rank: count
-      }, tx: true
+    rankDenormalizer.updateSiblings parentId
 
     tx.commit()
     if oldParent

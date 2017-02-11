@@ -123,7 +123,7 @@ Template.note.events
           }
           Meteor.call 'notes.insert', {
             title: ''
-            rank: note.rank + .5
+            rank: note.rank + 1
             parent: note.parent
             shareKey: FlowRouter.getParam('shareKey')
           }
