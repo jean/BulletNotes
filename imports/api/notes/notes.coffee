@@ -167,8 +167,8 @@ Notes.schema = new SimpleSchema
   focusNext:
     type: Boolean
     optional: yes
-  noCheck:
-    type: Boolean
+  deleted:
+    type: Date
     optional: yes
 
 Notes.attachSchema Notes.schema
