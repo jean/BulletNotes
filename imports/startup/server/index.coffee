@@ -13,8 +13,6 @@ Meteor.startup ->
     schedule: (parser) ->
       parser.text cronTime
     job: ->
-      users = Meteor.users.find({})
-      users.forEach (user) ->
-        Meteor.call('notes.dropbox',{userId:user._id})
-        Meteor.call('notes.summary',{userId:user._id})
+      Meteor.call('notes.dropbox')
+      Meteor.call('notes.summary')
   SyncedCron.start()

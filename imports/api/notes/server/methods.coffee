@@ -48,65 +48,51 @@ export notesExport = new ValidatedMethod
 
 export dropbox = new ValidatedMethod
   name: 'notes.dropbox'
-  validate: new SimpleSchema
-    userId: Notes.simpleSchema().schema('owner')
-  .validator
-    clean: yes
-    filter: no
-  run: ({ userId = null }) ->
-    if !userId
-      userId = @userId
-    if !userId
-      throw new (Meteor.Error)('Dropbox not-authorized')
-    if (
-      Meteor.users.findOne(userId).profile &&
-      Meteor.users.findOne(userId).profile.dropbox_token
-    )
-      exportText = notesExport.call
-        noteId: null
-        userId: userId
-      dbx = new Dropbox(
-        accessToken: Meteor.users.findOne(userId).profile.dropbox_token
+  validate: null
+  run: () ->
+    users = Meteor.users.find({})
+    users.forEach (user) ->
+      if (
+        user.profile &&
+        user.profile.dropbox_token
       )
-      dbx.filesUpload(
-        path: '/'+moment().format('YYYY-MM-DD-HH:mm:ss')+'.txt'
-        contents: exportText).then((response) ->
-          console.log response
-      ).catch (error) ->
-        console.error error
-    else
-      throw new (Meteor.Error)('No dropbox token')
+        exportText = notesExport.call
+          noteId: null
+          userId: user._id
+        dbx = new Dropbox(
+          accessToken: user.profile.dropbox_token
+        )
+        dbx.filesUpload(
+          path: '/'+moment().format('YYYY-MM-DD-HH:mm:ss')+'.txt'
+          contents: exportText).then((response) ->
+            console.log response
+        ).catch (error) ->
+          console.error error
 
 export summary = new ValidatedMethod
   name: 'notes.summary'
-  validate: new SimpleSchema
-    userId: Notes.simpleSchema().schema('owner')
-  .validator
-    clean: yes
-    filter: no
-  run: ({ userId = null }) ->
-    if !userId
-      userId = @userId
-    if !userId || (@userId && userId != @userId)
-      throw new (Meteor.Error)('not-authorized summary')
-    user = Meteor.users.findOne userId
-    if user.emails
-      email = user.emails[0].address
-      notes = Notes.search 'last-changed:24h', userId
-      SSR.compileTemplate( 'Email_summary', Assets.getText( 'email/summary.html' ) )
-      html = SSR.render( 'Email_summary', { site_url: Meteor.absoluteUrl(), notes: notes } )
-      Email.send({
-        to: email,
-        from: "BulletNotes.io <admin@bulletnotes.io>",
-        subject: "Daily Activity Summary",
-        html: html
-      })
+  validate: null
+  run: () ->
+    users = Meteor.users.find({})
+    users.forEach (user) ->
+      if user.emails
+        email = user.emails[0].address
+        notes = Notes.search 'last-changed:24h', user._id
+        SSR.compileTemplate( 'Email_summary', Assets.getText( 'email/summary.html' ) )
+        html = SSR.render( 'Email_summary', { site_url: Meteor.absoluteUrl(), notes: notes } )
+        Email.send({
+          to: email,
+          from: "BulletNotes.io <admin@bulletnotes.io>",
+          subject: "Daily Activity Summary",
+          html: html
+        })
 
 
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
   notesExport
   dropbox
+  summary
 ], 'name')
 
 if Meteor.isServer
