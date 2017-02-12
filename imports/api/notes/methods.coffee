@@ -126,8 +126,6 @@ export updateTitle = new ValidatedMethod
     clean: yes
     filter: no
   run: ({ noteId, title, shareKey = null }) ->
-    # This is complex auth stuff - perhaps denormalizing a userId onto notes
-    # would be correct here?
     note = Notes.findOne noteId
 
     if !Notes.isEditable noteId, shareKey
@@ -141,15 +139,26 @@ export updateTitle = new ValidatedMethod
     if match
       date = match[0]
       Notes.update noteId, {$set: {
-        title: title
         due: moment(date).format()
-        updatedAt: new Date
       }}, tx: true
-    else
+    match = title.match Notes.donePattern
+    if match && !note.done
+      # Move to bottom of the current list. This is a 'safe'
+      # move that doesn't need denormalized after. It does create
+      # a gap in the order, but this is harmless.
+      siblingCount = Notes.find(parent: note.parent).count()
       Notes.update noteId, {$set: {
-        title: title
-        updatedAt: new Date
+        done: true
+        rank: (siblingCount*2)+2
       }}, tx: true
+    else if !match && note.done
+      Notes.update noteId, {$unset: {
+        done: true
+      }}, tx: true
+    Notes.update noteId, {$set: {
+      title: title
+      updatedAt: new Date
+    }}, tx: true
 
     pattern = /#pct-([0-9]+)/gim
     match = pattern.exec note.title
@@ -167,13 +176,14 @@ export updateTitle = new ValidatedMethod
       notes.forEach (note) ->
         total++
         if note.title
-          match = note.title.match /(#done|#complete|#finished)/gim
+          match = note.title.match Notes.donePattern
           if match
             done++
       Notes.update note.parent, {$set: {
         progress: Math.round((done/total)*100)
         updatedAt: new Date
       }}, tx: true
+
 
 
 makeChildRun = (id, parent, shareKey = null) ->

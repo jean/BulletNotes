@@ -28,6 +28,7 @@ sanitizeHtml = require('sanitize-html')
 
 export Notes = new Mongo.Collection 'notes'
 
+Notes.donePattern = /(#done|#complete|#finished)/gim
 
 Notes.isEditable = (id, shareKey) ->
   sharedNote = Notes.getSharedParent id, shareKey
@@ -169,6 +170,9 @@ Notes.schema = new SimpleSchema
     optional: yes
   deleted:
     type: Date
+    optional: yes
+  done:
+    type: Boolean
     optional: yes
 
 Notes.attachSchema Notes.schema
