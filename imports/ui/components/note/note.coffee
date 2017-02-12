@@ -284,11 +284,9 @@ Template.note.events
     if Session.get 'indenting'
       Session.set 'indenting', false
       return
+
     title = Template.note.stripTags(event.target.innerHTML)
-    console.log Template.note.stripTags(@title)
-    console.log title
-    console.log (title.trim() != Template.note.stripTags(@title).trim())
-    if title.trim() != Template.note.stripTags(@title).trim()
+    if title != Template.note.stripTags(@title)
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
         title: title
@@ -318,4 +316,6 @@ Template.note.stripTags = (inputText) ->
   inputText = inputText.replace(/<\/?span[^>]*>/g, '')
   inputText = inputText.replace(/&nbsp;/g, ' ')
   inputText = inputText.replace(/<\/?a[^>]*>/g, '')
+  if inputText
+    inputText = inputText.trim()
   inputText

@@ -97,4 +97,3 @@ google-config-ui
 aldeed:collection2-core@2.0.0
 aldeed:schema-deny
 practicalmeteor:mocha-console-runner
-lmieulet:meteor-coverage
