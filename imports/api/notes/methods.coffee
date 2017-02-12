@@ -210,7 +210,7 @@ export makeChild = new ValidatedMethod
       throw new (Meteor.Error)('not-authorized')
 
     note = Notes.findOne(noteId)
-    if !note 
+    if !note
       throw new (Meteor.Error)('note-not-found')
     oldParent = Notes.findOne(note.parent)
     parent = Notes.findOne(parent)

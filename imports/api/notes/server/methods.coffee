@@ -79,7 +79,9 @@ export summary = new ValidatedMethod
         email = user.emails[0].address
         notes = Notes.search 'last-changed:24h', user._id
         SSR.compileTemplate( 'Email_summary', Assets.getText( 'email/summary.html' ) )
-        html = SSR.render( 'Email_summary', { site_url: Meteor.absoluteUrl(), notes: notes } )
+        html = SSR.render 'Email_summary',
+          site_url: Meteor.absoluteUrl()
+          notes: notes
         Email.send({
           to: email,
           from: "BulletNotes.io <admin@bulletnotes.io>",

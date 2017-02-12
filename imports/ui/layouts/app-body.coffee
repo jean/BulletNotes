@@ -98,7 +98,7 @@ Template.App_body.loadFavorite = (number) ->
   menuVisible = $('#container').hasClass('menu-open')
   if !editingNote
     FlowRouter.go $($('.parentNote').get(number-1)).attr 'href'
-    if menuVisible 
+    if menuVisible
       $('.nav-item').trigger 'click'
 
 Template.App_body.helpers

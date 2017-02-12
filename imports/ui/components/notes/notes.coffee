@@ -54,7 +54,7 @@ Template.notes.onCreated ->
     FlowRouter.getParam 'shareKey'
 
   @favoriteNote = =>
-    Meteor.call 'notes.favorite', 
+    Meteor.call 'notes.favorite',
       noteId: @data.note()._id
 
   @deleteNote = =>

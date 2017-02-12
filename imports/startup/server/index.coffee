@@ -7,7 +7,11 @@ require './security.js'
 require './register-api.coffee'
 
 Meteor.startup ->
-  cronTime = if Meteor.settings.public.cronTime then Meteor.settings.public.cronTime else 'at 11:20 am'
+  # 4:20 AM MST
+  cronTime = 'at 11:20 am'
+  if (Meteor.settings.public.cronTime)
+    cronTime = Meteor.settings.public.cronTime
+
   SyncedCron.add
     name: 'Nightly dropbox export'
     schedule: (parser) ->
