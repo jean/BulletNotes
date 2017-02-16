@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Update Chrome version
 # Taken from: https://discuss.circleci.com/t/circle-fails-to-run-e2e-tests-using-grunt-protractor/2068/3
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
