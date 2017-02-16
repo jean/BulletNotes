@@ -13,6 +13,8 @@ Template.Notes_import.onRendered ->
 
 Template.Notes_import.events
   'submit .importForm': (event, instance) ->
+    NProgress.configure({ trickle: false })
+    NProgress.start()
     event.preventDefault()
     data = {}
     textarea = $(event.currentTarget).find('textarea').get(0)
@@ -25,10 +27,13 @@ Template.Notes_import.events
 
 Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
   line = data.importLines[ii]
+  NProgress.set(ii/data.importLines.length)
+  if (data.importLines.length - 1 == ii)
+    NProgress.done()
   if !line
     return
   if line.trim().substr(0, 1) != '-'
-    # Invalid line
+    # Invalid line, skip it move to the next.
     Template.Notes_import.import data, ii + 1, lastNote
     return
   leadingSpaceCount = line.match(/^(\s*)/)[1].length
@@ -58,19 +63,28 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
     body = nextLine.trim().substr(1)
     body = body.substr(0, body.length-1)
 
+  console.log title, data
   insert.call {
     title: title
     rank: data.levelRanks[level]
     parent: parent
+    isImport: true
   }, (err, res) ->
+    console.log err, res
     if !level
       FlowRouter.go('/')
 
+    # Wrapping the following calls in these short Timeouts prevents browser lockup
     if body
       updateBody.call {
         noteId: res
         body: body
+        createTransaction: false
       }, (err, bodyRes) ->
-        Template.Notes_import.import data, ii + 1, res
+        setTimeout ->
+          Template.Notes_import.import data, ii + 1, res
+        , 10
     else
-      Template.Notes_import.import data, ii + 1, res
+      setTimeout ->
+        Template.Notes_import.import data, ii + 1, res
+      , 10

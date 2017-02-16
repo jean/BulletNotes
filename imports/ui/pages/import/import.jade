@@ -3,5 +3,11 @@ template(name='Notes_import')
     .title-message {{_ 'layouts.appBody.import'}}
     .subtitle-message
       form.importForm
-        textarea
-        input.submit(type='submit')
+        h4 Workflowy
+        p In Workflowy, click the down arrow in the top right, then 'Export All'. Select 'Plain Text', and copy and paste the results into the box below.
+        h4 Note.d
+        p In Note.d, click the menu button, 'Export', then click 'Generate' and copy and paste the output here.
+        h4 Notice
+        p Be aware this process can take a long time depending on how much you are importing. 5000 items takes up to 10 minutes.
+        textarea.form-control
+        input.submit.form-control.btn-primary(type='submit')

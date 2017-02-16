@@ -17,10 +17,13 @@ export insert = new ValidatedMethod
     rank: Notes.simpleSchema().schema('rank')
     parent: Notes.simpleSchema().schema('parent')
     shareKey: Notes.simpleSchema().schema('shareKey')
+    isImport:
+      type: Boolean
+      optional: true
   .validator
     clean: yes
     filter: no
-  run: ({ title, rank, parent, shareKey = null }) ->
+  run: ({ title, rank, parent, shareKey = null, isImport = false }) ->
     parent = Notes.findOne parent
 
     # if note.isPrivate() and note.userId isnt @userId
@@ -42,10 +45,16 @@ export insert = new ValidatedMethod
       level: level
       createdAt: new Date()
 
-    note = Notes.insert note, {tx: tx, softDelete: true}
+    # Only create a transaction if we are not importing.
+    if isImport
+      note = Notes.insert note
+    else
+      note = Notes.insert note, {tx: true}
+      rankDenormalizer.updateSiblings parentId
 
+    # This is pretty inefficient.
+    # Should be smarter about it if isImport.
     childCountDenormalizer.afterInsertNote parentId
-    rankDenormalizer.updateSiblings parentId
 
     note
 
@@ -90,10 +99,11 @@ export updateBody = new ValidatedMethod
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
     body: Notes.simpleSchema().schema('body')
+    createTransaction: Boolean
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, body }) ->
+  run: ({ noteId, body, createTransaction = true }) ->
     note = Notes.findOne noteId
 
     Notes.update noteId, {$set: {
@@ -266,7 +276,7 @@ removeRun = (id) ->
     removeRun child._id
   note = Notes.findOne(id)
   childCountDenormalizer.afterInsertNote note.parent
-  Notes.remove { _id: id }, {tx: true, softDelete: true, instant: true}
+  Notes.remove { _id: id }, {tx: true, softDelete: true }
 
 export remove = new ValidatedMethod
   name: 'notes.remove'
@@ -383,7 +393,6 @@ Meteor.methods
 
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
-  # insert
   updateTitle
   updateBody
   remove

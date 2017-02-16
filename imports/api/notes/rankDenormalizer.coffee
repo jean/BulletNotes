@@ -11,4 +11,4 @@ export default rankDenormalizer =
       count = count + 2
       Notes.update bro._id, {$set:
         rank: count
-      }, tx: true
+      }
