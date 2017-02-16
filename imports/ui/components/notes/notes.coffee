@@ -187,6 +187,8 @@ Template.notes.rendered = ->
     toleranceElement: '> div.noteContainer'
     stop: (event, ui) ->
       parent = $(event.toElement).closest('ol').closest('li').data('id')
+      if !parent
+        parent = FlowRouter.getParam 'noteId'
       upperSibling = $(event.toElement).closest('li').prev('li').data('id')
       makeChild.call
         noteId: $(event.toElement).closest('li').data('id')

@@ -255,7 +255,7 @@ export makeChild = new ValidatedMethod
       parent: parentId
       level: level
       focusNext: true
-    }, {tx: true, instant: true}
+    }, {tx: true }
 
     children = Notes.find(parent: noteId)
     children.forEach (child) ->
