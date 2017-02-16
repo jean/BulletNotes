@@ -23,6 +23,7 @@ Template.Notes_show_page.onCreated ->
     FlowRouter.getParam 'noteId'
 
 Template.Notes_show_page.onRendered ->
+  Session.set 'searchTerm', FlowRouter.getParam 'searchTerm'
   @autorun =>
     if @subscriptionsReady()
       noteRenderHold.release()
