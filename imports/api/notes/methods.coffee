@@ -151,20 +151,7 @@ export updateTitle = new ValidatedMethod
       Notes.update noteId, {$set: {
         due: moment(date).format()
       }}, tx: true
-    match = title.match Notes.donePattern
-    if match && !note.done
-      # Move to bottom of the current list. This is a 'safe'
-      # move that doesn't need denormalized after. It does create
-      # a gap in the order, but this is harmless.
-      siblingCount = Notes.find(parent: note.parent).count()
-      Notes.update noteId, {$set: {
-        done: true
-        rank: (siblingCount*2)+2
-      }}, tx: true
-    else if !match && note.done
-      Notes.update noteId, {$unset: {
-        done: true
-      }}, tx: true
+
     Notes.update noteId, {$set: {
       title: title
       updatedAt: new Date
