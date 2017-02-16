@@ -13,7 +13,7 @@ template(name='App_body')
             +undoRedoButtons
             if currentUser
               .btns-group-vertical
-                a.js-user-menu.btn-secondary(href='#')
+                a.userMenu.btn-secondary(href='#')
                   if userMenuOpen
                     span.glyphicon.glyphicon-chevron-up
                   else
@@ -21,10 +21,18 @@ template(name='App_body')
                   | {{displayName}}
                 if userMenuOpen
                   a.btn-secondary(href='/settings') {{_ 'layouts.appBody.settings'}}
+                  a.js-logout.btn-secondary {{_ 'layouts.appBody.logout'}}
+
+                a.recentMenu.btn-secondary(href='#')
+                  if recentMenuOpen
+                    span.glyphicon.glyphicon-chevron-up
+                  else
+                    span.glyphicon.glyphicon-chevron-down
+                  | Recent
+                if recentMenuOpen
                   a.btn-secondary(href='/search/last-changed%3a1h') {{_ 'layouts.appBody.lastHour'}}
                   a.btn-secondary(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
                   a.btn-secondary(href='/search/not-changed%3a1M') {{_ 'layouts.appBody.oldItems'}}
-                  a.js-logout.btn-secondary {{_ 'layouts.appBody.logout'}}
             else
               .btns-group
                 a.btn-secondary(href="{{pathFor 'signin'}}")

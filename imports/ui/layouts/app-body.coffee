@@ -123,6 +123,9 @@ Template.App_body.helpers
   userMenuOpen: ->
     instance = Template.instance()
     instance.state.get 'userMenuOpen'
+  recentMenuOpen: ->
+    instance = Template.instance()
+    instance.state.get 'recentMenuOpen'
   dev: ->
     Meteor.settings.public.dev
   notes: ->
@@ -161,16 +164,19 @@ Template.App_body.events
   'click .content-overlay': (event, instance) ->
     instance.state.set 'menuOpen', false
     event.preventDefault()
-    return
-  'click .js-user-menu': (event, instance) ->
-    instance.state.set 'userMenuOpen', !instance.state.get('userMenuOpen')
-    # stop the menu from closing
+
+  'click .userMenu': (event, instance) ->
     event.stopImmediatePropagation()
-    return
+    instance.state.set 'userMenuOpen', !instance.state.get('userMenuOpen')
+
+  'click .recentMenu': (event, instance) ->
+    event.stopImmediatePropagation()
+    instance.state.set 'recentMenuOpen', !instance.state.get('recentMenuOpen')
+
   'click #menu a': (event, instance) ->
     instance.state.set 'menuOpen', false
     instance.state.set 'userMenuOpen', false
-    return
+
   'click .js-logout': ->
     Meteor.logout()
     # if we are on a private note, we'll need to go to a public one
@@ -179,9 +185,9 @@ Template.App_body.events
       note = Notes.findOne(FlowRouter.getParam('_id'))
       if note.userId
         FlowRouter.go 'Notes.show', Notes.findOne(userId: $exists: false)
-    return
+
   'click .js-toggle-language': (event) ->
     language = $(event.target).html().trim()
     T9n.setLanguage language
     TAPi18n.setLanguage language
-    return
+
