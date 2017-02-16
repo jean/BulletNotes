@@ -16,6 +16,7 @@ FlowRouter.route '/',
   name: 'App.home'
   action: ->
     NProgress.start()
+    Session.set 'searchTerm', null
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/note/:noteId',
