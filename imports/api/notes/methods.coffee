@@ -109,7 +109,7 @@ export updateBody = new ValidatedMethod
     Notes.update noteId, {$set: {
       body: body
       updatedAt: new Date
-    }}, tx: true
+    }}, tx: createTransaction
 
 export stopSharing = new ValidatedMethod
   name: 'notes.stopSharing'
@@ -181,26 +181,6 @@ export updateTitle = new ValidatedMethod
         updatedAt: new Date
       }}
 
-
-
-makeChildRun = (id, parent, shareKey = null) ->
-  note = Notes.findOne(id)
-  parent = Notes.findOne(parent)
-  if !note or !parent or id == parent._id
-    return false
-  Notes.update parent._id, {
-    $set: showChildren: true
-  }, tx: true
-  Notes.update id, { $set:
-    parent: parent._id
-    level: parent.level + 1
-    focusNext: true
-  }, tx: true
-  children = Notes.find(parent: id)
-  children.forEach (child) ->
-    makeChildRun child._id, id, shareKey
-  childCountDenormalizer.afterInsertNote parent._id
-
 export makeChild = new ValidatedMethod
   name: 'notes.makeChild'
   validate: new SimpleSchema
@@ -236,17 +216,11 @@ export makeChild = new ValidatedMethod
         $set: {showChildren: true}
       }, tx: true
       parentId = parent._id
-      level = parent.level + 1
+
     Notes.update noteId, {$set:
       rank: rank
       parent: parentId
-      level: level
-      focusNext: true
     }, {tx: true }
-
-    children = Notes.find(parent: noteId)
-    children.forEach (child) ->
-      makeChildRun child._id, noteId, shareKey
 
     rankDenormalizer.updateSiblings parentId
 

@@ -2,6 +2,9 @@
   "public": {
     "dropbox_client_id": "5vu0jz3onu0jcq8",
     "dev": 1,
-    "environment": "local"
+    "environment": "local",
+    "analyticsSettings": {
+      "Amplitude": {"apiKey": "542fa0b2a76248cba2e9f59e588788dd"}
+    }
   }
 }

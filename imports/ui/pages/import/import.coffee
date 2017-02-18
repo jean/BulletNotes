@@ -63,14 +63,12 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
     body = nextLine.trim().substr(1)
     body = body.substr(0, body.length-1)
 
-  console.log title, data
   insert.call {
     title: title
     rank: data.levelRanks[level]
     parent: parent
     isImport: true
   }, (err, res) ->
-    console.log err, res
     if !level
       FlowRouter.go('/')
 
