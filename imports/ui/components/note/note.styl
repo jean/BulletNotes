@@ -1,11 +1,14 @@
-.tag-center  .title
+.tag-center > .noteContainer   .title
     text-align: center
-.tag-h1 .title
+.tag-h1 > .noteContainer .title
     font-size: 2em !important
-.tag-h2 .title
+.tag-h2 > .noteContainer  .title
     font-size: 1.5em !important
-.tag-h3 .title
+.tag-h3 > .noteContainer  .title
     font-size: 1.25em !important
+
+.title.dragging
+  border: dashed green 1px
 
 .note-item
   border-left: solid 4px #fff
@@ -34,6 +37,10 @@
     .favorite
       opacity: 1
       color: #ff0072
+
+  .thumbnail
+    max-width: 100px
+    max-height: 100px
 
   .handle
     position: absolute

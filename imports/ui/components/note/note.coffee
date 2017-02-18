@@ -1,6 +1,7 @@
 { Template } = require 'meteor/templating'
 { ReactiveDict } = require 'meteor/reactive-dict'
-{ Notes } = require '../../../api/notes/notes.coffee'
+{ Notes } = require '/imports/api/notes/notes.coffee'
+{ Files } = require '/imports/api/files/files.coffee'
 require './note.jade'
 
 require '/imports/ui/components/share/share.coffee'
@@ -11,8 +12,21 @@ import {
   favorite
 } from '/imports/api/notes/methods.coffee'
 
+import {
+  upload
+} from '/imports/api/files/methods.coffee'
+
+
 Template.note.previewXOffset = 10
 Template.note.previewYOffset = 10
+
+Template.note.encodeImageFileAsURL = (cb,file) ->
+    reader = new FileReader
+
+    reader.onloadend = ->
+      cb reader.result
+
+    reader.readAsDataURL file
 
 Template.note.isValidImageUrl = (url, callback) ->
   $ '<img>',
@@ -35,10 +49,12 @@ Template.note.onRendered ->
           Template.notes.formatText newNote.body
         )
 
-  if @data.focusNext
-    $(note.firstNode).find('.title').first().get(0).focus()
-
 Template.note.helpers
+  files: () ->
+    Meteor.subscribe 'files.note', @_id
+    console.log @_id, Files.find({ noteId: @_id }).count()
+    Files.find { noteId: @_id }
+
   children: () ->
     Meteor.subscribe 'notes.children',
       @_id,
@@ -307,6 +323,23 @@ Template.note.events
     event.stopImmediatePropagation()
     event.preventDefault()
     Template.note.toggleChildren(instance)
+
+  'dragover .title': (event, instance) ->
+    $(event.target).addClass 'dragging'
+
+  'dragleave .title': (event, instance) ->
+    $(event.target).removeClass 'dragging'
+
+  'drop .title': (event, instance) ->
+    event.preventDefault()
+    event.stopPropagation()
+    Template.note.encodeImageFileAsURL (res) ->
+      upload.call {
+        noteId: instance.data._id
+        data: res
+      }, (err, res) ->
+        console.log err, res
+    , event.originalEvent.dataTransfer.files[0]
 
 Template.note.toggleChildren = (instance) ->
   if Meteor.userId()

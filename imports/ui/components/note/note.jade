@@ -37,6 +37,8 @@ template(name='note')
             .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
               span.sr-only {{progress}}% Complete (success)
         p.body(contenteditable='true',style='display:none') {{body}}
+      each files
+        img(src=data,class='thumbnail')
     +share
     if children
       ol
