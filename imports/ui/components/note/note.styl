@@ -1,3 +1,12 @@
+.tag-center  .title
+    text-align: center
+.tag-h1 .title
+    font-size: 2em !important
+.tag-h2 .title
+    font-size: 1.5em !important
+.tag-h3 .title
+    font-size: 1.25em !important
+
 .note-item
   border-left: solid 4px #fff
   font-size: 12px
@@ -6,11 +15,11 @@
   margin-bottom: 2px
   border-bottom: none !important
   line-height: 1.75
-  .searchResult 
+  .searchResult
     font-weight: bold
     font-size: 1.2em
     color: #41CAC0
-    
+
   .favorite
     opacity: .1
     padding: .7em
@@ -35,60 +44,59 @@
     margin: -.35em
     text-decoration: none
 
-  .progress 
+  .progress
     margin: 10px 0 0
-  
-  .noteContainer 
+
+  .noteContainer
     padding: 10px 0 10px 5px
-  
-  @media screen and (min-width: 40em) 
-    .options:hover > ul.dropdown-menu 
+
+  @media screen and (min-width: 40em)
+    .options:hover > ul.dropdown-menu
       display: block
       top: 2.2em
-  
-  .expand 
+
+  .expand
     text-decoration: none
     font-weight: bold
     position: absolute
     top: .6em
     left: 0
     padding: .5em
-  
+
   .expand.fa-angle-up:hover,
   .expand.fa-angle-down:hover
-  
+
     border: dashed 1px red
-  
-  .expand.collapsed 
+
+  .expand.collapsed
     border: dashed 1px #777
-  
-  div.title 
+
+  .title
     display: block
     font-size: 1.4em
     color: black
     min-width: 40%
     margin: -5px 5em 0 3em
     line-height: 1.75
-  
-  div.title:focus 
+  div.title:focus
       outline: none
-  
-  p 
+
+  p
     margin: .5em .5em .5em 20px
     opacity: .8
     font-size: 1.2em
     color: black
-  
-  a 
+
+  a
     cursor: pointer
-  
-  .thumb 
+
+  .thumb
     margin: -15px 0 0 25px
-  
-  .badge 
+
+  .badge
     margin-right: .5em
     background: color-primary
-    
+
   .dropdown-menu
     margin-top: -2px
 
@@ -96,7 +104,7 @@
   .handle
     background-color: #d2d5ff
 
-.note .favorite:hover 
+.note .favorite:hover
     color: #f78a09
     opacity: .7
 
@@ -105,69 +113,69 @@
     opacity: 1
 
 
-.note.shared .fa-ellipsis-v 
+.note.shared .fa-ellipsis-v
   border-color: purple
 
 
 .tagLink, .atLink
   border-width: 1px
-  padding: .1em .25em 
+  padding: .1em .25em
   border-radius: 10px
   border-style: solid
   box-shadow: 1px 1px 2px #8e8e8e
 
-.tagLink:hover, .atLink:hover 
+.tagLink:hover, .atLink:hover
   box-shadow: 2px 2px 3px #8e8e8e
 
 .tag-red
   border-color: #FF2020
   background-color: rgba(255, 0, 0, 0.1)
-.tag-orange  
-  border-color: #FFD8B5 
+.tag-orange
+  border-color: #FFD8B5
   background-color: rgba(255, 216, 181, 0.22)
-.tag-yellow  
+.tag-yellow
   border-color: #FFFAB5
   background-color: rgba(255, 250, 181, 0.22)
-.tag-lime  
-  border-color: #E1FFB5 
+.tag-lime
+  border-color: #E1FFB5
   background-color: rgba(225, 255, 181, 0.26)
-.tag-olive  
-  border-color: #B5FFC9 
+.tag-olive
+  border-color: #B5FFC9
   background-color: rgba(181, 255, 201, 0.25)
-.tag-green  
-  border-color: #CCFFB5 
+.tag-green
+  border-color: #CCFFB5
   background-color: rgba(204, 255, 181, 0.24)
-.tag-teal  
-  border-color: #B5FFD7 
+.tag-teal
+  border-color: #B5FFD7
   background-color: rgba(181, 255, 215, 0.21)
-.tag-aqua  
-  border-color: #B5FFFC 
+.tag-aqua
+  border-color: #B5FFFC
   background-color: rgba(181, 255, 252, 0.31)
-.tag-blue  
-  border-color: #B5E8FF 
+.tag-blue
+  border-color: #B5E8FF
   background-color: rgba(181, 232, 255, 0.2)
-.tag-navy  
+.tag-navy
   border-color: #3f34ff
   background-color: rgba(63, 52, 255, 0.15)
-.tag-fuchia  
-  border-color: #F1B5FF 
+.tag-fuchia
+  border-color: #F1B5FF
   background-color: rgba(241, 181, 255, 0.22)
-.tag-purple  
-  border-color: #D3B5FF 
+.tag-purple
+  border-color: #D3B5FF
   background-color: rgba(211, 181, 255, 0.25)
-.tag-maroon  
-  border-color: #C08F8F 
+.tag-maroon
+  border-color: #C08F8F
   background-color: rgba(192, 143, 143, 0.16)
-.tag-silver  
-  border-color: silver 
+.tag-silver
+  border-color: silver
   background-color: rgba(192, 192, 192, 0.22)
-.tag-gray  
-  border-color: gray 
-.tag-complete, .tag-done, .tag-finished 
-  .title 
+.tag-gray
+  border-color: gray
+.tag-complete, .tag-done, .tag-finished
+  .title
     text-decoration: line-through
     opacity: .5
-  
+
 #preview
   position:absolute
   border:1px solid #ccc
@@ -176,7 +184,7 @@
   display:none
   color:#fff
   max-width: 400px
-  img 
+  img
     width: 100%
 
 .note-item.shared
@@ -185,62 +193,3 @@
 
 .placeholder
   box-shadow: purple 0 0 5px 1px
-
-// .note-items .note-item {
-//   .options, .badge {
-//     margin: .75em;
-//   }
-//   .font-s2;
-
-//   position: relative;
-//   a.icon {
-//     margin: 1em .1em;
-//   }
-//   .icon-arrow-down {
-//     border: dotted 1px;
-//     border-radius: 5px;
-//   }
-
-//   .checkbox {
-//     flex: 0, 0, 44px;
-//     cursor: pointer;
-//   }
-//   .title { flex: 1; }
-//   .delete-item { flex: 0, 0, 3rem; }
-
-
-//   // Style of list-item children
-//   .title {
-//     background: transparent;
-//     padding: .75rem 0;
-//     &:focus { cursor: text; }
-//   }
-
-//   .delete-item {
-//     color: color-medium-rare;
-//     line-height: 3rem;
-//     text-align: center;
-
-//     &:hover { color: color-primary; }
-//     &:active { color: color-well; }
-//     .icon-trash { font-size: 1.1em; }
-//   }
-
-
-//   // Border between list items
-//   & + .list-item { border-top: 1px solid #f0f9fb; }
-
-//   // Checked
-//   &.checked {
-//     input[type="text"] {
-//       color: color-medium-rare;
-//       text-decoration: line-through;
-//     }
-
-//     .delete-item { display: inline-block; }
-//   }
-
-//   // Editing
-//   .delete-item { display: none; }
-//   &.editing .delete-item { display: inline-block; }
-// }

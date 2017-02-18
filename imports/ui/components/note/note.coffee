@@ -46,14 +46,17 @@ Template.note.helpers
 
     if @showChildren || Session.get 'expand_'+@_id
       Notes.find { parent: @_id }, sort: {rank: 1}
+
   editingClass: (editing) ->
     editing and 'editing'
+
   expandClass: () ->
     if @children > 0
       if @showChildren || Session.get('expand_'+@_id)
         'glyphicon glyphicon-minus'
       else
         'glyphicon glyphicon-plus'
+
   className: ->
     className = "note"
     if @title
@@ -66,16 +69,20 @@ Template.note.helpers
     if @shared
       className = className + ' shared'
     className
+
   userOwnsNote: ->
     Meteor.userId() == @owner
+
   favoriteClass: ->
     if @favorite
       'favorited'
+
   progress: ->
     setTimeout ->
       $('[data-toggle="tooltip"]').tooltip()
     , 100
     @progress
+
   progressClass: ->
     Template.notes.getProgressClass this
 
