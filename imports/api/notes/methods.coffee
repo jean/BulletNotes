@@ -163,7 +163,7 @@ export updateTitle = new ValidatedMethod
       Notes.update noteId, {$set: {
         progress: match[1]
         updatedAt: new Date
-      }}, tx: true
+      }}
     else
       # If there is not a defined percent tag (e.g., #pct-20)
       # then calculate the #done rate of notes
@@ -179,7 +179,7 @@ export updateTitle = new ValidatedMethod
       Notes.update note.parent, {$set: {
         progress: Math.round((done/total)*100)
         updatedAt: new Date
-      }}, tx: true
+      }}
 
 
 

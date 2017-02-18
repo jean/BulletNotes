@@ -151,11 +151,12 @@ Template.note.events
           topNote = text.substr(0, position)
           bottomNote = text.substr(position)
           # Create a new note below the current.
-          Meteor.call 'notes.updateTitle', {
-            noteId: note._id
-            title: topNote
-            shareKey: FlowRouter.getParam('shareKey')
-          }
+          if topNote != Template.note.stripTags(note.title)
+            Meteor.call 'notes.updateTitle', {
+              noteId: note._id
+              title: topNote
+              shareKey: FlowRouter.getParam('shareKey')
+            }
           Meteor.call 'notes.insert', {
             title: ''
             rank: note.rank + 1
