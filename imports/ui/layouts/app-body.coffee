@@ -105,6 +105,7 @@ Template.App_body.helpers
   menuOpen: ->
     instance = Template.instance()
     instance.state.get('menuOpen') and 'menu-open'
+
   wrapClasses: ->
     classname = ''
     if Meteor.isCordova
@@ -112,6 +113,7 @@ Template.App_body.helpers
     if Meteor.settings.public.dev
       classname += ' dev'
     classname
+
   displayName: ->
     displayName = ''
     if Meteor.user().emails
@@ -120,44 +122,57 @@ Template.App_body.helpers
     else
       displayName = Meteor.user().profile.name
     displayName
+
   userMenuOpen: ->
     instance = Template.instance()
     instance.state.get 'userMenuOpen'
+
   recentMenuOpen: ->
     instance = Template.instance()
     instance.state.get 'recentMenuOpen'
+
   dev: ->
     Meteor.settings.public.dev
+
   notes: ->
     Notes.find { favorite: true }, sort: favoritedAt: -1
+
   activeNoteClass: (note) ->
     active = ActiveRoute.name('Notes.show') and FlowRouter.getParam('_id') == note._id
     active and 'active'
+
   connected: ->
     if showConnectionIssue.get()
       return Meteor.status().connected
     true
+
   templateGestures:
     'swipeleft .cordova': (event, instance) ->
       instance.state.set 'menuOpen', false
-      return
+
     'swiperight .cordova': (event, instance) ->
       instance.state.set 'menuOpen', true
-      return
+
   languages: ->
     _.keys TAPi18n.getLanguages()
+
   isActiveLanguage: (language) ->
     TAPi18n.getLanguage() == language
+
   expandClass: ->
     instance = Template.instance()
     if instance.state.get('menuOpen') then 'expanded' else ''
+
   ready: ->
     instance = Template.instance()
     instance.ready.get()
 
 Template.App_body.events
   'keyup #searchForm': (event, instance) ->
-    Session.set 'searchTerm', $(event.target).val()
+    if $(event.target).val()
+      FlowRouter.go '/search/' + $(event.target).val()
+    else
+      FlowRouter.go '/'
 
   'click .js-menu': (event, instance) ->
     instance.state.set 'menuOpen', !instance.state.get('menuOpen')
@@ -180,12 +195,7 @@ Template.App_body.events
 
   'click .js-logout': ->
     Meteor.logout()
-    # if we are on a private note, we'll need to go to a public one
-    if ActiveRoute.name('Notes.show')
-      # TODO -- test this code path
-      note = Notes.findOne(FlowRouter.getParam('_id'))
-      if note.userId
-        FlowRouter.go 'Notes.show', Notes.findOne(userId: $exists: false)
+    FlowRouter.go '/'
 
   'click .js-toggle-language': (event) ->
     language = $(event.target).html().trim()

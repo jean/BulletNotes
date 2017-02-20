@@ -12,13 +12,6 @@ import '/imports/ui/components/notes/notes.coffee'
 
 
 Template.Notes_show_page.onCreated ->
-  Meteor.subscribe 'notes.view',
-    FlowRouter.getParam 'noteId'
-    FlowRouter.getParam 'shareKey'
-  Meteor.subscribe 'notes.children',
-    FlowRouter.getParam 'noteId'
-    FlowRouter.getParam 'shareKey'
-    
   @getNoteId = ->
     FlowRouter.getParam 'noteId'
 
@@ -27,6 +20,12 @@ Template.Notes_show_page.onRendered ->
   @autorun =>
     if @subscriptionsReady()
       noteRenderHold.release()
+  Meteor.subscribe 'notes.view',
+    FlowRouter.getParam 'noteId'
+    FlowRouter.getParam 'shareKey'
+  Meteor.subscribe 'notes.children',
+    FlowRouter.getParam 'noteId'
+    FlowRouter.getParam 'shareKey'
 
 Template.Notes_show_page.helpers
   # We use #each on an array of one item so that the "note" template is
@@ -58,4 +57,3 @@ Template.Notes_show_page.helpers
       # to the area that cares about it, we stop it from happening.
       note: ->
         Notes.findOne noteId
-

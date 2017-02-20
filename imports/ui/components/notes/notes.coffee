@@ -46,13 +46,6 @@ Template.notes.onCreated ->
     editingNote: false
     notesReady: false
 
-  Meteor.subscribe 'notes.view',
-    FlowRouter.getParam 'noteId',
-    FlowRouter.getParam 'shareKey'
-  Meteor.subscribe 'notes.children',
-    FlowRouter.getParam 'noteId',
-    FlowRouter.getParam 'shareKey'
-
   @favoriteNote = =>
     Meteor.call 'notes.favorite',
       noteId: @data.note()._id
@@ -71,25 +64,28 @@ Template.notes.onCreated ->
 
 Template.notes.helpers
   notes: ->
+    NProgress.done()
     parentId = null
     if @note()
       parentId = @note()._id
-    if Session.get 'searchTerm'
-      Session.set 'level', 0
-      Notes.search Session.get 'searchTerm'
+
+    if FlowRouter.getParam 'searchTerm'
+      Notes.search FlowRouter.getParam 'searchTerm'
     else if parentId
-      Session.set 'level', @note().level
       Notes.find { parent: parentId }, sort: rank: 1
     else
-      Session.set 'level', 0
       Notes.find { parent: null }, sort: rank: 1
+
   focusedNote: ->
     Notes.findOne Template.currentData().note()
+
   notesReady: ->
     Template.instance().subscriptionsReady()
+
   favorited: ->
     if Template.currentData().note().favorite
       'favorited'
+
   progress: ->
     setTimeout ->
       $('[data-toggle="tooltip"]').tooltip()
@@ -97,9 +93,11 @@ Template.notes.helpers
     note = Notes.findOne(Template.currentData().note())
     if note
       note.progress
+
   progressClass: ->
     note = Notes.findOne(Template.currentData().note())
     Template.notes.getProgressClass note
+
   childNoteCount: ->
     if Template.currentData().note()
       Notes.find({parent:Template.currentData().note()._id}).count()
@@ -109,19 +107,20 @@ Template.notes.helpers
 Template.notes.events
   'click .js-cancel': (event, instance) ->
     instance.state.set 'editing', false
-    return
+
   'keydown input[type=text]': (event) ->
     # ESC
     if event.which == 27
       event.preventDefault()
       $(event.target).blur()
-    return
+
   'mousedown .js-cancel, click .js-cancel': (event, instance) ->
     event.preventDefault()
     instance.state.set 'editing', false
-    return
+
   'click .favorite': (event, instance) ->
     instance.favoriteNote()
+
   'change .note-edit': (event, instance) ->
     target = event.target
     if $(target).val() == 'edit'
@@ -131,7 +130,7 @@ Template.notes.events
     else if $(target).val() == 'favorite'
       instance.favoriteNote()
     target.selectedIndex = 0
-    return
+
   'blur .title-wrapper': (event, instance) ->
     event.stopPropagation()
     title = Template.note.stripTags(event.target.innerHTML)

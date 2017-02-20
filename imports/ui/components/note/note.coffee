@@ -52,7 +52,6 @@ Template.note.onRendered ->
 Template.note.helpers
   files: () ->
     Meteor.subscribe 'files.note', @_id
-    console.log @_id, Files.find({ noteId: @_id }).count()
     Files.find { noteId: @_id }
 
   children: () ->
