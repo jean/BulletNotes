@@ -63,7 +63,7 @@ export dropbox = new ValidatedMethod
           accessToken: user.profile.dropbox_token
         )
         dbx.filesUpload(
-          path: '/'+moment().format('BulletNotes-YYYY-MM-DD')+'.txt'
+          path: '/BulletNotes'+moment().format('-YYYY-MM-DD')+'.txt'
           contents: exportText).then((response) ->
             console.log response
         ).catch (error) ->
