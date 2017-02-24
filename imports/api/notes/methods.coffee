@@ -221,10 +221,10 @@ export makeChild = new ValidatedMethod
       rank: rank
       parent: parentId
     }, {tx: true }
+    tx.commit()
 
     rankDenormalizer.updateSiblings parentId
 
-    tx.commit()
     if oldParent
       childCountDenormalizer.afterInsertNote oldParent._id
     if parent
