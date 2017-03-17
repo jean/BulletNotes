@@ -6,27 +6,27 @@ column = 5.55555%
 .modal-backdrop
   z-index: -1
 
-body 
+body
   position(absolute, 0, 0, 0, 0)
   background-image: linear-gradient(to bottom, rgba(0, 89, 204, 0.58), rgba(83, 185, 124, 0.62) 100%)
   background-repeat: no-repeat
   background-attachment: fixed
 
 
-#container 
+#container
   position(absolute, 0, 0, 0, 0)
-  @media screen and (min-width: 60em) 
+  @media screen and (min-width: 60em)
     left: 1em
     right: 1em
-  
+
 #container.dev
   border: solid red 10px
 
-#menu 
+#menu
   position(absolute, 0, 0, 0, 0, 270px)
 
 
-#content-container 
+#content-container
   position(absolute, 0, 0, 0, 0)
   transition: all 200ms ease-out
   transform: translate3d(0, 0, 0)
@@ -34,45 +34,45 @@ body
   opacity: 1
   color: white
 
-  .page 
+  .page
     position(absolute, 0, 0, 0, 0)
-  
 
-  .content-scrollable 
+
+  .content-scrollable
     position(absolute, 0, 0, 0, 0)
     transform: translate3d(0, 0, 0)
     overflow-y: auto
     -webkit-overflow-scrolling: touch
-  
+
 
   // Toggle menu on mobile
-  .menu-open & 
+  .menu-open &
     transform: translate3d(menu-width, 0, 0)
     opacity: .85
     left: 0
 
-    @media screen and (min-width: 40em) 
+    @media screen and (min-width: 40em)
       // Show menu on desktop, negate .menu-open
       transform: translate3d(0, 0, 0) //reset transform and use position properties instead
       opacity: 1
       left: menu-width
-    
-  
+
+
 
 
 // Transparent screen to prevent interactions on content when menu is open
-.content-overlay 
+.content-overlay
   position(absolute, 0, 0, 0, 0)
   cursor: pointer
 
-  .menu-open & 
+  .menu-open &
     transform: translate3d(menu-width, 0, 0)
     z-index: 1
-  
+
 
   // Hide overlay on desktop
   @media screen and (min-width: 40em)
-    display: none 
+    display: none
 
 ol.breadcrumb
   padding: .5em 2em
@@ -84,11 +84,11 @@ ol.breadcrumb
   top: 5px
   left: .5em
   transition: all ease-in 400ms
-  .glyphicon 
+  .glyphicon
     padding: .5em
     margin: -.5em
     color: #8000a7
-  
+
 @keyframes pulse {
   0% {transform: scale(1);opacity:.9;}
   50% {transform: scale(1.1);opacity:1;}
@@ -103,7 +103,7 @@ ol.breadcrumb
 .loading
   margin-top: 20em
 
-.nav-group.expanded 
+.nav-group.expanded
   transform: rotate(180deg)
   left: 240px !important
 
@@ -113,11 +113,30 @@ ol.breadcrumb
   .spinner
     display: none !important
 
-.footer 
+.footer
   text-align: center
   opacity: .8
   font-size: .8em
   margin: 2em
   padding: 1em
   border: solid gray 1px
-  color: black  
+  color: black
+
+#settingsPage
+  display: block;
+  opacity: 1;
+  overflow: scroll;
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 100%;
+  text-align: center;
+  .title-message
+    font-size: 2em
+  p
+    width: 20em
+    margin: 0 auto
+  h4
+    margin: 1em
+  .btn
+    margin: 1em

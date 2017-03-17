@@ -29,3 +29,5 @@ Template.App_settings.helpers
     , 100
     if Meteor.user() && Meteor.user().profile
       return Meteor.user().profile.dropbox_token
+  userId: ->
+    Meteor.userId()

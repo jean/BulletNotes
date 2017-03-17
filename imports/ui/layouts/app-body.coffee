@@ -201,3 +201,6 @@ Template.App_body.events
     language = $(event.target).html().trim()
     T9n.setLanguage language
     TAPi18n.setLanguage language
+
+Template.registerHelper 'increment', (count) ->
+  return count + 1

@@ -1,5 +1,6 @@
 template(name="App_settings")
-  .wrapper-message
+  #settingsPage
+    a(href='/') Home
     .title-message {{_ 'layouts.appBody.settings'}}
     .subtitle-message
       h4 {{_ 'layouts.appBody.import'}}/{{_ 'layouts.appBody.export'}}
@@ -8,9 +9,19 @@ template(name="App_settings")
       #exportSpinner(style='display:none')
         i.glyphicon.glyphicon-refresh.glyphicon-spin
       textarea#exportResult(style='display:none')
+      
       h4 Dropbox
-      p You can link your Dropbox account for a nightly backup. Each backup file can be imported straight into another instance of BulletNotes, or into something like Workflowy.
+      p
+        | You can link your Dropbox account for a nightly backup.
+        | Each backup file can be imported straight into another instance of BulletNotes,
+        | or into something like Workflowy.
       if dropbox_token
         a#deauthLink.form-control.btn.btn-theme.btn-primary Unlink Dropbox Account
       else
         a#authlink.form-control.btn.btn-theme.btn-primary Authenticate with Dropbox
+      
+      h4 Alfred Integration
+      p Documentation: 
+        a(href="https://bulletnotes.io/note/frCTPYCuSQN2kDRdo")
+          | https://bulletnotes.io/note/frCTPYCuSQN2kDRdo
+      p Your user id is: {{userId}}

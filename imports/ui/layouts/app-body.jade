@@ -48,9 +48,12 @@ template(name='App_body')
               a(href='/') Home
               h4 Favorites
               if notes.count
+                ul
                 each note in notes
-                  a.parentNote(href="{{pathFor 'Notes.show' noteId=note._id}}", title='Hello', class='{{activeNoteClass note}}',data-toggle="tooltip", data-placement="right")
-                    | {{{note.title}}}
+                  li
+                    a.parentNote(href="{{pathFor 'Notes.show' noteId=note._id}}", title='Hello', class='{{activeNoteClass note}}',data-toggle="tooltip", data-placement="right",data-count="{{{note.count}}}")
+                      | {{{note.title}}}
+                    span.hotkeyHint {{increment @index}}
               else
                 | No favorites yet, click the icon on some notes to the right.
 
