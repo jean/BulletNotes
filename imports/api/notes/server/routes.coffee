@@ -3,7 +3,8 @@ bodyParser = Npm.require( 'body-parser' )
 Picker.middleware( bodyParser.json() )
 Picker.middleware( bodyParser.urlencoded( { extended: false } ) )
 
-Picker.route '/notes/inbox', ( params, request, response, next ) ->
+Picker.route '/note/inbox', ( params, request, response, next ) ->
+  console.log request.body
   noteId = Meteor.call 'notes.inbox',
     userId: request.body.userId
     title: request.body.title
