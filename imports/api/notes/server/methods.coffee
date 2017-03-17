@@ -69,6 +69,26 @@ export dropbox = new ValidatedMethod
         ).catch (error) ->
           console.error error
 
+export inbox = new ValidatedMethod
+  name: 'notes.inbox'
+  validate: new SimpleSchema
+    title: Notes.simpleSchema().schema('title')
+    body: Notes.simpleSchema().schema('body')
+    inboxCode: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ title, body, inboxCode }) ->
+    inbox = Notes.findOne(inboxCode)
+    if inbox
+      console.log inboxCode, inbox
+      Notes.insert
+        title: title
+        body: body
+        parent: inbox._id
+        owner: inbox.owner
+        createdAt: new Date()
+
 export summary = new ValidatedMethod
   name: 'notes.summary'
   validate: null
@@ -95,6 +115,7 @@ NOTES_METHODS = _.pluck([
   notesExport
   dropbox
   summary
+  inbox
 ], 'name')
 
 if Meteor.isServer

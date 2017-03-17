@@ -21,10 +21,16 @@ template(name='note')
               a.calendar(href='/calendar/{{_id}}')
                 i.glyphicon.glyphicon-calendar
                 |  Calendar
-            li
-              a.delete(href='#')
-                i.glyphicon.glyphicon-trash
-                |  Delete
+            if this.inbox
+              li
+                a(href="javascript:function bninbox(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','http://localhost:3000/notes/inbox/'+encodeURIComponent(d.location.href)+'&t='+(new Date().getTime()));b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}bninbox();void(0)")
+                  i.glyphicon.glyphicon-envelope
+                  | Drag this link to your bookmarks to save pages to this list.
+            else
+              li
+                a.delete(href='#')
+                  i.glyphicon.glyphicon-trash
+                  |  Delete
       .pull-right(class='{{favoriteClass}}')
         if currentUser
           i.glyphicon.glyphicon-heart.favorite
