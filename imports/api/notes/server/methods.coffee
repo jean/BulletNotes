@@ -6,6 +6,7 @@ import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 Dropbox = require('dropbox')
 
 import childCountDenormalizer from '/imports/api/notes/childCountDenormalizer.coffee'
+import rankDenormalizer from '/imports/api/notes/rankDenormalizer.coffee'
 
 import { Notes } from '/imports/api/notes/notes.coffee'
 
@@ -74,20 +75,35 @@ export inbox = new ValidatedMethod
   validate: new SimpleSchema
     title: Notes.simpleSchema().schema('title')
     body: Notes.simpleSchema().schema('body')
-    inboxCode: Notes.simpleSchema().schema('_id')
+    userId: Notes.simpleSchema().schema('_id')
   .validator
     clean: yes
     filter: no
-  run: ({ title, body, inboxCode }) ->
-    inbox = Notes.findOne(inboxCode)
-    if inbox
-      console.log inboxCode, inbox
-      Notes.insert
+  run: ({ title, body, userId }) ->
+    inbox = Notes.findOne
+      owner: userId
+      inbox: true
+      deleted: {$exists:false}
+    console.log "Got inbox: ",inbox,userId
+    if !inbox
+      inboxId = Notes.insert
+        title: "<b>Inbox</b>"
+        createdAt: new Date()
+        owner: userId
+        inbox: true
+        showChildren: true
+    else
+      inboxId = inbox._id
+    if inboxId
+      noteId = Notes.insert
         title: title
         body: body
-        parent: inbox._id
-        owner: inbox.owner
+        parent: inboxId
+        owner: userId
         createdAt: new Date()
+        rank: 0
+      rankDenormalizer.updateSiblings inboxId
+      return noteId
 
 export summary = new ValidatedMethod
   name: 'notes.summary'

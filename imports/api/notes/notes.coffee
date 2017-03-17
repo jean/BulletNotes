@@ -174,6 +174,9 @@ Notes.schema = new SimpleSchema
   done:
     type: Boolean
     optional: yes
+  inbox:
+    type: Boolean
+    optional: yes
 
 Notes.attachSchema Notes.schema
 
