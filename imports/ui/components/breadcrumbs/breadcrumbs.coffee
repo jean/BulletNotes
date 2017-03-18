@@ -18,3 +18,7 @@ Template.breadcrumbs.helpers
       return note.title
   shareKey: ->
     FlowRouter.getParam 'shareKey'
+
+Template.breadcrumbs.events
+  "click a": (event, template) ->
+    $('#searchForm input').val('')

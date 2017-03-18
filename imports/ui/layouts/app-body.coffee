@@ -35,6 +35,10 @@ Meteor.startup ->
       when 192
         if !editingNote
           $('.nav-item').trigger 'click'
+      # 0
+      # Home
+      when 48, 36
+        FlowRouter.go('/')
       # 1
       when 49
         Template.App_body.loadFavorite 1
@@ -94,6 +98,7 @@ Template.App_body.onCreated ->
   ), 10000
 
 Template.App_body.loadFavorite = (number) ->
+  $('#searchForm input').val('')
   editingNote = $(document.activeElement).hasClass('title')
   menuVisible = $('#container').hasClass('menu-open')
   if !editingNote
@@ -104,8 +109,7 @@ Template.App_body.loadFavorite = (number) ->
 
 Template.App_body.helpers
   menuOpen: ->
-    instance = Template.instance()
-    instance.state.get('menuOpen') and 'menu-open'
+    Session.get('menuOpen') and 'menu-open'
 
   wrapClasses: ->
     classname = ''
@@ -175,12 +179,11 @@ Template.App_body.events
     else
       FlowRouter.go '/'
 
-  'click .js-menu': (event, instance) ->
-    instance.state.set 'menuOpen', !instance.state.get('menuOpen')
-
-  'click .content-overlay': (event, instance) ->
-    instance.state.set 'menuOpen', false
+  'submit #searchForm': (event, instance) ->
     event.preventDefault()
+
+  'click .js-menu': (event, instance) ->
+    Session.set 'menuOpen', !Session.get('menuOpen')
 
   'click .userMenu': (event, instance) ->
     event.stopImmediatePropagation()
@@ -193,6 +196,9 @@ Template.App_body.events
   'click .js-logout': ->
     Meteor.logout()
     FlowRouter.go '/'
+
+  'click .homeLink': ->
+    $('#searchForm input').val('')
 
   'click .js-toggle-language': (event) ->
     language = $(event.target).html().trim()

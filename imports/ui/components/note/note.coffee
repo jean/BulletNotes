@@ -2,9 +2,11 @@
 { ReactiveDict } = require 'meteor/reactive-dict'
 { Notes } = require '/imports/api/notes/notes.coffee'
 { Files } = require '/imports/api/files/files.coffee'
-require './note.jade'
 
+require './note.jade'
 require '/imports/ui/components/share/share.coffee'
+require '/imports/ui/components/file/file.coffee'
+
 { noteRenderHold } = require '../../launch-screen.js'
 { displayError } = require '../../lib/errors.js'
 

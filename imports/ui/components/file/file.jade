@@ -1,0 +1,13 @@
+template(name="file")
+  a.share(href='#', data-toggle='modal', data-target='#file_{{_id}}')
+    img(src=data,class='thumbnail')
+  .modal.fade(id="file_{{_id}}", tabindex='-1', role='dialog', style='display: none;')
+    .modal-dialog
+      form.modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h4#myModalLabel.modal-title File
+        .modal-body
+            img(src=data)
+        .modal-footer
+          button.btn.btn-sm(data-dismiss='modal') Cancel

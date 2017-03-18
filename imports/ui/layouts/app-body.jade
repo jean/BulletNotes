@@ -42,20 +42,24 @@ template(name='App_body')
                 a.btn-secondary(href="{{pathFor 'join'}}")
                   | {{_ 'layouts.appBody.join'}}
             form#searchForm
+              span.glyphicon.glyphicon-search
               input.search.form-control(placeholder="{{_ 'layouts.appBody.search'}}...")
               submit(style='visibility:hidden')
             #favoriteNotes
-              a(href='/') {{_ 'layouts.appBody.home'}}
+              a.homeLink(href='/') {{_ 'layouts.appBody.home'}}
               h4 {{_ 'layouts.appBody.favorites'}}
               if notes.count
                 ul
                 each note in notes
                   li
-                    a.favoriteNote(href="{{pathFor 'Notes.show' noteId=note._id}}", title='Hello', class='{{activeNoteClass note}}',data-toggle="tooltip", data-placement="right",data-count="{{increment @index}}")
+                    a.favoriteNote(href="{{pathFor 'Notes.show' noteId=note._id}}", class='{{activeNoteClass note}}', data-count="{{increment @index}}")
                       | {{{note.title}}}
                     span.hotkeyHint {{increment @index}}
               else
-                | No favorites yet, click the icon on some notes to the right.
+                p(style="margin: 1em;color:white;")
+                  | No favorites yet, click the
+                  span.glyphicon.glyphicon-heart(style="font-size: .8em; margin: 0 .2em")
+                  | icon on some notes to the right.
 
       +unless connected
         .notifications
