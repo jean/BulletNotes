@@ -30,7 +30,7 @@ template(name='App_body')
                     span.glyphicon.glyphicon-chevron-up
                   else
                     span.glyphicon.glyphicon-chevron-down
-                  | Recent
+                  | {{_ 'layouts.appBody.recent'}}
                 if recentMenuOpen
                   a.btn-secondary(href='/search/last-changed%3a1h') {{_ 'layouts.appBody.lastHour'}}
                   a.btn-secondary(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
@@ -42,16 +42,16 @@ template(name='App_body')
                 a.btn-secondary(href="{{pathFor 'join'}}")
                   | {{_ 'layouts.appBody.join'}}
             form#searchForm
-              input.search.form-control(placeholder='Search...')
+              input.search.form-control(placeholder="{{_ 'layouts.appBody.search'}}...")
               submit(style='visibility:hidden')
-            .parentNotes
-              a(href='/') Home
-              h4 Favorites
+            #favoriteNotes
+              a(href='/') {{_ 'layouts.appBody.home'}}
+              h4 {{_ 'layouts.appBody.favorites'}}
               if notes.count
                 ul
                 each note in notes
                   li
-                    a.parentNote(href="{{pathFor 'Notes.show' noteId=note._id}}", title='Hello', class='{{activeNoteClass note}}',data-toggle="tooltip", data-placement="right",data-count="{{{note.count}}}")
+                    a.favoriteNote(href="{{pathFor 'Notes.show' noteId=note._id}}", title='Hello', class='{{activeNoteClass note}}',data-toggle="tooltip", data-placement="right",data-count="{{increment @index}}")
                       | {{{note.title}}}
                     span.hotkeyHint {{increment @index}}
               else

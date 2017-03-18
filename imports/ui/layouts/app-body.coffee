@@ -97,6 +97,7 @@ Template.App_body.loadFavorite = (number) ->
   editingNote = $(document.activeElement).hasClass('title')
   menuVisible = $('#container').hasClass('menu-open')
   if !editingNote
+    NProgress.start()
     FlowRouter.go $($('.parentNote').get(number-1)).attr 'href'
     if menuVisible
       $('.nav-item').trigger 'click'
@@ -188,10 +189,6 @@ Template.App_body.events
   'click .recentMenu': (event, instance) ->
     event.stopImmediatePropagation()
     instance.state.set 'recentMenuOpen', !instance.state.get('recentMenuOpen')
-
-  'click #menu a': (event, instance) ->
-    instance.state.set 'menuOpen', false
-    instance.state.set 'userMenuOpen', false
 
   'click .js-logout': ->
     Meteor.logout()

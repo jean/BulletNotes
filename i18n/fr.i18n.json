@@ -63,6 +63,9 @@
       "import": "Importer",
       "export": "Exporter",
       "settings": "Paramètres",
+      "favorites": "Favoris",
+      "search": "Chercher",
+      "recent": "Récent",
       "home": "Maison",
       "devWarningBody": "Ceci est un serveur de développement la perte de données est assurée.",
       "betaWarningBody": "Cette citation est encore en construction alors qu'il devrait fonctionner assez bien, et vous pouvez exporter régulièrement et devrait être la perte de données peut se produire au courant <https A href = ':!. //github.com/NickBusey/noted / 'target =' _ blank questions> Rapport questions sur GitHub </a> "
