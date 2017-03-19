@@ -1,13 +1,13 @@
 @import '{}/imports/ui/stylesheets/utils'
 
-#notes 
+#notes
   list-style-type: none
   margin: 5em 0 0
   padding: 0
   width: 100%
   background-color: white
 
-  ol 
+  ol
     padding-left: 25px
 
 .page.notes-show
@@ -23,10 +23,9 @@
       text-align: left
 
     .title-page
-      position(absolute, 2rem, .5rem, auto, 3rem)
-
       font-size: 1.125em; // 18px
       white-space: nowrap;
+      margin: 0 1em
 
       .title-wrapper {
         @extend .ellipsized;
@@ -94,7 +93,7 @@
     position: absolute
     top: .5em
     right: .5em
-    
+
 #preview
   position:absolute
   border:1px solid #ccc
@@ -103,10 +102,10 @@
   display:none
   color:#fff
   max-width: 400px
-  img 
+  img
     width: 100%
-    
-select.list-edit 
+
+select.list-edit
   @extend .font-m2
   position(absolute, 0,0,0,0)
   background: transparent
@@ -121,16 +120,19 @@ select.list-edit
 
     &:last-child { margin-right: .5rem; }
 
+li.body
+  margin: 1em
+
 // Hide & show options and nav icons
 @media screen and (min-width: 40em) {
   .options-mobile { display: none; }
   .options-web {  display: block; }
 }
 
-.options-web 
+.options-web
   display: none
 
-  .nav-item 
+  .nav-item
     @extend .font-m3;
     width: 2rem
 

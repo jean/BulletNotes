@@ -1,8 +1,8 @@
 template(name='notes')
-  .page.notes-show
-    ol#tagSearchPreview.dropdown-menu
-    nav.js-title-nav
-      +momentum(plugin="fade")
+  +momentum(plugin="fade")
+    .page.notes-show
+      ol#tagSearchPreview.dropdown-menu
+      nav.js-title-nav
         +breadcrumbs
         h1.js-edit-note.title-page
           if focusedNote
@@ -11,36 +11,47 @@ template(name='notes')
           else
             .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
           span.count-note.pull-right {{childNoteCount}}
-      if focusedNote
-        .nav-group.right
-          .nav-item.options-mobile
-            select.note-edit
-              option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
-              option(value='delete') {{_ 'notes.show.delete'}}
-              option(value='favorite') {{_ 'notes.show.favorite'}}
-            span.glyphicon.glyphicon-cog
-          .options-web
-            a.js-toggle-note-privacy.nav-item
-              if note.userId
-                span.icon-lock(title='')
-              else
-                span.icon-unlock(title='')
-            a.js-delete-note.nav-item
-              span.icon-trash(title='')
-      if progress
-        .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
-          .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
-            span.sr-only {{progress}}% Complete (success)
+        if focusedNote
+          .nav-group.right
+            .nav-item.options-mobile
+              select.note-edit
+                option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
+                option(value='delete') {{_ 'notes.show.delete'}}
+                option(value='favorite') {{_ 'notes.show.favorite'}}
+              span.glyphicon.glyphicon-cog
+            .options-web
+              a.js-toggle-note-privacy.nav-item
+                if note.userId
+                  span.icon-lock(title='')
+                else
+                  span.icon-unlock(title='')
+              a.js-delete-note.nav-item
+                span.icon-trash(title='')
+        if progress
+          .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
+            .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
+              span.sr-only {{progress}}% Complete (success)
 
-    ol#notes.content-scrollable.note-items.sortable
-      if notesReady
-        each notes
-          +note
-        else
-          .noNoteMessage
-            .title-message {{_ 'notes.show.noNotes'}}
-            .subtitle-message {{_ 'notes.show.addAbove'}}
-      else
-        .wrapper-message
-          .title-message {{_ 'notes.show.loading'}}
-      +footer
+        ol#notes.content-scrollable.note-items.sortable
+          if focusedNote.body
+            li.body(contenteditable='true')
+              if focusedNote.body
+                | {{focusedNote.body}}
+              else
+                |  
+          if focusedNoteFiles
+            .filesContainer
+              each focusedNoteFiles
+                +file
+                
+          if notesReady
+            each notes
+              +note
+            else
+              .noNoteMessage
+                .title-message {{_ 'notes.show.noNotes'}}
+                .subtitle-message {{_ 'notes.show.addAbove'}}
+          else
+            .wrapper-message
+              .title-message {{_ 'notes.show.loading'}}
+          +footer

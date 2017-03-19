@@ -5,27 +5,6 @@ import faker from 'faker'
 import childCountDenormalizer from './childCountDenormalizer.coffee'
 sanitizeHtml = require('sanitize-html')
 
-# class NotesCollection extends Mongo.Collection
-#   insert: (doc, callback) ->
-#     ourDoc = doc
-#     ourDoc.createdAt = ourDoc.createdAt or new Date()
-#     result = super ourDoc, callback
-#     childCountDenormalizer.afterInsertNote ourDoc
-#     result
-
-
-#   update: (selector, modifier) ->
-#     result = super selector, modifier
-#     childCountDenormalizer.afterUpdateNote selector, modifier
-#     result
-
-
-#   remove: (selector) ->
-#     notes = @find(selector).fetch()
-#     result = super selector
-#     childCountDenormalizer.afterRemoveNotes notes
-#     result
-
 export Notes = new Mongo.Collection 'notes'
 
 Notes.donePattern = /(#done|#complete|#finished)/gim

@@ -99,7 +99,9 @@ export updateBody = new ValidatedMethod
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
     body: Notes.simpleSchema().schema('body')
-    createTransaction: Boolean
+    createTransaction:
+      type: Boolean
+      optional: true
   .validator
     clean: yes
     filter: no

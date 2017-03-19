@@ -178,7 +178,6 @@ Template.note.events
         event.preventDefault()
         if event.shiftKey
           # Edit the body
-          console.log event
           $(event.target).siblings('.body').show().focus()
         else
           # Chop the text in half at the cursor
@@ -335,6 +334,18 @@ Template.note.events
       }, (err, res) ->
         that.title = title
         $(event.target).html Template.notes.formatText title
+
+  'blur .body': (event, instance) ->
+    that = this
+    body = Template.note.stripTags(event.target.innerHTML)
+    if body != Template.note.stripTags(@body)
+      Meteor.call 'notes.updateBody', {
+        noteId: instance.data._id
+        body: body
+        shareKey: FlowRouter.getParam 'shareKey'
+      }, (err, res) ->
+        that.body = body
+        $(event.target).html Template.notes.formatText body
 
   'click .expand': (event, instance) ->
     event.stopImmediatePropagation()

@@ -1,4 +1,3 @@
-{ Notes } = require '/imports/api/notes/notes.coffee'
 { Meteor } = require 'meteor/meteor'
 { Mongo } = require 'meteor/mongo'
 { ReactiveDict } = require 'meteor/reactive-dict'
@@ -8,6 +7,9 @@
 import SimpleSchema from 'simpl-schema'
 { TAPi18n } = require 'meteor/tap:i18n'
 sanitizeHtml = require('sanitize-html')
+
+{ Notes } = require '/imports/api/notes/notes.coffee'
+{ Files } = require '/imports/api/files/files.coffee'
 
 require './notes.jade'
 
@@ -78,6 +80,10 @@ Template.notes.helpers
 
   focusedNote: ->
     Notes.findOne Template.currentData().note()
+
+  focusedNoteFiles: () ->
+    Meteor.subscribe 'files.note', Template.currentData().note()._id
+    Files.find { noteId: Template.currentData().note()._id }
 
   notesReady: ->
     Template.instance().subscriptionsReady()

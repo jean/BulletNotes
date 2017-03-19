@@ -47,6 +47,7 @@ template(name='note')
             | {{body}}
           else
             |  
+      input.fileInput(type='file',style='display:none')
       if files
         .filesContainer
           each files
