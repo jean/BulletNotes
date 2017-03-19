@@ -130,7 +130,6 @@ Template.note.events
         window.location = window.location
 
   'mouseover .tagLink': (event) ->
-    console.log event.target.innerHTML
     notes = Notes.search event.target.innerHTML
     $('#tagSearchPreview').html('');
     notes.forEach (note) ->

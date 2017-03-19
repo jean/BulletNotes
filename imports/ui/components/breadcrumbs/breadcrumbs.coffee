@@ -13,7 +13,7 @@ Template.breadcrumbs.helpers
         parent = Notes.findOne(parent.parent)
     parents
   focusedTitle: ->
-    note = Notes.findOne(@noteId)
+    note = Template.instance().data.note()
     if note
       return note.title
   shareKey: ->
