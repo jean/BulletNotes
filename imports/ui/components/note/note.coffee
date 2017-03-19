@@ -129,6 +129,23 @@ Template.note.events
       if err
         window.location = window.location
 
+  'mouseover .tagLink': (event) ->
+    console.log event.target.innerHTML
+    notes = Notes.search event.target.innerHTML
+    $('#tagSearchPreview').html('');
+    notes.forEach (note) ->
+      $('#tagSearchPreview').append('<li><a>'+note.title+'</a></li>')
+        .css('top', event.pageY - Template.note.previewXOffset + 'px')
+        .css('left', event.pageX + Template.note.previewYOffset + 'px')
+        .fadeIn 'fast'
+
+  'mousemove .tagLink': (event) ->
+    $('#tagSearchPreview').css('top', event.pageY - Template.note.previewXOffset + 'px')
+      .css 'left', event.pageX + Template.note.previewYOffset + 'px'
+
+  'mouseleave .tagLink': (event) ->
+    $('#tagSearchPreview').fadeOut()
+
   'mouseover .previewLink': (event) ->
     @t = @title
     @title = ''
@@ -326,24 +343,25 @@ Template.note.events
     Template.note.toggleChildren(instance)
 
   'dragover .title, dragover .filesContainer': (event, instance) ->
-    this.find('.noteContainer').addClass 'dragging'
+    $(event.currentTarget).closest('.noteContainer').addClass 'dragging'
 
   'dragleave .title, dragleave .filesContainer': (event, instance) ->
-    this.find('.noteContainer').removeClass 'dragging'
+    $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
 
-  'drop .title, drop .filesContainer': (event, instance) ->
+  'drop .title, drop .filesContainer, drop .noteContainer': (event, instance) ->
     event.preventDefault()
     event.stopPropagation()
-    name = event.originalEvent.dataTransfer.files[0].name
-    Template.note.encodeImageFileAsURL (res) ->
-      upload.call {
-        noteId: instance.data._id
-        data: res
-        name: name
-      }, (err, res) ->
-        console.log err, res
-        this.find('.noteContainer').removeClass 'dragging'
-    , event.originalEvent.dataTransfer.files[0]
+    for file in event.originalEvent.dataTransfer.files
+      name = file.name
+      Template.note.encodeImageFileAsURL (res) ->
+        upload.call {
+          noteId: instance.data._id
+          data: res
+          name: name
+        }, (err, res) ->
+          console.log err, res
+          $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
+      , file
 
 Template.note.toggleChildren = (instance) ->
   if Meteor.userId()
