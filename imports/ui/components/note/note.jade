@@ -47,8 +47,10 @@ template(name='note')
             | {{body}}
           else
             |  
-      each files
-        +file
+      if files
+        .filesContainer
+          each files
+            +file
     +share
     if children
       ol

@@ -1,0 +1,32 @@
+.filesContainer
+  overflow: hidden
+
+  .fileItem
+    float: left
+    margin: 1em 1em
+
+  .thumbnail
+    margin: 0
+    padding: 1em
+    max-width: 150px
+    position: relative
+
+    .delete
+      position: absolute
+      top: 0
+      right: 0
+      opacity: 0
+
+  .fileDownload .delete
+      font-size: .5em
+
+  .thumbnail:hover .delete
+        opacity: 1
+
+  .fileDownload
+    padding: 1em
+    .glyphicon
+      font-size: 2em
+
+.modal .delete
+  background-color: rgb(192, 192, 192)

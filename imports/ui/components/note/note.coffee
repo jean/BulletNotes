@@ -325,21 +325,24 @@ Template.note.events
     event.preventDefault()
     Template.note.toggleChildren(instance)
 
-  'dragover .title': (event, instance) ->
-    $(event.target).addClass 'dragging'
+  'dragover .title, dragover .filesContainer': (event, instance) ->
+    this.find('.noteContainer').addClass 'dragging'
 
-  'dragleave .title': (event, instance) ->
-    $(event.target).removeClass 'dragging'
+  'dragleave .title, dragleave .filesContainer': (event, instance) ->
+    this.find('.noteContainer').removeClass 'dragging'
 
-  'drop .title': (event, instance) ->
+  'drop .title, drop .filesContainer': (event, instance) ->
     event.preventDefault()
     event.stopPropagation()
+    name = event.originalEvent.dataTransfer.files[0].name
     Template.note.encodeImageFileAsURL (res) ->
       upload.call {
         noteId: instance.data._id
         data: res
+        name: name
       }, (err, res) ->
         console.log err, res
+        this.find('.noteContainer').removeClass 'dragging'
     , event.originalEvent.dataTransfer.files[0]
 
 Template.note.toggleChildren = (instance) ->

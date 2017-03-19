@@ -1,13 +1,21 @@
 template(name="file")
-  a.share(href='#', data-toggle='modal', data-target='#file_{{_id}}')
-    img(src=data,class='thumbnail')
-  .modal.fade(id="file_{{_id}}", tabindex='-1', role='dialog', style='display: none;')
+  a.fileImage.fileItem.thumbnail(href='#', data-toggle='modal', data-target='#file_{{_id}}')
+    a.delete.glyphicon.glyphicon-remove(data-id="{{_id}}")
+    img(src=data)
+    | {{name}}
+  a.fileDownload.fileItem.thumbnail(href='{{data}}', style='display: none', target="_blank")
+    a.delete.glyphicon.glyphicon-remove(data-id="{{_id}}")
+    .glyphicon.glyphicon-file
+    | {{name}}
+  .modal.fade.fileModal(id="file_{{_id}}", tabindex='-1', role='dialog', style='display: none;')
     .modal-dialog
       form.modal-content
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-          h4#myModalLabel.modal-title File
+          h4#myModalLabel.modal-title File: {{name}}
         .modal-body
-            img(src=data)
+            a(href="{{data}}",target="_blank")
+              img(src=data,width="100%")
         .modal-footer
+          a.btn.btn-sm.delete(data-id="{{_id}}") Delete
           button.btn.btn-sm(data-dismiss='modal') Cancel

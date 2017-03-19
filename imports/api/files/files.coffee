@@ -23,6 +23,8 @@ Files.schema = new SimpleSchema
     regEx: SimpleSchema.RegEx.Id
   data:
     type: String
+  name:
+    type: String
   uploadedAt:
     type: Date
   owner:
