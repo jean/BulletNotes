@@ -136,14 +136,14 @@ Template.note.events
       $('#tagSearchPreview').append('<li><a class="previewTagLink">'+Template.notes.formatText(note.title,false)+'</a></li>')
         .css('top', event.pageY - Template.note.previewXOffset + 'px')
         .css('left', event.pageX + Template.note.previewYOffset + 'px')
-        .fadeIn 'fast'
+        .show()
 
   'mousemove .tagLink': (event) ->
     $('#tagSearchPreview').css('top', event.pageY - Template.note.previewXOffset + 'px')
       .css 'left', event.pageX + Template.note.previewYOffset + 'px'
 
   'mouseleave .tagLink': (event) ->
-    $('#tagSearchPreview').fadeOut()
+    $('#tagSearchPreview').hide()
 
   'mouseover .previewLink': (event) ->
     @t = @title
