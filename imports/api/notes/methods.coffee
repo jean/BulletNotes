@@ -108,10 +108,15 @@ export updateBody = new ValidatedMethod
   run: ({ noteId, body, createTransaction = true }) ->
     note = Notes.findOne noteId
 
-    Notes.update noteId, {$set: {
-      body: body
-      updatedAt: new Date
-    }}, tx: createTransaction
+    if body
+      Notes.update noteId, {$set: {
+        body: body
+        updatedAt: new Date
+      }}, tx: createTransaction
+    else
+      Notes.update noteId, {$unset: {
+        body: 1
+      }}, tx: createTransaction
 
 export stopSharing = new ValidatedMethod
   name: 'notes.stopSharing'

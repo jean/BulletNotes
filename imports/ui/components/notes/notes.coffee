@@ -148,9 +148,14 @@ Template.notes.events
       }, (err, res) ->
         $(event.target).html Template.notes.formatText title
 
-Template.notes.formatText = (inputText) ->
+Template.notes.formatText = (inputText, createLinks = true) ->
   if !inputText
     return
+  if createLinks
+    element = 'a'
+  else
+    element = 'span'
+
   replacedText = undefined
   replacePattern1 = undefined
   replacePattern2 = undefined
@@ -158,14 +163,14 @@ Template.notes.formatText = (inputText) ->
 
   replacedText = inputText.replace(/&nbsp;/gim, ' ')
   replacedText = replacedText.replace Template.notes.urlPattern1,
-    '<a href="$1" target="_blank" class="previewLink">$1</a>'
+    '<'+element+' href="$1" target="_blank" class="previewLink">$1</'+element+'>'
   replacedText = replacedText.replace Template.notes.urlPattern2,
-    '<a href="http://$2" target="_blank" class="previewLink">$2</a>'
+    '<'+element+' href="http://$2" target="_blank" class="previewLink">$2</'+element+'>'
 
   # Change email addresses to mailto:: links.
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim
   replacedText = replacedText.replace replacePattern3,
-    '<a href="mailto:$1">$1</a>'
+    '<'+element+' href="mailto:$1">$1</'+element+'>'
 
   # Highlight Search Terms
   # searchTerm = new RegExp(FlowRouter.getParam('searchTerm'),"gi")
@@ -174,11 +179,11 @@ Template.notes.formatText = (inputText) ->
 
   hashtagPattern = /(([#])([a-z\d-]+))/gim
   replacedText = replacedText.replace hashtagPattern,
-    ' <a href="/search/%23$3" class="tagLink tag-$3">#$3</a>'
+    ' <'+element+' href="/search/%23$3" class="tagLink tag-$3">#$3</'+element+'>'
 
   namePattern = /(([@])([a-z\d-]+))/gim
   replacedText = replacedText.replace namePattern,
-    ' <a href="/search/%40$3" class="atLink at-$3">@$3</a>'
+    ' <'+element+' href="/search/%40$3" class="atLink at-$3">@$3</'+element+'>'
 
   return replacedText
 

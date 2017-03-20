@@ -133,7 +133,7 @@ Template.note.events
     notes = Notes.search event.target.innerHTML
     $('#tagSearchPreview').html('');
     notes.forEach (note) ->
-      $('#tagSearchPreview').append('<li><a>'+note.title+'</a></li>')
+      $('#tagSearchPreview').append('<li><a class="previewTagLink">'+Template.notes.formatText(note.title,false)+'</a></li>')
         .css('top', event.pageY - Template.note.previewXOffset + 'px')
         .css('left', event.pageX + Template.note.previewYOffset + 'px')
         .fadeIn 'fast'
@@ -178,7 +178,7 @@ Template.note.events
         event.preventDefault()
         if event.shiftKey
           # Edit the body
-          $(event.target).siblings('.body').show().focus()
+          $(event.target).siblings('.body').fadeIn().focus()
         else
           # Chop the text in half at the cursor
           # put what's on the left in a note on top
@@ -347,6 +347,8 @@ Template.note.events
       }, (err, res) ->
         that.body = body
         $(event.target).html Template.notes.formatText body
+    if !body
+      $(event.target).fadeOut()
 
   'click .expand': (event, instance) ->
     event.stopImmediatePropagation()
