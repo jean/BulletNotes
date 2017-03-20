@@ -241,7 +241,7 @@ Template.note.events
           $(event.currentTarget).closest('.note-item').fadeOut()
           Meteor.call 'notes.remove',
             noteId: @_id
-            FlowRouter.getParam 'shareKey'
+            shareKey: FlowRouter.getParam 'shareKey'
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
           if position == 0
@@ -260,8 +260,8 @@ Template.note.events
               FlowRouter.getParam 'shareKey',
               (err, res) ->
                 Meteor.call 'notes.remove',
-                  note._id,
-                  FlowRouter.getParam 'shareKey',
+                  noteId: note._id,
+                  shareKey: FlowRouter.getParam 'shareKey',
                   (err, res) ->
                     # Moves the caret to the correct position
                     prev.find('div.title').focus()

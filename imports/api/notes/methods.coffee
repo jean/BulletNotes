@@ -243,8 +243,7 @@ removeRun = (id) ->
   children.forEach (child) ->
     removeRun child._id
   note = Notes.findOne(id)
-  childCountDenormalizer.afterInsertNote note.parent
-  Notes.remove { _id: id }, {tx: true, softDelete: true }
+  Notes.remove { _id: id }, {tx: true, softDelete: true, instant: true }
 
 export remove = new ValidatedMethod
   name: 'notes.remove'
@@ -265,6 +264,7 @@ export remove = new ValidatedMethod
 
     tx.start 'delete note'
     removeRun noteId
+    childCountDenormalizer.afterInsertNote note.parent
     tx.commit()
 
 export outdent = new ValidatedMethod

@@ -8,6 +8,7 @@ export default childCountDenormalizer =
     # Recalculate the correct incomplete count direct from MongoDB
     childCount = Notes.find
       parent: noteId
+      deleted: {$exists: false}
     .count()
 
     Notes.update noteId, $set: children: childCount
