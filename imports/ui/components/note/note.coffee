@@ -336,6 +336,7 @@ Template.note.events
         $(event.target).html Template.notes.formatText title
 
   'blur .body': (event, instance) ->
+    event.stopPropagation()
     that = this
     body = Template.note.stripTags(event.target.innerHTML)
     if body != Template.note.stripTags(@body)
