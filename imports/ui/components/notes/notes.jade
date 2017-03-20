@@ -32,26 +32,26 @@ template(name='notes')
             .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
               span.sr-only {{progress}}% Complete (success)
 
-        ol#notes.content-scrollable.note-items.sortable
-          if focusedNote.body
-            li.body(contenteditable='true')
-              if focusedNote.body
-                | {{focusedNote.body}}
-              else
-                |  
-          if focusedNoteFiles
-            .filesContainer
-              each focusedNoteFiles
-                +file
-                
-          if notesReady
-            each notes
-              +note
+      ol#notes.content-scrollable.note-items.sortable
+        if focusedNote.body
+          li.body(contenteditable='true')
+            if focusedNote.body
+              | {{focusedNote.body}}
             else
-              .noNoteMessage
-                .title-message {{_ 'notes.show.noNotes'}}
-                .subtitle-message {{_ 'notes.show.addAbove'}}
+              |  
+        if focusedNoteFiles
+          .filesContainer
+            each focusedNoteFiles
+              +file
+              
+        if notesReady
+          each notes
+            +note
           else
-            .wrapper-message
-              .title-message {{_ 'notes.show.loading'}}
-          +footer
+            .noNoteMessage
+              .title-message {{_ 'notes.show.noNotes'}}
+              .subtitle-message {{_ 'notes.show.addAbove'}}
+        else
+          .wrapper-message
+            .title-message {{_ 'notes.show.loading'}}
+        +footer
