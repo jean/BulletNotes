@@ -7,6 +7,7 @@ template(name='notes')
         h1.js-edit-note.title-page
           if focusedNote
             i.glyphicon.glyphicon-heart.favorite(class='{{favorited}}')
+            i.glyphicon.glyphicon-camera.uploadHeaderBtn
             .title-wrapper(contenteditable='true') {{{focusedNote.title}}}
           else
             .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
@@ -18,15 +19,8 @@ template(name='notes')
                 option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
                 option(value='delete') {{_ 'notes.show.delete'}}
                 option(value='favorite') {{_ 'notes.show.favorite'}}
+              input#menuFileUpload(type="file",style="display:none")
               span.glyphicon.glyphicon-cog
-            .options-web
-              a.js-toggle-note-privacy.nav-item
-                if note.userId
-                  span.icon-lock(title='')
-                else
-                  span.icon-unlock(title='')
-              a.js-delete-note.nav-item
-                span.icon-trash(title='')
         if progress
           .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
             .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')

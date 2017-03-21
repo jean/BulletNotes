@@ -26,6 +26,10 @@ import {
   makeChild
 } from '/imports/api/notes/methods.coffee'
 
+import {
+  upload
+} from '/imports/api/files/methods.coffee'
+
 { displayError } = '../../lib/errors.js'
 
 # URLs starting with http://, https://, or ftp://
@@ -126,6 +130,27 @@ Template.notes.events
 
   'click .favorite': (event, instance) ->
     instance.favoriteNote()
+
+  'click .uploadHeaderBtn': (event, instance) ->
+    input = $(document.createElement('input'))
+    input.attr("type", "file")
+    input.trigger('click')
+    input.change (submitEvent) ->
+      console.log "Upload file"
+      # console.log submitEvent.originalEvent.dataTransfer.files[0]
+      console.log instance
+      console.log submitEvent
+      file = submitEvent.currentTarget.files[0]
+      name = file.name
+      Template.note.encodeImageFileAsURL (res) ->
+        upload.call {
+          noteId: instance.data.note()._id
+          data: res
+          name: name
+        }, (err, res) ->
+          console.log err, res
+          $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
+      , file
 
   'change .note-edit': (event, instance) ->
     target = event.target

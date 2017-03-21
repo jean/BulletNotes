@@ -27,6 +27,11 @@
       white-space: nowrap;
       margin: 0 1em
 
+      .uploadHeaderBtn
+        position: absolute;
+        right: 2em;
+        top: .5em;
+
       .title-wrapper {
         @extend .ellipsized;
         color: color-ancillary;
@@ -51,8 +56,9 @@
 
       .favorite
         position: absolute;
-        right: 2em;
-        top: .75rem;
+        right: 3.5em;
+        top: .6rem;
+        color: #808080
       .favorited
         color: #f33288;
 
@@ -91,7 +97,7 @@
   .glyphicon-cog
     color: gray
     position: absolute
-    top: .5em
+    top: .35em
     right: .5em
 
 #preview
@@ -122,6 +128,7 @@ select.list-edit
 
 li.body
   margin: 1em
+  color: black
 
 // Hide & show options and nav icons
 @media screen and (min-width: 40em) {
@@ -142,3 +149,15 @@ li.body
 .noNoteMessage
   text-align: center
   margin: 1em
+
+.nav-group.right
+  right: 0
+  left: auto
+  .nav-item
+    font-size: 20px;
+    line-height: 24px;
+    color: #1c3f53;
+    display: inline-block;
+    height: 2rem;
+    text-align: center;
+    width: 2rem;
