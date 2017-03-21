@@ -38,7 +38,8 @@ Meteor.startup ->
       # 0
       # Home
       when 48, 36
-        FlowRouter.go('/')
+        if !editingNote
+          FlowRouter.go('/')
       # 1
       when 49
         Template.App_body.loadFavorite 1
