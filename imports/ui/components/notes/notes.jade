@@ -41,10 +41,8 @@ template(name='notes')
         if notesReady
           each notes
             +note
-          else
-            .noNoteMessage
-              .title-message {{_ 'notes.show.noNotes'}}
-              .subtitle-message {{_ 'notes.show.addAbove'}}
+          li.newNote
+            | Add a new note..
         else
           .wrapper-message
             .title-message {{_ 'notes.show.loading'}}

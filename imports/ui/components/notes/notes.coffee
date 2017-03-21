@@ -86,8 +86,9 @@ Template.notes.helpers
     Notes.findOne Template.currentData().note()
 
   focusedNoteFiles: () ->
-    Meteor.subscribe 'files.note', Template.currentData().note()._id
-    Files.find { noteId: Template.currentData().note()._id }
+    if Template.currentData().note()
+      Meteor.subscribe 'files.note', Template.currentData().note()._id
+      Files.find { noteId: Template.currentData().note()._id }
 
   notesReady: ->
     Template.instance().subscriptionsReady()
@@ -151,6 +152,28 @@ Template.notes.events
           console.log err, res
           $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
       , file
+
+  'click .newNote': (event, instance) ->
+    note = Notes.findOne Template.currentData().note()
+    if note
+      children = Notes.find { parent: note._id }
+      parent = note._id
+    else
+      children = Notes.find { parent: null }
+      parent = null
+    console.log "Got note", note
+    if children
+      # Overkill, but, meh. It'll get sorted. Literally.
+      rank = (children.count() * 40)
+    else
+      rank = 1
+    console.log children.count()+" "+rank
+    Meteor.call 'notes.insert', {
+      title: ''
+      rank: rank
+      parent: parent
+      shareKey: FlowRouter.getParam('shareKey')
+    }
 
   'change .note-edit': (event, instance) ->
     target = event.target
