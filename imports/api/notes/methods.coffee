@@ -118,6 +118,30 @@ export updateBody = new ValidatedMethod
         body: 1
       }}, tx: createTransaction
 
+export setDueDate = new ValidatedMethod
+  name: 'notes.setDueDate'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    due: Notes.simpleSchema().schema('due')
+    createTransaction:
+      type: Boolean
+      optional: true
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId, due, createTransaction = true }) ->
+    note = Notes.findOne(noteId)
+    if note.owner != @userId
+      return
+
+    title = note.title.replace(/#due-([0-9]+(-?))+/gim,'')
+    title = title.trim()
+    title = title+' #due-'+moment(due).format('YYYY-MM-DD')
+    Notes.update noteId, $set:
+      due: due,
+      title: title
+      updatedAt: new Date
+
 export stopSharing = new ValidatedMethod
   name: 'notes.stopSharing'
   validate: new SimpleSchema

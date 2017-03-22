@@ -51,6 +51,14 @@ Template.note.onRendered ->
           Template.notes.formatText newNote.body
         )
 
+    $('.fileItem').draggable()
+    $( ".note-item" ).droppable
+      drop: (event, ui ) ->
+        console.log event
+        Meteor.call 'files.setNote',
+          fileId: event.toElement.dataset.id
+          noteId: event.target.dataset.id
+
 Template.note.helpers
   files: () ->
     Meteor.subscribe 'files.note', @_id
@@ -364,17 +372,23 @@ Template.note.events
   'drop .title, drop .filesContainer, drop .noteContainer': (event, instance) ->
     event.preventDefault()
     event.stopPropagation()
-    for file in event.originalEvent.dataTransfer.files
-      name = file.name
-      Template.note.encodeImageFileAsURL (res) ->
-        upload.call {
-          noteId: instance.data._id
-          data: res
-          name: name
-        }, (err, res) ->
-          console.log err, res
-          $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
-      , file
+
+    console.log event
+
+    if event.toElement
+      console.log "Move file!"
+    else
+      for file in event.originalEvent.dataTransfer.files
+        name = file.name
+        Template.note.encodeImageFileAsURL (res) ->
+          upload.call {
+            noteId: instance.data._id
+            data: res
+            name: name
+          }, (err, res) ->
+            console.log err, res
+            $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
+        , file
 
 Template.note.toggleChildren = (instance) ->
   if Meteor.userId()

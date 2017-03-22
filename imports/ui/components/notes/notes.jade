@@ -17,8 +17,9 @@ template(name='notes')
             .nav-item.options-mobile
               select.note-edit
                 option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
-                option(value='delete') {{_ 'notes.show.delete'}}
+                option(value='calendar') {{_ 'notes.show.calendar'}}
                 option(value='favorite') {{_ 'notes.show.favorite'}}
+                option(value='delete') {{_ 'notes.show.delete'}}
               input#menuFileUpload(type="file",style="display:none")
               span.glyphicon.glyphicon-cog
         if progress

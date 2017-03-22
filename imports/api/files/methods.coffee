@@ -17,6 +17,31 @@ export remove = new ValidatedMethod
   run: ({ id }) ->
     Files.remove { _id: id }
 
+export setNote = new ValidatedMethod
+  name: 'files.setNote'
+  validate: new SimpleSchema
+    fileId: Files.simpleSchema().schema('_id')
+    noteId: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ fileId, noteId }) ->
+    file = Files.findOne fileId
+    if file.owner != Meteor.userId()
+      return
+
+export fileSize = new ValidatedMethod
+  name: 'files.size'
+  validate: null
+  run: () ->
+    console.log Meteor.userId()
+    files = Files.find
+      owner: Meteor.userId()
+    console.log files.count()
+    size = 0
+    files.forEach (doc)->
+      size += BSON.calculateObjectSize doc
+    console.log "Got size: ",size
 
 export upload = new ValidatedMethod
   name: 'files.upload'
@@ -41,6 +66,7 @@ export upload = new ValidatedMethod
 NOTES_METHODS = _.pluck([
   remove
   upload
+  setNote
 ], 'name')
 
 if Meteor.isServer

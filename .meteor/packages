@@ -100,3 +100,6 @@ practicalmeteor:mocha-console-runner
 okgrow:analytics
 saucecode:rollbar
 meteorhacks:picker
+vsivsi:file-collection
+rzymek:fullcalendar
+ccorcos:subs-cache

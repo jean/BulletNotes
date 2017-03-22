@@ -47,6 +47,7 @@ template(name='App_body')
               submit(style='visibility:hidden')
             #favoriteNotes
               a.homeLink(href='/') {{_ 'layouts.appBody.home'}}
+              a.calendarLink(href='/calendar') {{_ 'layouts.appBody.calendar'}}
               h4 {{_ 'layouts.appBody.favorites'}}
               if notes.count
                 ul

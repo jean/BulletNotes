@@ -7,6 +7,7 @@ require '/imports/ui/pages/root-redirector.js'
 require '/imports/ui/pages/notes-show-page.coffee'
 require '/imports/ui/pages/app-not-found.coffee'
 require '/imports/ui/pages/import/import.coffee'
+require '/imports/ui/pages/calendar/calendar.coffee'
 require '/imports/ui/pages/settings/settings.coffee'
 # Import to override accounts templates
 require '/imports/ui/accounts/accounts-templates.js'
@@ -29,6 +30,18 @@ FlowRouter.route '/note/:noteId/:shareKey',
   action: ->
     NProgress.start()
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
+
+FlowRouter.route '/calendar',
+  name: 'Notes.calendar'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_body', main: 'Notes_calendar'
+
+FlowRouter.route '/calendar/:noteId',
+  name: 'Notes.calendar'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_body', main: 'Notes_calendar'
 
 FlowRouter.route '/import',
   name: 'Notes.import'

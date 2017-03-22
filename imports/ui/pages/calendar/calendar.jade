@@ -1,0 +1,16 @@
+template(name='Notes_calendar')
+  +momentum(plugin="fade")
+    .page.notes-calendar
+      ol#tagSearchPreview.dropdown-menu
+      nav.js-title-nav
+        //- +breadcrumbs
+        h1                 
+          if calendarTitle
+            a(href="/note/{{calendarId}}") {{{calendarTitle}}}
+          else
+            a(href="/") Home
+
+      #external-events
+        +each unscheduledNotes
+          .external-event.label.label-theme(data-id="{{_id}}") {{{ title }}}
+      #calendar.has-toolbar

@@ -177,12 +177,15 @@ Template.notes.events
 
   'change .note-edit': (event, instance) ->
     target = event.target
+    console.log event, instance
     if $(target).val() == 'edit'
       instance.editNote()
     else if $(target).val() == 'delete'
       instance.deleteNote()
     else if $(target).val() == 'favorite'
       instance.favoriteNote()
+    else if $(target).val() == 'calendar'
+      FlowRouter.go('/calendar/'+instance.data.note()._id)
     target.selectedIndex = 0
 
   'blur .title-wrapper': (event, instance) ->
