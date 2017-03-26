@@ -22,6 +22,10 @@ template(name='note')
                 i.glyphicon.glyphicon-calendar
                 |  Calendar
             li
+              a.kanban(href='/kanban/{{_id}}')
+                i.glyphicon.glyphicon-stats(style='transform:rotate(180deg)')
+                |  Kanban
+            li
               a.delete(href='#')
                 i.glyphicon.glyphicon-trash
                 |  Delete

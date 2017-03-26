@@ -18,6 +18,7 @@ template(name='notes')
               select.note-edit
                 option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
                 option(value='calendar') {{_ 'notes.show.calendar'}}
+                option(value='kanban') {{_ 'notes.show.kanban'}}
                 option(value='favorite') {{_ 'notes.show.favorite'}}
                 option(value='delete') {{_ 'notes.show.delete'}}
               input#menuFileUpload(type="file",style="display:none")

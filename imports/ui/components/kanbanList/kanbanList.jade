@@ -1,0 +1,7 @@
+template(name='kanbanList')
+  .kanbanList(data-id="{{_id}}")
+    span {{title}}
+    .kanbanChildNotes
+      +each childNotes
+        .kanbanItem(data-id="{{_id}}")
+          {{title}}

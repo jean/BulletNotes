@@ -1,0 +1,14 @@
+template(name='Notes_kanban')
+  +momentum(plugin="fade")
+    .page.notes-kanban
+      ol#tagSearchPreview.dropdown-menu
+      nav.js-title-nav
+        //- +breadcrumbs
+        h1                 
+          if focusedNote.title
+            a(href="/note/{{focusedNote._id}}") {{{focusedNote.title}}}
+          else
+            a(href="/") Home
+
+      +each childNotes
+        +kanbanList

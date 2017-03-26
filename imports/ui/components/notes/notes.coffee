@@ -186,6 +186,8 @@ Template.notes.events
       instance.favoriteNote()
     else if $(target).val() == 'calendar'
       FlowRouter.go('/calendar/'+instance.data.note()._id)
+    else if $(target).val() == 'kanban'
+      FlowRouter.go('/kanban/'+instance.data.note()._id)
     target.selectedIndex = 0
 
   'blur .title-wrapper': (event, instance) ->
