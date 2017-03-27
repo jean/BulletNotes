@@ -103,6 +103,7 @@ export inbox = new ValidatedMethod
         createdAt: new Date()
         rank: 0
       rankDenormalizer.updateSiblings inboxId
+      childCountDenormalizer.afterInsertNote inboxId
       return noteId
 
 export summary = new ValidatedMethod
