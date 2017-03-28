@@ -40,11 +40,20 @@ Template.Notes_show_page.events
     else if $(target).val() == 'favorite'
       instance.favoriteNote()
     else if $(target).val() == 'list'
-      FlowRouter.go('/note/'+instance.getNoteId())
+      if instance.getNoteId()
+        FlowRouter.go('/note/'+instance.getNoteId())
+      else
+        FlowRouter.go('/')
     else if $(target).val() == 'calendar'
-      FlowRouter.go('/calendar/'+instance.getNoteId())
+      if instance.getNoteId()
+        FlowRouter.go('/calendar/'+instance.getNoteId())
+      else
+        FlowRouter.go('/calendar')
     else if $(target).val() == 'kanban'
-      FlowRouter.go('/kanban/'+instance.getNoteId())
+      if instance.getNoteId()
+        FlowRouter.go('/kanban/'+instance.getNoteId())
+      else
+        FlowRouter.go('/kanban')
     target.selectedIndex = 0
 
   'blur .title-wrapper': (event, instance) ->

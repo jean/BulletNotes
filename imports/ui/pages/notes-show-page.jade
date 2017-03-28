@@ -16,21 +16,22 @@ template(name='Notes_show_page')
             else
               .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
             span.count-note.pull-right {{childNoteCount}}
-          if focusedNote
-            .nav-group.right
-              .nav-item.options-mobile
-                select.note-edit
-                  option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
-                  unless showNotes
-                    option(value='list') {{_ 'notes.show.list'}}
-                  unless showCalendar
-                    option(value='calendar') {{_ 'notes.show.calendar'}}
-                  unless showKanban
-                    option(value='kanban') {{_ 'notes.show.kanban'}}
+          .nav-group.right
+            .nav-item.options-mobile
+              select.note-edit
+                option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
+                unless showNotes
+                  option(value='list') {{_ 'notes.show.list'}}
+                unless showCalendar
+                  option(value='calendar') {{_ 'notes.show.calendar'}}
+                unless showKanban
+                  option(value='kanban') {{_ 'notes.show.kanban'}}
+                if focusedNote
                   option(value='favorite') {{_ 'notes.show.favorite'}}
                   option(value='delete') {{_ 'notes.show.delete'}}
+              if focusedNote
                 input#menuFileUpload(type="file",style="display:none")
-                span.glyphicon.glyphicon-cog
+              span.glyphicon.glyphicon-cog
           if progress
             .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
               .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')

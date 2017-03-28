@@ -75,7 +75,9 @@
       "betaWarningBody": "This site is still under construction! While it should work pretty well, and you can and should export regularly, be aware data loss may occur. <a href='https://github.com/NickBusey/noted/issues' target='_blank'>Report Issues on GitHub</a>",
       "lastHour": "Previous hour",
       "lastDay": "Previous day",
-      "oldItems": "Stale notes"
+      "oldItems": "Stale notes",
+      "calendar": "Calendar View",
+      "kanban": "Kanban View"
     }
   },
   "pages": {
