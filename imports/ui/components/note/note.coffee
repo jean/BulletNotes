@@ -52,14 +52,17 @@ Template.note.onRendered ->
         )
 
     $('.fileItem').draggable()
-    $( ".note-item" ).droppable
+    $('.note-item').droppable
       drop: (event, ui ) ->
-        console.log event
-        Meteor.call 'files.setNote',
-          fileId: event.toElement.dataset.id
-          noteId: event.target.dataset.id
+        if event.toElement.className.indexOf('fileItem') > -1
+          Meteor.call 'files.setNote',
+            fileId: event.toElement.dataset.id
+            noteId: event.target.dataset.id
 
 Template.note.helpers
+  count: () ->
+      @rank / 2
+
   files: () ->
     Meteor.subscribe 'files.note', @_id
     Files.find { noteId: @_id }

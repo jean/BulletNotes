@@ -70,6 +70,7 @@ Template.notes.onCreated ->
 
 Template.notes.helpers
   notes: ->
+    console.log this
     NProgress.done()
     parentId = null
     if @note()
@@ -82,38 +83,8 @@ Template.notes.helpers
     else
       Notes.find { parent: null }, sort: rank: 1
 
-  focusedNote: ->
-    Notes.findOne Template.currentData().note()
-
-  focusedNoteFiles: () ->
-    if Template.currentData().note()
-      Meteor.subscribe 'files.note', Template.currentData().note()._id
-      Files.find { noteId: Template.currentData().note()._id }
-
   notesReady: ->
     Template.instance().subscriptionsReady()
-
-  favorited: ->
-    if Template.currentData().note().favorite
-      'favorited'
-
-  progress: ->
-    setTimeout ->
-      $('[data-toggle="tooltip"]').tooltip()
-    , 100
-    note = Notes.findOne(Template.currentData().note())
-    if note
-      note.progress
-
-  progressClass: ->
-    note = Notes.findOne(Template.currentData().note())
-    Template.notes.getProgressClass note
-
-  childNoteCount: ->
-    if Template.currentData().note()
-      Notes.find({parent:Template.currentData().note()._id}).count()
-    else
-      Notes.find({parent:null}).count()
 
 Template.notes.events
   'click .js-cancel': (event, instance) ->
@@ -248,7 +219,8 @@ Template.notes.rendered = ->
     placeholder: 'placeholder'
     opacity: .6
     toleranceElement: '> div.noteContainer'
-    stop: (event, ui) ->
+    revert: 600
+    update: (event, ui) ->
       parent = $(event.toElement).closest('ol').closest('li').data('id')
       if !parent
         parent = FlowRouter.getParam 'noteId'

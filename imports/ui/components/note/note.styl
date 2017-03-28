@@ -51,6 +51,14 @@
     text-decoration: none
     cursor: move
 
+  .noteNumber
+    display: none
+    position: absolute
+    color: #a7a7a7
+    left: 1.5em
+    font-size: 1.5em
+    margin-top: -.25em
+
   .progress
     margin: 10px 0 0
 
@@ -120,6 +128,11 @@
     color: #f78a09
     opacity: 1
 
+.tag-list ol
+  .handle
+    opacity: 0
+  .noteNumber
+    display: block
 
 .note.shared .fa-ellipsis-v
   border-color: purple
@@ -204,6 +217,8 @@
 
 .placeholder
   box-shadow: purple 0 0 5px 1px
+  border: dashed gray 1px
+  height 1em
 
 #tagSearchPreview
   width: 500px

@@ -1,7 +1,13 @@
 template(name='kanbanList')
-  .kanbanList(data-id="{{_id}}")
+  .kanbanList
     span {{title}}
-    .kanbanChildNotes
+    .kanbanChildNotes(data-id="{{_id}}")
       +each childNotes
         .kanbanItem(data-id="{{_id}}")
-          {{title}}
+          .title {{title}}
+          a.edit
+            .glyphicon.glyphicon-edit
+        
+          a.zoom(href='/kanban/{{_id}}')
+            .glyphicon.glyphicon-fullscreen
+          

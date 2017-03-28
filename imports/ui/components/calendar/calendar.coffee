@@ -2,7 +2,7 @@
 { Notes } = require '/imports/api/notes/notes.coffee'
 require './calendar.jade'
 
-Template.Notes_calendar.onRendered ->
+Template.calendar.onRendered ->
   Meteor.subscribe 'notes.calendar'
   Meteor.subscribe 'notes.children', FlowRouter.getParam 'noteId'
   NProgress.done()
@@ -70,13 +70,15 @@ Template.Notes_calendar.onRendered ->
       $('.fc-today-button').click()
     , 500
 
-Template.Notes_calendar.helpers
+Template.calendar.helpers
   calendarTitle: ->
     note = Notes.findOne({ _id:FlowRouter.getParam('noteId') })
     if note
       note.title
+
   calendarId: ->
     FlowRouter.getParam 'noteId'
+
   unscheduledNotes: ->
     Notes.find {
       parent: FlowRouter.getParam('noteId')

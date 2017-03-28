@@ -1,51 +1,22 @@
 template(name='notes')
-  +momentum(plugin="fade")
-    .page.notes-show
-      ol#tagSearchPreview.dropdown-menu
-      nav.js-title-nav
-        +breadcrumbs
-        h1.js-edit-note.title-page
-          if focusedNote
-            i.glyphicon.glyphicon-heart.favorite(class='{{favorited}}')
-            i.glyphicon.glyphicon-camera.uploadHeaderBtn
-            .title-wrapper(contenteditable='true') {{{focusedNote.title}}}
-          else
-            .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
-          span.count-note.pull-right {{childNoteCount}}
-        if focusedNote
-          .nav-group.right
-            .nav-item.options-mobile
-              select.note-edit
-                option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
-                option(value='calendar') {{_ 'notes.show.calendar'}}
-                option(value='kanban') {{_ 'notes.show.kanban'}}
-                option(value='favorite') {{_ 'notes.show.favorite'}}
-                option(value='delete') {{_ 'notes.show.delete'}}
-              input#menuFileUpload(type="file",style="display:none")
-              span.glyphicon.glyphicon-cog
-        if progress
-          .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
-            .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
-              span.sr-only {{progress}}% Complete (success)
-
-      ol#notes.content-scrollable.note-items.sortable
+  ol#notes.content-scrollable.note-items.sortable
+    if focusedNote.body
+      li.body(contenteditable='true')
         if focusedNote.body
-          li.body(contenteditable='true')
-            if focusedNote.body
-              | {{focusedNote.body}}
-            else
-              |  
-        if focusedNoteFiles
-          .filesContainer
-            each focusedNoteFiles
-              +file
-              
-        if notesReady
-          each notes
-            +note
-          li.newNote
-            | Add a new note..
+          | {{focusedNote.body}}
         else
-          .wrapper-message
-            .title-message {{_ 'notes.show.loading'}}
-        +footer
+          |  
+    if focusedNoteFiles
+      .filesContainer
+        each focusedNoteFiles
+          +file
+          
+    if notesReady
+      each notes
+        +note
+      li.newNote
+        | Add a new note..
+    else
+      .wrapper-message
+        .title-message {{_ 'notes.show.loading'}}
+    +footer
