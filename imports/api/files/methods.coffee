@@ -15,6 +15,10 @@ export remove = new ValidatedMethod
     clean: yes
     filter: no
   run: ({ id }) ->
+    file = Files.findOne id
+    if @userId != file.owner
+      throw new (Meteor.Error)('not-authorized')
+
     Files.remove { _id: id }
 
 export setNote = new ValidatedMethod
@@ -28,7 +32,10 @@ export setNote = new ValidatedMethod
   run: ({ fileId, noteId }) ->
     file = Files.findOne fileId
     if file.owner != Meteor.userId()
-      return
+      throw new (Meteor.Error)('not-authorized')
+
+    Files.update fileId, $set:
+      noteId: noteId
 
 export fileSize = new ValidatedMethod
   name: 'files.size'

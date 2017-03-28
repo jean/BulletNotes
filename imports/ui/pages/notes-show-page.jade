@@ -11,6 +11,8 @@ template(name='Notes_show_page')
               i.glyphicon.glyphicon-heart.favorite(class='{{favorited}}')
               i.glyphicon.glyphicon-camera.uploadHeaderBtn
               .title-wrapper(contenteditable='true') {{{focusedNote.title}}}
+            else if searchTerm
+              .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
             else
               .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
             span.count-note.pull-right {{childNoteCount}}

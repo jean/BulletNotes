@@ -244,7 +244,9 @@ export makeChild = new ValidatedMethod
     level = 0
     if parent
       Notes.update parent._id, {
-        $set: {showChildren: true}
+        $set:
+          showChildren: true
+          updatedAt: new Date
       }, tx: true
       parentId = parent._id
 
@@ -330,13 +332,13 @@ export setShowChildren = new ValidatedMethod
     show: type: Boolean
   .validator
     clean: yes
-  run: ({ noteId, show = true }) ->
-    # if !@userId || !Notes.isEditable id, shareKey
-    #   throw new (Meteor.Error)('not-authorized')
-    children = Notes.find(parent: noteId).count()
+  run: ({ noteId, show = true, shareKey = null }) ->
+    if !@userId || !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+
     Notes.update noteId, $set:
       showChildren: show
-      children: children
+      updatedAt: new Date
 
     childCountDenormalizer.afterInsertNote noteId
 

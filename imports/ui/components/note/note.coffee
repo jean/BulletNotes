@@ -50,9 +50,14 @@ Template.note.onRendered ->
           Template.notes.formatText newNote.body
         )
 
-    $('.fileItem').draggable()
+    $('.fileItem').draggable
+      revert: true
     $('.note-item').droppable
       drop: (event, ui ) ->
+        event.stopPropagation()
+        console.log event, ui
+        console.log event.toElement.className.indexOf('fileItem')
+        console.log event.toElement.className
         if event.toElement.className.indexOf('fileItem') > -1
           Meteor.call 'files.setNote',
             fileId: event.toElement.dataset.id

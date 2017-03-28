@@ -16,12 +16,19 @@ Meteor.publish 'notes.view', (noteId, shareKey = null) ->
     if Notes.getSharedParent noteId, shareKey
     # We have a valid shared parent key for this noteid and shareKey
     # Go ahead and return the requested note.
-      return Notes.find _id:noteId
+      note = Notes.find
+        _id: noteId
+        deleted: {$exists: false}
   else
     note = Notes.find
       owner: @userId
       _id: noteId
       deleted: {$exists: false}
+
+  Notes.update noteId, $set:
+    updatedAt: new Date
+
+  return note
 
 Meteor.publish 'notes.children', (noteId, shareKey = null) ->
   check noteId, Match.Maybe(String)

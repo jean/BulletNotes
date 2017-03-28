@@ -30,6 +30,12 @@ FlowRouter.route '/note/:noteId/:shareKey',
     NProgress.start()
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
+FlowRouter.route '/search/:searchTerm',
+  name: 'Notes.search'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_body', main: 'Notes_show_page'
+
 FlowRouter.route '/calendar',
   name: 'Notes.calendar'
   action: ->
@@ -65,22 +71,6 @@ FlowRouter.route '/settings',
   action: ->
     NProgress.start()
     BlazeLayout.render 'App_body', main: 'App_settings'
-
-FlowRouter.route '/search/:searchTerm',
-  name: 'App.search'
-  action: ->
-    NProgress.start()
-    BlazeLayout.render 'App_body', main: 'Notes_show_page'
-
-# FlowRouter.route '/calendar',
-#   name: 'App.calendar'
-#   action: ->
-#     BlazeLayout.render 'App_body', main: 'App_calendar'
-
-# FlowRouter.route '/calendar/:noteId',
-#   name: 'App.calendar'
-#   action: ->
-#     BlazeLayout.render 'App_body', main: 'App_calendar'
 
 FlowRouter.route '/dropboxAuth',
   name: 'App.dropboxAuth'

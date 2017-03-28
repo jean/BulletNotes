@@ -63,8 +63,9 @@ Template.Notes_show_page.helpers
   showNotes: ->
     (
       FlowRouter.getRouteName() == "Notes.show" or
-      FlowRouter.getRouteName() == "App.home" or
-      FlowRouter.getRouteName() == "Notes.showShared"
+      FlowRouter.getRouteName() == "Notes.showShared" or
+      FlowRouter.getRouteName() == "Notes.search" or
+      FlowRouter.getRouteName() == "App.home"
     )
 
   showKanban: ->
@@ -105,6 +106,9 @@ Template.Notes_show_page.helpers
       Notes.find({parent:FlowRouter.getParam 'noteId'}).count()
     else
       Notes.find({parent:null}).count()
+
+  searchTerm: ->
+    FlowRouter.getParam 'searchTerm'
 
   # We use #each on an array of one item so that the "note" template is
   # removed and a new copy is added when changing notes, which is

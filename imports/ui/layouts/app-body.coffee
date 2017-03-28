@@ -135,7 +135,7 @@ Template.App_body.helpers
 
   recentMenuOpen: ->
     instance = Template.instance()
-    instance.state.get 'recentMenuOpen'
+    Session.get 'recentMenuOpen'
 
   dev: ->
     Meteor.settings.public.dev
@@ -192,7 +192,10 @@ Template.App_body.events
 
   'click .recentMenu': (event, instance) ->
     event.stopImmediatePropagation()
-    instance.state.set 'recentMenuOpen', !instance.state.get('recentMenuOpen')
+    Session.set 'recentMenuOpen', !Session.get('recentMenuOpen')
+
+  'click .recentLink': (event, instance) ->
+    Session.set 'recentMenuOpen', false
 
   'click .js-logout': ->
     Meteor.logout()
