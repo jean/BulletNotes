@@ -5,8 +5,6 @@ require './breadcrumbs.jade'
 Template.breadcrumbs.helpers
   parents: ->
     parents = []
-    console.log Template.instance()
-    console.log Template.instance().data.note()
     note = Template.instance().data.note()
     if note
       parent = Notes.findOne(note.parent)

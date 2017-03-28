@@ -18,7 +18,6 @@ import {
   upload
 } from '/imports/api/files/methods.coffee'
 
-
 Template.note.previewXOffset = 10
 Template.note.previewYOffset = 10
 

@@ -61,7 +61,11 @@ Template.Notes_show_page.events
 
 Template.Notes_show_page.helpers
   showNotes: ->
-    FlowRouter.getRouteName() == "Notes.show" || FlowRouter.getRouteName() == "App.home"
+    (
+      FlowRouter.getRouteName() == "Notes.show" or
+      FlowRouter.getRouteName() == "App.home" or
+      FlowRouter.getRouteName() == "Notes.showShared"
+    )
 
   showKanban: ->
     FlowRouter.getRouteName() == "Notes.kanban"

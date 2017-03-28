@@ -70,7 +70,6 @@ Template.notes.onCreated ->
 
 Template.notes.helpers
   notes: ->
-    console.log this
     NProgress.done()
     parentId = null
     if @note()
