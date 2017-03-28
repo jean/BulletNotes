@@ -22,12 +22,12 @@ Template.Notes_show_page.onRendered ->
   @autorun =>
     if @subscriptionsReady()
       noteRenderHold.release()
-  Meteor.subscribe 'notes.view',
-    FlowRouter.getParam 'noteId'
-    FlowRouter.getParam 'shareKey'
-  Meteor.subscribe 'notes.children',
-    FlowRouter.getParam 'noteId'
-    FlowRouter.getParam 'shareKey'
+    Meteor.subscribe 'notes.view',
+      FlowRouter.getParam 'noteId'
+      FlowRouter.getParam 'shareKey'
+    Meteor.subscribe 'notes.children',
+      FlowRouter.getParam 'noteId'
+      FlowRouter.getParam 'shareKey'
 
 Template.Notes_show_page.events
   'change .note-edit': (event, instance) ->
@@ -39,6 +39,8 @@ Template.Notes_show_page.events
       instance.deleteNote()
     else if $(target).val() == 'favorite'
       instance.favoriteNote()
+    else if $(target).val() == 'list'
+      FlowRouter.go('/note/'+instance.getNoteId())
     else if $(target).val() == 'calendar'
       FlowRouter.go('/calendar/'+instance.getNoteId())
     else if $(target).val() == 'kanban'
@@ -59,13 +61,13 @@ Template.Notes_show_page.events
 
 Template.Notes_show_page.helpers
   showNotes: ->
-    FlowRouter.current().route.name == "Notes.show"
+    FlowRouter.getRouteName() == "Notes.show" || FlowRouter.getRouteName() == "App.home"
 
   showKanban: ->
-    FlowRouter.current().route.name == "Notes.kanban"
+    FlowRouter.getRouteName() == "Notes.kanban"
 
   showCalendar: ->
-    FlowRouter.current().route.name == "Notes.calendar"
+    FlowRouter.getRouteName() == "Notes.calendar"
 
   focusedNoteId: ->
     FlowRouter.getParam 'noteId'

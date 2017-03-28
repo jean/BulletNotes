@@ -19,8 +19,12 @@ template(name='Notes_show_page')
               .nav-item.options-mobile
                 select.note-edit
                   option(disabled='', selected='') {{_ 'notes.show.selectAction'}}
-                  option(value='calendar') {{_ 'notes.show.calendar'}}
-                  option(value='kanban') {{_ 'notes.show.kanban'}}
+                  unless showNotes
+                    option(value='list') {{_ 'notes.show.list'}}
+                  unless showCalendar
+                    option(value='calendar') {{_ 'notes.show.calendar'}}
+                  unless showKanban
+                    option(value='kanban') {{_ 'notes.show.kanban'}}
                   option(value='favorite') {{_ 'notes.show.favorite'}}
                   option(value='delete') {{_ 'notes.show.delete'}}
                 input#menuFileUpload(type="file",style="display:none")
@@ -29,12 +33,12 @@ template(name='Notes_show_page')
             .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
               .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
                 span.sr-only {{progress}}% Complete (success)
-      +each noteId in noteIdArray
-        if showNotes
-          +notes (noteArgs noteId)
-        if showKanban
-          +kanban (noteArgs noteId)
-        if showCalendar
-          +calendar (noteArgs noteId)
+        +each noteId in noteIdArray
+          if showNotes
+            +notes (noteArgs noteId)
+          if showKanban
+            +kanban (noteArgs noteId)
+          if showCalendar
+            +calendar (noteArgs noteId)
   +else
     +App_notFound
