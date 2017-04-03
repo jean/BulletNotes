@@ -87,14 +87,18 @@ Template.Notes_show_page.helpers
     FlowRouter.getParam 'noteId'
 
   focusedNote: ->
-    Notes.findOne FlowRouter.getParam 'noteId'
+    Notes.findOne FlowRouter.getParam 'noteId',
+      fields:
+        _id: yes
 
   focusedNoteFiles: () ->
     Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
     Files.find { noteId: FlowRouter.getParam 'noteId' }
 
   favorited: ->
-    note = Notes.findOne FlowRouter.getParam 'noteId'
+    note = Notes.findOne FlowRouter.getParam 'noteId',
+      fields:
+        _id: yes
     if note.favorite
       'favorited'
 
@@ -102,19 +106,33 @@ Template.Notes_show_page.helpers
     setTimeout ->
       $('[data-toggle="tooltip"]').tooltip()
     , 100
-    note = Notes.findOne FlowRouter.getParam 'noteId'
+    note = Notes.findOne FlowRouter.getParam 'noteId',
+      fields:
+        _id: yes
     if note
       note.progress
 
   progressClass: ->
-    note = Notes.findOne FlowRouter.getParam 'noteId'
+    note = Notes.findOne FlowRouter.getParam 'noteId',
+      fields:
+        _id: yes
     Template.notes.getProgressClass note
 
   childNoteCount: ->
     if Notes.findOne FlowRouter.getParam 'noteId'
-      Notes.find({parent:FlowRouter.getParam 'noteId'}).count()
+      Notes.find
+        parent:FlowRouter.getParam 'noteId'
+      ,
+        fields:
+          _id: yes
+      .count()
     else
-      Notes.find({parent:null}).count()
+      Notes.find
+        parent:null
+      ,
+        fields:
+          _id: yes
+      .count()
 
   searchTerm: ->
     FlowRouter.getParam 'searchTerm'

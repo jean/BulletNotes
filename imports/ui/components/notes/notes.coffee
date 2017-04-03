@@ -208,6 +208,8 @@ Template.notes.formatText = (inputText, createLinks = true) ->
   replacedText = replacedText.replace namePattern,
     ' <'+element+' href="/search/%40$3" class="atLink at-$3">@$3</'+element+'>'
 
+  replacedText = emojione.toImage(replacedText)
+
   return replacedText
 
 Template.notes.rendered = ->

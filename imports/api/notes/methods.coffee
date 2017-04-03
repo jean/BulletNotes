@@ -181,6 +181,7 @@ export updateTitle = new ValidatedMethod
       date = match[0]
       Notes.update noteId, {$set: {
         due: moment(date).format()
+        updatedAt: new Date
       }}, tx: true
 
     Notes.update noteId, {$set: {

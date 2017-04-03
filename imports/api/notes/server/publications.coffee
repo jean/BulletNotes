@@ -3,6 +3,13 @@
 { Match } = require 'meteor/check'
 { Notes } = require '../notes.coffee'
 
+Meteor.publish 'notes.all', () ->
+  Notes.find
+    owner: @userId
+    deleted:
+      $exists: false
+
+
 Meteor.publish 'notes.calendar', () ->
   Notes.find
     owner: @userId

@@ -82,7 +82,7 @@ Template.App_body.onCreated ->
   self = this
   self.ready = new ReactiveVar
   self.autorun ->
-    handle = NoteSubs.subscribe('notes.view')
+    handle = NoteSubs.subscribe('notes.all')
     self.ready.set handle.ready()
     return
   @state = new ReactiveDict

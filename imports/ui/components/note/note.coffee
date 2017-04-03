@@ -38,17 +38,23 @@ Template.note.isValidImageUrl = (url, callback) ->
       callback url, true
 
 Template.note.onRendered ->
-  note = this
+  noteElement = this
   Tracker.autorun ->
-    newNote = Notes.findOne note.data._id
-    if newNote
-      $(note.firstNode).find('.title').first().html(
-        Template.notes.formatText newNote.title
+    newNote = Notes.findOne noteElement.data._id,
+      fields:
+        _id: yes
+        title: yes
+    console.log noteElement, newNote
+    console.log $(noteElement.firstNode).is(":focus")
+    # if newNote && $(noteElement.firstNode).is(":focus")
+      # console.log "Reformat: ",newNote
+    $(noteElement.firstNode).find('.title').first().html(
+      Template.notes.formatText newNote.title
+    )
+    if newNote.body
+      $(note.firstNode).find('.body').first().show().html(
+        Template.notes.formatText newNote.body
       )
-      if newNote.body
-        $(note.firstNode).find('.body').first().show().html(
-          Template.notes.formatText newNote.body
-        )
 
     $('.fileItem').draggable
       revert: true
@@ -327,8 +333,10 @@ Template.note.events
   'focus div.title': (event, instance) ->
     event.stopImmediatePropagation()
     Session.set 'preEdit', @title
+    console.log @title
     Meteor.call 'notes.focus',
       noteId: @_id
+    $(event.currentTarget).html(@title)
 
   'blur .title': (event, instance) ->
     that = this
@@ -341,6 +349,7 @@ Template.note.events
       return
 
     title = Template.note.stripTags(event.target.innerHTML)
+    $(event.target).html Template.notes.formatText title
     if title != Template.note.stripTags(@title)
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
@@ -348,12 +357,12 @@ Template.note.events
         shareKey: FlowRouter.getParam 'shareKey'
       }, (err, res) ->
         that.title = title
-        $(event.target).html Template.notes.formatText title
 
   'blur .body': (event, instance) ->
     event.stopPropagation()
     that = this
     body = Template.note.stripTags(event.target.innerHTML)
+    $(event.target).html Template.notes.formatText body
     if body != Template.note.stripTags(@body)
       Meteor.call 'notes.updateBody', {
         noteId: instance.data._id
@@ -361,7 +370,6 @@ Template.note.events
         shareKey: FlowRouter.getParam 'shareKey'
       }, (err, res) ->
         that.body = body
-        $(event.target).html Template.notes.formatText body
     if !body
       $(event.target).fadeOut()
 

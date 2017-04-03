@@ -53,6 +53,7 @@ ecmascript@0.6.2
 ecmascript-runtime@0.3.15
 ejson@1.0.13
 email@1.1.18
+emojione:emojione@2.2.6
 es5-shim@4.6.15
 fastclick@1.0.13
 force-ssl@1.0.13
