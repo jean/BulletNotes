@@ -26,7 +26,11 @@ Meteor.startup ->
   BrowserPolicy.content.disallowEval()
   BrowserPolicy.content.allowInlineStyles()
   BrowserPolicy.content.allowFontDataUrl()
-  trusted = [ 'cdn.jsdelivr.net' ]
+  BrowserPolicy.content.allowImageOrigin('*')
+  trusted = [
+    'cdn.jsdelivr.net',
+    '*.cloudfront.net'
+  ]
   _.each trusted, (origin) ->
     origin = 'https://' + origin
     BrowserPolicy.content.allowOriginForAll origin
