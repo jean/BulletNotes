@@ -20,3 +20,13 @@ Meteor.startup ->
       Meteor.call('notes.dropbox')
       Meteor.call('notes.summary')
   SyncedCron.start()
+
+  BrowserPolicy.framing.disallow()
+  BrowserPolicy.content.disallowInlineScripts()
+  BrowserPolicy.content.disallowEval()
+  BrowserPolicy.content.allowInlineStyles()
+  BrowserPolicy.content.allowFontDataUrl()
+  trusted = [ 'cdn.jsdelivr.net' ]
+  _.each trusted, (origin) ->
+    origin = 'https://' + origin
+    BrowserPolicy.content.allowOriginForAll origin
