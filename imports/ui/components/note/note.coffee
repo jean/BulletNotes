@@ -44,15 +44,12 @@ Template.note.onRendered ->
       fields:
         _id: yes
         title: yes
-    console.log noteElement, newNote
-    console.log $(noteElement.firstNode).is(":focus")
-    # if newNote && $(noteElement.firstNode).is(":focus")
-      # console.log "Reformat: ",newNote
+        body: yes
     $(noteElement.firstNode).find('.title').first().html(
       Template.notes.formatText newNote.title
     )
     if newNote.body
-      $(note.firstNode).find('.body').first().show().html(
+      $(noteElement.firstNode).find('.body').first().show().html(
         Template.notes.formatText newNote.body
       )
 
@@ -333,10 +330,11 @@ Template.note.events
   'focus div.title': (event, instance) ->
     event.stopImmediatePropagation()
     Session.set 'preEdit', @title
-    console.log @title
     Meteor.call 'notes.focus',
       noteId: @_id
-    $(event.currentTarget).html(@title)
+
+    # This emojione toShort changes any native emojis to shortcodes for easier editing.
+    $(event.currentTarget).html(emojione.toShort(@title))
 
   'blur .title': (event, instance) ->
     that = this

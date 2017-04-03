@@ -102,7 +102,9 @@ Template.App_body.loadFavorite = (number) ->
   $('#searchForm input').val('')
   editingNote = $(document.activeElement).hasClass('title')
   menuVisible = $('#container').hasClass('menu-open')
-  if !editingNote
+  editingFocusedNote = $(document.activeElement).hasClass('title-wrapper')
+  editingBody = $(document.activeElement).hasClass('body')
+  if !editingNote && !editingFocusedNote && !editingBody
     NProgress.start()
     FlowRouter.go $($('.favoriteNote').get(number-1)).attr 'href'
     if menuVisible
