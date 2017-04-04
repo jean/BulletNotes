@@ -10,7 +10,8 @@ template(name='Notes_show_page')
             if focusedNote
               i.glyphicon.glyphicon-heart.favorite(class='{{favorited}}')
               i.glyphicon.glyphicon-camera.uploadHeaderBtn
-              .title-wrapper(contenteditable='true') {{{focusedNote.title}}}
+              .title-wrapper(contenteditable='true') 
+                +emojione focusedNote.title
             else if searchTerm
               .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
             else

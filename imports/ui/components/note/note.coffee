@@ -45,9 +45,10 @@ Template.note.onRendered ->
         _id: yes
         title: yes
         body: yes
-    $(noteElement.firstNode).find('.title').first().html(
-      Template.notes.formatText newNote.title
-    )
+    if newNote
+      $(noteElement.firstNode).find('.title').first().html(
+        Template.notes.formatText newNote.title
+      )
     if newNote.body
       $(noteElement.firstNode).find('.body').first().show().html(
         Template.notes.formatText newNote.body
@@ -8183,7 +8184,7 @@ Template.note.onRendered ->
         'shortname': ':tone5:'
         'aliases': ''
         'keywords': 'emoji modifier Fitzpatrick type-6'
-    $('.title').textcomplete [ {
+    $('.title,.body').textcomplete [ {
       match: /\B:([\-+\w]*)$/
       search: (term, callback) ->
         results = []
@@ -8210,7 +8211,9 @@ Template.note.onRendered ->
       template: (shortname) ->
         '<img class="emojione" src="//cdn.jsdelivr.net/emojione/assets/png/' + emojiStrategy[shortname].unicode + '.png"> :' + shortname + ':'
       replace: (shortname) ->
-        ':' + shortname + ': '
+        console.log ':' + shortname + ': '
+        Template.App_body.insertingData = true
+        return ':' + shortname + ': '
       index: 1
       maxCount: 10
     } ], footer: '<a href="http://www.emoji.codes" target="_blank">Browse All<span class="arrow">»</span></a>'
@@ -8272,8 +8275,9 @@ Template.note.helpers
 
 Template.note.events
   'click .title a': (event) ->
-    if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
-      window.open(event.target.href)
+    event.preventDefault()
+    # if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
+    window.open(event.target.href)
 
   'click .favorite': (event, instance) ->
     event.preventDefault()
@@ -8300,10 +8304,12 @@ Template.note.events
     notes = Notes.search event.target.innerHTML
     $('#tagSearchPreview').html('');
     notes.forEach (note) ->
-      $('#tagSearchPreview').append('<li><a class="previewTagLink">'+Template.notes.formatText(note.title,false)+'</a></li>')
-        .css('top', event.pageY - Template.note.previewXOffset + 'px')
-        .css('left', event.pageX + Template.note.previewYOffset + 'px')
-        .show()
+      # Only show the note in the preview box if it is not the current note being hovered.
+      if note._id != $(event.target).closest('.note-item').data('id')
+        $('#tagSearchPreview').append('<li><a class="previewTagLink">'+Template.notes.formatText(note.title,false)+'</a></li>')
+          .css('top', event.pageY - Template.note.previewXOffset + 'px')
+          .css('left', event.pageX + Template.note.previewYOffset + 'px')
+          .show()
 
   'mousemove .tagLink': (event) ->
     $('#tagSearchPreview').css('top', event.pageY - Template.note.previewXOffset + 'px')
@@ -8342,37 +8348,50 @@ Template.note.events
     switch event.keyCode
       # Enter
       when 13
+        console.log $('.textcomplete-dropdown:visible')
+        console.log Template.App_body.insertingData
         event.preventDefault()
-        if event.shiftKey
-          # Edit the body
-          $(event.target).siblings('.body').fadeIn().focus()
+        if $('.textcomplete-dropdown:visible').length || Template.App_body.insertingData
+          console.log "Cancel that"
+          # We're showing a dropdown, so don't do normal enter stuff, just render emojis and stuff.
+          # $(event.target).html Template.notes.formatText $(event.target).html()
+          # Meteor.call 'notes.updateTitle', {
+          #   noteId: note._id
+          #   title: topNote
+          #   shareKey: FlowRouter.getParam('shareKey')
+          # }, (err, res) ->
+          #   $(event.target).blur()
         else
-          # Chop the text in half at the cursor
-          # put what's on the left in a note on top
-          # put what's to the right in a note below
-          console.log window.getSelection().anchorOffset
-          console.log event
-          position = event.target.selectionStart
-          text = event.target.innerHTML
-          topNote = text.substr(0, position)
-          bottomNote = text.substr(position)
-          # Create a new note below the current.
-          if topNote != Template.note.stripTags(note.title)
-            Meteor.call 'notes.updateTitle', {
-              noteId: note._id
-              title: topNote
+          if event.shiftKey
+            # Edit the body
+            $(event.target).siblings('.body').fadeIn().focus()
+          else
+            # Chop the text in half at the cursor
+            # put what's on the left in a note on top
+            # put what's to the right in a note below
+            console.log window.getSelection().anchorOffset
+            console.log event
+            position = event.target.selectionStart
+            text = event.target.innerHTML
+            topNote = text.substr(0, position)
+            bottomNote = text.substr(position)
+            # Create a new note below the current.
+            # if topNote != Template.note.stripTags(note.title)
+            #   Meteor.call 'notes.updateTitle', {
+            #     noteId: note._id
+            #     title: topNote
+            #     shareKey: FlowRouter.getParam('shareKey')
+            #   }
+            Meteor.call 'notes.insert', {
+              title: ''
+              rank: note.rank + 1
+              parent: note.parent
               shareKey: FlowRouter.getParam('shareKey')
             }
-          Meteor.call 'notes.insert', {
-            title: ''
-            rank: note.rank + 1
-            parent: note.parent
-            shareKey: FlowRouter.getParam('shareKey')
-          }
-          setTimeout (->
-            $(event.target).closest('.note-item')
-              .next().find('.title').focus()
-          ), 50
+            setTimeout (->
+              $(event.target).closest('.note-item')
+                .next().find('.title').focus()
+            ), 50
       # Tab
       when 9
         event.preventDefault()
@@ -8403,6 +8422,9 @@ Template.note.events
           }
       # Backspace / delete
       when 8
+        if $('.textcomplete-dropdown:visible').length
+          # We're showing a dropdown, don't do anything.
+          return
         if event.currentTarget.innerText.trim().length == 0
           $(event.currentTarget).closest('.note-item').prev().find('.title').focus()
           $(event.currentTarget).closest('.note-item').fadeOut()
@@ -8434,6 +8456,10 @@ Template.note.events
                     prev.find('div.title').focus()
       # Up
       when 38
+        if $('.textcomplete-dropdown:visible').length
+          # We're showing a dropdown, don't do anything.
+          event.preventDefault()
+          return false
         # Command is held
         if event.metaKey
           Template.note.toggleChildren(instance)
@@ -8448,6 +8474,10 @@ Template.note.events
               .find('div.title').focus()
       # Down
       when 40
+        if $('.textcomplete-dropdown:visible').length
+          # We're showing a dropdown, don't do anything.
+          event.preventDefault()
+          return false
         if event.metaKey
           Template.note.toggleChildren(instance)
         else
@@ -8472,19 +8502,27 @@ Template.note.events
             $('#new-note').focus()
       # Escape
       when 27
+        if $('.textcomplete-dropdown:visible').length
+          # We're showing a dropdown, don't do anything.
+          event.preventDefault()
+          return false
         $(event.currentTarget).html Session.get 'preEdit'
         $(event.currentTarget).blur()
         window.getSelection().removeAllRanges()
 
   'focus div.title': (event, instance) ->
     event.stopImmediatePropagation()
-    Session.set 'preEdit', @title
+
+    # Prevents a race condition with the emoji library
+    if !Template.App_body.insertingData
+      $(event.currentTarget).html emojione.shortnameToUnicode @title
+    else
+      setTimeout ->
+        Template.App_body.insertingData = false
+      200
+
     Meteor.call 'notes.focus',
       noteId: @_id
-
-    # This emojione toShort changes any native emojis to shortcodes for easier editing.
-    if @title
-      $(event.currentTarget).html(emojione.toShort(@title))
 
   'blur .title': (event, instance) ->
     that = this
@@ -8497,6 +8535,7 @@ Template.note.events
       return
 
     title = Template.note.stripTags(event.target.innerHTML)
+    console.log "Save title", title
     $(event.target).html Template.notes.formatText title
     if title != Template.note.stripTags(@title)
       Meteor.call 'notes.updateTitle', {
@@ -8572,3 +8611,12 @@ Template.note.stripTags = (inputText) ->
   if inputText
     inputText = inputText.trim()
   inputText
+
+Template.note.setCursorToEnd = (ele) ->
+  range = document.createRange()
+  sel = window.getSelection()
+  range.setStart ele, 1
+  range.collapse true
+  sel.removeAllRanges()
+  sel.addRange range
+  ele.focus()

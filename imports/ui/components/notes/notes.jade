@@ -3,7 +3,7 @@ template(name='notes')
     if focusedNote.body
       li.body(contenteditable='true')
         if focusedNote.body
-          | {{focusedNote.body}}
+          +emojione focusedNote.body
         else
           |  
     if focusedNoteFiles

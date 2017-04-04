@@ -109,6 +109,7 @@ export updateBody = new ValidatedMethod
     note = Notes.findOne noteId
 
     if body
+      body = Notes.filterBody body
       Notes.update noteId, {$set: {
         body: body
         updatedAt: new Date

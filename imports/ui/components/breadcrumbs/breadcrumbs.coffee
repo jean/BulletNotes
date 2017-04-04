@@ -10,11 +10,15 @@ Template.breadcrumbs.helpers
       parent = Notes.findOne note.parent,
         fields:
           _id: yes
+          parent: yes
+          title: yes
       while parent
         parents.unshift parent
         parent = Notes.findOne parent.parent,
           fields:
             _id: yes
+            parent: yes
+            title: yes
     parents
   focusedTitle: ->
     note = Template.instance().data.note()

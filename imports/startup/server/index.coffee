@@ -18,7 +18,7 @@ Meteor.startup ->
       parser.text cronTime
     job: ->
       Meteor.call('notes.dropbox')
-      Meteor.call('notes.summary')
+      # Meteor.call('notes.summary')
   SyncedCron.start()
 
   BrowserPolicy.framing.disallow()
@@ -28,7 +28,6 @@ Meteor.startup ->
   BrowserPolicy.content.allowFontDataUrl()
   BrowserPolicy.content.allowImageOrigin('*')
   trusted = [
-    'cdn.jsdelivr.net',
     '*.cloudfront.net'
   ]
   _.each trusted, (origin) ->

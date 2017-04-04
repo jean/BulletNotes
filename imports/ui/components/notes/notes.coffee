@@ -85,6 +85,18 @@ Template.notes.helpers
   notesReady: ->
     Template.instance().subscriptionsReady()
 
+  focusedNote: ->
+    Notes.findOne FlowRouter.getParam 'noteId',
+      fields:
+        _id: yes
+        body: yes
+        title: yes
+        favorite: yes
+
+  focusedNoteFiles: () ->
+    Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
+    Files.find { noteId: FlowRouter.getParam 'noteId' }
+
 Template.notes.events
   'click .js-cancel': (event, instance) ->
     instance.state.set 'editing', false
@@ -208,7 +220,7 @@ Template.notes.formatText = (inputText, createLinks = true) ->
   replacedText = replacedText.replace namePattern,
     ' <'+element+' href="/search/%40$3" class="atLink at-$3">@$3</'+element+'>'
 
-  replacedText = emojione.toImage(replacedText)
+  replacedText = emojione.shortnameToUnicode replacedText
 
   return replacedText
 

@@ -34,10 +34,25 @@ Notes.isOwner = (id) ->
   note = Notes.findOne id
   note && Meteor.user()._id == note.owner
 
+Notes.filterBody = (body) ->
+  if !body
+    return false
+  body = emojione.toShort body
+
+  sanitizeHtml body,
+    allowedTags: [
+      'b'
+      'i'
+      'em'
+      'strong'
+    ]
+
 Notes.filterTitle = (title) ->
   if !title
     return false
   title = title.replace(/(\r\n|\n|\r)/gm, '')
+  title = emojione.toShort title
+
   sanitizeHtml title,
     allowedTags: [
       'b'

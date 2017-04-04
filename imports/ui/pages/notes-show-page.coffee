@@ -90,6 +90,9 @@ Template.Notes_show_page.helpers
     Notes.findOne FlowRouter.getParam 'noteId',
       fields:
         _id: yes
+        body: yes
+        title: yes
+        favorite: yes
 
   focusedNoteFiles: () ->
     Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
@@ -99,6 +102,7 @@ Template.Notes_show_page.helpers
     note = Notes.findOne FlowRouter.getParam 'noteId',
       fields:
         _id: yes
+        favorite: yes
     if note.favorite
       'favorited'
 
