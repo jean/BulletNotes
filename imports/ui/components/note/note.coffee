@@ -8486,25 +8486,25 @@ Template.note.events
     if @title
       $(event.currentTarget).html(emojione.toShort(@title))
 
-  # 'blur .title': (event, instance) ->
-  #   that = this
-  #   event.stopPropagation()
-  #   # If we blurred because we hit tab and are causing an indent
-  #   # don't save the title here, it was already saved with the
-  #   # indent event.
-  #   if Session.get 'indenting'
-  #     Session.set 'indenting', false
-  #     return
-  #
-  #   title = Template.note.stripTags(event.target.innerHTML)
-  #   $(event.target).html Template.notes.formatText title
-  #   if title != Template.note.stripTags(@title)
-  #     Meteor.call 'notes.updateTitle', {
-  #       noteId: instance.data._id
-  #       title: title
-  #       shareKey: FlowRouter.getParam 'shareKey'
-  #     }, (err, res) ->
-  #       that.title = title
+  'blur .title': (event, instance) ->
+    that = this
+    event.stopPropagation()
+    # If we blurred because we hit tab and are causing an indent
+    # don't save the title here, it was already saved with the
+    # indent event.
+    if Session.get 'indenting'
+      Session.set 'indenting', false
+      return
+
+    title = Template.note.stripTags(event.target.innerHTML)
+    $(event.target).html Template.notes.formatText title
+    if title != Template.note.stripTags(@title)
+      Meteor.call 'notes.updateTitle', {
+        noteId: instance.data._id
+        title: title
+        shareKey: FlowRouter.getParam 'shareKey'
+      }, (err, res) ->
+        that.title = title
 
   'blur .body': (event, instance) ->
     event.stopPropagation()
