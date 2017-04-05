@@ -44,20 +44,28 @@ template(name='note')
           span.badge {{this.children}}
       .note-title
         div(class='title task-title-sp', contenteditable='true') {{{title}}}
-        if progress
-          .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
-            .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
-              span.sr-only {{progress}}% Complete (success)
-        p.body(contenteditable='true',style='display:none')
-          if body
-            | {{body}}
-          else
-            |  
-      input.fileInput(type='file',style='display:none')
-      if files
-        .filesContainer
-          each files
-            +file
+        if showContent
+          if progress
+            .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
+              .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
+                span.sr-only {{progress}}% Complete (success)
+          p.body(contenteditable='true')
+            if body
+              | {{body}}
+            else
+              |  
+      if showContent
+        input.fileInput(type='file',style='display:none')
+        if files
+          .filesContainer
+            each files
+              +file
+        a.hideContent
+          i.glyphicon.glyphicon-chevron-up
+      else
+        if hasContent
+          a.showContent
+            i.glyphicon.glyphicon-chevron-down
     +share
     if children
       ol

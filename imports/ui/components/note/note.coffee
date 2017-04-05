@@ -11,7 +11,8 @@ require '/imports/ui/components/file/file.coffee'
 { displayError } = require '../../lib/errors.js'
 
 import {
-  favorite
+  favorite,
+  setShowContent
 } from '/imports/api/notes/methods.coffee'
 
 import {
@@ -8208,10 +8209,7 @@ Template.note.onRendered ->
         newResults = results.concat(results2).concat(results3)
         callback newResults
         return
-      template: (shortname) ->
-        '<img class="emojione" src="//cdn.jsdelivr.net/emojione/assets/png/' + emojiStrategy[shortname].unicode + '.png"> :' + shortname + ':'
       replace: (shortname) ->
-        console.log ':' + shortname + ': '
         Template.App_body.insertingData = true
         return ':' + shortname + ': '
       index: 1
@@ -8273,6 +8271,9 @@ Template.note.helpers
   progressClass: ->
     Template.notes.getProgressClass this
 
+  hasContent: ->
+    @body || @files
+
 Template.note.events
   'click .title a': (event) ->
     event.preventDefault()
@@ -8284,6 +8285,17 @@ Template.note.events
     event.stopImmediatePropagation()
     favorite.call
       noteId: instance.data._id
+
+  'click .showContent': (event, instance) ->
+    console.log "Show content",instance.data._id
+    setShowContent.call
+      noteId: instance.data._id
+      showContent: true
+
+  'click .hideContent': (event, instance) ->
+    setShowContent.call
+      noteId: instance.data._id
+      showContent: false
 
   'click .duplicate': (event) ->
     event.preventDefault()
@@ -8364,7 +8376,12 @@ Template.note.events
         else
           if event.shiftKey
             # Edit the body
-            $(event.target).siblings('.body').fadeIn().focus()
+            setShowContent.call
+              noteId: instance.data._id
+              showContent: true
+            (err, res) ->
+              console.log $(event.target).siblings('.body')
+              $(event.target).siblings('.body').fadeIn().focus()
           else
             # Chop the text in half at the cursor
             # put what's on the left in a note on top

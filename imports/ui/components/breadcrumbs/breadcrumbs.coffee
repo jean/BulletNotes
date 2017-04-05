@@ -23,7 +23,9 @@ Template.breadcrumbs.helpers
   focusedTitle: ->
     note = Template.instance().data.note()
     if note
-      return note.title
+      emojione.shortnameToUnicode note.title
+  title: ->
+    emojione.shortnameToUnicode @title
   shareKey: ->
     FlowRouter.getParam 'shareKey'
 

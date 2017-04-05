@@ -4,8 +4,6 @@ template(name='breadcrumbs')
       a(href='/') {{_ 'layouts.appBody.home'}}
     +each parents
       li
-        a(href='/note/{{_id}}/{{shareKey}}')
-          +emojione title
+        a(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
     if focusedTitle
-      li 
-        +emojione focusedTitle
+      li {{{focusedTitle}}}

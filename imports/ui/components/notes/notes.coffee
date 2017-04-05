@@ -97,6 +97,13 @@ Template.notes.helpers
     Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
     Files.find { noteId: FlowRouter.getParam 'noteId' }
 
+  focusedNoteBody: ->
+    note = Notes.findOne FlowRouter.getParam 'noteId',
+      fields:
+        _id: yes
+        title: yes
+    emojione.shortnameToUnicode note.body
+
 Template.notes.events
   'click .js-cancel': (event, instance) ->
     instance.state.set 'editing', false

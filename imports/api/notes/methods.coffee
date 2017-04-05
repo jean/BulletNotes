@@ -327,6 +327,21 @@ export outdent = new ValidatedMethod
         rank: old_parent.rank+1
     childCountDenormalizer.afterInsertNote old_parent._id
 
+export setShowContent = new ValidatedMethod
+  name: 'notes.setShowContent'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    showContent: type: Boolean
+  .validator
+    clean: yes
+  run: ({ noteId, showContent = true, shareKey = null }) ->
+    if !@userId || !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+
+    Notes.update noteId, $set:
+      showContent: showContent
+      updatedAt: new Date
+
 export setShowChildren = new ValidatedMethod
   name: 'notes.setShowChildren'
   validate: new SimpleSchema
@@ -395,6 +410,7 @@ NOTES_METHODS = _.pluck([
   makeChild
   outdent
   setShowChildren
+  setShowContent
   favorite
 ], 'name')
 

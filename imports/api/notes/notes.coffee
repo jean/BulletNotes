@@ -171,6 +171,9 @@ Notes.schema = new SimpleSchema
   inbox:
     type: Boolean
     optional: yes
+  showContent:
+    type: Boolean
+    optional: yes
 
 Notes.attachSchema Notes.schema
 

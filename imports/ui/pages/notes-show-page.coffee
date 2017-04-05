@@ -94,6 +94,13 @@ Template.Notes_show_page.helpers
         title: yes
         favorite: yes
 
+  focusedNoteTitle: ->
+    note = Notes.findOne FlowRouter.getParam 'noteId',
+      fields:
+        _id: yes
+        title: yes
+    emojione.shortnameToUnicode note.title
+
   focusedNoteFiles: () ->
     Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
     Files.find { noteId: FlowRouter.getParam 'noteId' }
