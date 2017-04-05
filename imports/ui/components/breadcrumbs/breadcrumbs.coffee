@@ -21,7 +21,7 @@ Template.breadcrumbs.helpers
             title: yes
     parents
   focusedTitle: ->
-    note = Template.instance().data.note()
+    note = Notes.findOne FlowRouter.getParam 'noteId'
     if note
       emojione.shortnameToUnicode note.title
   title: ->

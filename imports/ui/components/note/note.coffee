@@ -116,11 +116,10 @@ Template.note.helpers
     Files.find { noteId: @_id }
 
   children: () ->
-    Meteor.subscribe 'notes.children',
-      @_id,
-      FlowRouter.getParam 'shareKey'
-
     if ( @showChildren && !FlowRouter.getParam 'searchParam' ) || Session.get 'expand_'+@_id
+      Meteor.subscribe 'notes.children',
+        @_id,
+        FlowRouter.getParam 'shareKey'
       Notes.find { parent: @_id }, sort: {rank: 1}
 
   editingClass: (editing) ->
@@ -129,9 +128,9 @@ Template.note.helpers
   expandClass: () ->
     if @children > 0
       if ( @showChildren && !FlowRouter.getParam 'searchParam' ) || Session.get('expand_'+@_id)
-        'glyphicon glyphicon-minus'
+        'arrow_drop_up'
       else
-        'glyphicon glyphicon-plus'
+        'arrow_drop_down'
 
   className: ->
     className = "note"

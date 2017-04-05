@@ -154,6 +154,25 @@ Template.App_body.helpers
       return Meteor.status().connected
     true
 
+  focusedNote: ->
+    Notes.findOne FlowRouter.getParam 'noteId',
+      fields:
+        _id: yes
+        body: yes
+        title: yes
+        favorite: yes
+        
+  focusedNoteTitle: ->
+    note = Notes.findOne FlowRouter.getParam('noteId'),
+      fields:
+        _id: yes
+        title: yes
+    emojione.shortnameToUnicode note.title
+
+  focusedNoteFiles: () ->
+    Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
+    Files.find { noteId: FlowRouter.getParam 'noteId' }
+
   templateGestures:
     'swipeleft .cordova': (event, instance) ->
       instance.state.set 'menuOpen', false
@@ -174,6 +193,26 @@ Template.App_body.helpers
   ready: ->
     instance = Template.instance()
     instance.ready.get()
+
+  noteArgs: () ->
+    instance = Template.instance()
+    # By finding the note with only the `_id` field set,
+    # we don't create a dependency on the
+    # `note.incompleteCount`, and avoid re-rendering the todos when it changes
+    note = Notes.findOne FlowRouter.getParam('noteId'),
+      fields:
+        _id: yes
+
+    ret =
+      todosReady: instance.subscriptionsReady()
+      # We pass `note` (which contains the full note, with all fields, as a function
+      # because we want to control reactivity. When you check a todo item, the
+      # `note.incompleteCount` changes. If we didn't do this the entire note would
+      # re-render whenever you checked an item. By isolating the reactiviy on the note
+      # to the area that cares about it, we stop it from happening.
+      note: ->
+        Notes.findOne FlowRouter.getParam('noteId')
+
 
 Template.App_body.events
   'keyup #searchForm': (event, instance) ->

@@ -1,21 +1,9 @@
 template(name='Notes_show_page')
-  h1 Test
   +if noteIdArray
     +momentum(plugin="fade")
       .page.notes-show
         ol#tagSearchPreview.dropdown-menu
         nav.js-title-nav
-          +breadcrumbs (noteArgs focusedNoteId)
-          h1.js-edit-note.title-page
-            if focusedNote
-              i.glyphicon.glyphicon-heart.favorite(class='{{favorited}}')
-              i.glyphicon.glyphicon-camera.uploadHeaderBtn
-              .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
-            else if searchTerm
-              .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
-            else
-              .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
-            span.count-note.pull-right {{childNoteCount}}
           .nav-group.right
             .nav-item.options-mobile
               select.note-edit

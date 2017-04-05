@@ -84,7 +84,6 @@ accounts-google@1.1.1
 mrt:jquery-ui
 dsyko:jquery-ui-touch-punch
 stylus@2.513.9
-twbs:bootstrap
 accounts-ui@1.1.9
 service-configuration@1.0.11
 meteorhacks:subs-manager
@@ -108,3 +107,5 @@ mquandalle:jquery-textcomplete
 browser-policy
 copleykj:livestamp
 percolate:migrations
+zodiase:mdl
+twbs:bootstrap

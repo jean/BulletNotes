@@ -1,9 +1,5 @@
 template(name='breadcrumbs')
-  ol.breadcrumb
-    li
-      a(href='/') {{_ 'layouts.appBody.home'}}
-    +each parents
-      li
-        a(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
-    if focusedTitle
-      li {{{focusedTitle}}}
+  a.mdl-navigation__link(href='/') {{_ 'layouts.appBody.home'}}
+  +each parents
+    a.mdl-navigation__link(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
+  a.mdl-navigation__link.mdl-disabled {{{focusedTitle}}}

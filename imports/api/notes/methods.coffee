@@ -245,11 +245,6 @@ export makeChild = new ValidatedMethod
     parentId = null
     level = 0
     if parent
-      Notes.update parent._id, {
-        $set:
-          showChildren: true
-          updatedAt: new Date
-      }, tx: true
       parentId = parent._id
 
     Notes.update noteId, {$set:
@@ -340,7 +335,6 @@ export setShowContent = new ValidatedMethod
 
     Notes.update noteId, $set:
       showContent: showContent
-      updatedAt: new Date
 
 export setChildrenLastShown = new ValidatedMethod
   name: 'notes.setChildrenLastShown'
@@ -353,7 +347,6 @@ export setChildrenLastShown = new ValidatedMethod
       throw new (Meteor.Error)('not-authorized')
 
     Notes.update noteId, $set:
-      updatedAt: new Date
       childrenLastShown: new Date
 
 export setShowChildren = new ValidatedMethod
@@ -369,7 +362,6 @@ export setShowChildren = new ValidatedMethod
 
     Notes.update noteId, $set:
       showChildren: show
-      updatedAt: new Date
       childrenLastShown: new Date
 
     childCountDenormalizer.afterInsertNote noteId

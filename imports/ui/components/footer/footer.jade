@@ -1,5 +1,11 @@
 template(name='footer')
-  .footer {{year}} - BulletNotes.io - v
-    span#version
-    | - 
-    a(href='https://github.com/NickBusey/BulletNotes',target='_blank') GitHub
+  footer.mdl-mini-footer
+    .mdl-mini-footer__left-section
+      .mdl-logo BulletNotes.io
+      ul.mdl-mini-footer__link-list
+        li
+          a(href='http://www.bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA') Help
+        li
+          a(href='https://github.com/NickBusey/BulletNotes',target='_blank') GitHub
+      | {{year}} - v
+      span#version
