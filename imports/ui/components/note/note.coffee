@@ -8275,10 +8275,15 @@ Template.note.helpers
     @body || @files
 
 Template.note.events
-  'click .title a': (event) ->
-    event.preventDefault()
-    # if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
-    window.open(event.target.href)
+  'click .title a': (event, instance) ->
+    if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
+      event.preventDefault()
+      event.stopImmediatePropagation()
+      window.open(event.target.href)
+
+  'click .tagLink, .atLink': (event, instance) ->
+    event.stopImmediatePropagation()
+    FlowRouter.go(event.target.pathname)
 
   'click .favorite': (event, instance) ->
     event.preventDefault()
@@ -8287,12 +8292,13 @@ Template.note.events
       noteId: instance.data._id
 
   'click .showContent': (event, instance) ->
-    console.log "Show content",instance.data._id
+    event.stopImmediatePropagation()
     setShowContent.call
       noteId: instance.data._id
       showContent: true
 
   'click .hideContent': (event, instance) ->
+    event.stopImmediatePropagation()
     setShowContent.call
       noteId: instance.data._id
       showContent: false
@@ -8529,10 +8535,9 @@ Template.note.events
 
   'focus div.title': (event, instance) ->
     event.stopImmediatePropagation()
-
     # Prevents a race condition with the emoji library
     if !Template.App_body.insertingData
-      $(event.currentTarget).html emojione.shortnameToUnicode @title
+      $(event.currentTarget).html emojione.shortnameToUnicode instance.title
     else
       setTimeout ->
         Template.App_body.insertingData = false
