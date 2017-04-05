@@ -34,7 +34,7 @@ template(name='App_body')
                 if recentMenuOpen
                   a.btn-secondary.recentLink(href='/search/last-changed%3a1h') {{_ 'layouts.appBody.lastHour'}}
                   a.btn-secondary.recentLink(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
-                  a.btn-secondary.recentLink(href='/search/not-changed%3a1M') {{_ 'layouts.appBody.oldItems'}}
+                  a.btn-secondary.recentLink(href='/search/not-viewed%3a1M') {{_ 'layouts.appBody.oldItems'}}
             else
               .btns-group
                 a.btn-secondary(href="{{pathFor 'signin'}}")

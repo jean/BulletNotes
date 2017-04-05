@@ -342,6 +342,20 @@ export setShowContent = new ValidatedMethod
       showContent: showContent
       updatedAt: new Date
 
+export setChildrenLastShown = new ValidatedMethod
+  name: 'notes.setChildrenLastShown'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+  run: ({ noteId }) ->
+    if !@userId
+      throw new (Meteor.Error)('not-authorized')
+
+    Notes.update noteId, $set:
+      updatedAt: new Date
+      childrenLastShown: new Date
+
 export setShowChildren = new ValidatedMethod
   name: 'notes.setShowChildren'
   validate: new SimpleSchema
@@ -356,6 +370,7 @@ export setShowChildren = new ValidatedMethod
     Notes.update noteId, $set:
       showChildren: show
       updatedAt: new Date
+      childrenLastShown: new Date
 
     childCountDenormalizer.afterInsertNote noteId
 
@@ -368,7 +383,10 @@ export focus = new ValidatedMethod
   run: ({noteId}) ->
     if !@userId
       throw new (Meteor.Error)('not-authorized')
-    Notes.update {_id: noteId}, {$unset:{focusNext: 1}}
+    Notes.update
+      _id: noteId
+    ,
+      $unset: {focusNext: 1}
 
 Meteor.methods
 
@@ -409,6 +427,7 @@ NOTES_METHODS = _.pluck([
   remove
   makeChild
   outdent
+  setChildrenLastShown
   setShowChildren
   setShowContent
   favorite

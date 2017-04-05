@@ -20,6 +20,9 @@ Template.Notes_show_page.onCreated ->
 Template.Notes_show_page.onRendered ->
   Session.set 'searchTerm', FlowRouter.getParam 'searchTerm'
   @autorun =>
+    Meteor.call 'notes.setChildrenLastShown', {
+      noteId: FlowRouter.getParam 'noteId'
+    }
     if @subscriptionsReady()
       noteRenderHold.release()
     Meteor.subscribe 'notes.view',

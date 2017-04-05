@@ -3,10 +3,12 @@ require './reset-password-email.js'
 
 # Set up some rate limiting and other important security settings.
 require './security.js'
-
 require './register-api.coffee'
+require './migrations.coffee'
 
 Meteor.startup ->
+  Migrations.migrateTo('latest')
+
   # 4:20 AM MST
   cronTime = 'at 11:20 am'
   if (Meteor.settings.public.cronTime)
@@ -18,7 +20,6 @@ Meteor.startup ->
       parser.text cronTime
     job: ->
       Meteor.call('notes.dropbox')
-      # Meteor.call('notes.summary')
   SyncedCron.start()
 
   BrowserPolicy.framing.disallow()
