@@ -40,7 +40,7 @@ Template.note.isValidImageUrl = (url, callback) ->
       callback url, true
 
 Template.note.onRendered ->
-  if @data.showChildren && @data.children
+  if @data.showChildren && @data.children && !FlowRouter.getParam 'searchParam'
     Meteor.call 'notes.setChildrenLastShown', {
       noteId: @data._id
     }
@@ -120,7 +120,7 @@ Template.note.helpers
       @_id,
       FlowRouter.getParam 'shareKey'
 
-    if @showChildren || Session.get 'expand_'+@_id
+    if ( @showChildren && !FlowRouter.getParam 'searchParam' ) || Session.get 'expand_'+@_id
       Notes.find { parent: @_id }, sort: {rank: 1}
 
   editingClass: (editing) ->
@@ -128,7 +128,7 @@ Template.note.helpers
 
   expandClass: () ->
     if @children > 0
-      if @showChildren || Session.get('expand_'+@_id)
+      if ( @showChildren && !FlowRouter.getParam 'searchParam' ) || Session.get('expand_'+@_id)
         'glyphicon glyphicon-minus'
       else
         'glyphicon glyphicon-plus'
@@ -138,7 +138,7 @@ Template.note.helpers
     if @title
       tags = @title.match(/#\w+/g)
       if tags
-        tags.forEach(tag) ->
+        tags.forEach (tag) ->
           className = className + ' tag-' + tag.substr(1).toLowerCase()
     if !@showChildren && @children > 0
       className = className + ' hasHiddenChildren'
