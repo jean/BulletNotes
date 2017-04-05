@@ -4,13 +4,22 @@ template(name='note')
       .options.pull-left
         span.noteNumber
           | {{count}}
-        button.expand.mdl-js-ripple-effect.mdl-button.mdl-js-button.mdl-button--icon(href='#')
-          i.material-icons {{expandClass}}
+        if this.children
+          button.expand.mdl-js-ripple-effect.mdl-button.mdl-js-button.mdl-button--icon(href='#')
+            i.material-icons.mdl-badge.mdl-badge--overlap {{expandClass}}
+          span.mdl-badge.count(data-badge="{{this.children}}")
+            | &nbsp;
+
         if currentUser
           button.mdl-button.mdl-js-button.mdl-button--icon(id="menu{{_id}}")
             i.material-icons more_vert
-          a#demo-menu-lower-left.mdl-button.mdl-js-button.mdl-button--icon(href="/note/{{_id}}")
-            i.material-icons zoom_out_map
+          if userOwnsNote
+            a.handle.mdl-button.mdl-js-button.mdl-button--icon(href='/note/{{_id}}')
+              i.material-icons zoom_out_map
+          else
+            a.handle.mdl-button.mdl-js-button.mdl-button--icon(href='/note/{{_id}}/{{shareKey}}')
+              i.material-icons zoom_out_map
+              
 
           ul.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for="menu{{_id}}")
             li.mdl-menu__item
@@ -38,17 +47,7 @@ template(name='note')
                 a(href="javascript:function bninbox(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','http://localhost:3000/notes/inbox/'+encodeURIComponent(d.location.href)+'&t='+(new Date().getTime()));b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}bninbox();void(0)")
                   i.glyphicon.glyphicon-envelope
                   | Drag this link to your bookmarks to save pages to this list.
-          //- if userOwnsNote
-          //-   a.handle.glyphicon.glyphicon-option-vertical(href='/note/{{_id}}')
-          //- else
-          //-   a.handle.glyphicon.glyphicon-option-vertical(href='/note/{{_id}}/{{shareKey}}')
-          //- ul.dropdown-menu
 
-      .pull-right(class='{{favoriteClass}}')
-        if currentUser
-          i.glyphicon.glyphicon-heart.favorite
-        if this.children
-          span.badge {{this.children}}
       .note-title
         div(class='title task-title-sp', contenteditable='true') {{{title}}}
         if showContent

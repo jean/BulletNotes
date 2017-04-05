@@ -161,7 +161,7 @@ Template.App_body.helpers
         body: yes
         title: yes
         favorite: yes
-        
+
   focusedNoteTitle: ->
     note = Notes.findOne FlowRouter.getParam('noteId'),
       fields:
