@@ -9,10 +9,8 @@ template(name='App_body')
             .mdl-layout__header-row
               // Title
               span.mdl-layout-title
-                h1.js-edit-note.title-page
+                .js-edit-note.title-page
                   if focusedNote
-                    i.glyphicon.glyphicon-heart.favorite(class='{{favorited}}')
-                    i.glyphicon.glyphicon-camera.uploadHeaderBtn
                     .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
                   else if searchTerm
                     .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
@@ -83,13 +81,11 @@ template(name='App_body')
                   span.glyphicon.glyphicon-heart(style="font-size: .8em; margin: 0 .2em")
                   | icon on some notes to the right.
           main.mdl-layout__content
-            .page-content
-              +momentum plugin="fade"
-                if ready
-                  +Template.dynamic(template=main)
-                else
-                  +App_loading
-                +footer
+              if ready
+                +Template.dynamic(template=main)
+              else
+                +App_loading
+              +footer
 
 
 

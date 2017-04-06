@@ -115,12 +115,15 @@ Template.note.helpers
     Meteor.subscribe 'files.note', @_id
     Files.find { noteId: @_id }
 
-  children: () ->
+  childNotes: () ->
     if ( @showChildren && !FlowRouter.getParam 'searchParam' ) || Session.get 'expand_'+@_id
       Meteor.subscribe 'notes.children',
         @_id,
         FlowRouter.getParam 'shareKey'
       Notes.find { parent: @_id }, sort: {rank: 1}
+
+  childCount: () ->
+    Notes.find({parent: @_id}).count()
 
   editingClass: (editing) ->
     editing and 'editing'
@@ -141,6 +144,8 @@ Template.note.helpers
           className = className + ' tag-' + tag.substr(1).toLowerCase()
     if !@showChildren && @children > 0
       className = className + ' hasHiddenChildren'
+    if @children < 1 || !@children
+      className = className + ' noChildren'
     if @shared
       className = className + ' shared'
     className

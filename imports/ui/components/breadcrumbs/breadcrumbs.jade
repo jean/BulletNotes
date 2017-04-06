@@ -1,5 +1,6 @@
 template(name='breadcrumbs')
-  a.mdl-navigation__link(href='/') {{_ 'layouts.appBody.home'}}
+  a.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect(href='/') {{_ 'layouts.appBody.home'}}
   +each parents
-    a.mdl-navigation__link(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
-  a.mdl-navigation__link.mdl-disabled {{{focusedTitle}}}
+    a.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
+  if focusedTitle
+    button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect(disabled='disabled') {{{focusedTitle}}}

@@ -14,6 +14,7 @@
   border: dashed gray 1px
 
 .note-item
+  background: white
   border-left: solid 4px #fff
   font-size: 12px
   padding: 0px
@@ -135,52 +136,52 @@
 .tagLink:hover, .atLink:hover
   box-shadow: 2px 2px 3px #8e8e8e
 
-.tag-white
+.tag-white .noteContainer
   border-color: white
   background-color: white
-.tag-red
+.tag-red .noteContainer
   border-color: #FF2020
   background-color: rgba(255, 0, 0, 0.1)
-.tag-orange
+.tag-orange .noteContainer
   border-color: #FFD8B5
   background-color: rgba(255, 216, 181, 0.22)
-.tag-yellow
+.tag-yellow .noteContainer
   border-color: #FFFAB5
   background-color: rgba(255, 250, 181, 0.22)
-.tag-lime
+.tag-lime .noteContainer
   border-color: #E1FFB5
   background-color: rgba(225, 255, 181, 0.26)
-.tag-olive
+.tag-olive .noteContainer
   border-color: #B5FFC9
   background-color: rgba(181, 255, 201, 0.25)
-.tag-green
+.tag-green .noteContainer
   border-color: #CCFFB5
   background-color: rgba(204, 255, 181, 0.24)
-.tag-teal
+.tag-teal .noteContainer
   border-color: #B5FFD7
   background-color: rgba(181, 255, 215, 0.21)
-.tag-aqua
+.tag-aqua .noteContainer
   border-color: #B5FFFC
   background-color: rgba(181, 255, 252, 0.31)
-.tag-blue
+.tag-blue .noteContainer
   border-color: #B5E8FF
   background-color: rgba(181, 232, 255, 0.2)
-.tag-navy
+.tag-navy .noteContainer
   border-color: #3f34ff
   background-color: rgba(63, 52, 255, 0.15)
-.tag-fuchia
+.tag-fuchia .noteContainer
   border-color: #F1B5FF
   background-color: rgba(241, 181, 255, 0.22)
-.tag-purple
+.tag-purple .noteContainer
   border-color: #D3B5FF
   background-color: rgba(211, 181, 255, 0.25)
-.tag-maroon
+.tag-maroon .noteContainer
   border-color: #C08F8F
   background-color: rgba(192, 143, 143, 0.16)
-.tag-silver
+.tag-silver .noteContainer
   border-color: silver
   background-color: rgba(192, 192, 192, 0.22)
-.tag-gray
+.tag-gray .noteContainer
   border-color: gray
 .tag-complete, .tag-done, .tag-finished
   .title
@@ -201,6 +202,11 @@
 .note-item.shared
   .handle
     background: rgba(0, 128, 28, 0.16)
+
+.note-item.noChildren
+  .expand, .mdl-badge.count, .expand span
+    opacity: 0
+    cursor: default
 
 .placeholder
   box-shadow: purple 0 0 5px 1px

@@ -1,48 +1,9 @@
-@import 'utils'
-
-menu-width = 270px
-column = 5.55555%
-
-#menu
-  position(absolute, 0, 0, 0, 0, 270px)
-
-
-#content-container
-  transition: all 200ms ease-out
-  color: white
-
-  .page
-    position(absolute, 0, 0, 0, 0)
-
-
-  // Toggle menu on mobile
-  .menu-open &
-    transform: translate3d(menu-width, 0, 0)
-    opacity: .85
-    left: 0
-
-    @media screen and (min-width: 40em)
-      // Show menu on desktop, negate .menu-open
-      transform: translate3d(0, 0, 0) //reset transform and use position properties instead
-      opacity: 1
-      left: menu-width
-
-
-
-
-// Transparent screen to prevent interactions on content when menu is open
-.content-overlay
-  position(absolute, 0, 0, 0, 0)
-  cursor: pointer
-
-  .menu-open &
-    transform: translate3d(menu-width, 0, 0)
-    z-index: 1
-
-
-  // Hide overlay on desktop
-  @media screen and (min-width: 40em)
-    display: none
+body
+    background-image: url(http://dcervin.com/i/2017/01/building-hd-wallpaper-desktop.jpg);
+    background-size: 100%;
+    background-attachment: fixed;
+    background-position: right top;
+    background-repeat: no-repeat;
 
 @keyframes pulse {
   0% {transform: scale(1);opacity:.9;}
@@ -58,24 +19,11 @@ column = 5.55555%
 .loading
   margin-top: 20em
 
-.nav-group.expanded
-  transform: rotate(180deg)
-  left: 240px !important
-
 #nprogress
   .bar
     background-color: #22dd39
   .spinner
     display: none !important
-
-.footer
-  text-align: center
-  opacity: .8
-  font-size: .8em
-  margin: 2em
-  padding: 1em
-  border: solid gray 1px
-  color: black
 
 #settingsPage
   display: block;

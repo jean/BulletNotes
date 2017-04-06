@@ -92,6 +92,7 @@ Template.notes.helpers
         body: yes
         title: yes
         favorite: yes
+        children: yes
 
   focusedNoteFiles: () ->
     Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
