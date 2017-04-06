@@ -108,6 +108,9 @@ Template.note.onRendered ->
     } ], footer: '<a href="http://www.emoji.codes" target="_blank">Browse All<span class="arrow">»</span></a>'
 
 Template.note.helpers
+  currentShareKey: () ->
+    FlowRouter.getParam('shareKey')
+
   count: () ->
       @rank / 2
 

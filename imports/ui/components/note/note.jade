@@ -13,12 +13,12 @@ template(name='note')
         if currentUser
           button.mdl-button.mdl-js-button.mdl-button--icon(id="menu{{_id}}")
             i.material-icons more_vert
-          if userOwnsNote
-            a.handle.mdl-button.mdl-js-button.mdl-button--icon(href='/note/{{_id}}')
-              i.material-icons zoom_out_map
-          else
-            a.handle.mdl-button.mdl-js-button.mdl-button--icon(href='/note/{{_id}}/{{shareKey}}')
-              i.material-icons zoom_out_map
+        if userOwnsNote
+          a.handle.mdl-button.mdl-js-button.mdl-button--icon(href='/note/{{_id}}')
+            i.material-icons zoom_out_map
+        else
+          a.handle.mdl-button.mdl-js-button.mdl-button--icon(href='/note/{{_id}}/{{currentShareKey}}')
+            i.material-icons zoom_out_map
               
 
           ul.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for="menu{{_id}}")
