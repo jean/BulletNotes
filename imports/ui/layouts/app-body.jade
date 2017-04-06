@@ -34,34 +34,34 @@ template(name='App_body')
             span.mdl-layout-title BulletNotes.io
             nav.mdl-navigation
               +undoRedoButtons
-              //- if currentUser
-              //-   .btns-group-vertical
-              //-     a.userMenu.btn-secondary(href='#')
-              //-       if userMenuOpen
-              //-         span.glyphicon.glyphicon-chevron-up
-              //-       else
-              //-         span.glyphicon.glyphicon-chevron-down
-              //-       | {{displayName}}
-              //-     if userMenuOpen
-              //-       a.btn-secondary(href='/settings') {{_ 'layouts.appBody.settings'}}
-              //-       a.js-logout.btn-secondary {{_ 'layouts.appBody.logout'}}
-              //- 
-              //-     a.recentMenu.btn-secondary(href='#')
-              //-       if recentMenuOpen
-              //-         span.glyphicon.glyphicon-chevron-up
-              //-       else
-              //-         span.glyphicon.glyphicon-chevron-down
-              //-       | {{_ 'layouts.appBody.recent'}}
-              //-     if recentMenuOpen
-              //-       a.btn-secondary.recentLink(href='/search/last-changed%3a1h') {{_ 'layouts.appBody.lastHour'}}
-              //-       a.btn-secondary.recentLink(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
-              //-       a.btn-secondary.recentLink(href='/search/not-viewed%3a1M') {{_ 'layouts.appBody.oldItems'}}
-              //- else
-              //-   .btns-group
-              //-     a.btn-secondary(href="{{pathFor 'signin'}}")
-              //-       | {{_ 'layouts.appBody.login'}}
-              //-     a.btn-secondary(href="{{pathFor 'join'}}")
-              //-       | {{_ 'layouts.appBody.join'}}
+              if currentUser
+                .btns-group-vertical
+                  a.userMenu.btn-secondary(href='#')
+                    if userMenuOpen
+                      span.glyphicon.glyphicon-chevron-up
+                    else
+                      span.glyphicon.glyphicon-chevron-down
+                    | {{displayName}}
+                  if userMenuOpen
+                    a.btn-secondary(href='/settings') {{_ 'layouts.appBody.settings'}}
+                    a.js-logout.btn-secondary {{_ 'layouts.appBody.logout'}}
+              
+                  a.recentMenu.btn-secondary(href='#')
+                    if recentMenuOpen
+                      span.glyphicon.glyphicon-chevron-up
+                    else
+                      span.glyphicon.glyphicon-chevron-down
+                    | {{_ 'layouts.appBody.recent'}}
+                  if recentMenuOpen
+                    a.btn-secondary.recentLink(href='/search/last-changed%3a1h') {{_ 'layouts.appBody.lastHour'}}
+                    a.btn-secondary.recentLink(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
+                    a.btn-secondary.recentLink(href='/search/not-viewed%3a1M') {{_ 'layouts.appBody.oldItems'}}
+              else
+                .btns-group
+                  a.btn-secondary(href="{{pathFor 'signin'}}")
+                    | {{_ 'layouts.appBody.login'}}
+                  a.btn-secondary(href="{{pathFor 'join'}}")
+                    | {{_ 'layouts.appBody.join'}}
               form#searchForm
                 span.glyphicon.glyphicon-search
                 input.search.form-control(placeholder="{{_ 'layouts.appBody.search'}}...")
