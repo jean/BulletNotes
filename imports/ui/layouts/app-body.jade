@@ -2,34 +2,34 @@ template(name='App_body')
   +HammerTouchArea(gestureMap=templateGestures)
     #container(class='{{menuOpen}} {{wrapClasses}}')
       +momentum(plugin="fade")
-        //- if ready
         .mdl-layout.mdl-js-layout
-          header.mdl-layout__header.mdl-layout__header--waterfall
-            // Top row, always visible
-            .mdl-layout__header-row
-              // Title
-              span.mdl-layout-title
-                .js-edit-note.title-page
-                  if focusedNote
-                    .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
-                  else if searchTerm
-                    .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
-                  else
-                    .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
-                  span.count-note.pull-right {{childNoteCount}}
+          if ready
+            header.mdl-layout__header.mdl-layout__header--waterfall
+              // Top row, always visible
+              .mdl-layout__header-row
+                // Title
+                span.mdl-layout-title
+                  .js-edit-note.title-page
+                    if focusedNote
+                      .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
+                    else if searchTerm
+                      .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
+                    else
+                      .title-wrapper(style='opacity:.5;cursor:default') BulletNotes.io
+                    span.count-note.pull-right {{childNoteCount}}
 
-              .mdl-layout-spacer
-              .mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
-                label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
-                  i.material-icons search
-                .mdl-textfield__expandable-holder
-                  input#waterfall-exp.mdl-textfield__input(type='text', name='sample')
-            // Bottom row, not visible on scroll
-            .mdl-layout__header-row
-              .mdl-layout-spacer
-              // Navigation
-              nav.mdl-navigation
-                +breadcrumbs (noteArgs focusedNoteId)
+                .mdl-layout-spacer
+                .mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
+                  label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
+                    i.material-icons search
+                  .mdl-textfield__expandable-holder
+                    input#waterfall-exp.mdl-textfield__input(type='text', name='sample')
+              // Bottom row, not visible on scroll
+              .mdl-layout__header-row
+                .mdl-layout-spacer
+                // Navigation
+                nav.mdl-navigation
+                  +breadcrumbs (noteArgs focusedNoteId)
           .mdl-layout__drawer
             span.mdl-layout-title BulletNotes.io
             nav.mdl-navigation
@@ -83,9 +83,10 @@ template(name='App_body')
           main.mdl-layout__content
               if ready
                 +Template.dynamic(template=main)
+                .mdl-layout-spacer
+                +footer
               else
                 +App_loading
-              +footer
 
 
 
