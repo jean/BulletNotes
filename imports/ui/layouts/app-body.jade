@@ -4,91 +4,37 @@ template(name='App_body')
       +momentum(plugin="fade")
         .mdl-layout.mdl-js-layout
           if ready
-            header.mdl-layout__header.mdl-layout__header--waterfall
-              // Top row, always visible
-              .mdl-layout__header-row
-                // Title
-                span.mdl-layout-title
-                  .js-edit-note.title-page
-                    if focusedNote
-                      .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
-                    else if searchTerm
-                      .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
-                    else
-                      .title-wrapper(style='opacity:.5;cursor:default') BulletNotes.io
-                    span.count-note.pull-right {{childNoteCount}}
+            .mdl-layout.mdl-js-layout.mdl-layout--fixed-header
+              header.mdl-layout__header.mdl-layout__header--waterfall
+                .mdl-layout__header-row
+                  // Title
+                  span.mdl-layout-title
+                    .js-edit-note.title-page
+                      if focusedNote
+                        .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
+                      else if searchTerm
+                        .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
+                      else
+                        .title-wrapper(style='opacity:.5;cursor:default') BulletNotes.io
+                        span.count-note.pull-right {{childNoteCount}}
+                  .mdl-layout-spacer
+                  .mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
+                    label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
+                      i.material-icons search
+                    .mdl-textfield__expandable-holder
+                      input#waterfall-exp.mdl-textfield__input.search(placeholder="{{_ 'layouts.appBody.search'}}...")
 
-                .mdl-layout-spacer
-                .mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
-                  label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
-                    i.material-icons search
-                  .mdl-textfield__expandable-holder
-                    input#waterfall-exp.mdl-textfield__input(type='text', name='sample')
-              // Bottom row, not visible on scroll
-              .mdl-layout__header-row
-                .mdl-layout-spacer
-                // Navigation
-                nav.mdl-navigation
+                // Tabs
+                .mdl-layout__tab-bar.mdl-js-ripple-effect
                   +breadcrumbs (noteArgs focusedNoteId)
-          .mdl-layout__drawer
-            span.mdl-layout-title BulletNotes.io
-            nav.mdl-navigation
-              +undoRedoButtons
-              if currentUser
-                .btns-group-vertical
-                  a.userMenu.btn-secondary(href='#')
-                    if userMenuOpen
-                      span.glyphicon.glyphicon-chevron-up
-                    else
-                      span.glyphicon.glyphicon-chevron-down
-                    | {{displayName}}
-                  if userMenuOpen
-                    a.btn-secondary(href='/settings') {{_ 'layouts.appBody.settings'}}
-                    a.js-logout.btn-secondary {{_ 'layouts.appBody.logout'}}
-              
-                  a.recentMenu.btn-secondary(href='#')
-                    if recentMenuOpen
-                      span.glyphicon.glyphicon-chevron-up
-                    else
-                      span.glyphicon.glyphicon-chevron-down
-                    | {{_ 'layouts.appBody.recent'}}
-                  if recentMenuOpen
-                    a.btn-secondary.recentLink(href='/search/last-changed%3a1h') {{_ 'layouts.appBody.lastHour'}}
-                    a.btn-secondary.recentLink(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
-                    a.btn-secondary.recentLink(href='/search/not-viewed%3a1M') {{_ 'layouts.appBody.oldItems'}}
-              else
-                .btns-group
-                  a.btn-secondary(href="{{pathFor 'signin'}}")
-                    | {{_ 'layouts.appBody.login'}}
-                  a.btn-secondary(href="{{pathFor 'join'}}")
-                    | {{_ 'layouts.appBody.join'}}
-              form#searchForm
-                span.glyphicon.glyphicon-search
-                input.search.form-control(placeholder="{{_ 'layouts.appBody.search'}}...")
-                submit(style='visibility:hidden')
-              a.homeLink.mdl-navigation__link(href='/') {{_ 'layouts.appBody.home'}}
-              h4 {{_ 'layouts.appBody.favorites'}}
-              if notes.count
-                ul
-                each note in notes
-                  li
-                    a.favoriteNote.mdl-navigation__link(href="{{pathFor 'Notes.show' noteId=note._id}}", class='{{activeNoteClass note}}', data-count="{{increment @index}}")
-                      | {{{note.title}}}
-                    span.hotkeyHint {{increment @index}}
-              else
-                p(style="margin: 1em;color:white;")
-                  | No favorites yet, click the
-                  span.glyphicon.glyphicon-heart(style="font-size: .8em; margin: 0 .2em")
-                  | icon on some notes to the right.
-          main.mdl-layout__content
-              if ready
-                +Template.dynamic(template=main)
-                .mdl-layout-spacer
-                +footer
-              else
-                +App_loading
-
-
+              .mdl-layout__drawer
+                +menu
+              main.mdl-layout__content
+                if ready
+                  +Template.dynamic(template=main)
+                  +footer
+                else
+                  +App_loading
 
       +unless connected
         .notifications

@@ -1,6 +1,6 @@
 template(name='breadcrumbs')
-  a.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect(href='/') {{_ 'layouts.appBody.home'}}
+  a.mdl-layout__tab(href='/') {{_ 'layouts.appBody.home'}}
   +each parents
-    a.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
+    a.mdl-layout__tab(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
   if focusedTitle
-    button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect(disabled='disabled') {{{focusedTitle}}}
+    a.mdl-layout__tab.is-active {{{focusedTitle}}}

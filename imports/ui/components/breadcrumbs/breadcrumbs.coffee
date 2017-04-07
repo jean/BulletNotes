@@ -32,7 +32,7 @@ Template.breadcrumbs.helpers
 Template.breadcrumbs.events
   "click a": (event, template) ->
     event.preventDefault()
-    $('#searchForm input').val('')
+    $('input.search').val('')
     setTimeout ->
       FlowRouter.go event.currentTarget.pathname
     , 50

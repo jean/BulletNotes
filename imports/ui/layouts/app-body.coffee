@@ -12,7 +12,8 @@ import { $ } from 'meteor/jquery'
 import { Notes } from '/imports/api/notes/notes.coffee'
 import { insert } from '/imports/api/notes/methods.coffee'
 
-import '../components/loading/loading.coffee'
+import '/imports/ui/components/loading/loading.coffee'
+import '/imports/ui/components/menu/menu.coffee'
 import './app-body.jade'
 
 CONNECTION_ISSUE_TIMEOUT = 5000
@@ -90,16 +91,12 @@ Template.App_body.onCreated ->
     menuOpen: false
     userMenuOpen: false
   setTimeout (->
-    $('.betaWarning').fadeOut()
+    $('.betaWarning,.devWarning').fadeOut()
     return
   ), 5000
-  setTimeout (->
-    $('.devWarning').fadeOut()
-    return
-  ), 10000
 
 Template.App_body.loadFavorite = (number) ->
-  $('#searchForm input').val('')
+  $('input').val('')
   editingNote = $(document.activeElement).hasClass('title')
   menuVisible = $('#container').hasClass('menu-open')
   editingFocusedNote = $(document.activeElement).hasClass('title-wrapper')
@@ -122,32 +119,8 @@ Template.App_body.helpers
       classname += ' dev'
     classname
 
-  displayName: ->
-    displayName = ''
-    if Meteor.user().emails
-      email = Meteor.user().emails[0].address
-      displayName = email.substring(0, email.indexOf('@'))
-    else
-      displayName = Meteor.user().profile.name
-    displayName
-
-  userMenuOpen: ->
-    instance = Template.instance()
-    instance.state.get 'userMenuOpen'
-
-  recentMenuOpen: ->
-    instance = Template.instance()
-    Session.get 'recentMenuOpen'
-
   dev: ->
     Meteor.settings.public.dev
-
-  notes: ->
-    Notes.find { favorite: true }, sort: favoritedAt: -1
-
-  activeNoteClass: (note) ->
-    active = ActiveRoute.name('Notes.show') and FlowRouter.getParam('_id') == note._id
-    active and 'active'
 
   connected: ->
     if showConnectionIssue.get()
@@ -216,40 +189,12 @@ Template.App_body.helpers
 
 
 Template.App_body.events
-  'keyup #searchForm': (event, instance) ->
-    if $(event.target).val()
-      FlowRouter.go '/search/' + $(event.target).val()
-    else
-      FlowRouter.go '/'
-
-  'submit #searchForm': (event, instance) ->
-    event.preventDefault()
-
-  'click .js-menu': (event, instance) ->
-    Session.set 'menuOpen', !Session.get('menuOpen')
-
-  'click .userMenu': (event, instance) ->
-    event.stopImmediatePropagation()
-    instance.state.set 'userMenuOpen', !instance.state.get('userMenuOpen')
-
-  'click .recentMenu': (event, instance) ->
-    event.stopImmediatePropagation()
-    Session.set 'recentMenuOpen', !Session.get('recentMenuOpen')
-
-  'click .recentLink': (event, instance) ->
-    Session.set 'recentMenuOpen', false
-
-  'click .js-logout': ->
-    Meteor.logout()
-    FlowRouter.go '/'
-
-  'click .homeLink': ->
-    $('#searchForm input').val('')
-
-  'click .js-toggle-language': (event) ->
-    language = $(event.target).html().trim()
-    T9n.setLanguage language
-    TAPi18n.setLanguage language
-
-Template.registerHelper 'increment', (count) ->
-  return count + 1
+  'keyup .search': (event, instance) ->
+    # Throttle so we don't search for single letters
+    clearTimeout(Template.App_body.timer)
+    Template.App_body.timer = setTimeout ->
+      if $(event.target).val()
+        FlowRouter.go '/search/' + $(event.target).val()
+      else
+        FlowRouter.go '/'
+    , 500

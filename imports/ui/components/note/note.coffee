@@ -56,10 +56,10 @@ Template.note.onRendered ->
       $(noteElement.firstNode).find('.title').first().html(
         Template.notes.formatText newNote.title
       )
-    if newNote.body
-      $(noteElement.firstNode).find('.body').first().show().html(
-        Template.notes.formatText newNote.body
-      )
+      if newNote.body
+        $(noteElement.firstNode).find('.body').first().show().html(
+          Template.notes.formatText newNote.body
+        )
 
     $('.fileItem').draggable
       revert: true
@@ -170,7 +170,9 @@ Template.note.helpers
     Template.notes.getProgressClass this
 
   hasContent: ->
-    @body || @files
+    Meteor.subscribe 'files.note', @_id
+    console.log this, Files.find({ noteId: @_id }).count()
+    (@body || Files.find({ noteId: @_id }).count() > 0)
 
 Template.note.events
   'click .title a': (event, instance) ->

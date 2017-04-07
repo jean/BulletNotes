@@ -11,17 +11,13 @@ template(name='note')
           | &nbsp;
 
         if currentUser
-          button.mdl-button.mdl-js-button.mdl-button--icon(id="menu{{_id}}")
+          button.handle.mdl-button.mdl-js-button.mdl-button--icon(id="menu{{_id}}")
             i.material-icons more_vert
-        if userOwnsNote
-          a.handle.mdl-button.mdl-js-button.mdl-button--icon(href='/note/{{_id}}')
-            i.material-icons zoom_out_map
-        else
-          a.handle.mdl-button.mdl-js-button.mdl-button--icon(href='/note/{{_id}}/{{currentShareKey}}')
-            i.material-icons zoom_out_map
-              
-
           ul.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for="menu{{_id}}")
+            li.mdl-menu__item
+              a.share(href='/note/{{_id}}/{{currentShareKey}}')
+                i.glyphicon.glyphicon-search
+                |  Zoom In
             li.mdl-menu__item
               a.share(href='#', data-toggle='modal', data-target='#share_{{_id}}')
                 i.glyphicon.glyphicon-share
@@ -47,7 +43,7 @@ template(name='note')
                 a(href="javascript:function bninbox(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','http://localhost:3000/notes/inbox/'+encodeURIComponent(d.location.href)+'&t='+(new Date().getTime()));b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}bninbox();void(0)")
                   i.glyphicon.glyphicon-envelope
                   | Drag this link to your bookmarks to save pages to this list.
-
+              
       .note-title
         div(class='title task-title-sp', contenteditable='true') {{{title}}}
         if showContent
