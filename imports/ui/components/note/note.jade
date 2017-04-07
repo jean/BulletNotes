@@ -62,8 +62,8 @@ template(name='note')
         if hasContent
           a.showContent
             i.glyphicon.glyphicon-chevron-down
-    +share
-    if childNotes
-      ol
-        each childNotes
-          +note
+      +share
+      if childNotes
+        ol
+          each childNotes
+            +note
