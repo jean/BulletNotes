@@ -4,16 +4,18 @@ template(name='note')
       .options.pull-left
         span.noteNumber
           | {{count}}
-        label.expand.mdl-icon-toggle.mdl-js-icon-toggle.mdl-js-ripple-effect(id="expand_{{_id}}")
-          i.mdl-icon-toggle__label.material-icons {{expandClass}}
-        .mdl-tooltip.mdl-tooltip--large(for='expand_{{_id}}')
-          | {{_ 'notes.tooltips.expand'}}
-        span.mdl-badge.count(data-badge="{{childCount}}")
-          | &nbsp;
+        if childNotes
+          .mdl-button--colored.expand.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--mini-fab(id="expand_{{_id}}")
+            i.material-icons remove
+        else
+          .expand.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--mini-fab(id="expand_{{_id}}")
+            i.material-icons add
+          
+        if childCount
+          .mdl-tooltip.mdl-tooltip--large(for='expand_{{_id}}')
+            | {{childCount}} Child Notes
         if currentUser
-          i.handle.material-icons(id="drag_{{_id}}") drag_handle
-          .mdl-tooltip.mdl-tooltip--large(for='drag_{{_id}}')
-            | {{_ 'notes.tooltips.drag'}}
+          // Menu
           button.mdl-button.mdl-js-button.mdl-button--icon(id="menu_{{_id}}")
             i.material-icons more_vert
           .mdl-tooltip.mdl-tooltip--large(for='menu_{{_id}}')
@@ -42,6 +44,13 @@ template(name='note')
                 a(href="javascript:function bninbox(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','http://localhost:3000/notes/inbox/'+encodeURIComponent(d.location.href)+'&t='+(new Date().getTime()));b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}bninbox();void(0)")
                   i.glyphicon.glyphicon-envelope
                   | Drag this link to your bookmarks to save pages to this list.
+
+          // Handle
+          .handle.mdl-button.mdl-button--icon
+            i.material-icons(id="drag_{{_id}}") drag_handle
+          .mdl-tooltip.mdl-tooltip--large(for='drag_{{_id}}')
+            | {{_ 'notes.tooltips.drag'}}
+
               
       .note-title
         div(class='title task-title-sp', contenteditable='true') {{{title}}}
