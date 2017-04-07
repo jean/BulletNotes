@@ -1,8 +1,9 @@
 template(name='Notes_import')
-  .wrapper-message
-    .title-message {{_ 'layouts.appBody.import'}}
-    .subtitle-message
-      form.importForm
+  #import.mdl-card.mdl-shadow--2dp
+    form.importForm
+      .mdl-card__title
+        h2.mdl-card__title-text {{_ 'layouts.appBody.import'}}
+      .mdl-card__supporting-text
         h4 Workflowy
         p In Workflowy, click the down arrow in the top right, then 'Export All'. Select 'Plain Text', and copy and paste the results into the box below.
         h4 Note.d
@@ -10,4 +11,5 @@ template(name='Notes_import')
         h4 Notice
         p Be aware this process can take a long time depending on how much you are importing. 5000 items takes up to 10 minutes.
         textarea.form-control
-        input.submit.form-control.btn-primary(type='submit')
+      .mdl-card__actions.mdl-card--border
+        input.submit.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(type='submit')

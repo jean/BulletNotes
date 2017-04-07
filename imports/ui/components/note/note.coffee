@@ -260,12 +260,15 @@ Template.note.events
         $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
           .css('left', event.pageX + Template.note.previewYOffset + 'px')
           .fadeIn 'fast'
+        # This needs to be here
+        $('#preview img').mouseleave ->
+          $('#preview').remove()
 
   'mousemove .previewLink': (event) ->
     $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
       .css 'left', event.pageX + Template.note.previewYOffset + 'px'
 
-  'mouseleave .previewLink, #preview img': (event) ->
+  'mouseleave .previewLink': (event) ->
     $('#preview').remove()
 
   'keydown .title': (event, instance) ->

@@ -35,6 +35,55 @@ Template.menu.helpers
     active = ActiveRoute.name('Notes.show') and FlowRouter.getParam('_id') == note._id
     active and 'active'
 
+  hideUndoButton: ->
+    if tx.Transactions.find(
+      user_id: Meteor.userId()
+      $or: [
+        { undone: null }
+        { undone: $exists: false }
+      ]
+      expired: $exists: false).count() then true
+
+  hideRedoButton: ->
+    undoneRedoConditions = ->
+      `var undoneRedoConditions`
+      undoneRedoConditions =
+        $exists: true
+        $ne: null
+      lastAction = tx.Transactions.findOne({
+        user_id: Meteor.userId()
+        $or: [
+          { undone: null }
+          { undone: $exists: false }
+        ]
+        expired: $exists: false
+      }, sort: lastModified: -1)
+      if lastAction
+        undoneRedoConditions['$gt'] = lastAction.lastModified
+      undoneRedoConditions
+
+    if tx.Transactions.find(
+      user_id: Meteor.userId()
+      undone: undoneRedoConditions()
+      expired: $exists: false).count() then true
+
+  action: (type) ->
+    sel =
+      user_id: Meteor.userId()
+      expired: $exists: false
+    # This is for autopublish scenarios
+    existsOrNot = if type == 'redo' then undone: undoneRedoConditions() else $or: [
+      { undone: null }
+      { undone: $exists: false }
+    ]
+    sorter = {}
+    sorter[if type == 'redo' then 'undone' else 'lastModified'] = -1
+    transaction = tx.Transactions.findOne(_.extend(sel, existsOrNot), sort: sorter)
+    transaction and transaction.description
+
+  ready: ->
+    Session.get 'ready'
+
 Template.menu.events
   'click .js-menu': (event, instance) ->
     Session.set 'menuOpen', !Session.get('menuOpen')
@@ -62,5 +111,14 @@ Template.menu.events
     T9n.setLanguage language
     TAPi18n.setLanguage language
 
+  'click #undo': (event) ->
+    tx.undo()
+
+  'click #redo': (event) ->
+    tx.redo()
+
 Template.registerHelper 'increment', (count) ->
   return count + 1
+
+Template.registerHelper 'emoji', (argument) ->
+  emojione.shortnameToUnicode argument

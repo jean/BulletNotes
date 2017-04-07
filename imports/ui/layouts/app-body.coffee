@@ -84,7 +84,7 @@ Template.App_body.onCreated ->
   self.ready = new ReactiveVar
   self.autorun ->
     handle = NoteSubs.subscribe('notes.all')
-    self.ready.set handle.ready()
+    Session.set 'ready', handle.ready()
     return
   setTimeout (->
     $('.betaWarning,.devWarning').fadeOut()
@@ -161,8 +161,7 @@ Template.App_body.helpers
     if instance.state.get('menuOpen') then 'expanded' else ''
 
   ready: ->
-    instance = Template.instance()
-    instance.ready.get()
+    Session.get 'ready'
 
   noteArgs: () ->
     instance = Template.instance()
