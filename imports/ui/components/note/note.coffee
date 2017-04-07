@@ -246,28 +246,26 @@ Template.note.events
     $('#tagSearchPreview').hide()
 
   'mouseover .previewLink': (event) ->
-    @t = @title
-    @title = ''
-    c = if @t != '' then '<br/>' + @t else ''
     date = new Date
-    url = event.currentTarget.href + "?" + date.getTime()
+    url = event.currentTarget.href
     Template.note.isValidImageUrl url, (url, valid) ->
       if valid
+        if url.indexOf("?") > -1
+          imageUrl = url + "&" + date.getTime()
+        else
+          imageUrl = url + "?" + date.getTime()
         $('body').append '<p id=\'preview\'><a href=\'' +
-          url + '\' target=\'_blank\'><img src=\'' + url +
-          '\' alt=\'Image preview\' />' + c + '</p>'
+          url + '\' target=\'_blank\'><img src=\'' + imageUrl +
+          '\' alt=\'Image preview\' /></p>'
         $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
           .css('left', event.pageX + Template.note.previewYOffset + 'px')
           .fadeIn 'fast'
-        $('#preview img').mouseleave ->
-          $('#preview').remove()
 
   'mousemove .previewLink': (event) ->
     $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
       .css 'left', event.pageX + Template.note.previewYOffset + 'px'
 
-  'mouseleave .previewLink': (event) ->
-    $('#preview img').attr('src','')
+  'mouseleave .previewLink, #preview img': (event) ->
     $('#preview').remove()
 
   'keydown .title': (event, instance) ->
