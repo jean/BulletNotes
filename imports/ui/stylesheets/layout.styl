@@ -5,9 +5,13 @@ body
     background-position: right top
     background-repeat: no-repeat
 
-.mdl-layout__header.mdl-layout__header--waterfall {
-  // background: none
-}
+.mdl-layout__tab-bar-button, .mdl-layout__tab-bar, header .mdl-layout__drawer-button
+  background: none !important
+
+.mdl-layout__header.mdl-layout__header--waterfall
+  background: rgba(0,0,0,.2)
+  border-bottom: solid black 1px
+  box-shadow: 0px 3px 5px #000
 
 @keyframes pulse {
   0% {transform: scale(1);opacity:.9;}

@@ -86,10 +86,6 @@ Template.App_body.onCreated ->
     handle = NoteSubs.subscribe('notes.all')
     self.ready.set handle.ready()
     return
-  @state = new ReactiveDict
-  @state.setDefault
-    menuOpen: false
-    userMenuOpen: false
   setTimeout (->
     $('.betaWarning,.devWarning').fadeOut()
     return

@@ -171,7 +171,6 @@ Template.note.helpers
 
   hasContent: ->
     Meteor.subscribe 'files.note', @_id
-    console.log this, Files.find({ noteId: @_id }).count()
     (@body || Files.find({ noteId: @_id }).count() > 0)
 
 Template.note.events

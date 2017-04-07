@@ -13,31 +13,25 @@ template(name='note')
         if currentUser
           button.handle.mdl-button.mdl-js-button.mdl-button--icon(id="menu{{_id}}")
             i.material-icons more_vert
-          ul.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for="menu{{_id}}")
-            li.mdl-menu__item
-              a.share(href='/note/{{_id}}/{{currentShareKey}}')
-                i.glyphicon.glyphicon-search
-                |  Zoom In
-            li.mdl-menu__item
-              a.share(href='#', data-toggle='modal', data-target='#share_{{_id}}')
-                i.glyphicon.glyphicon-share
-                |  Share
-            li.mdl-menu__item
-              a.duplicate(href='#')
-                i.glyphicon.glyphicon-duplicate
-                |  Duplicate
-            li.mdl-menu__item
-              a.calendar(href='/calendar/{{_id}}')
-                i.glyphicon.glyphicon-calendar
-                |  Calendar
-            li.mdl-menu__item
-              a.kanban(href='/kanban/{{_id}}')
-                i.glyphicon.glyphicon-stats(style='transform:rotate(180deg)')
-                |  Kanban
-            li.mdl-menu__item
-              a.delete(href='#')
-                i.glyphicon.glyphicon-trash
-                |  Delete
+          .mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for="menu{{_id}}")
+            a.zoom.mdl-menu__item(href='/note/{{_id}}/{{currentShareKey}}')
+              i.glyphicon.glyphicon-search
+              |  Zoom In
+            a.share.mdl-menu__item(href='#', data-toggle='modal', data-target='#share_{{_id}}')
+              i.glyphicon.glyphicon-share
+              |  Share
+            a.duplicate.mdl-menu__item(href='#')
+              i.glyphicon.glyphicon-duplicate
+              |  Duplicate
+            a.calendar.mdl-menu__item(href='/calendar/{{_id}}')
+              i.glyphicon.glyphicon-calendar
+              |  Calendar
+            a.kanban.mdl-menu__item(href='/kanban/{{_id}}')
+              i.glyphicon.glyphicon-stats(style='transform:rotate(180deg)')
+              |  Kanban
+            a.delete.mdl-menu__item(href='#')
+              i.glyphicon.glyphicon-trash
+              |  Delete
             if inbox
               li.mdl-menu__item
                 a(href="javascript:function bninbox(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','http://localhost:3000/notes/inbox/'+encodeURIComponent(d.location.href)+'&t='+(new Date().getTime()));b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}bninbox();void(0)")
