@@ -108,4 +108,4 @@ copleykj:livestamp
 percolate:migrations
 zodiase:mdl
 twbs:bootstrap
-dispatch:mocha
+dispatch:mocha-phantomjs

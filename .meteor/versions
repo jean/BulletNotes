@@ -4,7 +4,6 @@ accounts-oauth@1.1.15
 accounts-password@1.3.4
 accounts-ui@1.1.9
 accounts-ui-unstyled@1.2.1
-aldeed:browser-tests@0.1.0
 aldeed:collection2-core@2.0.0
 aldeed:schema-deny@2.0.0
 aldeed:simple-schema@1.5.3
@@ -48,7 +47,7 @@ ddp-rate-limiter@1.0.7
 ddp-server@1.3.13
 deps@1.0.12
 diff-sequence@1.0.7
-dispatch:mocha@0.3.0
+dispatch:mocha-phantomjs@0.1.7
 dispatch:phantomjs-tests@0.0.5
 dsyko:jquery-ui-touch-punch@1.2.4
 ecmascript@0.6.3
