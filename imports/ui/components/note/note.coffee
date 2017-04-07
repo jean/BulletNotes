@@ -134,9 +134,9 @@ Template.note.helpers
   expandClass: () ->
     if @children > 0
       if ( @showChildren && !FlowRouter.getParam 'searchParam' ) || Session.get('expand_'+@_id)
-        'arrow_drop_up'
+        'remove'
       else
-        'arrow_drop_down'
+        'add'
 
   className: ->
     className = "note"
