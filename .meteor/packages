@@ -63,7 +63,6 @@ simple:rest
 
 # testing
 xolvio:cleaner
-dispatch:mocha-phantomjs
 dispatch:phantomjs-tests@=0.0.5
 practicalmeteor:chai
 practicalmeteor:sinon
@@ -109,3 +108,4 @@ copleykj:livestamp
 percolate:migrations
 zodiase:mdl
 twbs:bootstrap
+dispatch:mocha

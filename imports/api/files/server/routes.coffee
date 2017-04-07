@@ -8,8 +8,8 @@ Picker.route '/file/download/:fileId', ( params, request, response, next ) ->
   console.log params['fileId']
   if params['fileId']
     file = Files.findOne params['fileId']
-    response.setHeader( 'Content-Type', 'application/octet-stream' );
-    response.statusCode = 200;
-    response.end( file.data );
+    response.setHeader( 'Content-Type', 'application/octet-stream' )
+    response.statusCode = 200
+    response.end( file.data )
   else
-    response.statusCode = 500;
+    response.statusCode = 500

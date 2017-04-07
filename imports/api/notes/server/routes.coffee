@@ -9,8 +9,8 @@ Picker.route '/note/inbox', ( params, request, response, next ) ->
       userId: request.body.userId
       title: request.body.title
       body: request.body.body
-    response.setHeader( 'Content-Type', 'application/json' );
-    response.statusCode = 200;
-    response.end( noteId );
+    response.setHeader( 'Content-Type', 'application/json' )
+    response.statusCode = 200
+    response.end( noteId )
   else
-    response.statusCode = 500;
+    response.statusCode = 500

@@ -24,12 +24,12 @@ Template.note.previewXOffset = 10
 Template.note.previewYOffset = 10
 
 Template.note.encodeImageFileAsURL = (cb,file) ->
-    reader = new FileReader
+  reader = new FileReader
 
-    reader.onloadend = ->
-      cb reader.result
+  reader.onloadend = ->
+    cb reader.result
 
-    reader.readAsDataURL file
+  reader.readAsDataURL file
 
 Template.note.isValidImageUrl = (url, callback) ->
   $ '<img>',
@@ -99,27 +99,31 @@ Template.note.onRendered ->
         callback newResults
         return
       template: (shortname) ->
-        '<img class="emojione" src="//cdn.jsdelivr.net/emojione/assets/png/' + Template.App_body.emojiStrategy[shortname].unicode + '.png"> :' + shortname + ':'
+        '<img class="emojione" src="//cdn.jsdelivr.net/emojione/assets/png/' +
+        Template.App_body.emojiStrategy[shortname].unicode + '.png"> :' + shortname + ':'
       replace: (shortname) ->
         Template.App_body.insertingData = true
         return ':' + shortname + ': '
       index: 1
       maxCount: 10
-    } ], footer: '<a href="http://www.emoji.codes" target="_blank">Browse All<span class="arrow">»</span></a>'
+    } ], footer:
+      '<a href="http://www.emoji.codes" target="_blank">'+
+      'Browse All<span class="arrow">»</span></a>'
 
 Template.note.helpers
   currentShareKey: () ->
     FlowRouter.getParam('shareKey')
 
   count: () ->
-      @rank / 2
+    @rank / 2
 
   files: () ->
     Meteor.subscribe 'files.note', @_id
     Files.find { noteId: @_id }
 
   childNotes: () ->
-    if ( @showChildren && !FlowRouter.getParam 'searchParam' ) || Session.get 'expand_'+@_id
+    if ( @showChildren && !FlowRouter.getParam 'searchParam' ) ||
+    Session.get 'expand_'+@_id
       Meteor.subscribe 'notes.children',
         @_id,
         FlowRouter.getParam 'shareKey'
@@ -133,7 +137,8 @@ Template.note.helpers
 
   expandClass: () ->
     if @children > 0
-      if ( @showChildren && !FlowRouter.getParam 'searchParam' ) || Session.get('expand_'+@_id)
+      if ( @showChildren && !FlowRouter.getParam 'searchParam' ) ||
+      Session.get('expand_'+@_id)
         'remove'
       else
         'add'
@@ -197,7 +202,8 @@ Template.note.events
       showContent: true
     , (err, res) ->
       console.log $(event.target).closest('.noteContainer').find('.body')
-      $(event.target).closest('.noteContainer').find('.body').html(emojione.shortnameToUnicode(instance.data.body))
+      $(event.target).closest('.noteContainer').find('.body')
+      .html(emojione.shortnameToUnicode(instance.data.body))
 
   'click .hideContent': (event, instance) ->
     event.stopImmediatePropagation()
@@ -222,11 +228,12 @@ Template.note.events
 
   'mouseover .tagLink': (event) ->
     notes = Notes.search event.target.innerHTML
-    $('#tagSearchPreview').html('');
+    $('#tagSearchPreview').html('')
     notes.forEach (note) ->
       # Only show the note in the preview box if it is not the current note being hovered.
       if note._id != $(event.target).closest('.note-item').data('id')
-        $('#tagSearchPreview').append('<li><a class="previewTagLink">'+Template.notes.formatText(note.title,false)+'</a></li>')
+        $('#tagSearchPreview').append('<li><a class="previewTagLink">'+
+        Template.notes.formatText(note.title,false)+'</a></li>')
           .css('top', event.pageY - Template.note.previewXOffset + 'px')
           .css('left', event.pageX + Template.note.previewYOffset + 'px')
           .show()
@@ -273,7 +280,7 @@ Template.note.events
         event.preventDefault()
         if $('.textcomplete-dropdown:visible').length || Template.App_body.insertingData
           console.log "Cancel that"
-          # We're showing a dropdown, so don't do normal enter stuff, just render emojis and stuff.
+          # We're showing a dropdown, so just render emojis and stuff.
           # $(event.target).html Template.notes.formatText $(event.target).html()
           # Meteor.call 'notes.updateTitle', {
           #   noteId: note._id

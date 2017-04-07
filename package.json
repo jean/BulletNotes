@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "start": "ROLLBAR_SERVER_ACCESS_TOKEN=d71133c85f83465db6d1c53f347a479a ROLLBAR_CLIENT_ACCESS_TOKEN=9787fb0d1c82430f8d3139a4cf3ae742 ROLLBAR_ENVIRONMENT=local meteor -s settings.json",
-    "pretest": "coffeelint imports/; meteor reset",
-    "test": "meteor test --once --driver-package dispatch:mocha-phantomjs --port 3333 --settings settings.json",
-    "test-app": "meteor test --full-app --once --driver-package dispatch:mocha-phantomjs",
+    "pretest": "coffeelint imports/",
+    "test": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha --port 3333 --settings settings.json",
+    "test-app": "TEST_BROWSER_DRIVER=nightmare meteor test --full-app --once --driver-package dispatch:mocha",
     "test-watch": "meteor test --driver-package practicalmeteor:mocha",
     "test-app-watch": "meteor test --full-app --driver-package practicalmeteor:mocha",
-    "test-watch-terminal": "TEST_WATCH=1 meteor test --driver-package dispatch:mocha-phantomjs",
-    "test-app-watch-terminal": "TEST_WATCH=1 meteor test --full-app --driver-package dispatch:mocha-phantomjs",
+    "test-watch-terminal": "TEST_WATCH=1 TEST_BROWSER_DRIVER=nightmare meteor test --driver-package dispatch:mocha",
+    "test-app-watch-terminal": "TEST_WATCH=1 TEST_BROWSER_DRIVER=nightmare meteor test --full-app --driver-package dispatch:mocha",
     "lint": "coffeelint imports/"
   },
   "dependencies": {
@@ -32,6 +32,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.2",
     "eslint-plugin-meteor": "^4.0.0",
     "eslint-plugin-react": "^6.2.2",
+    "nightmare": "^2.10.0",
     "shell-source": "^1.1.0",
     "shelljs": "^0.7.4"
   },
