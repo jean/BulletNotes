@@ -249,7 +249,8 @@ Template.note.events
     @t = @title
     @title = ''
     c = if @t != '' then '<br/>' + @t else ''
-    url = event.currentTarget.href
+    date = new Date
+    url = event.currentTarget.href + "?" + date.getTime()
     Template.note.isValidImageUrl url, (url, valid) ->
       if valid
         $('body').append '<p id=\'preview\'><a href=\'' +
