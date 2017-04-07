@@ -4,34 +4,39 @@ template(name='note')
       .options.pull-left
         span.noteNumber
           | {{count}}
-        label.expand.mdl-icon-toggle.mdl-js-icon-toggle.mdl-js-ripple-effect(for='icon-toggle-2')
-          input#icon-toggle-2.mdl-icon-toggle__input(type='checkbox')
+        label.expand.mdl-icon-toggle.mdl-js-icon-toggle.mdl-js-ripple-effect(id="expand_{{_id}}")
           i.mdl-icon-toggle__label.material-icons {{expandClass}}
+        .mdl-tooltip.mdl-tooltip--large(for='expand_{{_id}}')
+          | {{_ 'notes.tooltips.expand'}}
         span.mdl-badge.count(data-badge="{{childCount}}")
           | &nbsp;
         if currentUser
-          i.handle.material-icons zoom_out_map
-          button.mdl-button.mdl-js-button.mdl-button--icon(id="menu{{_id}}")
+          i.handle.material-icons(id="drag_{{_id}}") drag_handle
+          .mdl-tooltip.mdl-tooltip--large(for='drag_{{_id}}')
+            | {{_ 'notes.tooltips.drag'}}
+          button.mdl-button.mdl-js-button.mdl-button--icon(id="menu_{{_id}}")
             i.material-icons more_vert
-          .mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for="menu{{_id}}")
+          .mdl-tooltip.mdl-tooltip--large(for='menu_{{_id}}')
+            | {{_ 'notes.tooltips.menu'}}
+          .mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for="menu_{{_id}}")
             a.zoom.mdl-menu__item(href='/note/{{_id}}/{{currentShareKey}}')
               i.glyphicon.glyphicon-search
-              |  Zoom In
+              |  {{_ 'notes.menu.zoom_in'}}
             a.share.mdl-menu__item(href='#', data-toggle='modal', data-target='#share_{{_id}}')
               i.glyphicon.glyphicon-share
-              |  Share
+              |  {{_ 'notes.menu.share'}}
             a.duplicate.mdl-menu__item(href='#')
               i.glyphicon.glyphicon-duplicate
-              |  Duplicate
+              |  {{_ 'notes.menu.duplicate'}}
             a.calendar.mdl-menu__item(href='/calendar/{{_id}}')
               i.glyphicon.glyphicon-calendar
-              |  Calendar
+              |  {{_ 'notes.menu.calendar'}}
             a.kanban.mdl-menu__item(href='/kanban/{{_id}}')
               i.glyphicon.glyphicon-stats(style='transform:rotate(180deg)')
-              |  Kanban
+              |  {{_ 'notes.menu.kanban'}}
             a.delete.mdl-menu__item(href='#')
               i.glyphicon.glyphicon-trash
-              |  Delete
+              |  {{_ 'notes.menu.delete'}}
             if inbox
               li.mdl-menu__item
                 a(href="javascript:function bninbox(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','http://localhost:3000/notes/inbox/'+encodeURIComponent(d.location.href)+'&t='+(new Date().getTime()));b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}bninbox();void(0)")
@@ -56,12 +61,16 @@ template(name='note')
           .filesContainer
             each files
               +file
-        a.hideContent
+        a.hideContent(id="hideContent_{{_id}}")
           i.glyphicon.glyphicon-chevron-up
+        .mdl-tooltip.mdl-tooltip--large(for='hideContent_{{_id}}')
+          | {{_ 'notes.tooltips.hide_content'}}
       else
         if hasContent
-          a.showContent
+          a.showContent(id="showContent_{{_id}}")
             i.glyphicon.glyphicon-chevron-down
+          .mdl-tooltip.mdl-tooltip--large(for='showContent_{{_id}}')
+            | {{_ 'notes.tooltips.show_content'}}
       +share
       if childNotes
         ol

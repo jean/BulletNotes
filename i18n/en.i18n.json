@@ -16,19 +16,20 @@
       "lastPublicNote": "Cannot delete the last public note.",
       "confirm": "Are you sure you want to delete the note"
     },
+    "menu": {
+      "share": "Share",
+      "zoom_in": "Zoom in",
+      "calendar": "Calendar",
+      "kanban": "Kanban",
+      "duplicate": "Duplicate",
+      "delete": "Delete"
+    },
     "show": {
       "cancel": "Cancel",
       "showMenu": "Show Menu",
       "selectAction": "Select an action",
-      "makePublic": "Make Public",
-      "makePrivate": "Make Private",
-      "delete": "Delete",
-      "makeNotePublic": "Make note public",
-      "makeNotePrivate": "Make note private",
-      "deleteNote": "Delete note",
       "typeToAdd": "Type to add new notes",
       "noNotes": "No notes here",
-      "addAbove": "Add new notes using the field above",
       "loading": "Loading notes...",
       "favorite": "Favorite",
       "calendar": "View as Calendar",
@@ -47,6 +48,14 @@
     },
     "item": {
       "noteName": "Note name"
+    },
+    "tooltips": {
+      "show_content": "Show Content",
+      "hide_content": "Hide Content",
+      "drag": "Drag to Reorder",
+      "expand": "Show child notes",
+      "collapse": "Hide child notes",
+      "menu": "Note settings menu"
     }
   },
   "useraccounts": {

@@ -6,13 +6,13 @@ template(name="menu")
         button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect.mdl-button--colored
           i.material-icons undo
         .mdl-tooltip.mdl-tooltip--large(for='undo')
-          | {{action undo}}
+          | Undo {{action undo}}
 
       if hideRedoButton
         button#redo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect.mdl-button--colored
           i.material-icons redo
         .mdl-tooltip.mdl-tooltip--large(for='redo')
-          | {{action redo}}
+          | Redo {{action redo}}
 
       if currentUser
         button#userMenu.mdl-button.mdl-js-button
