@@ -78,6 +78,10 @@
       "oldItems": "Stale notes",
       "calendar": "Calendar View",
       "kanban": "Kanban View"
+    },
+    "menu": {
+      "pinMenu": "Pin Menu Open",
+      "unpinMenu": "Unpin Menu"
     }
   },
   "pages": {

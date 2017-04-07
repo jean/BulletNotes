@@ -83,6 +83,7 @@ Template.App_body.onCreated ->
   self = this
   self.ready = new ReactiveVar
   self.autorun ->
+    Meteor.subscribe('users.prefs')
     handle = NoteSubs.subscribe('notes.all')
     Session.set 'ready', handle.ready()
     return
@@ -92,21 +93,18 @@ Template.App_body.onCreated ->
   ), 5000
 
 Template.App_body.loadFavorite = (number) ->
-  $('input').val('')
   editingNote = $(document.activeElement).hasClass('title')
-  menuVisible = $('#container').hasClass('menu-open')
   editingFocusedNote = $(document.activeElement).hasClass('title-wrapper')
   editingBody = $(document.activeElement).hasClass('body')
-  if !editingNote && !editingFocusedNote && !editingBody
+  if !editingNote && !editingFocusedNote && !editingBody && ( $('input:focus').length < 1 )
+    $('input').val('')
     NProgress.start()
     FlowRouter.go $($('.favoriteNote').get(number-1)).attr 'href'
+    menuVisible = $('#container').hasClass('menu-open')
     if menuVisible
       $('.nav-item').trigger 'click'
 
 Template.App_body.helpers
-  menuOpen: ->
-    Session.get('menuOpen') and 'menu-open'
-
   wrapClasses: ->
     classname = ''
     if Meteor.isCordova
@@ -162,6 +160,10 @@ Template.App_body.helpers
 
   ready: ->
     Session.get 'ready'
+
+  menuPin: ->
+    if Meteor.user() && Meteor.user().menuPin
+      'mdl-layout--fixed-drawer'
 
   noteArgs: () ->
     instance = Template.instance()

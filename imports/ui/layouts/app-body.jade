@@ -1,9 +1,9 @@
 template(name='App_body')
   +HammerTouchArea(gestureMap=templateGestures)
-    #container(class='{{menuOpen}} {{wrapClasses}}')
+    #container(class='{{wrapClasses}}')
       +momentum(plugin="fade")
         .mdl-layout.mdl-js-layout
-          .mdl-layout.mdl-js-layout.mdl-layout--fixed-header.mdl-layout--fixed-drawer
+          .mdl-layout.mdl-js-layout.mdl-layout--fixed-header(class="{{menuPin}}")
             header.mdl-layout__header.mdl-layout__header--waterfall
               .mdl-layout__header-row
                 // Title

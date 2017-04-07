@@ -84,6 +84,9 @@ Template.menu.helpers
   ready: ->
     Session.get 'ready'
 
+  pinMenu: ->
+    Meteor.user().menuPin
+
 Template.menu.events
   'click .js-menu': (event, instance) ->
     Session.set 'menuOpen', !Session.get('menuOpen')
@@ -102,6 +105,14 @@ Template.menu.events
   'click .js-logout': ->
     Meteor.logout()
     FlowRouter.go '/'
+
+  'click .pinMenu': ->
+    console.log Meteor.user()
+    if Meteor.user().menuPin
+      console.log "Unpin"
+      Meteor.call('users.unpinMenu')
+    else
+      Meteor.call('users.pinMenu')
 
   'click .homeLink': ->
     $('#searchForm input').val('')
