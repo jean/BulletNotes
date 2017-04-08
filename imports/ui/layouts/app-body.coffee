@@ -27,19 +27,27 @@ Meteor.startup ->
     editingNote = $(document.activeElement).hasClass('title')
     menuVisible = $('#container').hasClass('menu-open')
     switch e.keyCode
+      # m - mute
+      when 77
+          Template.App_body.toggleMute()
       # f
       when 70
-        if e.ctrlKey
-          $('.nav-item').trigger 'click'
-          $('.search').focus()
-      # `
+        $('.searchIcon').addClass('is-focused')
+        $('.search').focus()
+      # ` Back Tick
       when 192
-        if !editingNote
-          $('.nav-item').trigger 'click'
+        if Template.App_body.shouldNav()
+          if Meteor.user().menuPin
+            Meteor.call('users.setMenuPin', false)
+            Template.App_body.playSound 'menuClose'
+          else
+            Meteor.call('users.setMenuPin', true)
+            Template.App_body.playSound 'menuOpen'
       # 0
       # Home
       when 48, 36
-        if !editingNote
+        if Template.App_body.shouldNav()
+          Template.App_body.playSound 'navigate'
           FlowRouter.go('/')
       # 1
       when 49
@@ -93,16 +101,17 @@ Template.App_body.onCreated ->
   ), 5000
 
 Template.App_body.loadFavorite = (number) ->
-  editingNote = $(document.activeElement).hasClass('title')
-  editingFocusedNote = $(document.activeElement).hasClass('title-wrapper')
-  editingBody = $(document.activeElement).hasClass('body')
-  if !editingNote && !editingFocusedNote && !editingBody && ( $('input:focus').length < 1 )
+  if Template.App_body.shouldNav && $('.favoriteNote').get(number-1)
+    Template.App_body.playSound 'navigate'
     $('input').val('')
     NProgress.start()
     FlowRouter.go $($('.favoriteNote').get(number-1)).attr 'href'
-    menuVisible = $('#container').hasClass('menu-open')
-    if menuVisible
-      $('.nav-item').trigger 'click'
+
+Template.App_body.shouldNav = () ->
+  editingNote = $(document.activeElement).hasClass('title')
+  editingFocusedNote = $(document.activeElement).hasClass('title-wrapper')
+  editingBody = $(document.activeElement).hasClass('body')
+  return !editingNote && !editingFocusedNote && !editingBody && ( $('input:focus').length < 1 )
 
 Template.App_body.helpers
   wrapClasses: ->
@@ -196,8 +205,31 @@ Template.App_body.events
         FlowRouter.go '/'
     , 500
 
+  'click #scrollToTop': () ->
+    Template.App_body.playSound 'navigate'
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
+
+  'keyup .search': (event) ->
+    if event.keyCode == 27
+      $(event.currentTarget).blur()
+    true
+
 Template.App_body.playSound = (sound) ->
   if !Meteor.user().muted
     audio = new Audio('/snd/'+sound+'.wav')
     audio.volume = .5
     audio.play()
+
+Template.App_body.toggleMute = () ->
+  if Meteor.user().muted
+    Meteor.call 'users.setMuted', false, (err, res) ->
+      Template.App_body.showSnackbar
+        message: "Unmuted"
+  else
+    Meteor.call 'users.setMuted', true, (err, res) ->
+      Template.App_body.showSnackbar
+        message: "Muted"
+
+Template.App_body.showSnackbar = (data) ->
+  Template.App_body.playSound 'snackbar'
+  document.querySelector('#snackbar').MaterialSnackbar.showSnackbar(data)

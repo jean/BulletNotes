@@ -187,14 +187,19 @@ Template.note.events
 
   'click .tagLink, .atLink': (event, instance) ->
     event.stopImmediatePropagation()
+    Template.App_body.playSound 'navigate'
     FlowRouter.go(event.target.pathname)
 
   'click .zoom': ->
-    Template.App_body.playSound('navigate')
+    Template.App_body.playSound 'navigate'
+
+  'click .menuExpand': ->
+    Template.App_body.playSound 'menuOpen'
 
   'click .favorite': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
+    Template.App_body.playSound 'favorite'
     favorite.call
       noteId: instance.data._id
 
@@ -447,7 +452,6 @@ Template.note.events
           # We're showing a dropdown, don't do anything.
           event.preventDefault()
           return false
-        $(event.currentTarget).html Session.get 'preEdit'
         $(event.currentTarget).blur()
         window.getSelection().removeAllRanges()
 

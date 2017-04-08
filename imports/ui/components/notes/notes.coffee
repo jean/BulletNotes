@@ -144,6 +144,7 @@ Template.notes.events
       , file
 
   'click .newNote': (event, instance) ->
+    Template.App_body.playSound 'newNote'
     note = Notes.findOne Template.currentData().note()
     if note
       children = Notes.find { parent: note._id }
@@ -151,13 +152,11 @@ Template.notes.events
     else
       children = Notes.find { parent: null }
       parent = null
-    console.log "Got note", note
     if children
       # Overkill, but, meh. It'll get sorted. Literally.
       rank = (children.count() * 40)
     else
       rank = 1
-    console.log children.count()+" "+rank
     Meteor.call 'notes.insert', {
       title: ''
       rank: rank
@@ -242,6 +241,7 @@ Template.notes.rendered = ->
     toleranceElement: '> div.noteContainer'
     revert: 600
     update: (event, ui) ->
+      Template.App_body.playSound 'sort'
       parent = $(event.toElement).closest('ol').closest('li').data('id')
       if !parent
         parent = FlowRouter.getParam 'noteId'

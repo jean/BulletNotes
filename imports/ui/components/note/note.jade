@@ -12,13 +12,13 @@ template(name='note')
             i.material-icons add
           
         if childCount
-          .mdl-tooltip.mdl-tooltip--large(for='expand_{{_id}}')
+          .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--right(for='expand_{{_id}}')
             | {{childCount}} Child Notes
         if currentUser
           // Menu
-          button.mdl-button.mdl-js-button.mdl-button--icon(id="menu_{{_id}}")
+          button.menuExpand.mdl-button.mdl-js-button.mdl-button--icon(id="menu_{{_id}}")
             i.material-icons more_vert
-          .mdl-tooltip.mdl-tooltip--large(for='menu_{{_id}}')
+          .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--right(for='menu_{{_id}}')
             | {{_ 'notes.tooltips.menu'}}
           .mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for="menu_{{_id}}")
             a.zoom.mdl-menu__item(href='/note/{{_id}}/{{currentShareKey}}')
@@ -48,11 +48,13 @@ template(name='note')
           // Handle
           .handle.mdl-button.mdl-button--icon
             i.material-icons(id="drag_{{_id}}") drag_handle
-          .mdl-tooltip.mdl-tooltip--large(for='drag_{{_id}}')
+          .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--right(for='drag_{{_id}}')
             | {{_ 'notes.tooltips.drag'}}
 
-      .favorite.mdl-button.mdl-button--icon.mdl-js-ripple-effect(class="{{favoriteClass}}")
+      .favorite.mdl-button.mdl-button--icon.mdl-js-ripple-effect(id='favorite_{{_id}}' class='{{favoriteClass}}')
         i.material-icons favorite
+      .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--left(for='favorite_{{_id}}')
+        | {{_ 'notes.tooltips.favorite'}}
 
       .note-title
         div(class='title task-title-sp', contenteditable='true') {{{title}}}
@@ -67,15 +69,16 @@ template(name='note')
             else
               |  
       if showContent
-        input.fileInput(type='file',style='display:none')
-        if files
-          .filesContainer
-            each files
-              +file
-        a.hideContent(id="hideContent_{{_id}}")
-          i.glyphicon.glyphicon-chevron-up
-        .mdl-tooltip.mdl-tooltip--large(for='hideContent_{{_id}}')
-          | {{_ 'notes.tooltips.hide_content'}}
+        if hasContent
+          input.fileInput(type='file',style='display:none')
+          if files
+            .filesContainer
+              each files
+                +file
+          a.hideContent(id="hideContent_{{_id}}")
+            i.glyphicon.glyphicon-chevron-up
+          .mdl-tooltip.mdl-tooltip--large(for='hideContent_{{_id}}')
+            | {{_ 'notes.tooltips.hide_content'}}
       else
         if hasContent
           a.showContent(id="showContent_{{_id}}")

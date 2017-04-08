@@ -17,7 +17,7 @@ template(name='App_body')
                       .title-wrapper(style='opacity:.5;cursor:default') BulletNotes.io
                       span.count-note.pull-right {{childNoteCount}}
                 .mdl-layout-spacer
-                .mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
+                .searchIcon.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
                   label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
                     i.material-icons search
                   .mdl-textfield__expandable-holder
@@ -33,6 +33,11 @@ template(name='App_body')
               if ready
                 +Template.dynamic(template=main)
                 +footer
+                #scrollToTopWrap
+                  button#scrollToTop.hasTooltip.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect.mdl-button--accent
+                    i.material-icons arrow_upward
+                .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--top(for='scrollToTop')
+                  | Scroll To Top
               else
                 +App_loading
 
@@ -63,3 +68,6 @@ template(name='App_body')
                 | {{_ 'layouts.appBody.devWarning'}}
               .description
                 | {{{_ 'layouts.appBody.betaWarningBody'}}}
+  #snackbar.mdl-js-snackbar.mdl-snackbar
+    .mdl-snackbar__text
+    button.mdl-snackbar__action(type='button')

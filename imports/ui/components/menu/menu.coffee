@@ -125,14 +125,13 @@ Template.menu.events
   'click #menuPin': ->
     if Meteor.user().menuPin
       Meteor.call('users.setMenuPin', false)
+      Template.App_body.playSound 'menuClose'
     else
       Meteor.call('users.setMenuPin', true)
+      Template.App_body.playSound 'menuOpen'
 
   'click #mute': ->
-    if Meteor.user().muted
-      Meteor.call('users.setMuted', false)
-    else
-      Meteor.call('users.setMuted', true)
+    Template.App_body.toggleMute()
 
   'click .homeLink': ->
     $('#searchForm input').val('')
