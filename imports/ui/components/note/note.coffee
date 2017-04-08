@@ -163,7 +163,7 @@ Template.note.helpers
 
   favoriteClass: ->
     if @favorite
-      'favorited'
+      'mdl-button--colored'
 
   progress: ->
     setTimeout ->
@@ -188,6 +188,9 @@ Template.note.events
   'click .tagLink, .atLink': (event, instance) ->
     event.stopImmediatePropagation()
     FlowRouter.go(event.target.pathname)
+
+  'click .zoom': ->
+    Template.App_body.playSound('navigate')
 
   'click .favorite': (event, instance) ->
     event.preventDefault()
@@ -218,6 +221,7 @@ Template.note.events
 
   'click a.delete': (event) ->
     event.preventDefault()
+    Template.App_body.playSound 'delete'
     $(event.currentTarget).closest('.note').remove()
     Meteor.call 'notes.remove',
       noteId: @_id
@@ -316,6 +320,7 @@ Template.note.events
             #     title: topNote
             #     shareKey: FlowRouter.getParam('shareKey')
             #   }
+            Template.App_body.playSound 'newNote'
             Meteor.call 'notes.insert', {
               title: ''
               rank: note.rank + 1
@@ -362,6 +367,7 @@ Template.note.events
         if event.currentTarget.innerText.trim().length == 0
           $(event.currentTarget).closest('.note-item').prev().find('.title').focus()
           $(event.currentTarget).closest('.note-item').fadeOut()
+          Template.App_body.playSound 'delete'
           Meteor.call 'notes.remove',
             noteId: @_id
             shareKey: FlowRouter.getParam 'shareKey'
@@ -377,6 +383,7 @@ Template.note.events
             console.log prevNote
             note = this
             console.log note
+            Template.App_body.playSound 'delete'
             Meteor.call 'notes.updateTitle',
               prevNote._id,
               prevNote.title + event.target.value,
@@ -496,6 +503,11 @@ Template.note.events
   'click .expand': (event, instance) ->
     event.stopImmediatePropagation()
     event.preventDefault()
+    $('.mdl-tooltip').fadeOut().remove()
+    if instance.data.showChildren
+      Template.App_body.playSound 'collapse'
+    else
+      Template.App_body.playSound 'expand'
     Template.note.toggleChildren(instance)
 
   'dragover .title, dragover .filesContainer': (event, instance) ->

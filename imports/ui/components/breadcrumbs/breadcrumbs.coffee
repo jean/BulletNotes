@@ -31,6 +31,7 @@ Template.breadcrumbs.helpers
 
 Template.breadcrumbs.events
   "click a": (event, template) ->
+    Template.App_body.playSound('navigate')
     event.preventDefault()
     $('input.search').val('')
     setTimeout ->

@@ -4,5 +4,7 @@ Meteor.publish 'users.prefs', () ->
   user = Meteor.users.find
     _id: @userId
   ,
-    fields: { menuPin: 1 }
+    fields:
+      menuPin: 1
+      muted: 1
   user

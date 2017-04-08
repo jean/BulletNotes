@@ -5,10 +5,10 @@ template(name='note')
         span.noteNumber
           | {{count}}
         if childNotes
-          .mdl-button--colored.expand.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--mini-fab(id="expand_{{_id}}")
+          .expand.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--accent(id="expand_{{_id}}")
             i.material-icons remove
         else
-          .expand.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--mini-fab(id="expand_{{_id}}")
+          .expand.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect(id="expand_{{_id}}")
             i.material-icons add
           
         if childCount
@@ -51,7 +51,9 @@ template(name='note')
           .mdl-tooltip.mdl-tooltip--large(for='drag_{{_id}}')
             | {{_ 'notes.tooltips.drag'}}
 
-              
+      .favorite.mdl-button.mdl-button--icon.mdl-js-ripple-effect(class="{{favoriteClass}}")
+        i.material-icons favorite
+
       .note-title
         div(class='title task-title-sp', contenteditable='true') {{{title}}}
         if showContent

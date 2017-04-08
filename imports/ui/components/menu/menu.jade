@@ -15,14 +15,23 @@ template(name="menu")
           | Redo {{action redo}}
 
       if currentUser
+        button#mute.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect(class="{{muteClass}}")
+          i.material-icons {{muteIcon}}
+        .mdl-tooltip.mdl-tooltip--large(for='mute')
+          | Toggle Sounds
+
+        button#menuPin.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect(class="{{muteClass}}")
+          i.material-icons {{menuPinIcon}}
+        .mdl-tooltip.mdl-tooltip--large(for='menuPin')
+          if menuPin
+            | {{_ 'layouts.menu.unpinMenu'}}
+          else
+            | {{_ 'layouts.menu.pinMenu'}}
+
         button#userMenu.mdl-button.mdl-js-button
           i.material-icons account_box
           | {{displayName}}
         div.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for='userMenu')
-          if pinMenu
-            a.mdl-menu__item.pinMenu {{_ 'layouts.menu.unpinMenu'}}
-          else
-            a.mdl-menu__item.pinMenu {{_ 'layouts.menu.pinMenu'}}
           a.mdl-menu__item.mdl-menu__item--full-bleed-divider(href='/settings') {{_ 'layouts.appBody.settings'}}
           a.mdl-menu__item.js-logout {{_ 'layouts.appBody.logout'}}
 
@@ -44,8 +53,8 @@ template(name="menu")
       if notes.count
         each note in notes
           a.favoriteNote.mdl-navigation__link(href="{{pathFor 'Notes.show' noteId=note._id}}", class='{{activeNoteClass note}}', data-count="{{increment @index}}")
-            | {{emoji note.title}}
-            span.hotkeyHint {{increment @index}}
+            | {{{ emoji note.title }}}
+            span.hotkeyHint {{ increment @index }}
       else
         p(style="margin: 1em;color:white;")
           | No favorites yet, click the

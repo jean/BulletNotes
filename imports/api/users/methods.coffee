@@ -12,8 +12,8 @@ Meteor.methods
   'users.clearDropboxOauth': () ->
     Meteor.users.update {_id:@userId}, {$unset:{"profile.dropbox_token"}}
 
-  'users.pinMenu': () ->
-    Meteor.users.update {_id:@userId}, {$set:{menuPin:true}}
+  'users.setMenuPin': (menuPin) ->
+    Meteor.users.update {_id:@userId}, {$set:{menuPin:menuPin}}
 
-  'users.unpinMenu': () ->
-    Meteor.users.update {_id:@userId}, {$set:{menuPin:false}}
+  'users.setMuted': (muted) ->
+    Meteor.users.update {_id:@userId}, {$set:{muted:muted}}

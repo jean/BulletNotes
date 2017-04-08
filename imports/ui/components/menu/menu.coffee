@@ -84,8 +84,24 @@ Template.menu.helpers
   ready: ->
     Session.get 'ready'
 
-  pinMenu: ->
+  menuPin: ->
     Meteor.user().menuPin
+
+  menuPinIcon: ->
+    if Meteor.user().menuPin
+      'chevron_left'
+    else
+      'chevron_right'
+
+  muteIcon: ->
+    if Meteor.user().muted
+      'volume_off'
+    else
+      'volume_up'
+
+  muteClass: ->
+    if !Meteor.user().muted
+      'mdl-button--colored'
 
 Template.menu.events
   'click .js-menu': (event, instance) ->
@@ -106,13 +122,17 @@ Template.menu.events
     Meteor.logout()
     FlowRouter.go '/'
 
-  'click .pinMenu': ->
-    console.log Meteor.user()
+  'click #menuPin': ->
     if Meteor.user().menuPin
-      console.log "Unpin"
-      Meteor.call('users.unpinMenu')
+      Meteor.call('users.setMenuPin', false)
     else
-      Meteor.call('users.pinMenu')
+      Meteor.call('users.setMenuPin', true)
+
+  'click #mute': ->
+    if Meteor.user().muted
+      Meteor.call('users.setMuted', false)
+    else
+      Meteor.call('users.setMuted', true)
 
   'click .homeLink': ->
     $('#searchForm input').val('')

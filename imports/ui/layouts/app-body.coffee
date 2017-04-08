@@ -195,3 +195,9 @@ Template.App_body.events
       else
         FlowRouter.go '/'
     , 500
+
+Template.App_body.playSound = (sound) ->
+  if !Meteor.user().muted
+    audio = new Audio('/snd/'+sound+'.wav')
+    audio.volume = .5
+    audio.play()

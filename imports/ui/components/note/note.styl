@@ -13,6 +13,9 @@
 .noteContainer.dragging
   border: dashed gray 1px
 
+.note-item .note-item
+  background: none
+
 .note-item
   background: rgba(255,255,255,0.9)
   border-left: solid 4px #fff
@@ -25,7 +28,7 @@
   clear: both
 
   .options
-    margin: -10px 0 0
+    margin: -5px 1em 0 0
 
   .mdl-badge.count
     margin-left: -1.5em;
@@ -40,16 +43,13 @@
     opacity: .1
     padding: .7em
     position: absolute
-    right: 3em
-    top: .7em
+    right: 1em
+    top: .3em
     cursor: pointer
-    color: black
     transition: all 200ms ease-in;
 
-  &.favorited
-    .favorite
+  .mdl-button--colored.favorite
       opacity: 1
-      color: #ff0072
 
   .handle
     cursor: move
@@ -83,7 +83,7 @@
     font-size: 1.4em
     color: black
     min-width: 40%
-    margin: -5px 5rem 0 3rem
+    margin: -5px 5rem 0 8rem
     line-height: 1.75
   div.title:focus
       outline: none
@@ -109,11 +109,11 @@
 
 @media screen and (min-width: 40em)
   .note .favorite:hover
-    color: #f78a09
+    color: rgb(255,87,34)
     opacity: .7
 
-.favorited .favorite, .favorited .favorite:hover
-    color: #f78a09
+.favorited.mdl-button--colored, .mdl-button--colored.favorite:hover
+    color: rgb(255,87,34)
     opacity: 1
 
 .tag-list ol
