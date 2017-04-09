@@ -4,27 +4,14 @@ template(name="App_settings")
     .subtitle-message
       h4 Theme
     ul.demo-list-control.mdl-list
-      li.mdl-list__item
-        span.mdl-list__item-primary-content
-          i.material-icons.mdl-list__item-avatar person
-          |       Aaron Paul
-        span.mdl-list__item-secondary-action
-          label.demo-list-radio.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='list-option-1')
-            input#list-option-1.mdl-radio__button(type='radio', name='options', value='1', checked='')
-      li.mdl-list__item
-        span.mdl-list__item-primary-content
-          i.material-icons.mdl-list__item-avatar person
-          |       Aaron Paul
-        span.mdl-list__item-secondary-action
-          label.demo-list-radio.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='list-option-2')
-            input#list-option-2.mdl-radio__button(type='radio', name='options', value='2', checked='')
-      li.mdl-list__item
-        span.mdl-list__item-primary-content
-          i.material-icons.mdl-list__item-avatar person
-          |       Aaron Paul
-        span.mdl-list__item-secondary-action
-          label.demo-list-radio.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='list-option-3')
-            input#list-option-3.mdl-radio__button(type='radio', name='options', value='3', checked='')
+      +each themes
+        li.mdl-list__item
+          span.mdl-list__item-primary-content
+            i.material-icons.mdl-list__item-avatar person
+            | {{theme}}
+          span.mdl-list__item-secondary-action
+            label.demo-list-radio.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='theme_{{theme}}')
+              input.themeInput.mdl-radio__button(type='radio', name='options', value='1', checked='{{themeChecked theme}}', id='theme_{{theme}}' data-name='{{theme}}')
 
     .subtitle-message
       h4 {{_ 'layouts.appBody.import'}}/{{_ 'layouts.appBody.export'}}

@@ -412,7 +412,6 @@ Meteor.methods
       children.forEach (child) ->
         Meteor.call 'notes.duplicateRun', child._id, newNoteId
 
-# Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
   updateTitle
   updateBody

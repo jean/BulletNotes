@@ -38,11 +38,15 @@ Meteor.startup ->
       when 192
         if Template.App_body.shouldNav()
           if Meteor.user().menuPin
-            Meteor.call('users.setMenuPin', false)
+            Meteor.call('users.setMenuPin', {menuPin:false})
             Template.App_body.playSound 'menuClose'
+            Template.App_body.showSnackbar
+              message: "Menu unpinned"
           else
-            Meteor.call('users.setMenuPin', true)
+            Meteor.call('users.setMenuPin', {menuPin:true})
             Template.App_body.playSound 'menuOpen'
+            Template.App_body.showSnackbar
+              message: "Menu pinned"
       # 0
       # Home
       when 48, 36
@@ -174,6 +178,10 @@ Template.App_body.helpers
     if Meteor.user() && Meteor.user().menuPin
       'mdl-layout--fixed-drawer'
 
+  theme: ->
+    if Meteor.user() && Meteor.user().theme
+      "url('/img/bgs/"+Meteor.user().theme.toLowerCase()+".jpg')"
+
   noteArgs: () ->
     instance = Template.instance()
     # By finding the note with only the `_id` field set,
@@ -222,11 +230,11 @@ Template.App_body.playSound = (sound) ->
 
 Template.App_body.toggleMute = () ->
   if Meteor.user().muted
-    Meteor.call 'users.setMuted', false, (err, res) ->
+    Meteor.call 'users.setMuted', {mute:false}, (err, res) ->
       Template.App_body.showSnackbar
         message: "Unmuted"
   else
-    Meteor.call 'users.setMuted', true, (err, res) ->
+    Meteor.call 'users.setMuted', {mute:true}, (err, res) ->
       Template.App_body.showSnackbar
         message: "Muted"
 

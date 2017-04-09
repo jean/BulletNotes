@@ -7,4 +7,5 @@ Meteor.publish 'users.prefs', () ->
     fields:
       menuPin: 1
       muted: 1
+      theme: 'mountain'
   user

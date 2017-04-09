@@ -18,6 +18,11 @@ Template.App_settings.events
       $('#exportSpinner').fadeOut()
       $('#exportResult').val(res).fadeIn()
 
+  'change .themeInput': (event, instance) ->
+    Meteor.call 'users.setTheme', {theme:event.target.dataset.name}, (err, res) ->
+      Template.App_body.showSnackbar
+        message: "Theme Saved"
+
 Template.App_settings.helpers
   dropbox_token: ->
     setTimeout ->
@@ -31,3 +36,16 @@ Template.App_settings.helpers
       return Meteor.user().profile.dropbox_token
   userId: ->
     Meteor.userId()
+  themeChecked: (theme) ->
+    if Meteor.user() && theme == Meteor.user().theme
+      'checked'
+
+  themes: ->
+    [
+      {theme:'Mountain'}
+      {theme:'City'}
+      {theme:'Abstract'}
+      {theme:'Snow'}
+      {theme:'Field'}
+      {theme:'Beach'}
+    ]
