@@ -425,7 +425,7 @@ Template.note.events
           event.preventDefault()
           return false
         if event.metaKey
-          Template.note.toggleChildren(instance)
+          FlowRouter.go '/note/'+@_id
         else
           # Go to a child note if available
           note = $(event.currentTarget).closest('.note-item')
