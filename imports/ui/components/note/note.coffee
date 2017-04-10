@@ -518,9 +518,10 @@ Template.note.events
     FlowRouter.go '/note/'+instance.data._id
 
   'mouseover .handle': (event, instance) ->
-    document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
+    if !$(event.target).siblings('.mdl-menu__container').hasClass('is-visible')
+      document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
 
-  'mouseleave .note': (event, instance) ->
+  'mouseleave .note, mouseover .note-title, mouseover .expand': (event, instance) ->
     document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
 
   'dragover .title, dragover .filesContainer': (event, instance) ->

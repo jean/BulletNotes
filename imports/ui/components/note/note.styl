@@ -17,7 +17,6 @@
   background: none
 
 .note-item
-  background: rgba(255,255,255,0.9)
   border-left: solid 4px #fff
   font-size: 12px
   padding: 0px
@@ -50,6 +49,7 @@
     top: .3em
     cursor: pointer
     transition: all 200ms ease-in;
+    margin-top: -.25em;
 
   .mdl-button--colored.favorite
       opacity: 1
@@ -79,7 +79,7 @@
     margin: 10px 0 0
 
   .noteContainer
-    padding: 10px 0 10px 5px
+    padding: 5px 0 5px 5px
 
   .title
     display: block
@@ -111,11 +111,11 @@
     margin-top: -2px
 
 @media screen and (min-width: 40em)
-  .favorite, .expand
+  .note .favorite, .note .expand
     opacity: 0
   .note:hover
     transition: all 0.2s ease
-    box-shadow: rgba(0, 0, 0, 0.3) 0 16px 16px 0
+    box-shadow: rgba(0, 0, 0, 0.3) 0 0px 16px 0
     .favorite
       opacity: .1
     .expand
@@ -125,7 +125,7 @@
     color: rgb(255,87,34)
     opacity: .7
 
-.favorited.mdl-button--colored, .mdl-button--colored.favorite:hover
+.note .favorite.mdl-button--colored, .mdl-button--colored.favorite:hover
     color: rgb(255,87,34)
     opacity: 1
 
