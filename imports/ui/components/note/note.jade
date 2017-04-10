@@ -16,11 +16,7 @@ template(name='note')
             | {{childCount}} Child Notes
         if currentUser
           // Menu
-          button.menuExpand.mdl-button.mdl-js-button.mdl-button--icon(id="menu_{{_id}}")
-            i.material-icons more_vert
-          .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--right(for='menu_{{_id}}')
-            | {{_ 'notes.tooltips.menu'}}
-          .mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for="menu_{{_id}}")
+          .mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(id="menu_{{_id}}")
             a.zoom.mdl-menu__item(href='/note/{{_id}}/{{currentShareKey}}')
               i.glyphicon.glyphicon-search
               |  {{_ 'notes.menu.zoom_in'}}

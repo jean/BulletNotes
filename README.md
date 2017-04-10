@@ -4,7 +4,7 @@
 
 # BulletNotes
 
-http://www.bulletnotes.io/
+https://bulletnotes.io/
 
 ## Goal
 
@@ -21,7 +21,7 @@ An open-source, fully featured note taking, journaling, self quantification app.
 
 ## User Guide, Planned Feature List, and Bug Tracker
 
-http://www.bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA
+https://bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA
 
 ## Local Development Instructions
 

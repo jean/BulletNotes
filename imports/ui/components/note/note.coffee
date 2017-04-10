@@ -514,6 +514,15 @@ Template.note.events
       Template.App_body.playSound 'expand'
     Template.note.toggleChildren(instance)
 
+  'click .handle': (event, instance) ->
+    FlowRouter.go '/note/'+instance.data._id
+
+  'mouseover .handle': (event, instance) ->
+    document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
+
+  'mouseleave .note': (event, instance) ->
+    document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
+
   'dragover .title, dragover .filesContainer': (event, instance) ->
     $(event.currentTarget).closest('.noteContainer').addClass 'dragging'
 

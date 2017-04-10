@@ -1,12 +1,12 @@
-.tag-center > .noteContainer   .title
+.tag-center > .noteContainer  > .title
     text-align: center
-.tag-h1 > .noteContainer .title
+.tag-h1 > .noteContainer > .title
     font-size: 2.25em !important
     font-weight: bold
-.tag-h2 > .noteContainer  .title
+.tag-h2 > .noteContainer > .title
     font-size: 2em !important
     font-weight: bold
-.tag-h3 > .noteContainer  .title
+.tag-h3 > .noteContainer > .title
     font-size: 1.75em !important
     font-weight: bold
 
@@ -27,6 +27,9 @@
   line-height: 1.75
   clear: both
 
+  .expand
+    transition: all 100ms ease-in;
+
   .options
     margin: -5px 1em 0 0
 
@@ -40,7 +43,7 @@
     color: #41CAC0
 
   .favorite
-    opacity: .1
+    opacity: 0.1
     padding: .7em
     position: absolute
     right: 1em
@@ -83,7 +86,7 @@
     font-size: 1.4em
     color: black
     min-width: 40%
-    margin: -5px 5rem 0 8rem
+    margin: -5px 5rem 0 6rem
     line-height: 1.75
   div.title:focus
       outline: none
@@ -108,6 +111,16 @@
     margin-top: -2px
 
 @media screen and (min-width: 40em)
+  .favorite, .expand
+    opacity: 0
+  .note:hover
+    transition: all 0.2s ease
+    box-shadow: rgba(0, 0, 0, 0.3) 0 16px 16px 0
+    .favorite
+      opacity: .1
+    .expand
+      opacity: 1
+
   .note .favorite:hover
     color: rgb(255,87,34)
     opacity: .7

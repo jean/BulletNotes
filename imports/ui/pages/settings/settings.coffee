@@ -48,4 +48,5 @@ Template.App_settings.helpers
       {theme:'Snow'}
       {theme:'Field'}
       {theme:'Beach'}
+      {theme:'Space'}
     ]

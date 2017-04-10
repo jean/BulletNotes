@@ -47,6 +47,11 @@ Meteor.startup ->
             Template.App_body.playSound 'menuOpen'
             Template.App_body.showSnackbar
               message: "Menu pinned"
+      # , comma
+      when 188
+        if Template.App_body.shouldNav()
+          Template.App_body.playSound 'navigate'
+          FlowRouter.go('/settings')
       # 0
       # Home
       when 48, 36
@@ -105,7 +110,7 @@ Template.App_body.onCreated ->
   ), 5000
 
 Template.App_body.loadFavorite = (number) ->
-  if Template.App_body.shouldNav && $('.favoriteNote').get(number-1)
+  if Template.App_body.shouldNav() && $('.favoriteNote').get(number-1)
     Template.App_body.playSound 'navigate'
     $('input').val('')
     NProgress.start()

@@ -56,7 +56,7 @@
       "expand": "Show child notes",
       "collapse": "Hide child notes",
       "menu": "Note settings menu",
-      "favorite": "Mark note as Favorite"
+      "favorite": "Toggle note as a Favorite"
     }
   },
   "useraccounts": {
