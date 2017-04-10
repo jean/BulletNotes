@@ -515,9 +515,10 @@ Template.note.events
     Template.note.toggleChildren(instance)
 
   'click .handle': (event, instance) ->
-    FlowRouter.go '/note/'+instance.data._id
+    FlowRouter.go '/note/'+instance.data._id+'/'+FlowRouter.getParam('shareKey')
 
   'mouseover .handle': (event, instance) ->
+    event.stopImmediatePropagation()
     if !$(event.target).siblings('.mdl-menu__container').hasClass('is-visible')
       document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
 
