@@ -10,7 +10,6 @@ template(name='note')
         else
           .expand.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect(id="expand_{{_id}}")
             i.material-icons add
-          
         if childCount
           .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--right(for='expand_{{_id}}')
             | {{childCount}} Child Notes

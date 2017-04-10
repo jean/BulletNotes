@@ -520,10 +520,13 @@ Template.note.events
   'mouseover .handle': (event, instance) ->
     event.stopImmediatePropagation()
     if !$(event.target).siblings('.mdl-menu__container').hasClass('is-visible')
-      document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
+      instance.menuTimer = setTimeout ->
+        document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
+      , 200
 
   'mouseleave .note, mouseover .note-title, mouseover .expand': (event, instance) ->
     document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
+    clearTimeout instance.menuTimer
 
   'dragover .title, dragover .filesContainer': (event, instance) ->
     $(event.currentTarget).closest('.noteContainer').addClass 'dragging'

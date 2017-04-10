@@ -123,7 +123,7 @@
     opacity: 0
   .note:hover
     transition: all 0.2s ease
-    .favorite
+    > .noteContainer > .favorite
       opacity: .1
     .expand
       opacity: 1
@@ -134,7 +134,7 @@
 
 .note .favorite.mdl-button--colored, .mdl-button--colored.favorite:hover
     color: rgb(255,87,34)
-    opacity: 1
+    opacity: 1 !important
 
 .tag-list ol
   .handle
