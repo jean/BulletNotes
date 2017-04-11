@@ -124,10 +124,10 @@ Template.menu.events
 
   'click #menuPin': ->
     if Meteor.user().menuPin
-      Meteor.call('users.setMenuPin', false)
+      Meteor.call('users.setMenuPin', {menuPin:false})
       Template.App_body.playSound 'menuClose'
     else
-      Meteor.call('users.setMenuPin', true)
+      Meteor.call('users.setMenuPin', {menuPin:true})
       Template.App_body.playSound 'menuOpen'
 
   'click #mute': ->

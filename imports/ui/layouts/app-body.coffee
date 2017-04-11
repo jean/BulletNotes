@@ -32,8 +32,9 @@ Meteor.startup ->
           Template.App_body.toggleMute()
       # f
       when 70
-        $('.searchIcon').addClass('is-focused')
-        $('.search').focus()
+        if Template.App_body.shouldNav()
+          $('.searchIcon').addClass('is-focused')
+          $('.search').focus()
       # ` Back Tick
       when 192
         if Template.App_body.shouldNav()
@@ -234,14 +235,15 @@ Template.App_body.playSound = (sound) ->
     audio.play()
 
 Template.App_body.toggleMute = () ->
-  if Meteor.user().muted
-    Meteor.call 'users.setMuted', {mute:false}, (err, res) ->
-      Template.App_body.showSnackbar
-        message: "Unmuted"
-  else
-    Meteor.call 'users.setMuted', {mute:true}, (err, res) ->
-      Template.App_body.showSnackbar
-        message: "Muted"
+  if Template.App_body.shouldNav()
+    if Meteor.user().muted
+      Meteor.call 'users.setMuted', {mute:false}, (err, res) ->
+        Template.App_body.showSnackbar
+          message: "Unmuted"
+    else
+      Meteor.call 'users.setMuted', {mute:true}, (err, res) ->
+        Template.App_body.showSnackbar
+          message: "Muted"
 
 Template.App_body.showSnackbar = (data) ->
   Template.App_body.playSound 'snackbar'

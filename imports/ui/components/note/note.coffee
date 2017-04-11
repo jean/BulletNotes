@@ -188,10 +188,8 @@ Template.note.events
   'click .tagLink, .atLink': (event, instance) ->
     event.stopImmediatePropagation()
     Template.App_body.playSound 'navigate'
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
     FlowRouter.go(event.target.pathname)
-
-  'click .zoom': ->
-    Template.App_body.playSound 'navigate'
 
   'click .menuExpand': ->
     Template.App_body.playSound 'menuOpen'
@@ -515,6 +513,8 @@ Template.note.events
     Template.note.toggleChildren(instance)
 
   'click .handle': (event, instance) ->
+    Template.App_body.playSound 'navigate'
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
     FlowRouter.go '/note/'+instance.data._id+'/'+FlowRouter.getParam('shareKey')
 
   'mouseover .handle': (event, instance) ->

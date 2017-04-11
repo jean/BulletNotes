@@ -121,11 +121,11 @@
 @media screen and (min-width: 40em)
   .note .favorite, .note .expand
     opacity: 0
-  .note:hover
+  .noteContainer:hover
     transition: all 0.2s ease
-    > .noteContainer > .favorite
+    > .favorite
       opacity: .1
-    .expand
+    > .options > .expand
       opacity: 1
 
   .note .favorite:hover
