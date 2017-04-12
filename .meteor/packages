@@ -109,3 +109,6 @@ percolate:migrations
 zodiase:mdl
 twbs:bootstrap
 dispatch:mocha-phantomjs
+omega:meteor-desktop-watcher@=0.6.1
+omega:meteor-desktop-bundler@=0.6.1
+omega:meteor-desktop-localstorage@=0.0.11
