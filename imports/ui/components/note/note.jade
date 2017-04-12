@@ -37,15 +37,11 @@ template(name='note')
                   i.glyphicon.glyphicon-envelope
                   | Drag this link to your bookmarks to save pages to this list.
 
-          // Handle
-          if childCount
-            .handle.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect.hasChildren
-              i.material-icons(id="drag_{{_id}}") fiber_manual_record
-          else
-            .handle.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect
-              i.material-icons(id="drag_{{_id}}") fiber_manual_record
-          .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--right(for='drag_{{_id}}')
-            | {{_ 'notes.tooltips.drag'}}
+        // Handle
+        .handle.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect.hasChildren
+          i.material-icons(id="drag_{{_id}}") fiber_manual_record
+        .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--right(for='drag_{{_id}}')
+          | {{_ 'notes.tooltips.drag'}}
 
       .favorite.mdl-button.mdl-button--icon.mdl-js-ripple-effect(id='favorite_{{_id}}' class='{{favoriteClass}}')
         i.material-icons favorite
