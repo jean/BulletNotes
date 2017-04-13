@@ -1,15 +1,10 @@
 { Template } = require 'meteor/templating'
-{ ReactiveDict } = require 'meteor/reactive-dict'
 { Notes } = require '/imports/api/notes/notes.coffee'
 { Files } = require '/imports/api/files/files.coffee'
+{ ReactiveDict } = require 'meteor/reactive-dict'
 
 require './note.jade'
-require '/imports/ui/components/share/share.coffee'
 require '/imports/ui/components/file/file.coffee'
-require '/imports/ui/lib/emoji.coffee'
-
-{ noteRenderHold } = require '../../launch-screen.js'
-{ displayError } = require '../../lib/errors.js'
 
 import {
   favorite,
@@ -39,12 +34,17 @@ Template.note.isValidImageUrl = (url, callback) ->
     load: ->
       callback url, true
 
-Template.note.onRendered ->
+Template.note.onCreated ->
   if @data.showChildren && @data.children && !FlowRouter.getParam 'searchParam'
     Meteor.call 'notes.setChildrenLastShown', {
       noteId: @data._id
     }
 
+  @state = new ReactiveDict()
+  @state.setDefault
+    showMenu: false
+
+Template.note.onRendered ->
   noteElement = this
   Tracker.autorun ->
     newNote = Notes.findOne noteElement.data._id,
@@ -63,6 +63,7 @@ Template.note.onRendered ->
 
     $('.fileItem').draggable
       revert: true
+
     $('.note-item').droppable
       drop: (event, ui ) ->
         event.stopPropagation()
@@ -73,6 +74,8 @@ Template.note.onRendered ->
           Meteor.call 'files.setNote',
             fileId: event.toElement.dataset.id
             noteId: event.target.dataset.id
+          , (err, res) ->
+            noteElement.dragging = false
 
     $('.title,.body').textcomplete [ {
       match: /\B:([\-+\w]*)$/
@@ -161,10 +164,6 @@ Template.note.helpers
   userOwnsNote: ->
     Meteor.userId() == @owner
 
-  favoriteClass: ->
-    if @favorite
-      'mdl-button--colored'
-
   progress: ->
     setTimeout ->
       $('[data-toggle="tooltip"]').tooltip()
@@ -173,6 +172,9 @@ Template.note.helpers
 
   progressClass: ->
     Template.notes.getProgressClass this
+
+  showMenu: ->
+    Template.instance().state.get 'showMenu'
 
   hasContent: ->
     Meteor.subscribe 'files.note', @_id
@@ -194,13 +196,13 @@ Template.note.events
   'click .menuExpand': ->
     Template.App_body.playSound 'menuOpen'
 
-  'click .favorite': (event, instance) ->
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    Template.App_body.playSound 'favorite'
-    favorite.call
-      noteId: instance.data._id
-
+  # 'click .favorite': (event, instance) ->
+  #   event.preventDefault()
+  #   event.stopImmediatePropagation()
+  #   Template.App_body.playSound 'favorite'
+  #   favorite.call
+  #     noteId: instance.data._id
+  #
   'click .showContent': (event, instance) ->
     event.stopImmediatePropagation()
     setShowContent.call
@@ -513,20 +515,26 @@ Template.note.events
     Template.note.toggleChildren(instance)
 
   'click .handle': (event, instance) ->
-    Template.App_body.playSound 'navigate'
-    $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
-    FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
+    console.log instance
+    if !instance.dragging
+      Template.App_body.playSound 'navigate'
+      $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
+      FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
 
   'mouseover .handle': (event, instance) ->
     event.stopImmediatePropagation()
     if !$(event.target).siblings('.mdl-menu__container').hasClass('is-visible')
+      instance.state.set 'showMenu', true
+      console.log instance
       instance.menuTimer = setTimeout ->
+        console.log instance
         document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
       , 200
 
   'mouseleave .note, mouseover .note-title, mouseover .expand': (event, instance) ->
-    document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
-    clearTimeout instance.menuTimer
+    if instance.state.get 'showMenu', true
+      document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
+      clearTimeout instance.menuTimer
 
   'dragover .title, dragover .filesContainer': (event, instance) ->
     $(event.currentTarget).closest('.noteContainer').addClass 'dragging'

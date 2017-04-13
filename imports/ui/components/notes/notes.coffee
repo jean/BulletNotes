@@ -232,6 +232,7 @@ Template.notes.formatText = (inputText, createLinks = true) ->
   return replacedText
 
 Template.notes.rendered = ->
+  noteItem = this
   NProgress.done()
   $('.sortable').nestedSortable
     handle: '.handle'
@@ -240,6 +241,9 @@ Template.notes.rendered = ->
     opacity: .6
     toleranceElement: '> div.noteContainer'
     revert: 600
+    sort: (event, ui) ->
+      noteItem.dragging = true
+
     update: (event, ui) ->
       Template.App_body.playSound 'sort'
       parent = $(event.toElement).closest('ol').closest('li').data('id')
