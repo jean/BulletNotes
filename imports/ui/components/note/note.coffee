@@ -75,7 +75,6 @@ Template.note.onRendered ->
             fileId: event.toElement.dataset.id
             noteId: event.target.dataset.id
           , (err, res) ->
-            noteElement.dragging = false
 
     $('.title,.body').textcomplete [ {
       match: /\B:([\-+\w]*)$/
@@ -515,7 +514,7 @@ Template.note.events
     Template.note.toggleChildren(instance)
 
   'click .handle': (event, instance) ->
-    if !Blaze.getView($('#notes').get(0)).templateInstance().state.get('dragging')
+    if !Session.get 'dragging'
       Template.App_body.playSound 'navigate'
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
       FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
