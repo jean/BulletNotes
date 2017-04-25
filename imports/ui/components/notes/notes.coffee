@@ -48,9 +48,7 @@ Template.notes.onCreated ->
     @noteId = null
   @state = new ReactiveDict
   @state.setDefault
-    editing: false
-    editingNote: false
-    notesReady: false
+    dragging: false
 
   @favoriteNote = =>
     Meteor.call 'notes.favorite',
@@ -232,8 +230,10 @@ Template.notes.formatText = (inputText, createLinks = true) ->
   return replacedText
 
 Template.notes.rendered = ->
-  noteItem = this
+  notes = this
   NProgress.done()
+  # $('#notes').selectable
+  #   delay: 150
   $('.sortable').nestedSortable
     handle: '.handle'
     items: 'li.note-item'
@@ -242,7 +242,7 @@ Template.notes.rendered = ->
     toleranceElement: '> div.noteContainer'
     revert: 600
     sort: (event, ui) ->
-      noteItem.dragging = true
+      notes.state.set 'dragging', true
 
     update: (event, ui) ->
       Template.App_body.playSound 'sort'
@@ -250,6 +250,8 @@ Template.notes.rendered = ->
       if !parent
         parent = FlowRouter.getParam 'noteId'
       upperSibling = $(event.toElement).closest('li').prev('li').data('id')
+      notes.state.set 'dragging', false
+
       makeChild.call
         noteId: $(event.toElement).closest('li').data('id')
         shareKey: FlowRouter.getParam('shareKey')

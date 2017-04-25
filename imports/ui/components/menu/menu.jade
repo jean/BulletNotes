@@ -44,10 +44,9 @@ template(name="menu")
           a.mdl-menu__item.recentLink(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
           a.mdl-menu__item.recentLink(href='/search/not-viewed%3a1M') {{_ 'layouts.appBody.oldItems'}}
       else
-        .btns-group
-          a.btn-secondary(href="{{pathFor 'signin'}}")
+          a.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent(href="{{pathFor 'signin'}}")
             | {{_ 'layouts.appBody.login'}}
-          a.btn-secondary(href="{{pathFor 'join'}}")
+          a.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent(href="{{pathFor 'join'}}")
             | {{_ 'layouts.appBody.join'}}
     span.mdl-layout-title {{_ 'layouts.appBody.favorites'}}
     nav.mdl-navigation

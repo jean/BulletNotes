@@ -515,8 +515,7 @@ Template.note.events
     Template.note.toggleChildren(instance)
 
   'click .handle': (event, instance) ->
-    console.log instance
-    if !instance.dragging
+    if !Blaze.getView($('#notes').get(0)).templateInstance().state.get('dragging')
       Template.App_body.playSound 'navigate'
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
       FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
