@@ -25,7 +25,7 @@ https://bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA
 
 ## Local Development Instructions
 
-Install Meteor.
+Install the latest Node, NPM, and Meteor.
 
 Clone the repo.
 
