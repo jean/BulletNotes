@@ -6,7 +6,7 @@
 
 # meteor libraries
 meteor-base@1.0.4
-ecmascript@0.6.3
+ecmascript@0.7.2
 es5-shim@4.6.15
 check@1.2.5
 tracker@1.1.2
@@ -40,7 +40,7 @@ zimme:active-route
 tap:i18n
 
 # accounts
-accounts-password@1.3.4
+accounts-password@1.3.5
 useraccounts:core
 useraccounts:unstyled
 useraccounts:flow-routing
@@ -53,7 +53,7 @@ chriswessels:hammer
 
 # production
 juliancwirko:postcss
-standard-minifier-js@1.2.3
+standard-minifier-js@2.0.0
 ddp-rate-limiter@1.0.7
 app-prod-security
 
@@ -79,19 +79,19 @@ mquandalle:jade
 momentjs:moment
 babrahams:undo-redo
 session@1.1.7
-accounts-google@1.1.1
+accounts-google@1.1.2
 mrt:jquery-ui
 dsyko:jquery-ui-touch-punch
 stylus@2.513.9
 accounts-ui@1.1.9
 service-configuration@1.0.11
 meteorhacks:subs-manager
-email@1.1.18
+email@1.2.0
 meteorhacks:ssr
 percolate:synced-cron
 mrt:nprogress
 meteortoys:allthings
-google-config-ui
+google-config-ui@1.0.0
 aldeed:collection2-core@2.0.0
 aldeed:schema-deny
 practicalmeteor:mocha-console-runner
@@ -103,7 +103,7 @@ rzymek:fullcalendar
 ccorcos:subs-cache
 emojione:emojione
 mquandalle:jquery-textcomplete
-browser-policy
+browser-policy@1.1.0
 copleykj:livestamp
 percolate:migrations
 zodiase:mdl
