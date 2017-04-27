@@ -237,11 +237,11 @@ Template.App_body.playSound = (sound) ->
 Template.App_body.toggleMute = () ->
   if Template.App_body.shouldNav()
     if Meteor.user().muted
-      Meteor.call 'users.setMuted', {mute:false}, (err, res) ->
+      Meteor.call 'users.setMuted', {muted:false}, (err, res) ->
         Template.App_body.showSnackbar
           message: "Unmuted"
     else
-      Meteor.call 'users.setMuted', {mute:true}, (err, res) ->
+      Meteor.call 'users.setMuted', {muted:true}, (err, res) ->
         Template.App_body.showSnackbar
           message: "Muted"
 

@@ -523,7 +523,6 @@ Template.note.events
     event.stopImmediatePropagation()
     if !$(event.target).siblings('.mdl-menu__container').hasClass('is-visible')
       instance.state.set 'showMenu', true
-      console.log instance
       instance.menuTimer = setTimeout ->
         console.log instance
         document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()

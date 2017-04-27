@@ -4,39 +4,40 @@ template(name="menu")
   if ready
     nav.mdl-navigation
       if hideUndoButton
-        button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect.mdl-button--colored
+        button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
           i.material-icons undo
         .mdl-tooltip.mdl-tooltip--large(for='undo')
           | Undo {{action undo}}
 
       if hideRedoButton
-        button#redo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect.mdl-button--colored
+        button#redo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
           i.material-icons redo
         .mdl-tooltip.mdl-tooltip--large(for='redo')
           | Redo {{action redo}}
 
       if currentUser
-        button#mute.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect(class="{{muteClass}}")
-          i.material-icons {{muteIcon}}
-        .mdl-tooltip.mdl-tooltip--large(for='mute')
-          | Toggle Sounds
+        .buttonWrap
+          button#mute.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--colored.mdl-button--raised(class="{{muteClass}}")
+            i.material-icons {{muteIcon}}
+          .mdl-tooltip.mdl-tooltip--large(for='mute')
+            | Toggle Sounds
+        .buttonWrap
+          button#menuPin.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--primary.mdl-button--raised(class="{{muteClass}}")
+            i.material-icons {{menuPinIcon}}
+          .mdl-tooltip.mdl-tooltip--large(for='menuPin')
+            if menuPin
+              | {{_ 'layouts.menu.unpinMenu'}}
+            else
+              | {{_ 'layouts.menu.pinMenu'}}
 
-        button#menuPin.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect(class="{{muteClass}}")
-          i.material-icons {{menuPinIcon}}
-        .mdl-tooltip.mdl-tooltip--large(for='menuPin')
-          if menuPin
-            | {{_ 'layouts.menu.unpinMenu'}}
-          else
-            | {{_ 'layouts.menu.pinMenu'}}
-
-        button#userMenu.mdl-button.mdl-js-button
+        button#userMenu.mdl-button.mdl-js-button.mdl-js-ripple-effect.mdl-button--accent.mdl-button--raised
           i.material-icons account_box
           | {{displayName}}
         div.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for='userMenu')
           a.mdl-menu__item.mdl-menu__item--full-bleed-divider(href='/settings') {{_ 'layouts.appBody.settings'}}
           a.mdl-menu__item.js-logout {{_ 'layouts.appBody.logout'}}
 
-        button#recentMenu.mdl-button.mdl-js-button
+        button#recentMenu.mdl-button.mdl-js-button.mdl-js-ripple-effect.mdl-button--accent.mdl-button--raised
           i.material-icons timer
           | {{_ 'layouts.appBody.recent'}}
         div.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for='recentMenu')
@@ -44,9 +45,9 @@ template(name="menu")
           a.mdl-menu__item.recentLink(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
           a.mdl-menu__item.recentLink(href='/search/not-viewed%3a1M') {{_ 'layouts.appBody.oldItems'}}
       else
-          a.login.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent(href="{{pathFor 'signin'}}")
+          a.login.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'signin'}}")
             | {{_ 'layouts.appBody.login'}}
-          a.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent(href="{{pathFor 'join'}}")
+          a.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'join'}}")
             | {{_ 'layouts.appBody.join'}}
     span.mdl-layout-title {{_ 'layouts.appBody.favorites'}}
     nav.mdl-navigation
