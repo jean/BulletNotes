@@ -31,9 +31,6 @@
   line-height: 1.75
   clear: both
 
-  .expand
-    transition: all 100ms ease-in;
-
   .options
     margin: -5px 1em 0 0
 
@@ -125,14 +122,15 @@
   font-size: .75em;
 
 @media screen and (min-width: 40em)
-  .note .favorite, .note .expand
+  .note .favorite, .note .expand, .note .menuToggle
     opacity: 0
   .noteContainer:hover
     transition: all 0.2s ease
     > .favorite
       opacity: .1
-    > .options > .expand
+    > .options > .expand, > .options > .menuToggle
       opacity: 1
+
 
   .note .favorite:hover
     color: rgb(255,87,34)

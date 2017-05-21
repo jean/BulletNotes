@@ -304,8 +304,7 @@ Template.note.events
             setShowContent.call
               noteId: instance.data._id
               showContent: true
-            (err, res) ->
-              console.log $(event.target).siblings('.body')
+            , (err, res) ->
               $(event.target).siblings('.body').fadeIn().focus()
           else
             # Chop the text in half at the cursor
@@ -454,11 +453,25 @@ Template.note.events
         $(event.currentTarget).blur()
         window.getSelection().removeAllRanges()
 
+  'keydown .body': (event, instance) ->
+    note = this
+    event.stopImmediatePropagation()
+    switch event.keyCode
+      # Escape
+      when 27
+        if $('.textcomplete-dropdown:visible').length
+          # We're showing a dropdown, don't do anything.
+          event.preventDefault()
+          return false
+        $(event.currentTarget).blur()
+        window.getSelection().removeAllRanges()
+
+
   'focus div.title': (event, instance) ->
     event.stopImmediatePropagation()
     # Prevents a race condition with the emoji library
     if !Template.App_body.insertingData
-      $(event.currentTarget).html emojione.shortnameToUnicode instance.title
+      $(event.currentTarget).html emojione.shortnameToUnicode instance.data.title
     else
       setTimeout ->
         Template.App_body.insertingData = false
@@ -478,9 +491,9 @@ Template.note.events
       return
 
     title = Template.note.stripTags(event.target.innerHTML)
-    console.log "Save title", title
     $(event.target).html Template.notes.formatText title
-    if title != Template.note.stripTags(@title)
+    if title != Template.note.stripTags emojione.shortnameToUnicode @title
+      console.log "Save title", title
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
         title: title
@@ -519,14 +532,14 @@ Template.note.events
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
       FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
 
-  'mouseover .handle': (event, instance) ->
+  'click .menuToggle': (event, instance) ->
     event.stopImmediatePropagation()
     if !$(event.target).siblings('.mdl-menu__container').hasClass('is-visible')
       instance.state.set 'showMenu', true
+      # Give the menu time to render
       instance.menuTimer = setTimeout ->
-        console.log instance
         document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
-      , 200
+      , 20
 
   'mouseleave .note, mouseover .note-title, mouseover .expand': (event, instance) ->
     if instance.state.get 'showMenu', true
