@@ -14,6 +14,9 @@ template(name='note')
         if showMenu
           // Menu
           .mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(id="menu_{{_id}}")
+            a.zoom.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
+              i.glyphicon.glyphicon-zoom
+              |  {{_ 'notes.menu.zoom'}}
             a.share.mdl-menu__item(href='#', data-toggle='modal', data-target='#share_{{_id}}')
               i.glyphicon.glyphicon-share
               |  {{_ 'notes.menu.share'}}
@@ -36,7 +39,7 @@ template(name='note')
                   | Drag this link to your bookmarks to save pages to this list.
 
         // Handle
-        .handle.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect.hasChildren
+        .handle.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect.hasChildren(title="Test")
           i.material-icons(id="drag_{{_id}}") fiber_manual_record
         .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--right(for='drag_{{_id}}')
           | {{_ 'notes.tooltips.drag'}}

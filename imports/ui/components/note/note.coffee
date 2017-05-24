@@ -192,9 +192,6 @@ Template.note.events
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
     FlowRouter.go(event.target.pathname)
 
-  'click .menuExpand': ->
-    Template.App_body.playSound 'menuOpen'
-
   # 'click .favorite': (event, instance) ->
   #   event.preventDefault()
   #   event.stopImmediatePropagation()
@@ -217,6 +214,11 @@ Template.note.events
     setShowContent.call
       noteId: instance.data._id
       showContent: false
+
+  'click .zoom': (event) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    FlowRouter.go('/note/'+@_id)
 
   'click .duplicate': (event) ->
     event.preventDefault()
@@ -282,7 +284,16 @@ Template.note.events
   'keydown .title': (event, instance) ->
     note = this
     event.stopImmediatePropagation()
+    console.log event
     switch event.keyCode
+      # Cmd ] - Zoom in
+      when 221
+        if event.metaKey
+          FlowRouter.go('/note/'+instance.data._id)
+      # Cmd [ - Zoom out
+      when 219
+        if event.metaKey
+          FlowRouter.go('/note/'+instance.data.parent)
       # Enter
       when 13
         console.log $('.textcomplete-dropdown:visible')
@@ -534,7 +545,10 @@ Template.note.events
 
   'click .menuToggle': (event, instance) ->
     event.stopImmediatePropagation()
-    if !$(event.target).siblings('.mdl-menu__container').hasClass('is-visible')
+    if instance.state.get 'showMenu' == true
+      document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
+      instance.state.set 'showMenu', false
+    else
       instance.state.set 'showMenu', true
       # Give the menu time to render
       instance.menuTimer = setTimeout ->

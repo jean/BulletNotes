@@ -63,6 +63,9 @@ Template.notes.onCreated ->
       return yes
     return no
 
+Template.notes.onRendered ->
+  $('.title').first().focus()
+
 Template.notes.helpers
   notes: ->
     NProgress.done()
