@@ -171,9 +171,6 @@ Notes.schema = new SimpleSchema
   progress:
     type: Number
     optional: yes
-  focusNext:
-    type: Boolean
-    optional: yes
   deleted:
     type: Date
     optional: yes

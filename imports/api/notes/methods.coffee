@@ -317,7 +317,6 @@ export outdent = new ValidatedMethod
       children.forEach (child) ->
         Notes.update child._id, $set: level: 1
       Notes.update noteId, $set:
-        focusNext: true
         parent: null
         rank: old_parent.rank+1
     childCountDenormalizer.afterInsertNote old_parent._id
@@ -366,22 +365,7 @@ export setShowChildren = new ValidatedMethod
 
     childCountDenormalizer.afterInsertNote noteId
 
-export focus = new ValidatedMethod
-  name: 'notes.focus'
-  validate: new SimpleSchema
-    noteId: Notes.simpleSchema().schema('_id')
-  .validator
-    clean: yes
-  run: ({noteId}) ->
-    if !@userId
-      throw new (Meteor.Error)('not-authorized')
-    Notes.update
-      _id: noteId
-    ,
-      $unset: {focusNext: 1}
-
 Meteor.methods
-
   'notes.duplicate': (id, parentId = null) ->
     tx.start 'duplicate note'
     Meteor.call 'notes.duplicateRun', id

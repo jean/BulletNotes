@@ -192,13 +192,13 @@ Template.note.events
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
     FlowRouter.go(event.target.pathname)
 
-  # 'click .favorite': (event, instance) ->
-  #   event.preventDefault()
-  #   event.stopImmediatePropagation()
-  #   Template.App_body.playSound 'favorite'
-  #   favorite.call
-  #     noteId: instance.data._id
-  #
+  'click .favorite, click .unfavorite': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    Template.App_body.playSound 'favorite'
+    favorite.call
+      noteId: instance.data._id
+
   'click .showContent': (event, instance) ->
     event.stopImmediatePropagation()
     setShowContent.call
@@ -224,6 +224,16 @@ Template.note.events
     event.preventDefault()
     event.stopImmediatePropagation()
     Meteor.call 'notes.duplicate', @_id
+
+  'click .addBody': (event, instance) ->
+    setShowContent.call
+      noteId: instance.data._id
+      showContent: true
+    , (err, res) ->
+      setTimeout (->
+        $(event.target).closest('.noteContainer').find('.body').fadeIn().focus()
+      ), 20
+
 
   'click a.delete': (event) ->
     event.preventDefault()
@@ -290,10 +300,12 @@ Template.note.events
       when 221
         if event.metaKey
           FlowRouter.go('/note/'+instance.data._id)
+
       # Cmd [ - Zoom out
       when 219
         if event.metaKey
           FlowRouter.go('/note/'+instance.data.parent)
+
       # Enter
       when 13
         console.log $('.textcomplete-dropdown:visible')
@@ -345,6 +357,7 @@ Template.note.events
               $(event.target).closest('.note-item')
                 .next().find('.title').focus()
             ), 50
+
       # Tab
       when 9
         event.preventDefault()
@@ -373,6 +386,7 @@ Template.note.events
             rank: (childCount*2)+1
             shareKey: FlowRouter.getParam 'shareKey'
           }
+
       # Backspace / delete
       when 8
         if $('.textcomplete-dropdown:visible').length
@@ -409,6 +423,12 @@ Template.note.events
                   (err, res) ->
                     # Moves the caret to the correct position
                     prev.find('div.title').focus()
+
+      # . Period
+      when 190
+        if event.metaKey
+          Template.note.toggleChildren(instance)
+
       # Up
       when 38
         if $('.textcomplete-dropdown:visible').length
@@ -417,25 +437,25 @@ Template.note.events
           return false
         # Command is held
         if event.metaKey
-          Template.note.toggleChildren(instance)
+          # Move up
         else
           if $(event.currentTarget).closest('.note-item').prev().length
             $(event.currentTarget).closest('.note-item')
               .prev().find('div.title').focus()
           else
             # There is no previous note in the current sub list, go up a note.
-            $(event.currentTarget).closest('.note-item')
-              .parentsUntil('.note-item').siblings('.noteContainer')
-              .find('div.title').focus()
+            $(event.currentTarget).closest('ol').siblings('.note-title').find('.title').focus()
+
       # Down
       when 40
-        if $('.textcomplete-dropdown:visible').length
-          # We're showing a dropdown, don't do anything.
-          event.preventDefault()
-          return false
+        # Command is held
         if event.metaKey
-          FlowRouter.go '/note/'+@_id
+          # Move down
         else
+          if $('.textcomplete-dropdown:visible').length
+            # We're showing a dropdown, don't do anything.
+            event.preventDefault()
+            return false
           # Go to a child note if available
           note = $(event.currentTarget).closest('.note-item')
             .find('ol .note').first()
@@ -455,6 +475,7 @@ Template.note.events
             note.find('div.title').first().focus()
           else
             $('#new-note').focus()
+
       # Escape
       when 27
         if $('.textcomplete-dropdown:visible').length
@@ -488,9 +509,6 @@ Template.note.events
         Template.App_body.insertingData = false
       200
 
-    Meteor.call 'notes.focus',
-      noteId: @_id
-
   'blur .title': (event, instance) ->
     that = this
     event.stopPropagation()
@@ -503,7 +521,7 @@ Template.note.events
 
     title = Template.note.stripTags(event.target.innerHTML)
     $(event.target).html Template.notes.formatText title
-    if title != Template.note.stripTags emojione.shortnameToUnicode @title
+    if !@title || title != Template.note.stripTags emojione.shortnameToUnicode @title
       console.log "Save title", title
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
@@ -545,7 +563,7 @@ Template.note.events
 
   'click .menuToggle': (event, instance) ->
     event.stopImmediatePropagation()
-    if instance.state.get 'showMenu' == true
+    if instance.state.get('showMenu') == true
       document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
       instance.state.set 'showMenu', false
     else
@@ -554,11 +572,6 @@ Template.note.events
       instance.menuTimer = setTimeout ->
         document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
       , 20
-
-  'mouseleave .note, mouseover .note-title, mouseover .expand': (event, instance) ->
-    if instance.state.get 'showMenu', true
-      document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
-      clearTimeout instance.menuTimer
 
   'dragover .title, dragover .filesContainer': (event, instance) ->
     $(event.currentTarget).closest('.noteContainer').addClass 'dragging'
