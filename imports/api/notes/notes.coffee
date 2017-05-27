@@ -186,6 +186,9 @@ Notes.schema = new SimpleSchema
   childrenLastShown:
     type: Date
     optional: yes
+  updateCount:
+    type: Number
+    optional: yes
 
 Notes.attachSchema Notes.schema
 
@@ -197,6 +200,7 @@ Notes.publicFields =
   title: 1
   createdAt: 1
   updatedAt: 1
+  updateCount: 1
   level: 1
   rank: 1
   due: 1

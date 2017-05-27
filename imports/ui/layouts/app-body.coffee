@@ -96,6 +96,13 @@ Meteor.startup ->
     return
   ), CONNECTION_ISSUE_TIMEOUT
   return
+
+Template.App_body.onRendered ->
+    $(window).keyup (event) ->
+      if $(':focus').length < 1
+        if event.keyCode == 40 || event.keyCode == 38
+          $('.title').first().focus()
+
 Template.App_body.onCreated ->
   NoteSubs = new SubsManager
   self = this
@@ -218,15 +225,13 @@ Template.App_body.events
       else
         FlowRouter.go '/'
     , 500
+    if event.keyCode == 27
+      $(event.currentTarget).blur()
+    true
 
   'click #scrollToTop': () ->
     Template.App_body.playSound 'navigate'
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
-
-  'keyup .search': (event) ->
-    if event.keyCode == 27
-      $(event.currentTarget).blur()
-    true
 
 Template.App_body.playSound = (sound) ->
   if !Meteor.user().muted

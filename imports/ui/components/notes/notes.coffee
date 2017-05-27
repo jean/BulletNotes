@@ -240,7 +240,8 @@ Template.notes.rendered = ->
     placeholder: 'placeholder'
     opacity: .6
     toleranceElement: '> div.noteContainer'
-    revert: 600
+    revert: 200
+    distance: 10
     sort: (event, ui) ->
       Session.set 'dragging', true
 

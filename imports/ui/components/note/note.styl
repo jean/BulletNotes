@@ -83,7 +83,7 @@
     font-size: 1.4em
     color: black
     min-width: 40%
-    margin: -5px 0 0 6rem
+    margin: -5px 0 0 8rem
     line-height: 1.75
   div.title:focus
       outline: none
@@ -107,6 +107,15 @@
   .dropdown-menu
     margin-top: -2px
 
+.note
+  transition: all 2s ease-in-out;
+  perspective: 800px;
+  box-shadow: 0 0 5px rgba(0,0,0,0)
+
+.note.focused
+  > .noteContainer > .note-title
+    box-shadow: 0 0 5px rgba(0,0,100,1)
+
 .note.hasHiddenChildren .handle
   border: solid #999 2px;
 
@@ -115,7 +124,7 @@
 
 @media screen and (min-width: 40em)
   .note .title
-    margin: -5px 5rem 0 6rem
+    margin: -5px 5rem 0 8rem
   .note .favorite, .note .expand, .note .menuToggle
     opacity: 0
   .noteContainer:hover
@@ -230,7 +239,7 @@
 .placeholder
   box-shadow: purple 0 0 5px 1px
   border: dashed gray 1px
-  height 1em
+  height 50px
 
 #tagSearchPreview
   width: 500px

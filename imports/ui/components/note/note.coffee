@@ -43,6 +43,7 @@ Template.note.onCreated ->
   @state = new ReactiveDict()
   @state.setDefault
     showMenu: false
+    focused: false
 
 Template.note.onRendered ->
   noteElement = this
@@ -145,6 +146,14 @@ Template.note.helpers
       else
         'add'
 
+  hoverInfo: ->
+    info = 'Created '+moment(@createdAt).fromNow()+'.'
+    if @updatedAt
+      info += ' Updated '+moment(@updatedAt).fromNow()+'.'
+    if @updateCount
+      info += ' Version: '+@updateCount
+    info
+
   className: ->
     className = "note"
     if @title
@@ -158,6 +167,8 @@ Template.note.helpers
       className = className + ' noChildren'
     if @shared
       className = className + ' shared'
+    if Template.instance().state.get 'focused'
+      className = className + ' focused'
     className
 
   userOwnsNote: ->
@@ -294,7 +305,7 @@ Template.note.events
   'keydown .title': (event, instance) ->
     note = this
     event.stopImmediatePropagation()
-    console.log event
+    console.log event, instance
     switch event.keyCode
       # Cmd ] - Zoom in
       when 221
@@ -435,16 +446,17 @@ Template.note.events
           # We're showing a dropdown, don't do anything.
           event.preventDefault()
           return false
-        # Command is held
-        if event.metaKey
-          # Move up
-        else
-          if $(event.currentTarget).closest('.note-item').prev().length
+        if $(event.currentTarget).closest('.note-item').prev().length
+          if event.metaKey
+            # Move above the previous note
+
+          else
+            # Focus on the previous note
             $(event.currentTarget).closest('.note-item')
               .prev().find('div.title').focus()
-          else
-            # There is no previous note in the current sub list, go up a note.
-            $(event.currentTarget).closest('ol').siblings('.note-title').find('.title').focus()
+        else
+          # There is no previous note in the current sub list, go up a note.
+          $(event.currentTarget).closest('ol').siblings('.note-title').find('.title').focus()
 
       # Down
       when 40
@@ -500,6 +512,7 @@ Template.note.events
 
 
   'focus div.title': (event, instance) ->
+    Template.instance().state.set 'focused', true
     event.stopImmediatePropagation()
     # Prevents a race condition with the emoji library
     if !Template.App_body.insertingData
@@ -510,6 +523,7 @@ Template.note.events
       200
 
   'blur .title': (event, instance) ->
+    Template.instance().state.set 'focused', false
     that = this
     event.stopPropagation()
     # If we blurred because we hit tab and are causing an indent
