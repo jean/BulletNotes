@@ -498,17 +498,8 @@ Template.note.events
         window.getSelection().removeAllRanges()
 
 
-  'focus div.title': (event, instance) ->
-    Template.instance().state.set 'focused', true
-    event.stopImmediatePropagation()
-
-    # Prevents a race condition with the emoji library
-    if !Template.App_body.insertingData
-      $(event.currentTarget).html emojione.shortnameToUnicode instance.data.title
-    else
-      setTimeout ->
-        Template.App_body.insertingData = false
-      200
+  'click div.title': (event, instance) ->
+    Template.note.focus event, instance
 
   'blur .title': (event, instance) ->
     Template.instance().state.set 'focused', false
@@ -608,6 +599,18 @@ Template.note.toggleChildren = (instance) ->
     }
   else
     Session.set 'expand_'+instance.data._id, !Session.get('expand_'+instance.data._id)
+
+Template.note.focus = (event, instance) ->
+  Template.instance().state.set 'focused', true
+  event.stopImmediatePropagation()
+
+  # Prevents a race condition with the emoji library
+  if !Template.App_body.insertingData
+    $(event.currentTarget).html emojione.shortnameToUnicode instance.data.title
+  else
+    setTimeout ->
+      Template.App_body.insertingData = false
+    200
 
 Template.note.stripTags = (inputText) ->
   if !inputText
