@@ -48,18 +48,19 @@ Template.note.onCreated ->
 Template.note.onRendered ->
   noteElement = this
   Tracker.autorun ->
-    newNote = Notes.findOne noteElement.data._id,
+    note = Notes.findOne noteElement.data._id,
       fields:
         _id: yes
         title: yes
         body: yes
-    if newNote
+    if note
+      console.log note
       $(noteElement.firstNode).find('.title').first().html(
-        Template.notes.formatText newNote.title
+        Template.notes.formatText note.title
       )
-      if newNote.body
+      if note.body
         $(noteElement.firstNode).find('.body').first().show().html(
-          Template.notes.formatText newNote.body
+          Template.notes.formatText note.body
         )
 
     $('.fileItem').draggable
@@ -213,9 +214,8 @@ Template.note.events
       noteId: instance.data._id
       showContent: true
     , (err, res) ->
-       $(event.target).closest('.noteContainer').find('.body')
       $(event.target).closest('.noteContainer').find('.body')
-      .html(emojione.shortnameToUnicode(instance.data.body))
+        .html(emojione.shortnameToUnicode(instance.data.body))
 
   'click .hideContent': (event, instance) ->
     event.stopImmediatePropagation()

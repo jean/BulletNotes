@@ -102,12 +102,12 @@ Template.App_body.onRendered ->
   $(window).keydown (event) ->
     # If we aren't editing anything
     if $(':focus').length < 1
-      console.log event
 
       # Up or down
       if event.keyCode == 40 || event.keyCode == 38
         event.preventDefault()
         $('.title').first().focus()
+        Template.note.focus $('.title').first()[0]
 
       # Cmd + Z Undo
       if event.keyCode == 90 && event.metaKey

@@ -107,29 +107,31 @@
   .dropdown-menu
     margin-top: -2px
 
-.note
-  transition: all .2s ease-in-out;
-  perspective: 800px;
-
 .note.focused
   box-shadow: 0 0 10px rgba(0,0,255,.6)
 
-.note.hasHiddenChildren .handle
-  border: solid #999 2px;
+.note.hasHiddenChildren
+  .handle
+    border: solid #999 2px;
 
 .note .handle .material-icons
   font-size: .75em;
 
+// Large screens
 @media screen and (min-width: 40em)
-  .note .title
-    margin: -5px 5rem 0 8rem
+  .note
+    transition: all .2s ease-in-out;
+    .expand
+      opacity: 0
+    .title
+      margin: -5px 5rem 0 8rem
   .note .favorite, .note .expand, .note .menuToggle
     opacity: 0
-  .noteContainer:hover
-    transition: all 0.2s ease
-    > .favorite
-      opacity: .1
+  .note.hasHiddenChildren .noteContainer:hover
     > .options > .expand, > .options > .menuToggle
+      opacity: 1
+  .note .noteContainer:hover
+    > .options > .menuToggle
       opacity: 1
 
 

@@ -65,6 +65,7 @@ Template.notes.onCreated ->
 
 Template.notes.onRendered ->
   $('.title').first().focus()
+  Template.note.focus $('.title').first()[0]
 
 Template.notes.helpers
   notes: ->
