@@ -441,9 +441,11 @@ Template.note.events
             # Focus on the previous note
             $(event.currentTarget).closest('.note-item')
               .prev().find('div.title').focus()
+            Template.note.focus $(event.currentTarget).closest('.note-item').prev().find('div.title').last()[0]
         else
           # There is no previous note in the current sub list, go up a note.
           $(event.currentTarget).closest('ol').siblings('.note-title').find('.title').focus()
+          Template.note.focus $(event.currentTarget).closest('ol').closest('.note-item')[0]
 
       # Down
       when 40
@@ -472,6 +474,7 @@ Template.note.events
                 count++
           if note.length
             note.find('div.title').first().focus()
+            Template.note.focus note[0]
           else
             $('#new-note').focus()
 
@@ -499,7 +502,7 @@ Template.note.events
 
 
   'click div.title': (event, instance) ->
-    Template.note.focus event, instance
+    Template.note.focus event.target
 
   'blur .title': (event, instance) ->
     Template.instance().state.set 'focused', false
@@ -600,13 +603,14 @@ Template.note.toggleChildren = (instance) ->
   else
     Session.set 'expand_'+instance.data._id, !Session.get('expand_'+instance.data._id)
 
-Template.note.focus = (event, instance) ->
-  Template.instance().state.set 'focused', true
-  event.stopImmediatePropagation()
+Template.note.focus = (noteItem) ->
+  view = Blaze.getView(noteItem)
+  instance = view.templateInstance()
+  instance.state.set 'focused', true
 
   # Prevents a race condition with the emoji library
   if !Template.App_body.insertingData
-    $(event.currentTarget).html emojione.shortnameToUnicode instance.data.title
+    $(instance.firstNode).find('.title').first().html emojione.shortnameToUnicode instance.data.title
   else
     setTimeout ->
       Template.App_body.insertingData = false
