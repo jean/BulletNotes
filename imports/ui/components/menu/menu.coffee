@@ -20,14 +20,6 @@ Template.menu.helpers
       displayName = Meteor.user().profile.name
     displayName
 
-  userMenuOpen: ->
-    instance = Template.instance()
-    instance.state.get 'userMenuOpen'
-
-  recentMenuOpen: ->
-    instance = Template.instance()
-    Session.get 'recentMenuOpen'
-
   notes: ->
     Notes.find { favorite: true }, sort: favoritedAt: -1
 
@@ -106,17 +98,6 @@ Template.menu.helpers
 Template.menu.events
   'click .js-menu': (event, instance) ->
     Session.set 'menuOpen', !Session.get('menuOpen')
-
-  'click .userMenu': (event, instance) ->
-    event.stopImmediatePropagation()
-    instance.state.set 'userMenuOpen', !instance.state.get('userMenuOpen')
-
-  'click .recentMenu': (event, instance) ->
-    event.stopImmediatePropagation()
-    Session.set 'recentMenuOpen', !Session.get('recentMenuOpen')
-
-  'click .recentLink': (event, instance) ->
-    Session.set 'recentMenuOpen', false
 
   'click .js-logout': ->
     Meteor.logout()

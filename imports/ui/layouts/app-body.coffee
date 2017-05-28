@@ -98,10 +98,26 @@ Meteor.startup ->
   return
 
 Template.App_body.onRendered ->
-    $(window).keyup (event) ->
+    $(window).keydown (event) ->
+      # If we aren't editing anything
       if $(':focus').length < 1
+        console.log event
+
+        # Up or down
         if event.keyCode == 40 || event.keyCode == 38
+          event.preventDefault()
           $('.title').first().focus()
+
+        # Cmd + Z Undo
+        if event.keyCode == 90 && event.metaKey
+          event.preventDefault()
+          tx.undo()
+
+        # Cmd + Y Redo
+        else if event.keyCode == 89 && event.metaKey
+          event.preventDefault()
+          tx.redo()
+
 
 Template.App_body.onCreated ->
   NoteSubs = new SubsManager

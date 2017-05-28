@@ -5,7 +5,6 @@ import SimpleSchema from 'simpl-schema'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 import { Random } from 'meteor/random'
 
-import childCountDenormalizer from './childCountDenormalizer.coffee'
 import rankDenormalizer from './rankDenormalizer.coffee'
 
 import { Notes } from './notes.coffee'
@@ -52,10 +51,6 @@ export insert = new ValidatedMethod
       note = Notes.insert note, {tx: true}
       rankDenormalizer.updateSiblings parentId
 
-    # This is pretty inefficient.
-    # Should be smarter about it if isImport.
-    childCountDenormalizer.afterInsertNote parentId
-
     note
 
 export share = new ValidatedMethod
@@ -76,7 +71,6 @@ export share = new ValidatedMethod
       shareKey: Random.id()
       sharedEditable: editable
       sharedAt: new Date
-      updatedAt: new Date
 
 export favorite = new ValidatedMethod
   name: 'notes.favorite'
@@ -92,7 +86,6 @@ export favorite = new ValidatedMethod
     Notes.update noteId, $set:
       favorite: !note.favorite
       favoritedAt: new Date
-      updatedAt: new Date
 
 export updateBody = new ValidatedMethod
   name: 'notes.updateBody'
@@ -113,6 +106,8 @@ export updateBody = new ValidatedMethod
       Notes.update noteId, {$set: {
         body: body
         updatedAt: new Date
+      },$inc: {
+        updateCount: 1
       }}, tx: createTransaction
     else
       Notes.update noteId, {$unset: {
@@ -196,7 +191,6 @@ export updateTitle = new ValidatedMethod
     if match
       Notes.update noteId, {$set: {
         progress: match[1]
-        updatedAt: new Date
       }}
     else
       # If there is not a defined percent tag (e.g., #pct-20)
@@ -212,7 +206,6 @@ export updateTitle = new ValidatedMethod
             done++
       Notes.update note.parent, {$set: {
         progress: Math.round((done/total)*100)
-        updatedAt: new Date
       }}
 
 export makeChild = new ValidatedMethod
@@ -256,18 +249,13 @@ export makeChild = new ValidatedMethod
 
     rankDenormalizer.updateSiblings parentId
 
-    if oldParent
-      childCountDenormalizer.afterInsertNote oldParent._id
-    if parent
-      childCountDenormalizer.afterInsertNote parent._id
-
 removeRun = (id) ->
   children = Notes.find
     parent: id
   children.forEach (child) ->
     removeRun child._id
   note = Notes.findOne(id)
-  Notes.remove { _id: id }, {tx: true, softDelete: true, instant: true }
+  Notes.remove { _id: id }, { tx: true, softDelete: true }
 
 export remove = new ValidatedMethod
   name: 'notes.remove'
@@ -288,7 +276,6 @@ export remove = new ValidatedMethod
 
     tx.start 'delete note'
     removeRun noteId
-    childCountDenormalizer.afterInsertNote note.parent
     tx.commit()
 
 export outdent = new ValidatedMethod
@@ -320,7 +307,6 @@ export outdent = new ValidatedMethod
       Notes.update noteId, $set:
         parent: null
         rank: old_parent.rank+1
-    childCountDenormalizer.afterInsertNote old_parent._id
 
 export setShowContent = new ValidatedMethod
   name: 'notes.setShowContent'
@@ -364,8 +350,6 @@ export setShowChildren = new ValidatedMethod
       showChildren: show
       childrenLastShown: new Date
 
-    childCountDenormalizer.afterInsertNote noteId
-
 Meteor.methods
   'notes.duplicate': (id, parentId = null) ->
     tx.start 'duplicate note'
@@ -381,7 +365,6 @@ Meteor.methods
     newNoteId = Notes.insert
       title: note.title
       createdAt: new Date
-      updatedAt: new Date
       rank: note.rank+.5
       owner: @userId
       parent: parentId

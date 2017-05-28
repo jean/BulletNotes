@@ -246,6 +246,7 @@ Template.notes.rendered = ->
       Session.set 'dragging', true
 
     update: (event, ui) ->
+      console.log event, event.toElement, $(event.toElement).closest('li')
       Template.App_body.playSound 'sort'
       parent = $(event.toElement).closest('ol').closest('li').data('id')
       if !parent

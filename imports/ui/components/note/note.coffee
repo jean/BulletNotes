@@ -15,7 +15,7 @@ import {
   upload
 } from '/imports/api/files/methods.coffee'
 
-Template.note.previewXOffset = 10
+Template.note.previewXOffset = -100
 Template.note.previewYOffset = 10
 
 Template.note.encodeImageFileAsURL = (cb,file) ->
@@ -139,7 +139,7 @@ Template.note.helpers
     editing and 'editing'
 
   expandClass: () ->
-    if @children > 0
+    if Notes.find({parent: @_id}).count() > 0
       if ( @showChildren && !FlowRouter.getParam 'searchParam' ) ||
       Session.get('expand_'+@_id)
         'remove'
@@ -161,9 +161,10 @@ Template.note.helpers
       if tags
         tags.forEach (tag) ->
           className = className + ' tag-' + tag.substr(1).toLowerCase()
-    if !@showChildren && @children > 0
+    children = Notes.find({parent: @_id}).count()
+    if !@showChildren && children > 0
       className = className + ' hasHiddenChildren'
-    if @children < 1 || !@children
+    if children < 1 || !children
       className = className + ' noChildren'
     if @shared
       className = className + ' shared'
@@ -192,16 +193,16 @@ Template.note.helpers
 
 Template.note.events
   'click .title a': (event, instance) ->
-    if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
-      event.preventDefault()
-      event.stopImmediatePropagation()
-      window.open(event.target.href)
-
-  'click .tagLink, .atLink': (event, instance) ->
+    console.log event, instance
+    event.preventDefault()
     event.stopImmediatePropagation()
-    Template.App_body.playSound 'navigate'
-    $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
-    FlowRouter.go(event.target.pathname)
+    if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
+      window.open(event.target.href)
+    else
+      Template.App_body.playSound 'navigate'
+      $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
+      FlowRouter.go(event.target.pathname)
+
 
   'click .favorite, click .unfavorite': (event, instance) ->
     event.preventDefault()
@@ -403,7 +404,7 @@ Template.note.events
         if $('.textcomplete-dropdown:visible').length
           # We're showing a dropdown, don't do anything.
           return
-        if event.currentTarget.innerText.trim().length == 0
+        if event.currentTarget.innerText.trim().length == 0 || event.metaKey
           $(event.currentTarget).closest('.note-item').prev().find('.title').focus()
           $(event.currentTarget).closest('.note-item').fadeOut()
           Template.App_body.playSound 'delete'
@@ -512,8 +513,10 @@ Template.note.events
 
 
   'focus div.title': (event, instance) ->
+    console.log "Focus!", event
     Template.instance().state.set 'focused', true
     event.stopImmediatePropagation()
+
     # Prevents a race condition with the emoji library
     if !Template.App_body.insertingData
       $(event.currentTarget).html emojione.shortnameToUnicode instance.data.title
