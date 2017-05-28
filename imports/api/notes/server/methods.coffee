@@ -5,7 +5,6 @@ import SimpleSchema from 'simpl-schema'
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 Dropbox = require('dropbox')
 
-import childCountDenormalizer from '/imports/api/notes/childCountDenormalizer.coffee'
 import rankDenormalizer from '/imports/api/notes/rankDenormalizer.coffee'
 
 import { Notes } from '/imports/api/notes/notes.coffee'
@@ -103,7 +102,6 @@ export inbox = new ValidatedMethod
         createdAt: new Date()
         rank: 0
       rankDenormalizer.updateSiblings inboxId
-      childCountDenormalizer.afterInsertNote inboxId
       return noteId
 
 export summary = new ValidatedMethod
