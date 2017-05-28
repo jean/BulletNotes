@@ -68,9 +68,6 @@ Template.note.onRendered ->
     $('.note-item').droppable
       drop: (event, ui ) ->
         event.stopPropagation()
-        console.log event, ui
-        console.log event.toElement.className.indexOf('fileItem')
-        console.log event.toElement.className
         if event.toElement.className.indexOf('fileItem') > -1
           Meteor.call 'files.setNote',
             fileId: event.toElement.dataset.id
@@ -193,7 +190,6 @@ Template.note.helpers
 
 Template.note.events
   'click .title a': (event, instance) ->
-    console.log event, instance
     event.preventDefault()
     event.stopImmediatePropagation()
     if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
@@ -217,7 +213,7 @@ Template.note.events
       noteId: instance.data._id
       showContent: true
     , (err, res) ->
-      console.log $(event.target).closest('.noteContainer').find('.body')
+       $(event.target).closest('.noteContainer').find('.body')
       $(event.target).closest('.noteContainer').find('.body')
       .html(emojione.shortnameToUnicode(instance.data.body))
 
@@ -306,7 +302,6 @@ Template.note.events
   'keydown .title': (event, instance) ->
     note = this
     event.stopImmediatePropagation()
-    console.log event, instance
     switch event.keyCode
       # Cmd ] - Zoom in
       when 221
@@ -320,11 +315,8 @@ Template.note.events
 
       # Enter
       when 13
-        console.log $('.textcomplete-dropdown:visible')
-        console.log Template.App_body.insertingData
         event.preventDefault()
         if $('.textcomplete-dropdown:visible').length || Template.App_body.insertingData
-          console.log "Cancel that"
           # We're showing a dropdown, so just render emojis and stuff.
           # $(event.target).html Template.notes.formatText $(event.target).html()
           # Meteor.call 'notes.updateTitle', {
@@ -345,8 +337,6 @@ Template.note.events
             # Chop the text in half at the cursor
             # put what's on the left in a note on top
             # put what's to the right in a note below
-            console.log window.getSelection().anchorOffset
-            console.log event
             position = event.target.selectionStart
             text = event.target.innerHTML
             topNote = text.substr(0, position)
@@ -416,13 +406,9 @@ Template.note.events
           if position == 0
             # We're at the start of the note,
             # add this to the note above, and remove it.
-            console.log event.target.value
             prev = $(event.currentTarget).closest('.note-item').prev()
-            console.log prev
             prevNote = Blaze.getData(prev.get(0))
-            console.log prevNote
             note = this
-            console.log note
             Template.App_body.playSound 'delete'
             Meteor.call 'notes.updateTitle',
               prevNote._id,
@@ -513,7 +499,6 @@ Template.note.events
 
 
   'focus div.title': (event, instance) ->
-    console.log "Focus!", event
     Template.instance().state.set 'focused', true
     event.stopImmediatePropagation()
 
@@ -539,7 +524,6 @@ Template.note.events
     title = Template.note.stripTags(event.target.innerHTML)
     $(event.target).html Template.notes.formatText title
     if !@title || title != Template.note.stripTags emojione.shortnameToUnicode @title
-      console.log "Save title", title
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
         title: title
@@ -600,7 +584,6 @@ Template.note.events
     event.preventDefault()
     event.stopPropagation()
 
-    console.log event
 
     if event.toElement
       console.log "Move file!"
@@ -613,7 +596,6 @@ Template.note.events
             data: res
             name: name
           }, (err, res) ->
-            console.log err, res
             $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
         , file
 

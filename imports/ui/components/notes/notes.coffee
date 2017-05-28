@@ -240,22 +240,21 @@ Template.notes.rendered = ->
     placeholder: 'placeholder'
     opacity: .6
     toleranceElement: '> div.noteContainer'
-    revert: 200
-    distance: 10
+    revert: 100
+    distance: 5
     sort: (event, ui) ->
       Session.set 'dragging', true
 
     update: (event, ui) ->
-      console.log event, event.toElement, $(event.toElement).closest('li')
       Template.App_body.playSound 'sort'
-      parent = $(event.toElement).closest('ol').closest('li').data('id')
+      parent = $(ui.item).closest('ol').closest('li').data('id')
       if !parent
         parent = FlowRouter.getParam 'noteId'
-      upperSibling = $(event.toElement).closest('li').prev('li').data('id')
+      upperSibling = $(ui.item).closest('li').prev('li').data('id')
       Session.set 'dragging', false
 
       makeChild.call
-        noteId: $(event.toElement).closest('li').data('id')
+        noteId: $(ui.item).closest('li').data('id')
         shareKey: FlowRouter.getParam('shareKey')
         upperSibling: upperSibling
         parent: parent
