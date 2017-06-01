@@ -55,7 +55,6 @@ Template.note.onRendered ->
         title: yes
         body: yes
     if note
-      console.log note
       $(noteElement.firstNode).find('.title').first().html(
         Template.notes.formatText note.title
       )
