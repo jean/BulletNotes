@@ -18,11 +18,14 @@
     },
     "menu": {
       "share": "Share",
-      "zoom_in": "Zoom in",
+      "zoom": "Zoom in",
       "calendar": "Calendar",
       "kanban": "Kanban",
       "duplicate": "Duplicate",
-      "delete": "Delete"
+      "delete": "Delete",
+      "addBody": "Add a body",
+      "favorite": "Favorite",
+      "unfavorite": "Unfavorite"
     },
     "show": {
       "cancel": "Cancel",

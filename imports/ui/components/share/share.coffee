@@ -10,11 +10,11 @@ Template.share.onRendered ->
   prevTarget = undefined
 
 Template.share.events
-  'click .view': (event) ->
+  'click .viewShare': (event) ->
     event.preventDefault()
     share.call
       noteId: this._id
-  'click .edit': (event) ->
+  'click .editShare': (event) ->
     event.preventDefault()
     share.call
       noteId: this._id

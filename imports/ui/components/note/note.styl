@@ -19,9 +19,6 @@
 .noteContainer.dragging
   border: dashed gray 1px
 
-.note-item .note-item
-  background: none
-
 .note-item
   border-left: solid 4px rgba(0,0,0,0)
   border-right: solid 4px rgba(0,0,0,0)
@@ -125,9 +122,9 @@
       opacity: 0
     .title
       margin: -5px 5rem 0 8rem
-  .note .favorite, .note .expand, .note .menuToggle
+  .note .expand, .note .menuToggle
     opacity: 0
-  .note.hasHiddenChildren .noteContainer:hover
+  .note.hasChildren .noteContainer:hover
     > .options > .expand, > .options > .menuToggle
       opacity: 1
   .note .noteContainer:hover
@@ -230,11 +227,6 @@
 .note-item.shared
   .handle
     background: rgba(0, 128, 28, 0.16)
-
-.note-item.noChildren
-  .expand, .mdl-badge.count, .expand span
-    opacity: 0
-    cursor: default
 
 .placeholder
   box-shadow: purple 0 0 5px 1px

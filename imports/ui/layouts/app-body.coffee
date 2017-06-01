@@ -30,7 +30,7 @@ Meteor.startup ->
     switch e.keyCode
       # m - mute
       when 77
-          Template.App_body.toggleMute()
+        Template.App_body.toggleMute()
       # f
       when 70
         if Template.App_body.shouldNav()
@@ -145,9 +145,13 @@ Template.App_body.shouldNav = () ->
   editingNote = $(document.activeElement).hasClass('title')
   editingFocusedNote = $(document.activeElement).hasClass('title-wrapper')
   editingBody = $(document.activeElement).hasClass('body')
-  return !editingNote && !editingFocusedNote && !editingBody && ( $('input:focus').length < 1 )
+  focused = $('input:focus').length
+  return !editingNote && !editingFocusedNote && !editingBody && !focused
 
 Template.App_body.helpers
+  siteName: ->
+    ABTest.start("siteName", ['Alternative 1', 'Alternative 2', 'Alternative n'])
+
   wrapClasses: ->
     classname = ''
     if Meteor.isCordova
@@ -247,11 +251,12 @@ Template.App_body.events
     true
 
   'click #scrollToTop': () ->
+    ABTest.finish('siteName')
     Template.App_body.playSound 'navigate'
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
 Template.App_body.playSound = (sound) ->
-  if !Meteor.user().muted
+  if !Meteor.user() && Meteor.user().muted
     audio = new Audio('/snd/'+sound+'.wav')
     audio.volume = .5
     audio.play()

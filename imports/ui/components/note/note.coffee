@@ -5,6 +5,7 @@
 
 require './note.jade'
 require '/imports/ui/components/file/file.coffee'
+require '/imports/ui/components/share/share.coffee'
 
 import {
   favorite,
@@ -162,8 +163,8 @@ Template.note.helpers
     children = Notes.find({parent: @_id}).count()
     if !@showChildren && children > 0
       className = className + ' hasHiddenChildren'
-    if children < 1 || !children
-      className = className + ' noChildren'
+    if children > 0
+      className = className + ' hasChildren'
     if @shared
       className = className + ' shared'
     if Template.instance().state.get 'focused'
@@ -190,6 +191,11 @@ Template.note.helpers
     (@body || Files.find({ noteId: @_id }).count() > 0)
 
 Template.note.events
+  'click .share': (event, template) ->
+    setTimeout ->
+      $('#__blaze-root').append($('.modal.in'))
+    , 200
+
   'click .title a': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -441,11 +447,14 @@ Template.note.events
             # Focus on the previous note
             $(event.currentTarget).closest('.note-item')
               .prev().find('div.title').focus()
-            Template.note.focus $(event.currentTarget).closest('.note-item').prev().find('div.title').last()[0]
+            Template.note.focus $(event.currentTarget)
+              .closest('.note-item').prev().find('div.title').last()[0]
         else
           # There is no previous note in the current sub list, go up a note.
-          $(event.currentTarget).closest('ol').siblings('.note-title').find('.title').focus()
-          Template.note.focus $(event.currentTarget).closest('ol').closest('.note-item')[0]
+          $(event.currentTarget).closest('ol')
+            .siblings('.note-title').find('.title').focus()
+          Template.note.focus $(event.currentTarget)
+            .closest('ol').closest('.note-item')[0]
 
       # Down
       when 40
@@ -606,11 +615,14 @@ Template.note.toggleChildren = (instance) ->
 Template.note.focus = (noteItem) ->
   view = Blaze.getView(noteItem)
   instance = view.templateInstance()
-  instance.state.set 'focused', true
+  if instance.state
+    instance.state.set 'focused', true
 
   # Prevents a race condition with the emoji library
   if !Template.App_body.insertingData
-    $(instance.firstNode).find('.title').first().html emojione.shortnameToUnicode instance.data.title
+    if instance.data.title
+      $(instance.firstNode).find('.title').first()
+        .html emojione.shortnameToUnicode instance.data.title
   else
     setTimeout ->
       Template.App_body.insertingData = false

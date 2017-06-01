@@ -7,8 +7,7 @@ require './menu.jade'
 Template.menu.onCreated ->
   @state = new ReactiveDict
   @state.setDefault
-    menuOpen: false
-    userMenuOpen: false
+    menuOpen: true
 
 Template.menu.helpers
   displayName: ->
@@ -38,7 +37,7 @@ Template.menu.helpers
 
   hideRedoButton: ->
     undoneRedoConditions = ->
-      `var undoneRedoConditions`
+      'var undoneRedoConditions'
       undoneRedoConditions =
         $exists: true
         $ne: null
@@ -77,7 +76,10 @@ Template.menu.helpers
     Session.get 'ready'
 
   menuPin: ->
-    Meteor.user().menuPin
+    if Meteor.user()
+      Meteor.user().menuPin
+    else
+      true
 
   menuPinIcon: ->
     if Meteor.user().menuPin

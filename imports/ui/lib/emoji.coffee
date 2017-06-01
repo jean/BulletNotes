@@ -1,3 +1,5 @@
+#ignore jslint start
+
 { Template } = require 'meteor/templating'
 
 # emoji strategy for .textcomplete() (latest version available in our repo: emoji_strategy.json)

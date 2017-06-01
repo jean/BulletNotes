@@ -83,7 +83,7 @@ template(name='note')
             i.glyphicon.glyphicon-chevron-down
           .mdl-tooltip.mdl-tooltip--large(for='showContent_{{_id}}')
             | {{_ 'notes.tooltips.show_content'}}
-      //- +share
+      +share
       if childNotes
         ol
           each childNotes
