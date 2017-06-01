@@ -51,6 +51,9 @@ export insert = new ValidatedMethod
       note = Notes.insert note, {tx: true}
       rankDenormalizer.updateSiblings parentId
 
+    Meteor.users.update {_id:@userId},
+      {$inc:{"profile.notes_created":1}}
+
     note
 
 export share = new ValidatedMethod
@@ -113,6 +116,8 @@ export updateBody = new ValidatedMethod
       Notes.update noteId, {$unset: {
         body: 1
       }}, tx: createTransaction
+    Meteor.users.update {_id:@userId},
+      {$inc:{"profile.notes_edited":1}}
 
 export setDueDate = new ValidatedMethod
   name: 'notes.setDueDate'
@@ -207,6 +212,9 @@ export updateTitle = new ValidatedMethod
       Notes.update note.parent, {$set: {
         progress: Math.round((done/total)*100)
       }}
+
+    Meteor.users.update {_id:@userId},
+      {$inc:{"profile.notes_edited":1}}
 
 export makeChild = new ValidatedMethod
   name: 'notes.makeChild'
@@ -372,6 +380,10 @@ Meteor.methods
     ,
       tx: true
       instant: true
+
+    Meteor.users.update {_id:@userId},
+      {$inc:{"profile.notes_created":1}}
+
     children = Notes.find parent: id
     if children
       Notes.update newNoteId,
