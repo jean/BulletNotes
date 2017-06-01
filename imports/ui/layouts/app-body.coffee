@@ -31,12 +31,12 @@ Meteor.startup ->
       # m - mute
       when 77
         Template.App_body.toggleMute()
-      # f
+      # f - find / search
       when 70
         if Template.App_body.shouldNav()
           $('.searchIcon').addClass('is-focused')
           $('.search').focus()
-      # ` Back Tick
+      # ` Back Tick - toggle menu
       when 192
         if Template.App_body.shouldNav()
           if Meteor.user().menuPin
@@ -49,7 +49,7 @@ Meteor.startup ->
             Template.App_body.playSound 'menuOpen'
             Template.App_body.showSnackbar
               message: "Menu pinned"
-      # , comma
+      # , comma - load settings
       when 188
         if Template.App_body.shouldNav()
           Template.App_body.playSound 'navigate'
