@@ -150,7 +150,7 @@ Template.App_body.shouldNav = () ->
 
 Template.App_body.helpers
   siteName: ->
-    ABTest.start("siteName", ['Alternative 1', 'Alternative 2', 'Alternative n'])
+    'BulletNotes.io'
 
   wrapClasses: ->
     classname = ''
@@ -251,7 +251,6 @@ Template.App_body.events
     true
 
   'click #scrollToTop': () ->
-    ABTest.finish('siteName')
     Template.App_body.playSound 'navigate'
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
