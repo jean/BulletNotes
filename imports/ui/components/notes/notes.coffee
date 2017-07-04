@@ -254,11 +254,18 @@ Template.notes.rendered = ->
       upperSibling = $(ui.item).closest('li').prev('li').data('id')
       Session.set 'dragging', false
 
-      makeChild.call
-        noteId: $(ui.item).closest('li').data('id')
-        shareKey: FlowRouter.getParam('shareKey')
-        upperSibling: upperSibling
-        parent: parent
+      if upperSibling
+        makeChild.call
+          noteId: $(ui.item).closest('li').data('id')
+          shareKey: FlowRouter.getParam('shareKey')
+          upperSibling: upperSibling
+          parent: parent
+      else
+        makeChild.call
+          noteId: $(ui.item).closest('li').data('id')
+          shareKey: FlowRouter.getParam('shareKey')
+          rank: 0
+          parent: parent
 
 Template.notes.getProgressClass = (note) ->
   if (note.progress < 25)

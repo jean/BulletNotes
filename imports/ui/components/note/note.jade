@@ -3,16 +3,16 @@ template(name='note')
     .noteContainer
       .options.pull-left
         if childNotes
-          .expand.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--accent(id="expand_{{_id}}")
+          .expand.mdl-button.mdl-button--icon.mdl-button--accent(id="expand_{{_id}}")
             i.material-icons remove
         else
-          .expand.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect(id="expand_{{_id}}")
+          .expand.mdl-button.mdl-button--icon(id="expand_{{_id}}")
             i.material-icons add
-        .menuToggle.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect.hasChildren
+        .menuToggle.mdl-button.mdl-button--icon.hasChildren
           i.material-icons(id="drag_{{_id}}") menu
         if showMenu
           // Menu
-          .mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(id="menu_{{_id}}")
+          .mdl-menu.mdl-menu--bottom-left.mdl-js-menu(id="menu_{{_id}}")
             a.zoom.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
               i.glyphicon.glyphicon-search
               |  {{_ 'notes.menu.zoom'}}
@@ -49,10 +49,8 @@ template(name='note')
                   | Drag this link to your bookmarks to save pages to this list.
 
         // Handle
-        .handle.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect.hasChildren(title="{{hoverInfo}}")
+        .handle.mdl-button.mdl-button--icon.hasChildren(title="{{hoverInfo}}")
           i.material-icons(id="drag_{{_id}}") fiber_manual_record
-        .mdl-tooltip.mdl-tooltip--large.mdl-tooltip--right(for='drag_{{_id}}')
-          | {{_ 'notes.tooltips.drag'}}
 
       .note-title
         div(class='title task-title-sp', contenteditable='true') {{{title}}}

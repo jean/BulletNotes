@@ -441,7 +441,17 @@ Template.note.events
         if $(event.currentTarget).closest('.note-item').prev().length
           if event.metaKey
             # Move above the previous note
-
+            item = $(event.currentTarget).closest('.note-item')
+            prev = item.prev()
+            if prev.length == 0
+              return
+            prev.css('z-index', 999).css('position', 'relative').animate { top: item.height() }, 250
+            item.css('z-index', 1000).css('position', 'relative').animate { top: '-' + prev.height() }, 300, ->
+              prev.css('z-index', '').css('top', '').css 'position', ''
+              item.css('z-index', '').css('top', '').css 'position', ''
+              item.insertBefore prev
+              item.find('div.title').focus()
+              Template.note.focus item.find('div.title').last()[0]
           else
             # Focus on the previous note
             $(event.currentTarget).closest('.note-item')
@@ -460,6 +470,27 @@ Template.note.events
         # Command is held
         if event.metaKey
           # Move down
+          item = $(event.currentTarget).closest('.note-item')
+          next = item.next()
+          if next.length == 0
+            return
+          next.css('z-index', 999).css('position', 'relative').animate { top: '-' + item.height() }, 250
+          item.css('z-index', 1000).css('position', 'relative').animate { top: next.height() }, 300, ->
+            next.css('z-index', '').css('top', '').css 'position', ''
+            item.css('z-index', '').css('top', '').css 'position', ''
+            item.insertAfter next
+            item.find('div.title').focus()
+            Template.note.focus item.find('div.title').last()[0]
+            upperSibling = item.prev()
+            view = Blaze.getView(upperSibling)
+            instance = view.templateInstance()
+            console.log instance
+            Meteor.call 'notes.makeChild', {
+              noteId: @_id
+              parent: parent_id
+              upperSibling: upperSiblingId
+              shareKey: FlowRouter.getParam 'shareKey'
+            }
         else
           if $('.textcomplete-dropdown:visible').length
             # We're showing a dropdown, don't do anything.

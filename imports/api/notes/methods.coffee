@@ -239,6 +239,8 @@ export makeChild = new ValidatedMethod
     if upperSibling
       upperSibling = Notes.findOne(upperSibling)
       rank = upperSibling.rank + 1
+    else
+      rank = Notes.find({parent:parent._id}).count() * 2
 
     if !rank
       rank = 1
@@ -248,6 +250,11 @@ export makeChild = new ValidatedMethod
     level = 0
     if parent
       parentId = parent._id
+
+    Notes.update parentId, {$set:
+      showChildren: true
+      childrenLastShown: new Date
+    }, {tx: true }
 
     Notes.update noteId, {$set:
       rank: rank
