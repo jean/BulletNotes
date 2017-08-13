@@ -54,7 +54,7 @@ template(name='note')
 
       .note-title
         div(class='title task-title-sp', contenteditable='true') {{{title}}}
-        if showContent
+        //- if showContent
           if progress
             .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
               .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
@@ -64,7 +64,7 @@ template(name='note')
               | {{body}}
             else
               |  
-      if showContent
+      //- if showContent
         if hasContent
           input.fileInput(type='file',style='display:none')
           if files
@@ -75,13 +75,13 @@ template(name='note')
             i.glyphicon.glyphicon-chevron-up
           .mdl-tooltip.mdl-tooltip--large(for='hideContent_{{_id}}')
             | {{_ 'notes.tooltips.hide_content'}}
-      else
+      //- else
         if hasContent
           a.showContent(id="showContent_{{_id}}")
             i.glyphicon.glyphicon-chevron-down
           .mdl-tooltip.mdl-tooltip--large(for='showContent_{{_id}}')
             | {{_ 'notes.tooltips.show_content'}}
-      +share
+      //- +share
       if childNotes
         ol
           each childNotes

@@ -6,6 +6,7 @@ import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 import { Random } from 'meteor/random'
 
 import rankDenormalizer from './rankDenormalizer.coffee'
+import childCountDenormalizer from './childCountDenormalizer.coffee'
 
 import { Notes } from './notes.coffee'
 
@@ -49,7 +50,10 @@ export insert = new ValidatedMethod
       note = Notes.insert note
     else
       note = Notes.insert note, {tx: true}
-      rankDenormalizer.updateSiblings parentId
+
+    rankDenormalizer.updateSiblings parentId
+
+    childCountDenormalizer.afterInsertNote parentId
 
     Meteor.users.update {_id:@userId},
       {$inc:{"profile.notes_created":1}}
@@ -262,6 +266,11 @@ export makeChild = new ValidatedMethod
     }, {tx: true }
     tx.commit()
 
+    if oldParent
+      childCountDenormalizer.afterInsertNote oldParent._id
+    if parent
+       childCountDenormalizer.afterInsertNote parent._id
+
     rankDenormalizer.updateSiblings parentId
 
 removeRun = (id) ->
@@ -293,6 +302,8 @@ export remove = new ValidatedMethod
     removeRun noteId
     tx.commit()
 
+    childCountDenormalizer.afterInsertNote note.parent
+
 export outdent = new ValidatedMethod
   name: 'notes.outdent'
   validate: new SimpleSchema
@@ -322,6 +333,8 @@ export outdent = new ValidatedMethod
       Notes.update noteId, $set:
         parent: null
         rank: old_parent.rank+1
+
+    childCountDenormalizer.afterInsertNote old_parent._id
 
 export setShowContent = new ValidatedMethod
   name: 'notes.setShowContent'

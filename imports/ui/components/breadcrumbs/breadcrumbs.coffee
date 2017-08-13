@@ -34,6 +34,6 @@ Template.breadcrumbs.events
     Template.App_body.playSound('navigate')
     event.preventDefault()
     $('input.search').val('')
-    setTimeout ->
-      FlowRouter.go event.currentTarget.pathname
-    , 50
+    # setTimeout ->
+    #   # FlowRouter.go event.currentTarget.pathname
+    # , 50

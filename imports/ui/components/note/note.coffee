@@ -49,67 +49,28 @@ Template.note.onCreated ->
 Template.note.onRendered ->
   noteElement = this
   Tracker.autorun ->
-    note = Notes.findOne noteElement.data._id,
-      fields:
-        _id: yes
-        title: yes
-        body: yes
-    if note
+    console.log noteElement
+
+    if noteElement.data.title
       $(noteElement.firstNode).find('.title').first().html(
-        Template.notes.formatText note.title
+        Template.notes.formatText noteElement.data.title
       )
-      if note.body
+      if noteElement.data.body
         $(noteElement.firstNode).find('.body').first().show().html(
-          Template.notes.formatText note.body
+          Template.notes.formatText noteElement.data.body
         )
 
-    $('.fileItem').draggable
-      revert: true
-
-    $('.note-item').droppable
-      drop: (event, ui ) ->
-        event.stopPropagation()
-        if event.toElement.className.indexOf('fileItem') > -1
-          Meteor.call 'files.setNote',
-            fileId: event.toElement.dataset.id
-            noteId: event.target.dataset.id
-          , (err, res) ->
-
-    $('.title,.body').textcomplete [ {
-      match: /\B:([\-+\w]*)$/
-      search: (term, callback) ->
-        results = []
-        results2 = []
-        results3 = []
-        $.each Template.App_body.emojiStrategy, (shortname, data) ->
-          if shortname.indexOf(term) > -1
-            results.push shortname
-          else
-            if data.aliases != null and data.aliases.indexOf(term) > -1
-              results2.push shortname
-            else if data.keywords != null and data.keywords.indexOf(term) > -1
-              results3.push shortname
-          return
-        if term.length >= 3
-          results.sort (a, b) ->
-            a.length > b.length
-          results2.sort (a, b) ->
-            a.length > b.length
-          results3.sort()
-        newResults = results.concat(results2).concat(results3)
-        callback newResults
-        return
-      template: (shortname) ->
-        '<img class="emojione" src="//cdn.jsdelivr.net/emojione/assets/png/' +
-        Template.App_body.emojiStrategy[shortname].unicode + '.png"> :' + shortname + ':'
-      replace: (shortname) ->
-        Template.App_body.insertingData = true
-        return ':' + shortname + ': '
-      index: 1
-      maxCount: 10
-    } ], footer:
-      '<a href="http://www.emoji.codes" target="_blank">'+
-      'Browse All<span class="arrow">»</span></a>'
+    # $('.fileItem').draggable
+    #   revert: true
+    #
+    # $('.note-item').droppable
+    #   drop: (event, ui ) ->
+    #     event.stopPropagation()
+    #     if event.toElement.className.indexOf('fileItem') > -1
+    #       Meteor.call 'files.setNote',
+    #         fileId: event.toElement.dataset.id
+    #         noteId: event.target.dataset.id
+    #       , (err, res) ->
 
 Template.note.helpers
   currentShareKey: () ->
@@ -159,10 +120,9 @@ Template.note.helpers
       if tags
         tags.forEach (tag) ->
           className = className + ' tag-' + tag.substr(1).toLowerCase()
-    children = Notes.find({parent: @_id}).count()
-    if !@showChildren && children > 0
+    if !@showChildren && @children > 0
       className = className + ' hasHiddenChildren'
-    if children > 0
+    if @children > 0
       className = className + ' hasChildren'
     if @shared
       className = className + ' shared'
@@ -185,9 +145,9 @@ Template.note.helpers
   showMenu: ->
     Template.instance().state.get 'showMenu'
 
-  hasContent: ->
-    Meteor.subscribe 'files.note', @_id
-    (@body || Files.find({ noteId: @_id }).count() > 0)
+  # hasContent: ->
+  #   Meteor.subscribe 'files.note', @_id
+  #   (@body || Files.find({ noteId: @_id }).count() > 0)
 
 Template.note.events
   'click .share': (event, template) ->
@@ -321,16 +281,7 @@ Template.note.events
       # Enter
       when 13
         event.preventDefault()
-        if $('.textcomplete-dropdown:visible').length || Template.App_body.insertingData
-          # We're showing a dropdown, so just render emojis and stuff.
-          # $(event.target).html Template.notes.formatText $(event.target).html()
-          # Meteor.call 'notes.updateTitle', {
-          #   noteId: note._id
-          #   title: topNote
-          #   shareKey: FlowRouter.getParam('shareKey')
-          # }, (err, res) ->
-          #   $(event.target).blur()
-        else
+        if $('.textcomplete-dropdown:visible').length < 1
           if event.shiftKey
             # Edit the body
             setShowContent.call
@@ -540,8 +491,45 @@ Template.note.events
         window.getSelection().removeAllRanges()
 
 
-  'click div.title': (event, instance) ->
+  'click .title': (event, instance) ->
     Template.note.focus event.target
+
+  'focus .title, focus .body': (event, instance) ->
+      $('.title,.body').textcomplete [ {
+        match: /\B:([\-+\w]*)$/
+        search: (term, callback) ->
+          results = []
+          results2 = []
+          results3 = []
+          $.each Template.App_body.emojiStrategy, (shortname, data) ->
+            if shortname.indexOf(term) > -1
+              results.push shortname
+            else
+              if data.aliases != null and data.aliases.indexOf(term) > -1
+                results2.push shortname
+              else if data.keywords != null and data.keywords.indexOf(term) > -1
+                results3.push shortname
+            return
+          if term.length >= 3
+            results.sort (a, b) ->
+              a.length > b.length
+            results2.sort (a, b) ->
+              a.length > b.length
+            results3.sort()
+          newResults = results.concat(results2).concat(results3)
+          callback newResults
+          return
+        template: (shortname) ->
+          '<img class="emojione" src="//cdn.jsdelivr.net/emojione/assets/png/' +
+          Template.App_body.emojiStrategy[shortname].unicode + '.png"> :' + shortname + ':'
+        replace: (shortname) ->
+          Template.App_body.insertingData = true
+          return ':' + shortname + ': '
+        index: 1
+        maxCount: 10
+      } ], footer:
+        '<a href="http://www.emoji.codes" target="_blank">'+
+        'Browse All<span class="arrow">»</span></a>'
 
   'blur .title': (event, instance) ->
     Template.instance().state.set 'focused', false
@@ -593,7 +581,7 @@ Template.note.events
     if !Session.get 'dragging'
       Template.App_body.playSound 'navigate'
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
-      FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
+      # FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
 
   'click .menuToggle': (event, instance) ->
     event.stopImmediatePropagation()
@@ -647,16 +635,6 @@ Template.note.focus = (noteItem) ->
   instance = view.templateInstance()
   if instance.state
     instance.state.set 'focused', true
-
-  # Prevents a race condition with the emoji library
-  if !Template.App_body.insertingData
-    if instance.data.title
-      $(instance.firstNode).find('.title').first()
-        .html emojione.shortnameToUnicode instance.data.title
-  else
-    setTimeout ->
-      Template.App_body.insertingData = false
-    200
 
 Template.note.stripTags = (inputText) ->
   if !inputText
