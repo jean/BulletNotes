@@ -16,7 +16,7 @@ import {
   upload
 } from '/imports/api/files/methods.coffee'
 
-Template.note.previewXOffset = -100
+Template.note.previewXOffset = 10
 Template.note.previewYOffset = 10
 
 Template.note.encodeImageFileAsURL = (cb,file) ->
@@ -56,8 +56,9 @@ Template.note.onRendered ->
         Template.notes.formatText noteElement.data.title
       )
       if noteElement.data.body
+        bodyHtml = Template.notes.formatText noteElement.data.body
         $(noteElement.firstNode).find('.body').first().show().html(
-          Template.notes.formatText noteElement.data.body
+          bodyHtml
         )
 
     # $('.fileItem').draggable
@@ -263,6 +264,21 @@ Template.note.events
 
   'mouseleave .previewLink': (event) ->
     $('#preview').remove()
+
+  'paste .title': (event, instance) ->
+    event.preventDefault()
+
+    lines = event.originalEvent.clipboardData.getData('text/plain').split(/\n/g)
+    console.log instance, lines
+
+    lines.forEach (line) ->
+      if line
+        Meteor.call 'notes.insert', {
+          title: line
+          rank: instance.data.rank + 1
+          parent: instance.data.parent
+          shareKey: FlowRouter.getParam('shareKey')
+        }
 
   'keydown .title': (event, instance) ->
     note = this
@@ -555,7 +571,8 @@ Template.note.events
   'blur .body': (event, instance) ->
     event.stopPropagation()
     that = this
-    body = Template.note.stripTags(event.target.innerHTML)
+    console.log event.target
+    body = Template.note.stripTags event.target.innerHTML
     $(event.target).html Template.notes.formatText body
     if body != Template.note.stripTags(@body)
       Meteor.call 'notes.updateBody', {
