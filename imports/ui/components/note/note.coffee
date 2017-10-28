@@ -189,11 +189,6 @@ Template.note.events
       noteId: instance.data._id
       showContent: false
 
-  'click .zoom': (event) ->
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    FlowRouter.go('/note/'+@_id)
-
   'click .duplicate': (event) ->
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -595,10 +590,12 @@ Template.note.events
     Template.note.toggleChildren(instance)
 
   'click .handle': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
     if !Session.get 'dragging'
       Template.App_body.playSound 'navigate'
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
-      # FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
+      FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
 
   'click .menuToggle': (event, instance) ->
     event.stopImmediatePropagation()
