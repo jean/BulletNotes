@@ -49,7 +49,7 @@ Template.note.onCreated ->
 Template.note.onRendered ->
   noteElement = this
   Tracker.autorun ->
-    console.log noteElement
+    # console.log noteElement
 
     if noteElement.data.title
       $(noteElement.firstNode).find('.title').first().html(
@@ -268,7 +268,7 @@ Template.note.events
     event.preventDefault()
 
     lines = event.originalEvent.clipboardData.getData('text/plain').split(/\n/g)
-    console.log instance, lines
+    # console.log instance, lines
 
     lines.forEach (line) ->
       if line
@@ -450,7 +450,7 @@ Template.note.events
             upperSibling = item.prev()
             view = Blaze.getView(upperSibling)
             instance = view.templateInstance()
-            console.log instance
+            # console.log instance
             Meteor.call 'notes.makeChild', {
               noteId: @_id
               parent: parent_id
@@ -570,7 +570,7 @@ Template.note.events
   'blur .body': (event, instance) ->
     event.stopPropagation()
     that = this
-    console.log event.target
+    # console.log event.target
     body = Template.note.stripTags event.target.innerHTML
     $(event.target).html Template.notes.formatText body
     if body != Template.note.stripTags(@body)

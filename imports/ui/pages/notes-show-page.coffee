@@ -35,7 +35,7 @@ Template.Notes_show_page.onRendered ->
 
 Template.Notes_show_page.events
   'change .note-edit': (event, instance) ->
-    console.log event, instance
+    # console.log event, instance
     target = event.target
     if $(target).val() == 'edit'
       instance.editNote()
