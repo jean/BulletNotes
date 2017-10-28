@@ -406,7 +406,7 @@ Template.note.events
           return false
         if $(event.currentTarget).closest('.note-item').prev().length
           if event.metaKey
-            # Move above the previous note
+            # Move note above the previous note
             item = $(event.currentTarget).closest('.note-item')
             prev = item.prev()
             if prev.length == 0
@@ -423,7 +423,7 @@ Template.note.events
             $(event.currentTarget).closest('.note-item')
               .prev().find('div.title').focus()
             Template.note.focus $(event.currentTarget)
-              .closest('.note-item').prev().find('div.title').last()[0]
+              .closest('.note-item').prev().find('div.title').first()[0]
         else
           # There is no previous note in the current sub list, go up a note.
           $(event.currentTarget).closest('ol')
@@ -593,7 +593,7 @@ Template.note.events
       Template.App_body.playSound 'expand'
     Template.note.toggleChildren(instance)
 
-  'click .handle': (event, instance) ->
+  'click .dot': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
     if !Session.get 'dragging'

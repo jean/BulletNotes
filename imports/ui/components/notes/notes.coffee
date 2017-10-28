@@ -236,16 +236,22 @@ Template.notes.rendered = ->
   # $('#notes').selectable
   #   delay: 150
   $('.sortable').nestedSortable
-    handle: '.handle'
+    handle: 'div.handle'
     items: 'li.note-item'
     placeholder: 'placeholder'
     opacity: .6
-    # toleranceElement: '> div.noteContainer'
+    toleranceElement: '> div.noteContainer'
+
     # revert: 100
     # distance: 5
     sort: (event, ui) ->
       Session.set 'dragging', true
       $('.sortable').addClass 'sorting'
+
+    revert: (event, ui) ->
+      console.log "reverting"
+      Session.set 'dragging', false
+      $('.sortable').removeClass 'sorting'
 
     update: (event, ui) ->
       Template.App_body.playSound 'sort'

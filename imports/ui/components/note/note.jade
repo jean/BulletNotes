@@ -2,6 +2,8 @@ template(name='note')
   li.note-item(class='{{className}}',id="menuItem_{{_id}}",data-id="{{_id}}")
     .noteContainer
       .options.pull-left
+        .handle.mdl-button.mdl-button--icon.mdl-button--accent(id="expand_{{_id}}")
+          i.material-icons label 
         if childNotes
           .expand.mdl-button.mdl-button--icon.mdl-button--accent(id="expand_{{_id}}")
             i.material-icons remove
@@ -49,7 +51,7 @@ template(name='note')
                   | Drag this link to your bookmarks to save pages to this list.
 
         // Handle
-        .handle.mdl-button.mdl-button--icon.hasChildren(title="{{hoverInfo}}")
+        .dot.mdl-button.mdl-button--icon.hasChildren(title="{{hoverInfo}}")
           i.material-icons.zoom(id="drag_{{_id}}") fiber_manual_record
 
       .note-title
