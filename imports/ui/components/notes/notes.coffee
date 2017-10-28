@@ -240,11 +240,12 @@ Template.notes.rendered = ->
     items: 'li.note-item'
     placeholder: 'placeholder'
     opacity: .6
-    toleranceElement: '> div.noteContainer'
-    revert: 100
-    distance: 5
+    # toleranceElement: '> div.noteContainer'
+    # revert: 100
+    # distance: 5
     sort: (event, ui) ->
       Session.set 'dragging', true
+      $('.sortable').addClass 'sorting'
 
     update: (event, ui) ->
       Template.App_body.playSound 'sort'
@@ -253,6 +254,7 @@ Template.notes.rendered = ->
         parent = FlowRouter.getParam 'noteId'
       upperSibling = $(ui.item).closest('li').prev('li').data('id')
       Session.set 'dragging', false
+      $('.sortable').removeClass 'sorting'
 
       if upperSibling
         makeChild.call

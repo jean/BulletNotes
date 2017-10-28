@@ -216,6 +216,8 @@ Template.note.events
         window.location = window.location
 
   'mouseover .tagLink': (event) ->
+    if Session.get 'dragging'
+      return
     notes = Notes.search event.target.innerHTML
     $('#tagSearchPreview').html('')
     notes.forEach (note) ->
@@ -235,6 +237,8 @@ Template.note.events
     $('#tagSearchPreview').hide()
 
   'mouseover .previewLink': (event) ->
+    if Session.get 'dragging'
+      return
     date = new Date
     url = event.currentTarget.href
     Template.note.isValidImageUrl url, (url, valid) ->

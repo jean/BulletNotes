@@ -82,7 +82,7 @@ template(name='note')
           .mdl-tooltip.mdl-tooltip--large(for='showContent_{{_id}}')
             | {{_ 'notes.tooltips.show_content'}}
       //- +share
-      if childNotes
-        ol
-          each childNotes
-            +note
+    if childNotes
+      ol
+        each childNotes
+          +note
