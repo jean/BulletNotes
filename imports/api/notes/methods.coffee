@@ -162,6 +162,27 @@ export stopSharing = new ValidatedMethod
       shared: 1
       shareKey: 1
 
+
+export setEncrypted = new ValidatedMethod
+  name: 'notes.setEncrypted'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    encrypted: Notes.simpleSchema().schema('encrypted')
+    shareKey: Notes.simpleSchema().schema('shareKey')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId, encrypted, shareKey = null }) ->
+    note = Notes.findOne noteId
+
+    if !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+
+    Notes.update noteId, {$set: {
+      encrypted: encrypted
+    }}, tx: true
+ 
+
 export updateTitle = new ValidatedMethod
   name: 'notes.updateTitle'
   validate: new SimpleSchema

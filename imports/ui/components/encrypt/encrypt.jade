@@ -1,0 +1,22 @@
+template(name='encrypt')
+  a.openEncrypt(href='#', data-toggle='modal', data-target='#encrypt_{{_id}}', data-id='{{_id}}', id='toggleEncrypt_{{_id}}') open
+
+  .modal.encrypt(id='encrypt_{{_id}}' tabindex='-1', role='dialog')
+    .modal-dialog
+      form.modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h4.modal-title Encrypt
+        .modal-body
+            if encrypted
+              p Decrypt, password?
+              p
+                input.decryptPassword(size='60')
+              input(type='submit',value='Decrypt',class='submit btn btn-theme decryptBtn')
+            else
+              p Encrypt this note
+              p
+                input.encryptPassword(size='60')
+              input(type='submit',value='Encrypt',class='submit btn btn-theme encryptBtn')
+        .modal-footer
+          button.btn.btn-sm(data-dismiss='modal') Cancel

@@ -6,6 +6,7 @@
 require './note.jade'
 require '/imports/ui/components/file/file.coffee'
 require '/imports/ui/components/share/share.coffee'
+require '/imports/ui/components/encrypt/encrypt.coffee'
 
 import {
   favorite,
@@ -129,6 +130,8 @@ Template.note.helpers
       className = className + ' shared'
     if Template.instance().state.get 'focused'
       className = className + ' focused'
+    if @encrypted
+      className = className + ' encrypted'
     className
 
   userOwnsNote: ->
@@ -146,11 +149,25 @@ Template.note.helpers
   showMenu: ->
     Template.instance().state.get 'showMenu'
 
+  showEncrypt: ->
+    Template.instance().state.get 'showEncrypt'
+
   # hasContent: ->
   #   Meteor.subscribe 'files.note', @_id
   #   (@body || Files.find({ noteId: @_id }).count() > 0)
 
 Template.note.events
+  'click .encryptLink, click .decryptLink, click .encryptedIcon': (event, instance) ->
+    instance.state.set 'showEncrypt', true
+    # Hacky ugly shit to work around MDL modal bs
+    that = this
+    setTimeout ->
+      $('#toggleEncrypt_'+that._id).click()
+      setTimeout ->
+        $('.modal.in').parent().append($('.modal-backdrop'))
+      , 50
+    , 50
+
   'click .share': (event, template) ->
     setTimeout ->
       $('#__blaze-root').append($('.modal.in'))
@@ -202,7 +219,6 @@ Template.note.events
       setTimeout (->
         $(event.target).closest('.noteContainer').find('.body').fadeIn().focus()
       ), 20
-
 
   'click a.delete': (event) ->
     event.preventDefault()
@@ -564,8 +580,7 @@ Template.note.events
         noteId: instance.data._id
         title: title
         shareKey: FlowRouter.getParam 'shareKey'
-      }, (err, res) ->
-        that.title = title
+      }
 
   'blur .body': (event, instance) ->
     event.stopPropagation()

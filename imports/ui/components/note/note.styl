@@ -114,6 +114,16 @@
 .note .handle .material-icons
   font-size: .75em;
 
+.note-item.encrypted
+  .encryptedTitle
+    opacity: .25
+  .encryptedIcon
+    float: left
+    margin-right: 1em
+    color: green
+    z-index: 1000
+    cursor: pointer
+
 // Large screens
 @media screen and (min-width: 40em)
   .note
@@ -246,3 +256,10 @@
     overflow: hidden
   .tagLink
     display: inline
+
+.modal.encrypt
+  margin-top: 10em
+
+.openEncrypt
+  display: none
+

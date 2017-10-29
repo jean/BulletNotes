@@ -33,6 +33,7 @@ Template.share.events
         title: 'Link Copied'
         text: 'Share link copied to your clipboard.'
         time: 1000
+
 Template.share.helpers
   shareUrl: () ->
     Meteor.absoluteUrl 'note/'+@_id+'/'+@shareKey
