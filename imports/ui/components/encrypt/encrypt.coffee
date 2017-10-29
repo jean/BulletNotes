@@ -14,6 +14,10 @@ Template.encrypt.events
   'click .encryptBtn': (event, instance) ->
     event.preventDefault()
 
+    if $('.encryptPassword').val() != $('.encryptPasswordVerify').val()
+        alert "Passwords do not match!"
+        return
+
     encrypted = CryptoJS.AES.encrypt(@title, $('.encryptPassword').val()).toString()
 
     Meteor.call 'notes.updateTitle', {

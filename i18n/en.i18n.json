@@ -25,7 +25,9 @@
       "delete": "Delete",
       "addBody": "Add a body",
       "favorite": "Favorite",
-      "unfavorite": "Unfavorite"
+      "unfavorite": "Unfavorite",
+      "encrypt": "Encrypt",
+      "decrypt": "Decrypt"
     },
     "show": {
       "cancel": "Cancel",
