@@ -158,6 +158,8 @@ Template.note.helpers
 
 Template.note.events
   'click .encryptLink, click .decryptLink, click .encryptedIcon': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
     instance.state.set 'showEncrypt', true
     # Hacky ugly shit to work around MDL modal bs
     that = this

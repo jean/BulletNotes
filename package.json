@@ -1,6 +1,6 @@
 {
   "name": "BulletNotes",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "private": true,
   "scripts": {
     "start": "ROLLBAR_SERVER_ACCESS_TOKEN=d71133c85f83465db6d1c53f347a479a ROLLBAR_CLIENT_ACCESS_TOKEN=9787fb0d1c82430f8d3139a4cf3ae742 ROLLBAR_ENVIRONMENT=local meteor -s settings.private.json",
