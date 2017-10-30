@@ -266,6 +266,23 @@ Template.App_body.events
     Template.App_body.playSound 'navigate'
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
+  'blur .title-wrapper': (event, instance) ->
+    event.stopPropagation()
+    title = Template.note.stripTags(event.target.innerHTML)
+    console.log "Got title", title
+    if title != @title
+      Meteor.call 'notes.updateTitle', {
+        noteId: FlowRouter.getParam('noteId')
+        title: title
+        # FlowRouter.getParam 'shareKey',
+      }, (err, res) ->
+        $(event.target).html Template.notes.formatText title
+
+  'keydown .title-wrapper': (event, instance) ->
+    if event.keyCode == 13
+      event.preventDefault()
+      $(event.currentTarget.blur())
+
 Template.App_body.playSound = (sound) ->
   if !Meteor.user() && Meteor.user().muted
     audio = new Audio('/snd/'+sound+'.wav')

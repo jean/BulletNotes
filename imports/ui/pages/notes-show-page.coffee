@@ -60,18 +60,6 @@ Template.Notes_show_page.events
         FlowRouter.go('/kanban')
     target.selectedIndex = 0
 
-  'blur .title-wrapper': (event, instance) ->
-    event.stopPropagation()
-    title = Template.note.stripTags(event.target.innerHTML)
-    if title != @title
-      Meteor.call 'notes.updateTitle', {
-        noteId: instance.data.note()._id
-        title: title
-        # FlowRouter.getParam 'shareKey',
-      }, (err, res) ->
-        $(event.target).html Template.notes.formatText title
-
-
 Template.Notes_show_page.helpers
   showNotes: ->
     (

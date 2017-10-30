@@ -20,10 +20,10 @@ template(name='Notes_show_page')
         //-       if focusedNote
         //-         input#menuFileUpload(type="file",style="display:none")
         //-       span.glyphicon.glyphicon-cog
-          if progress
-            .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
-              .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
-                span.sr-only {{progress}}% Complete (success)
+        if progress
+          .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
+            .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
+              span.sr-only {{progress}}% Complete (success)
         +each noteId in noteIdArray
           if showNotes
             +notes (noteArgs noteId)

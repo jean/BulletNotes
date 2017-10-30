@@ -188,6 +188,7 @@ Template.notes.events
   'blur .title-wrapper': (event, instance) ->
     event.stopPropagation()
     title = Template.note.stripTags(event.target.innerHTML)
+    console.log "Got title 191", title
     if title != @title
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data.note()._id
