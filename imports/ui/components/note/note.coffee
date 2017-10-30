@@ -132,6 +132,8 @@ Template.note.helpers
       className = className + ' focused'
     if @encrypted
       className = className + ' encrypted'
+    if @encryptedRoot
+      className = className + ' encryptedRoot'
     className
 
   userOwnsNote: ->
@@ -152,6 +154,10 @@ Template.note.helpers
   showEncrypt: ->
     Template.instance().state.get 'showEncrypt'
 
+  displayEncrypted: ->
+    if @encrypted || @encryptedRoot
+      true
+
   # hasContent: ->
   #   Meteor.subscribe 'files.note', @_id
   #   (@body || Files.find({ noteId: @_id }).count() > 0)
@@ -167,6 +173,7 @@ Template.note.events
       $('#toggleEncrypt_'+that._id).click()
       setTimeout ->
         $('.modal.in').parent().append($('.modal-backdrop'))
+        $('input.cryptPass').focus()
       , 50
     , 50
 

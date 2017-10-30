@@ -168,11 +168,12 @@ export setEncrypted = new ValidatedMethod
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
     encrypted: Notes.simpleSchema().schema('encrypted')
+    encryptedRoot: Notes.simpleSchema().schema('encryptedRoot')
     shareKey: Notes.simpleSchema().schema('shareKey')
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, encrypted, shareKey = null }) ->
+  run: ({ noteId, encrypted, encryptedRoot = false, shareKey = null }) ->
     note = Notes.findOne noteId
 
     if !Notes.isEditable noteId, shareKey
@@ -180,6 +181,7 @@ export setEncrypted = new ValidatedMethod
 
     Notes.update noteId, {$set: {
       encrypted: encrypted
+      encryptedRoot: encryptedRoot
     }}, tx: true
  
 
@@ -434,7 +436,7 @@ Meteor.methods
         Meteor.call 'notes.duplicateRun', child._id, newNoteId
 
 NOTES_METHODS = _.pluck([
-  updateTitle
+#  updateTitle
   updateBody
   remove
   makeChild

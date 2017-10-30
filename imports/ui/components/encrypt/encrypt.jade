@@ -8,17 +8,23 @@ template(name='encrypt')
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
           h4.modal-title Encrypt
         .modal-body
-            if encrypted
+            if decrypting
               p Decrypt, password?
               p
-                input.decryptPassword(type='password', size='60')
+                input.decryptPassword.cryptPass(type='password', size='60')
               input(type='submit',value='Decrypt',class='submit btn btn-theme decryptBtn')
             else
               p Encrypt this note.
               p Beware! This is client-side, strong encryption. If you lose this password, you will lose whatever you encrypt, forever. There is no recovery process. The website admins are just as unable as anyone else to access your encrypted material without a password. If you are encrypting important data, be sure you have a backup and be sure you remember or save your password.
               p
-                input.encryptPassword(type='password', size='60')
+                input.encryptPassword.cryptPass(type='password', size='60')
                 input.encryptPasswordVerify(type='password', size='60')
+              label#rootNoteTT.encryptRoot.mdl-checkbox.mdl-js-checkbox.mdl-js-ripple-effect(for='encryptRootCheck')
+                input#encryptRootCheck.mdl-checkbox__input(type='checkbox', checked='checked')
+                span.mdl-checkbox__label Encrypt root note
+              .mdl-tooltip(for='rootNoteTT')
+                | Uncheck this to leave the root note plaintext
+
               input(type='submit',value='Encrypt',class='submit btn btn-theme encryptBtn')
         .modal-footer
           button.btn.btn-sm(data-dismiss='modal') Cancel

@@ -191,6 +191,10 @@ Notes.schema = new SimpleSchema
   encrypted:
     type: Boolean
     optional: yes
+  # True if this note is the note that the encryption was ran on.
+  encryptedRoot:
+    type: Boolean
+    optional: yes
 
 Notes.attachSchema Notes.schema
 
