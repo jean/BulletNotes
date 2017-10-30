@@ -69,11 +69,11 @@ template(name='note')
           div(class='encryptedTitle') {{{title}}}
         else
           div(class='title task-title-sp', contenteditable='true') {{{title}}} 
+        if progress
+          .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
+            .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
+              span.sr-only {{progress}}% Complete (success)
         if showContent
-          if progress
-            .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete")
-              .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
-                span.sr-only {{progress}}% Complete (success)
           p.body(contenteditable='true')
             if body
               | {{body}}

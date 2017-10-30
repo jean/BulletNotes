@@ -231,11 +231,14 @@ export updateTitle = new ValidatedMethod
 
     pattern = /#pct-([0-9]+)/gim
     match = pattern.exec note.title
+    console.log note.title
     if match
+      console.log "Got percent"
       Notes.update noteId, {$set: {
         progress: match[1]
       }}
     else
+      console.log "No percent"
       # If there is not a defined percent tag (e.g., #pct-20)
       # then calculate the #done rate of notes
       notes = Notes.find({ parent: note.parent })
