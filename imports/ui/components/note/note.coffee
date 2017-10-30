@@ -609,7 +609,6 @@ Template.note.events
     that = this
     # console.log event.target
     body = Template.note.stripTags event.target.innerHTML
-    $(event.target).html Template.notes.formatText body
     if body != Template.note.stripTags(@body)
       Meteor.call 'notes.updateBody', {
         noteId: instance.data._id
@@ -617,6 +616,7 @@ Template.note.events
         shareKey: FlowRouter.getParam 'shareKey'
       }, (err, res) ->
         that.body = body
+        $(event.target).html Template.notes.formatText body
     if !body
       $(event.target).fadeOut()
 

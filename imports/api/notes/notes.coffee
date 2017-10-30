@@ -41,6 +41,7 @@ Notes.filterBody = (body) ->
   sanitizeHtml body,
     allowedTags: [
       'b'
+      'br'
       'i'
       'em'
       'strong'
