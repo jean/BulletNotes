@@ -64,14 +64,21 @@ Template.encrypt.events
         Template.encrypt.decryptNote this, password
     else
         # The note is not encrypted, which means it is a root note with encrypted children, so skip this note
-        Meteor.call 'notes.setEncrypted', {
-            noteId: @_id
-            encrypted: false
-            encryptedRoot: false
-        }
         notes = Notes.find { parent: this._id }, sort: rank: 1
+        badPass = false
         notes.forEach (note) ->
-            Template.encrypt.decryptNote note, password 
+            console.log note
+            if badPass || !Template.encrypt.decryptNote note, password
+                console.log 'Setting bad pass true'
+                badPass = true
+                false
+
+        if !badPass
+            Meteor.call 'notes.setEncrypted', {
+                noteId: @_id
+                encrypted: false
+                encryptedRoot: false
+            }
 
     Blaze.getView($('#menuItem_'+@_id)[0]).templateInstance().state.set('showEncrypt', false)
     $('.modal-backdrop.in').fadeOut()
@@ -93,15 +100,28 @@ Template.encrypt.encryptNote = (note, password) ->
     # Get and encrypt child notes
     notes = Notes.find { parent: note._id }, sort: rank: 1
     notes.forEach (note) ->
-        Template.encrypt.encryptNote note, password
+        if !Template.encrypt.encryptNote note, password
+            false
+        else
+            true
 
 Template.encrypt.decryptNote = (note, password) ->
-    crypt = CryptoJS.AES.decrypt(note.title, password)
-    if !crypt || crypt.toString(CryptoJS.enc.Utf8).length < 1
-        alert "Not good"
-        return
-
+    console.log "Try and decrypt: ", note
+    try 
+        crypt = CryptoJS.AES.decrypt(note.title, password)
+    catch e
+        Template.App_body.showSnackbar
+          message: "Bad password"
+        return false
+        
     decrypted = crypt.toString(CryptoJS.enc.Utf8)
+    console.log "Got ", decrypted
+    if !crypt || decrypted.length < 1
+        Template.App_body.showSnackbar
+          message: "Bad password"
+        return false
+
+    
 
     Meteor.call 'notes.updateTitle', {
       noteId: note._id
@@ -117,4 +137,9 @@ Template.encrypt.decryptNote = (note, password) ->
     # Get and decrypt child notes
     notes = Notes.find { parent: note._id }, sort: rank: 1
     notes.forEach (note) ->
-        Template.encrypt.decryptNote note, password
+        if !Template.encrypt.decryptNote note, password
+            return false
+        else
+            return true
+    
+    return true
