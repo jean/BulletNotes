@@ -8,6 +8,10 @@ Template.menu.onCreated ->
   @state = new ReactiveDict
   @state.setDefault
     menuOpen: true
+  setInterval ->
+    percentFull = Counter.get('totalNotes') / Template.App_body.getTotalNotesAllowed() * 100
+    document.querySelector('#spaceUsedBar').MaterialProgress.setProgress(percentFull);
+  , 1000
 
 Template.menu.helpers
   displayName: ->
@@ -18,6 +22,15 @@ Template.menu.helpers
     else
       displayName = Meteor.user().profile.name
     displayName
+
+  totalNotes: ->
+    Counter.get('totalNotes')
+
+  totalNotesAllowed: ->
+    Template.App_body.getTotalNotesAllowed()
+
+  referralCount: ->
+    Meteor.user().referralCount
 
   notes: ->
     Notes.find { favorite: true }, sort: favoritedAt: -1

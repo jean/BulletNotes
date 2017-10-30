@@ -2,6 +2,8 @@ template(name="menu")
   span.mdl-layout-title
     a(href='/') BulletNotes.io
   if ready
+    | Notes: {{totalNotes}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
+    #spaceUsedBar.mdl-progress.mdl-js-progress
     nav.mdl-navigation
       if hideUndoButton
         button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect

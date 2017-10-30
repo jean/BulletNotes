@@ -72,3 +72,6 @@ if Meteor.isServer
       yes
 
   }, 5, 1000
+
+Meteor.users.deny update: ->
+  true

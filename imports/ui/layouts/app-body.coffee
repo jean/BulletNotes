@@ -119,7 +119,6 @@ Template.App_body.onRendered ->
         event.preventDefault()
         tx.redo()
 
-
 Template.App_body.onCreated ->
   NoteSubs = new SubsManager
   self = this
@@ -127,12 +126,17 @@ Template.App_body.onCreated ->
   self.autorun ->
     Meteor.subscribe('users.prefs')
     handle = NoteSubs.subscribe('notes.all')
+    Meteor.subscribe('countPublish')
     Session.set 'ready', handle.ready()
     return
   setTimeout (->
     $('.betaWarning,.devWarning').fadeOut()
     return
   ), 5000
+
+Template.App_body.getTotalNotesAllowed = ->
+  referrals = Meteor.user().referralCount || 0
+  Meteor.settings.public.noteLimit + (Meteor.settings.public.referralNoteBonus * referrals)
 
 Template.App_body.loadFavorite = (number) ->
   if Template.App_body.shouldNav() && $('.favoriteNote').get(number-1)

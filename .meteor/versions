@@ -133,12 +133,12 @@ mrt:jquery-ui@1.9.2
 mrt:nprogress@0.2.0
 msavin:jetsetter@2.0.0
 msavin:mongol@2.0.1
+natestrauser:publish-performant-counts@0.1.2
 npm-bcrypt@0.9.3
 npm-mongo@2.2.33
 oauth@1.1.13
 oauth2@1.1.11
 observe-sequence@1.0.16
-okgrow:analytics@2.1.3
 omega:meteor-desktop-bundler@0.6.1
 omega:meteor-desktop-localstorage@0.0.11
 omega:meteor-desktop-watcher@0.6.1

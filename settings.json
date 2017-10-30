@@ -2,10 +2,9 @@
   "public": {
     "dropbox_client_id": "",
     "dev": 1,
-    "environment": "local",
-    "analyticsSettings": {
-      "Amplitude": {"apiKey": ""}
-    }
+    "noteLimit": 15,
+    "referralNoteBonus": 15,
+    "environment": "local"
   },
   "adminUserIds": [""]
 }

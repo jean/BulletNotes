@@ -30,6 +30,17 @@ export insert = new ValidatedMethod
     #   throw new Meteor.Error 'notes.insert.accessDenied',
     # 'Cannot add notes to a private note that is not yours'
 
+    noteCount = Notes.find
+      owner: @userId
+      deleted: {$exists: false}
+    .count()
+
+    console.log "Limit: ", Meteor.settings.public.noteLimit * (Meteor.user().referralCount + 1)
+    console.log Meteor.user()
+
+    if noteCount >= Meteor.settings.public.noteLimit * (Meteor.user().referralCount + 1)
+      throw new (Meteor.Error)('Maximum number of notes reached.')
+
     parentId = null
     level = 0
 
@@ -385,7 +396,7 @@ export setChildrenLastShown = new ValidatedMethod
 
     Notes.update noteId, $set:
       childrenLastShown: new Date
-      
+
     Notes.update noteId, $inc:
       childrenShownCount: 1
 

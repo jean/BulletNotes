@@ -352,7 +352,9 @@ Template.note.events
               rank: note.rank + 1
               parent: note.parent
               shareKey: FlowRouter.getParam('shareKey')
-            }
+            }, (err, res) ->
+              if err
+                alert err.error
             setTimeout (->
               $(event.target).closest('.note-item')
                 .next().find('.title').focus()
