@@ -105,6 +105,9 @@ Template.App_body.onRendered ->
 
   Session.set 'referral', $.urlParam('ref')
 
+  T9n.setLanguage(Meteor.user().language)
+  TAPi18n.setLanguage(Meteor.user().language)
+
   $(window).keydown (event) ->
     # If we aren't editing anything
     if $(':focus').length < 1

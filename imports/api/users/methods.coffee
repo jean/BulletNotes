@@ -54,6 +54,17 @@ export setTheme = new ValidatedMethod
   run: ({ theme }) ->
     Meteor.users.update {_id:@userId}, {$set:{theme:theme}}
 
+export setLanguage = new ValidatedMethod
+  name: 'users.setLanguage'
+  validate: new SimpleSchema
+    language:
+      type: String
+  .validator
+    clean: yes
+    filter: no
+  run: ({ language }) ->
+    Meteor.users.update {_id:@userId}, {$set:{language:language}}
+
 USER_METHODS = _.pluck([
   setDropboxOauth
   setMenuPin

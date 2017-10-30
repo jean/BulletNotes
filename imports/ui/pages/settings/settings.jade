@@ -14,6 +14,19 @@ template(name="App_settings")
               input.themeInput.mdl-radio__button(type='radio', name='options', value='1', checked='{{themeChecked theme}}', id='theme_{{theme}}' data-name='{{theme}}')
 
     .subtitle-message
+      h4 Language
+    ul.demo-list-control.mdl-list
+      +each languages
+        li.mdl-list__item
+          span.mdl-list__item-primary-content
+            i.material-icons.mdl-list__item-avatar person
+            | {{language}}
+          span.mdl-list__item-secondary-action
+            label.demo-list-radio.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='language_{{language}}')
+              input.languageInput.mdl-radio__button(type='radio', name='options', value='1', checked='{{languageChecked language}}', id='language_{{language}}' data-name='{{language}}')
+
+
+    .subtitle-message
       h4 {{_ 'layouts.appBody.import'}}/{{_ 'layouts.appBody.export'}}
     a#importLink.form-control.btn.btn-theme.btn-primary(href='/import') {{_ 'layouts.appBody.import'}}
     a#exportLink.form-control.btn.btn-theme.btn-primary(href='#') {{_ 'layouts.appBody.export'}}

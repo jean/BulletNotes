@@ -2,8 +2,8 @@
   "public": {
     "dropbox_client_id": "",
     "dev": 1,
-    "noteLimit": 15,
-    "referralNoteBonus": 15,
+    "noteLimit": 250,
+    "referralNoteBonus": 250,
     "environment": "local"
   },
   "adminUserIds": [""]

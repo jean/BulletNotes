@@ -23,6 +23,14 @@ Template.App_settings.events
       Template.App_body.showSnackbar
         message: "Theme Saved"
 
+  'change .languageInput': (event, instance) ->
+    Meteor.call 'users.setLanguage', {language:event.target.dataset.name}, (err, res) ->
+      Template.App_body.showSnackbar
+        message: "Language Saved"
+      T9n.setLanguage(Meteor.user().language)
+      TAPi18n.setLanguage(Meteor.user().language)
+
+
 Template.App_settings.helpers
   dropbox_token: ->
     setTimeout ->
@@ -34,9 +42,13 @@ Template.App_settings.helpers
     , 100
     if Meteor.user() && Meteor.user().profile
       return Meteor.user().profile.dropbox_token
-      
+
   themeChecked: (theme) ->
     if Meteor.user() && theme == Meteor.user().theme
+      'checked'
+
+  languageChecked: (language) ->
+    if Meteor.user() && language == Meteor.user().language
       'checked'
 
   themes: ->
@@ -49,4 +61,10 @@ Template.App_settings.helpers
       {theme:'Beach'}
       {theme:'Space'}
       {theme:'White'}
+    ]
+
+  languages: ->
+    [
+      {language:'en'}
+      {language:'fr'}
     ]

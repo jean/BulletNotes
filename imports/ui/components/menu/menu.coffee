@@ -11,6 +11,11 @@ Template.menu.onCreated ->
   setInterval ->
     percentFull = Counter.get('totalNotes') / Template.App_body.getTotalNotesAllowed() * 100
     document.querySelector('#spaceUsedBar').MaterialProgress.setProgress(percentFull);
+
+    # THis is hacky. Should be somewhere else.
+    T9n.setLanguage(Meteor.user().language)
+    TAPi18n.setLanguage(Meteor.user().language)
+
   , 1000
 
 Template.menu.helpers

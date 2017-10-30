@@ -9,7 +9,8 @@ Meteor.publish 'users.prefs', () ->
       muted: 1
       referralCount: 1
       isAdmin: 1
-      theme: 'mountain'
+      theme: 1
+      language: 1
   user
 
 Meteor.publish 'users.count', ->
