@@ -99,6 +99,12 @@ Meteor.startup ->
   return
 
 Template.App_body.onRendered ->
+  $.urlParam = (name) ->
+    results = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.href)
+    results[1] or 0
+
+  Session.set 'referral', $.urlParam('ref')
+
   $(window).keydown (event) ->
     # If we aren't editing anything
     if $(':focus').length < 1
@@ -135,6 +141,8 @@ Template.App_body.onCreated ->
   ), 5000
 
 Template.App_body.getTotalNotesAllowed = ->
+  if Meteor.user() == null
+    return 0
   referrals = Meteor.user().referralCount || 0
   Meteor.settings.public.noteLimit + (Meteor.settings.public.referralNoteBonus * referrals)
 

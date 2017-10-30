@@ -354,7 +354,12 @@ Template.note.events
               shareKey: FlowRouter.getParam('shareKey')
             }, (err, res) ->
               if err
-                alert err.error
+                Template.App_body.showSnackbar
+                  message: err.error
+                  actionHandler: ->
+                    FlowRouter.go('/account')
+                  ,
+                  actionText: 'More Info'
             setTimeout (->
               $(event.target).closest('.note-item')
                 .next().find('.title').focus()

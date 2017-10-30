@@ -451,12 +451,10 @@ Meteor.methods
         Meteor.call 'notes.duplicateRun', child._id, newNoteId
 
 NOTES_METHODS = _.pluck([
-#  updateTitle
   updateBody
   remove
   makeChild
   outdent
-  setChildrenLastShown
   setShowChildren
   setShowContent
   favorite

@@ -9,6 +9,7 @@ require '/imports/ui/pages/app-not-found.coffee'
 require '/imports/ui/pages/import/import.coffee'
 require '/imports/ui/pages/settings/settings.coffee'
 require '/imports/ui/pages/admin/admin.coffee'
+require '/imports/ui/pages/account/account.coffee'
 
 # Import to override accounts templates
 require '/imports/ui/accounts/accounts-templates.js'
@@ -68,6 +69,12 @@ FlowRouter.route '/import',
     NProgress.start()
     BlazeLayout.render 'App_body', main: 'Notes_import'
 
+FlowRouter.route '/account',
+  name: 'App.account'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_body', main: 'App_account'
+
 FlowRouter.route '/settings',
   name: 'App.settings'
   action: ->
@@ -78,6 +85,7 @@ FlowRouter.route '/admin',
   name: 'App.admin'
   action: ->
     NProgress.start()
+
     BlazeLayout.render 'App_body', main: 'App_admin'
 
 FlowRouter.route '/dropboxAuth',

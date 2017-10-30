@@ -1,6 +1,7 @@
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { AccountsTemplates } from 'meteor/useraccounts:core';
 import { insert } from '/imports/api/notes/methods.coffee';
+import { Meteor } from 'meteor/meteor';
 
 /**
  * The useraccounts package must be configured for both client and server to work properly.
@@ -50,3 +51,17 @@ AccountsTemplates.configureRoute('resetPwd', {
   name: 'resetPwd',
   path: '/reset-password',
 });
+
+if (Meteor.isServer) {
+  Accounts.onCreateUser((options, user) => {
+    console.log(options, user );
+
+    // We still want the default hook's 'profile' behavior.
+    if (options.profile) {
+      user.profile = options.profile;
+    }
+    
+    // Don't forget to return the new user object at the end!
+    return user;
+  });
+}

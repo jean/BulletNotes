@@ -1,0 +1,11 @@
+template(name='App_account')
+  #adminPage.extraPage.container-fluid
+    .title-message {{_ 'layouts.appBody.account'}}
+    p Sorry to limit the amount of notes you can have, but storage ain't free.
+    p You can either purchase an upgrade (soon) for unlimited notes, or you can refer your friends to tell them about this great site, and earn some extra space!
+    h2 Referrals
+    p Referrals so far: {{currentUser.referralCount}}
+    p Extra notes earned: {{extraNotesEarned}}
+    p 
+        | Your link: 
+        a(href="{{url}}?ref={{currentUser._id}}") {{url}}?ref={{currentUser._id}}

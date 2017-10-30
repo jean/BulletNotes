@@ -1,6 +1,7 @@
 import '/imports/api/app/methods.coffee'
 
 import '/imports/api/users/methods.coffee'
+import '/imports/api/users/server/methods.coffee'
 import '/imports/api/users/server/publications.coffee'
 
 import '/imports/api/notes/methods.coffee'

@@ -42,7 +42,7 @@ tap:i18n
 # accounts
 accounts-password@1.4.0
 useraccounts:core
-useraccounts:unstyled
+useraccounts:materialize
 useraccounts:flow-routing
 softwarerero:accounts-t9n
 

@@ -1,4 +1,8 @@
 template(name='App_admin')
   #adminPage.extraPage.container-fluid
     .title-message {{_ 'layouts.appBody.admin'}}
+    h2 User Info
+      p Users: {{userCount}}
+      p Last Joined: {{lastUserJoined}}
+    h2 AB Tests
     +abtests

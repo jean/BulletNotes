@@ -195,7 +195,7 @@ underscore@1.0.10
 url@1.1.0
 useraccounts:core@1.14.2
 useraccounts:flow-routing@1.14.2
-useraccounts:unstyled@1.14.2
+useraccounts:materialize@1.14.2
 vsivsi:file-collection@1.3.8
 webapp@1.3.19
 webapp-hashing@1.0.9

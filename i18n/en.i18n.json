@@ -92,7 +92,8 @@
       "lastDay": "Previous day",
       "oldItems": "Stale notes",
       "calendar": "Calendar View",
-      "kanban": "Kanban View"
+      "kanban": "Kanban View",
+      "account": "Account"
     },
     "menu": {
       "pinMenu": "Pin Menu Open",

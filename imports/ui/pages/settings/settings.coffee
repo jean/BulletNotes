@@ -34,8 +34,7 @@ Template.App_settings.helpers
     , 100
     if Meteor.user() && Meteor.user().profile
       return Meteor.user().profile.dropbox_token
-  userId: ->
-    Meteor.userId()
+      
   themeChecked: (theme) ->
     if Meteor.user() && theme == Meteor.user().theme
       'checked'
@@ -49,4 +48,5 @@ Template.App_settings.helpers
       {theme:'Field'}
       {theme:'Beach'}
       {theme:'Space'}
+      {theme:'White'}
     ]

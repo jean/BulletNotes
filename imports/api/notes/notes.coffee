@@ -149,9 +149,6 @@ Notes.schema = new SimpleSchema
   favoritedAt:
     type: Date
     optional: yes
-  admin:
-    type: Boolean
-    optional: yes
   body:
     type: String
     optional: yes
