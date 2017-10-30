@@ -293,6 +293,7 @@ Template.note.events
 
   'paste .title': (event, instance) ->
     event.preventDefault()
+    event.stopImmediatePropagation()
 
     lines = event.originalEvent.clipboardData.getData('text/plain').split(/\n/g)
     # console.log instance, lines
