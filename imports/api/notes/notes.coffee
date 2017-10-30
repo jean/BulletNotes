@@ -188,6 +188,9 @@ Notes.schema = new SimpleSchema
   updateCount:
     type: Number
     optional: yes
+  childrenShownCount:
+    type: Number
+    optional: yes
   encrypted:
     type: Boolean
     optional: yes

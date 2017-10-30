@@ -385,6 +385,10 @@ export setChildrenLastShown = new ValidatedMethod
 
     Notes.update noteId, $set:
       childrenLastShown: new Date
+      
+    Notes.update noteId, $inc:
+      childrenShownCount: 1
+
 
 export setShowChildren = new ValidatedMethod
   name: 'notes.setShowChildren'

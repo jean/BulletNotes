@@ -113,6 +113,8 @@ Template.note.helpers
       info += ' Updated '+moment(@updatedAt).fromNow()+'.'
     if @updateCount
       info += ' Version: '+@updateCount
+    if @childrenShownCount
+      info += ' Views: '+@childrenShownCount
     info
 
   className: ->
@@ -615,6 +617,10 @@ Template.note.events
       Template.App_body.playSound 'collapse'
     else
       Template.App_body.playSound 'expand'
+      Meteor.call 'notes.setChildrenLastShown', {
+        noteId: instance.data._id
+      }
+
     Template.note.toggleChildren(instance)
 
   'click .dot': (event, instance) ->
