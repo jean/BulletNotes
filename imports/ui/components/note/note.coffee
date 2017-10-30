@@ -56,6 +56,9 @@ Template.note.onRendered ->
       $(noteElement.firstNode).find('.title').first().html(
         Template.notes.formatText noteElement.data.title
       )
+      $(noteElement.firstNode).find('> .noteContainer .encryptedTitle').first().html(
+        Template.notes.formatText noteElement.data.title
+      )
       if noteElement.data.body
         bodyHtml = Template.notes.formatText noteElement.data.body
         $(noteElement.firstNode).find('.body').first().show().html(
@@ -593,13 +596,13 @@ Template.note.events
       return
 
     title = Template.note.stripTags(event.target.innerHTML)
-    $(event.target).html Template.notes.formatText title
     if !@title || title != Template.note.stripTags emojione.shortnameToUnicode @title
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
         title: title
         shareKey: FlowRouter.getParam 'shareKey'
-      }
+      }, ->
+        $(event.target).html Template.notes.formatText title
 
   'blur .body': (event, instance) ->
     event.stopPropagation()
