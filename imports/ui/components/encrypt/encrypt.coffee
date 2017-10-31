@@ -85,10 +85,17 @@ Template.encrypt.events
 
 Template.encrypt.encryptNote = (note, password) ->
     encrypted = CryptoJS.AES.encrypt(note.title, password).toString()
+    encryptedBody = CryptoJS.AES.encrypt(note.body, password).toString()
 
     Meteor.call 'notes.updateTitle', {
       noteId: note._id
       title: encrypted
+      shareKey: FlowRouter.getParam 'shareKey'
+    }
+
+    Meteor.call 'notes.updateBody', {
+      noteId: note._id
+      body: encryptedBody
       shareKey: FlowRouter.getParam 'shareKey'
     }
 
@@ -109,12 +116,14 @@ Template.encrypt.decryptNote = (note, password) ->
     console.log "Try and decrypt: ", note
     try 
         crypt = CryptoJS.AES.decrypt(note.title, password)
+        cryptBody = CryptoJS.AES.decrypt(note.body, password)
     catch e
         Template.App_body.showSnackbar
           message: "Bad password"
         return false
         
     decrypted = crypt.toString(CryptoJS.enc.Utf8)
+    decryptedBody = cryptBody.toString(CryptoJS.enc.Utf8)
     console.log "Got ", decrypted
     if !crypt || decrypted.length < 1
         Template.App_body.showSnackbar
@@ -127,6 +136,11 @@ Template.encrypt.decryptNote = (note, password) ->
       noteId: note._id
       title: decrypted
       shareKey: FlowRouter.getParam 'shareKey'
+    }
+
+    Meteor.call 'notes.updateBody', {
+      noteId: note._id
+      body: decryptedBody
     }
 
     Meteor.call 'notes.setEncrypted', {

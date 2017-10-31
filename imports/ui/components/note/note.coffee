@@ -597,12 +597,14 @@ Template.note.events
 
     title = Template.note.stripTags(event.target.innerHTML)
     if !@title || title != Template.note.stripTags emojione.shortnameToUnicode @title
+      setTimeout ->
+        $(event.target).html Template.notes.formatText title
+      , 20
       Meteor.call 'notes.updateTitle', {
         noteId: instance.data._id
         title: title
         shareKey: FlowRouter.getParam 'shareKey'
-      }, ->
-        $(event.target).html Template.notes.formatText title
+      }
 
   'blur .body': (event, instance) ->
     event.stopPropagation()
