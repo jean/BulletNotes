@@ -7,6 +7,7 @@ import { Random } from 'meteor/random'
 
 import rankDenormalizer from './rankDenormalizer.coffee'
 import childCountDenormalizer from './childCountDenormalizer.coffee'
+sanitizeHtml = require('sanitize-html')
 
 import { Notes } from './notes.coffee'
 
@@ -119,7 +120,15 @@ export updateBody = new ValidatedMethod
   run: ({ noteId, body, createTransaction = true }) ->
     note = Notes.findOne noteId
 
-    if body
+    bodyHasContent = true
+    sanitizedBody = sanitizeHtml body,
+      allowedTags: []
+    sanitizedBody = sanitizedBody.replace(/(\r\n|\n|\r|\s)/gm, '')
+
+    if sanitizedBody.length < 1
+      bodyHasContent = false
+
+    if body && bodyHasContent
       body = Notes.filterBody body
       Notes.update noteId, {$set: {
         body: body
@@ -130,6 +139,8 @@ export updateBody = new ValidatedMethod
     else
       Notes.update noteId, {$unset: {
         body: 1
+      }, $set: {
+        showContent: false
       }}, tx: createTransaction
     Meteor.users.update {_id:@userId},
       {$inc:{"profile.notes_edited":1}}
