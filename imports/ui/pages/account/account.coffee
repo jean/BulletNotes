@@ -11,3 +11,6 @@ Template.App_account.helpers
   
   url: ->
     Meteor.absoluteUrl()
+  
+  referralNoteBonus: ->
+    Meteor.settings.public.referralNoteBonus

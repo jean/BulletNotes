@@ -2,8 +2,11 @@ template(name="menu")
   span.mdl-layout-title
     a(href='/') BulletNotes.io
   if ready
-    | Notes: {{totalNotes}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
-    #spaceUsedBar.mdl-progress.mdl-js-progress
+    if isAdmin
+      | Much wow
+    else
+      | Notes: {{totalNotes}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
+      #spaceUsedBar.mdl-progress.mdl-js-progress
     nav.mdl-navigation
       .buttonWrap
         if hideUndoButton

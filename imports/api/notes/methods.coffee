@@ -36,10 +36,11 @@ export insert = new ValidatedMethod
       deleted: {$exists: false}
     .count()
 
-    console.log "Limit: ", Meteor.settings.public.noteLimit * (Meteor.user().referralCount + 1)
-    console.log Meteor.user()
+    referralCount = 0
+    if Meteor.user().referralCount > 0
+      referralCount = Meteor.user().referralCount
 
-    if noteCount >= Meteor.settings.public.noteLimit * (Meteor.user().referralCount + 1)
+    if !Meteor.user().isAdmin && noteCount >= Meteor.settings.public.noteLimit * (referralCount + 1)
       throw new (Meteor.Error)('Maximum number of notes reached.')
 
     parentId = null
