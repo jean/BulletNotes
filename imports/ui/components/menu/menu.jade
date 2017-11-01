@@ -5,17 +5,18 @@ template(name="menu")
     | Notes: {{totalNotes}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
     #spaceUsedBar.mdl-progress.mdl-js-progress
     nav.mdl-navigation
-      if hideUndoButton
-        button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
-          i.material-icons undo
-        .mdl-tooltip.mdl-tooltip--large(for='undo')
-          | Undo {{action undo}}
+      .buttonWrap
+        if hideUndoButton
+          button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
+            i.material-icons undo
+          .mdl-tooltip.mdl-tooltip--large(for='undo')
+            | Undo {{action undo}}
 
-      if hideRedoButton
-        button#redo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
-          i.material-icons redo
-        .mdl-tooltip.mdl-tooltip--large(for='redo')
-          | Redo {{action redo}}
+        if hideRedoButton
+          button#redo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
+            i.material-icons redo
+          .mdl-tooltip.mdl-tooltip--large(for='redo')
+            | Redo {{action redo}}
 
       if currentUser
         .buttonWrap
