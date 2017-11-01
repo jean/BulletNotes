@@ -5,8 +5,8 @@
 # but you can also edit it by hand.
 
 # meteor libraries
-meteor-base@1.1.0
-ecmascript@0.8.3
+meteor-base@1.2.0
+ecmascript@0.9.0
 es5-shim@4.6.15
 check@1.2.5
 tracker@1.1.3
@@ -14,17 +14,17 @@ tracker@1.1.3
 # standard libraries
 jquery@1.11.10
 underscore@1.0.10
-less@2.7.9
+less@2.7.11
 
 # ui
 blaze-html-templates@1.0.4
-reactive-dict@1.1.9
+reactive-dict@1.2.0
 reactive-var@1.0.11
 aldeed:template-extension
 percolate:momentum
 
 # data
-mongo@1.2.2
+mongo@1.3.0
 dburles:collection-helpers
 reywood:publish-composite
 mdg:validated-method
@@ -40,7 +40,7 @@ zimme:active-route
 tap:i18n
 
 # accounts
-accounts-password@1.4.0
+accounts-password@1.5.0
 useraccounts:core
 useraccounts:materialize
 useraccounts:flow-routing
@@ -69,7 +69,7 @@ practicalmeteor:sinon
 practicalmeteor:mocha@2.4.5_6
 hwillson:stub-collections
 johanbrook:publication-collector
-shell-server@0.2.4
+shell-server@0.3.0
 dburles:factory
 
 # security
@@ -79,11 +79,11 @@ mquandalle:jade
 momentjs:moment
 babrahams:undo-redo
 session@1.1.7
-accounts-google@1.2.0
+accounts-google@1.3.0
 mrt:jquery-ui
 dsyko:jquery-ui-touch-punch
-stylus@2.513.9
-accounts-ui@1.1.9
+stylus@2.513.13
+accounts-ui@1.2.0
 service-configuration@1.0.11
 meteorhacks:subs-manager
 email@1.2.3
@@ -113,5 +113,5 @@ omega:meteor-desktop-bundler@=0.6.1
 omega:meteor-desktop-localstorage@=0.0.11
 jparker:crypto-aes
 manuel:abtest
-dynamic-import@0.1.3
+dynamic-import@0.2.0
 natestrauser:publish-performant-counts
