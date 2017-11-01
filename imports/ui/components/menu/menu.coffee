@@ -12,9 +12,18 @@ Template.menu.onCreated ->
     percentFull = Counter.get('totalNotes') / Template.App_body.getTotalNotesAllowed() * 100
     document.querySelector('#spaceUsedBar').MaterialProgress.setProgress(percentFull);
 
-    # THis is hacky. Should be somewhere else.
-    T9n.setLanguage(Meteor.user().language)
-    TAPi18n.setLanguage(Meteor.user().language)
+    if Meteor.user()
+      # THis is hacky. Should be somewhere else.
+      if Meteor.user().language
+        T9n.setLanguage(Meteor.user().language)
+        TAPi18n.setLanguage(Meteor.user().language)
+
+      if Session.get 'referral'
+        Meteor.call 'users.referral', {
+          referral: Session.get 'referral' 
+        }
+        Session.set 'referral', null
+
 
   , 1000
 
@@ -131,7 +140,7 @@ Template.menu.events
       Meteor.call('users.setMenuPin', {menuPin:true})
       Template.App_body.playSound 'menuOpen'
 
-  'click .login, click .favoriteNote, click .mdl-menu__item': ->
+  'click .login, click .favoriteNote': ->
     $('.mdl-layout__obfuscator').trigger('click')
 
   'click #mute': ->
@@ -139,11 +148,6 @@ Template.menu.events
 
   'click .homeLink': ->
     $('#searchForm input').val('')
-
-  'click .js-toggle-language': (event) ->
-    language = $(event.target).html().trim()
-    T9n.setLanguage language
-    TAPi18n.setLanguage language
 
   'click #undo': (event) ->
     tx.undo()

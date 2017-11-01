@@ -8,9 +8,9 @@ import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 export referral = new ValidatedMethod
   name: 'users.referral'
   validate: null
-  run: ({ referral, userId }) ->
+  run: ({ referral }) ->
     Meteor.users.update {_id:referral}, {$inc:{referralCount:1}}
-    Meteor.users.update {_id:userId}, {$set:{referredBy:referral}}
+    Meteor.users.update {_id:@userId}, {$set:{referredBy:@userId}}
 
 
 # Get note of all method names on Notes

@@ -67,13 +67,6 @@ Template.notes.onRendered ->
   $('.title').first().focus()
   Template.note.focus $('.title').first()[0]
 
-  if Session.get 'referral'
-    Meteor.call 'users.referral', {
-      referral: Session.get 'referral' 
-      userId: Meteor.userId()
-    }
-
-
 Template.notes.helpers
   notes: ->
     NProgress.done()
