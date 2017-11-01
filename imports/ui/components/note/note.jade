@@ -2,8 +2,6 @@ template(name='note')
   li.note-item(class='{{className}}',id="menuItem_{{_id}}",data-id="{{_id}}")
     .noteContainer
       .options.pull-left
-        .handle.mdl-button.mdl-button--icon.mdl-button--accent(id="expand_{{_id}}")
-          i.material-icons label 
         if childNotes
           .expand.mdl-button.mdl-button--icon.mdl-button--accent(id="expand_{{_id}}")
             i.material-icons remove

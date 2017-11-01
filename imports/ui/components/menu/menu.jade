@@ -19,11 +19,6 @@ template(name="menu")
 
       if currentUser
         .buttonWrap
-          button#mute.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--colored.mdl-button--raised(class="{{muteClass}}")
-            i.material-icons {{muteIcon}}
-          .mdl-tooltip.mdl-tooltip--large(for='mute')
-            | Toggle Sounds
-        .buttonWrap
           button#menuPin.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--primary.mdl-button--raised(class="{{muteClass}}")
             i.material-icons {{menuPinIcon}}
           .mdl-tooltip.mdl-tooltip--large(for='menuPin')
@@ -31,6 +26,18 @@ template(name="menu")
               | {{_ 'layouts.menu.unpinMenu'}}
             else
               | {{_ 'layouts.menu.pinMenu'}}
+          button#mute.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--colored.mdl-button--raised(class="{{muteClass}}")
+            i.material-icons {{muteIcon}}
+          .mdl-tooltip.mdl-tooltip--large(for='mute')
+            | Toggle Sounds
+          button#recentMenu.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--colored.mdl-button--raised(class="{{muteClass}}")
+            i.material-icons search
+          .mdl-tooltip.mdl-tooltip--large(for='recentMenu')
+            | Special Searches
+        div.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for='recentMenu')
+          a.mdl-menu__item.recentLink(href='/search/last-changed%3a1h') {{_ 'layouts.appBody.lastHour'}}
+          a.mdl-menu__item.recentLink(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
+          a.mdl-menu__item.recentLink(href='/search/not-viewed%3a1M') {{_ 'layouts.appBody.oldItems'}}
 
         button#userMenu.mdl-button.mdl-js-button.mdl-js-ripple-effect.mdl-button--accent.mdl-button--raised
           i.material-icons account_box
@@ -42,13 +49,6 @@ template(name="menu")
             a.mdl-menu__item.mdl-menu__item--full-bleed-divider(href='/admin') {{_ 'layouts.appBody.admin'}}
           a.mdl-menu__item.js-logout {{_ 'layouts.appBody.logout'}}
 
-        button#recentMenu.mdl-button.mdl-js-button.mdl-js-ripple-effect.mdl-button--accent.mdl-button--raised
-          i.material-icons timer
-          | {{_ 'layouts.appBody.recent'}}
-        div.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for='recentMenu')
-          a.mdl-menu__item.recentLink(href='/search/last-changed%3a1h') {{_ 'layouts.appBody.lastHour'}}
-          a.mdl-menu__item.recentLink(href='/search/last-changed%3a24h') {{_ 'layouts.appBody.lastDay'}}
-          a.mdl-menu__item.recentLink(href='/search/not-viewed%3a1M') {{_ 'layouts.appBody.oldItems'}}
       else
           a.login.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'signin'}}")
             | {{_ 'layouts.appBody.login'}}

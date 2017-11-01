@@ -244,7 +244,7 @@ Template.notes.rendered = ->
   # $('#notes').selectable
   #   delay: 150
   $('.sortable').nestedSortable
-    handle: 'div.handle'
+    handle: 'div.dot'
     items: 'li.note-item'
     placeholder: 'placeholder'
     opacity: .6
