@@ -252,7 +252,7 @@ export updateTitle = new ValidatedMethod
       console.log "No percent"
       # If there is not a defined percent tag (e.g., #pct-20)
       # then calculate the #done rate of notes
-      notes = Notes.find({ parent: note.parent })
+      notes = Notes.find({ parent: note.parent, deleted: {$exists: false} })
       total = 0
       done = 0
       notes.forEach (note) ->
