@@ -61,11 +61,11 @@ Notes.filterTitle = (title) ->
       'strong'
     ]
 
-Notes.search = (search, userId = null) ->
+Notes.search = (search, userId = null, limit = 100) ->
   check search, Match.Maybe(String)
   query = {}
   projection = {
-    limit: 100,
+    limit: limit,
     sort: {
       childrenLastShown: 1
     }

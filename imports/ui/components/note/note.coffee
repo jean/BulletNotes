@@ -17,8 +17,8 @@ import {
   upload
 } from '/imports/api/files/methods.coffee'
 
-Template.note.previewXOffset = 10
-Template.note.previewYOffset = 10
+Template.note.previewXOffset = 100
+Template.note.previewYOffset = 20
 
 Template.note.encodeImageFileAsURL = (cb,file) ->
   reader = new FileReader
@@ -248,16 +248,17 @@ Template.note.events
   'mouseover .tagLink': (event) ->
     if Session.get 'dragging'
       return
-    notes = Notes.search event.target.innerHTML
+    notes = Notes.search event.target.innerHTML, null, 5
     $('#tagSearchPreview').html('')
     notes.forEach (note) ->
       # Only show the note in the preview box if it is not the current note being hovered.
       if note._id != $(event.target).closest('.note-item').data('id')
         $('#tagSearchPreview').append('<li><a class="previewTagLink">'+
         Template.notes.formatText(note.title,false)+'</a></li>')
-          .css('top', event.pageY - Template.note.previewXOffset + 'px')
-          .css('left', event.pageX + Template.note.previewYOffset + 'px')
+          .css('top', event.pageY - Template.note.previewYOffset + 'px')
+          .css('left', event.pageX + Template.note.previewXOffset + 'px')
           .show()
+    $('#tagSearchPreview').append('<li><a class="previewTagViewAll">Click to view all</a></li>')
 
   'mousemove .tagLink': (event) ->
     $('#tagSearchPreview').css('top', event.pageY - Template.note.previewXOffset + 'px')
@@ -280,16 +281,16 @@ Template.note.events
         $('body').append '<p id=\'preview\'><a href=\'' +
           url + '\' target=\'_blank\'><img src=\'' + imageUrl +
           '\' alt=\'Image preview\' /></p>'
-        $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
-          .css('left', event.pageX + Template.note.previewYOffset + 'px')
+        $('#preview').css('top', event.pageY - Template.note.previewYOffset + 'px')
+          .css('left', event.pageX + Template.note.previewXOffset + 'px')
           .fadeIn 'fast'
         # This needs to be here
         $('#preview img').mouseleave ->
           $('#preview').remove()
 
   'mousemove .previewLink': (event) ->
-    $('#preview').css('top', event.pageY - Template.note.previewXOffset + 'px')
-      .css 'left', event.pageX + Template.note.previewYOffset + 'px'
+    $('#preview').css('top', event.pageY - Template.note.previewYOffset + 'px')
+      .css 'left', event.pageX + Template.note.previewXOffset + 'px'
 
   'mouseleave .previewLink': (event) ->
     $('#preview').remove()
@@ -313,6 +314,7 @@ Template.note.events
   'keydown .title': (event, instance) ->
     note = this
     event.stopImmediatePropagation()
+    console.log event
     switch event.keyCode
       # Cmd ] - Zoom in
       when 221
@@ -335,6 +337,8 @@ Template.note.events
               showContent: true
             , (err, res) ->
               $(event.target).siblings('.body').fadeIn().focus()
+          else if event.ctrlKey
+            Template.note.toggleChildren instance
           else
             # Chop the text in half at the cursor
             # put what's on the left in a note on top
@@ -384,11 +388,15 @@ Template.note.events
         parent_id = Blaze.getData(
           $(event.currentTarget).closest('.note-item').prev().get(0)
         )._id
+        noteId = @_id
         if event.shiftKey
           Meteor.call 'notes.outdent', {
-            noteId: @_id
+            noteId: noteId
             shareKey: FlowRouter.getParam 'shareKey'
-          }
+          }, (error, result) ->
+            console.log error, result, @_id, noteId
+            Template.note.focus $('#noteItem_'+noteId)[0]
+
         else
           childCount = Notes.find({parent: parent_id}).count()
           Meteor.call 'notes.makeChild', {
@@ -396,7 +404,9 @@ Template.note.events
             parent: parent_id
             rank: (childCount*2)+1
             shareKey: FlowRouter.getParam 'shareKey'
-          }
+          }, (error, result) ->
+            console.log error, result
+            Template.note.focus $('#noteItem_'+noteId)[0]
 
       # Backspace / delete
       when 8
@@ -455,21 +465,14 @@ Template.note.events
                 prev.css('z-index', '').css('top', '').css 'position', ''
                 item.css('z-index', '').css('top', '').css 'position', ''
                 item.insertBefore prev
-                item.find('div.title').focus()
-                Template.note.focus item.find('div.title').last()[0]
+                Template.note.focus item[0]
               , 50
           else
             # Focus on the previous note
-            $(event.currentTarget).closest('.note-item')
-              .prev().find('div.title').focus()
-            Template.note.focus $(event.currentTarget)
-              .closest('.note-item').prev().find('div.title').first()[0]
+            Template.note.focus $(event.currentTarget).closest('.note-item').prev()[0]
         else
           # There is no previous note in the current sub list, go up a note.
-          $(event.currentTarget).closest('ol')
-            .siblings('.note-title').find('.title').focus()
-          Template.note.focus $(event.currentTarget)
-            .closest('ol').closest('.note-item')[0]
+          Template.note.focus $(event.currentTarget).closest('ol').closest('.note-item')[0]
 
       # Down
       when 40
@@ -486,7 +489,6 @@ Template.note.events
               next.css('z-index', '').css('top', '').css 'position', ''
               item.css('z-index', '').css('top', '').css 'position', ''
               item.insertAfter next
-              item.find('div.title').focus()
               Template.note.focus item.find('div.title').last()[0]
               upperSibling = item.prev()
               view = Blaze.getView(upperSibling)
@@ -506,7 +508,7 @@ Template.note.events
             return false
           # Go to a child note if available
           note = $(event.currentTarget).closest('.note-item')
-            .find('ol .note').first()
+            .find('ol .note-item').first()
           if !note.length
             # If not, get the next note on the same level
             note = $(event.currentTarget).closest('.note-item').next()
@@ -520,7 +522,6 @@ Template.note.events
                 searchNote = searchNote.parent().closest('.note-item')
                 count++
           if note.length
-            note.find('div.title').first().focus()
             Template.note.focus note[0]
           else
             $('#new-note').focus()
@@ -549,7 +550,9 @@ Template.note.events
 
 
   'click .title': (event, instance) ->
-    Template.note.focus event.target
+    event.stopImmediatePropagation()
+    if instance.state
+      instance.state.set 'focused', true
 
   'focus .title, focus .body': (event, instance) ->
       $('.title,.body').textcomplete [ {
@@ -634,9 +637,6 @@ Template.note.events
       Template.App_body.playSound 'collapse'
     else
       Template.App_body.playSound 'expand'
-      Meteor.call 'notes.setChildrenLastShown', {
-        noteId: instance.data._id
-      }
 
     Template.note.toggleChildren(instance)
 
@@ -687,6 +687,11 @@ Template.note.events
 
 Template.note.toggleChildren = (instance) ->
   if Meteor.userId()
+    if !instance.showChildren
+        Meteor.call 'notes.setChildrenLastShown', {
+          noteId: instance.data._id
+        }
+
     Meteor.call 'notes.setShowChildren', {
       noteId: instance.data._id
       show: !instance.data.showChildren
@@ -698,6 +703,7 @@ Template.note.toggleChildren = (instance) ->
 Template.note.focus = (noteItem) ->
   view = Blaze.getView(noteItem)
   instance = view.templateInstance()
+  $(noteItem).find('.title').first().focus()
   if instance.state
     instance.state.set 'focused', true
 
@@ -719,3 +725,4 @@ Template.note.setCursorToEnd = (ele) ->
   sel.removeAllRanges()
   sel.addRange range
   ele.focus()
+
