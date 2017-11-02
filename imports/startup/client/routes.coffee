@@ -120,8 +120,15 @@ FlowRouter.route '/dropboxAuth',
         return
       ret
 
-    Meteor.call 'users.setDropboxOauth',
-      parseQueryString(window.location.hash)['access_token']
+    Meteor.call 'users.setDropboxOauth', {
+      access_token: parseQueryString(window.location.hash)['access_token']
+    }, (error, result) ->
+      if !error
+        Template.App_body.showSnackbar
+          message: "Dropbox account linked successfully!"
+      else
+        Template.App_body.showSnackbar
+          message: "Error occured while linking Dropbox account."
     FlowRouter.redirect '/'
 
 FlowRouter.notFound =

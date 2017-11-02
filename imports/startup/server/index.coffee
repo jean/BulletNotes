@@ -19,7 +19,7 @@ Meteor.startup ->
     schedule: (parser) ->
       parser.text cronTime
     job: ->
-      Meteor.call('notes.dropbox')
+      Meteor.call('notes.dropboxNightly')
   SyncedCron.start()
 
   BrowserPolicy.framing.disallow()

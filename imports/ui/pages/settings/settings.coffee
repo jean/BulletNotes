@@ -17,6 +17,10 @@ Template.App_settings.events
     Meteor.call 'notes.export', {}, (err, res) ->
       $('#exportSpinner').fadeOut()
       $('#exportResult').val(res).fadeIn()
+  
+  'click #dropboxExportLink': (event) ->
+    Meteor.call 'notes.dropboxExport', {}, (err, res) ->
+      console.log err, res
 
   'change .themeInput': (event, instance) ->
     Meteor.call 'users.setTheme', {theme:event.target.dataset.name}, (err, res) ->
@@ -61,6 +65,7 @@ Template.App_settings.helpers
       {theme:'Beach'}
       {theme:'Space'}
       {theme:'White'}
+      {theme:'Light'}
     ]
 
   languages: ->

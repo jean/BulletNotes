@@ -46,8 +46,33 @@ export notesExport = new ValidatedMethod
         }
     exportText
 
-export dropbox = new ValidatedMethod
-  name: 'notes.dropbox'
+export dropboxExport = new ValidatedMethod
+  name: 'notes.dropboxExport'
+  validate: null
+  run: () ->
+    user = Meteor.user()
+    if (
+      user.profile &&
+      user.profile.dropbox_token
+    )
+      exportText = notesExport.call
+        noteId: null
+        userId: user._id
+      dbx = new Dropbox(
+        accessToken: user.profile.dropbox_token
+      )
+      dbx.filesUpload(
+        path: '/BulletNotes'+moment().format('-YYYY-MM-DD')+'.txt'
+        contents: exportText).then((response) ->
+          console.log response
+      ).catch (error) ->
+        console.error error
+        throw new (Meteor.Error)(error)
+    else
+      throw new (Meteor.Error)('No linked Dropbox account')
+
+export dropboxNightly = new ValidatedMethod
+  name: 'notes.dropboxNightly'
   validate: null
   run: () ->
     users = Meteor.users.find({})
@@ -128,7 +153,8 @@ export summary = new ValidatedMethod
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
   notesExport
-  dropbox
+  dropboxExport
+  dropboxNightly
   summary
   inbox
 ], 'name')

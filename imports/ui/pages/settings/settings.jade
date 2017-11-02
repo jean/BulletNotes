@@ -40,6 +40,7 @@ template(name="App_settings")
       | Each backup file can be imported straight into another instance of BulletNotes,
       | or into something like Workflowy.
     if dropbox_token
+      a#dropboxExportLink.form-control.btn.btn-theme.btn-primary Export All Notes to Dropbox
       a#deauthLink.form-control.btn.btn-theme.btn-primary Unlink Dropbox Account
     else
       a#authlink.form-control.btn.btn-theme.btn-primary Authenticate with Dropbox

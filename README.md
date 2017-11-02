@@ -34,8 +34,21 @@ cd BulletNotes
 npm start
 ```
 
-That's it!
+That's it! Note: You may have to run this several times when first starting to get it to download everything.
 
 ## Heroku Deployment
 
 Create a Heroku app. Add an mLab addon for your database. Fork this repo and deploy your forked branch to Heroku as normal, as per Heroku's documentation. Set your buildpack to https://github.com/AdmitHub/meteor-buildpack-horse.git
+
+## Background Images
+
+All images in public/img/bgs are CC0 License, Free for personal and commercial use, No attribution required
+
+Space - https://www.pexels.com/photo/rock-formation-during-night-time-167843/
+Field - https://www.pexels.com/photo/sky-field-agriculture-cornfield-7601/
+City - https://www.pexels.com/photo/aerial-architectural-design-architecture-buildings-373912/
+Mountain - https://www.pexels.com/photo/adventure-alpine-altitude-austria-355241/
+Abstract - https://www.pexels.com/photo/abstract-art-artistic-background-459799/
+Light - https://www.pexels.com/photo/abstract-art-blur-bulb-287748/
+Beach - https://www.pexels.com/photo/beach-calm-clouds-idyllic-457882/
+Snow - https://www.pexels.com/photo/snow-covered-ground-60561/
