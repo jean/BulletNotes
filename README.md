@@ -17,7 +17,8 @@ An open-source, fully featured note taking, journaling, self quantification app.
 * Data Portability
  * Nightly export to drop box is in a human friendly .txt file. You can copy/paste the export straight into other note taking apps such as Workflowy. Every extra feature beyond nested notes is implemented with hashtags, so no data is lost on export.
 * Ease of Use
- * Point and click friendliness for less technical users. API and CLI interface for more technical users. (Coming Soon)
+ * Point and click friendliness for less technical users.
+ * API and CLI interface for more technical users.
 
 ## User Guide, Planned Feature List, and Bug Tracker
 
@@ -44,11 +45,11 @@ Create a Heroku app. Add an mLab addon for your database. Fork this repo and dep
 
 All images in public/img/bgs are CC0 License, Free for personal and commercial use, No attribution required
 
-Space - https://www.pexels.com/photo/rock-formation-during-night-time-167843/
-Field - https://www.pexels.com/photo/sky-field-agriculture-cornfield-7601/
-City - https://www.pexels.com/photo/aerial-architectural-design-architecture-buildings-373912/
-Mountain - https://www.pexels.com/photo/adventure-alpine-altitude-austria-355241/
-Abstract - https://www.pexels.com/photo/abstract-art-artistic-background-459799/
-Light - https://www.pexels.com/photo/abstract-art-blur-bulb-287748/
-Beach - https://www.pexels.com/photo/beach-calm-clouds-idyllic-457882/
-Snow - https://www.pexels.com/photo/snow-covered-ground-60561/
+* Space - https://www.pexels.com/photo/rock-formation-during-night-time-167843/
+* Field - https://www.pexels.com/photo/sky-field-agriculture-cornfield-7601/
+* City - https://www.pexels.com/photo/aerial-architectural-design-architecture-buildings-373912/
+* Mountain - https://www.pexels.com/photo/adventure-alpine-altitude-austria-355241/
+* Abstract - https://www.pexels.com/photo/abstract-art-artistic-background-459799/
+* Light - https://www.pexels.com/photo/abstract-art-blur-bulb-287748/
+* Beach - https://www.pexels.com/photo/beach-calm-clouds-idyllic-457882/
+* Snow - https://www.pexels.com/photo/snow-covered-ground-60561/
