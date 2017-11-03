@@ -22,7 +22,6 @@
 .note-item
   border-left: solid 4px rgba(0,0,0,0)
   border-right: solid 4px rgba(0,0,0,0)
-  font-size: 12px
   padding: 0px
   position: relative
   margin-bottom: 2px
@@ -71,6 +70,7 @@
 
   .progress
     margin: 10px 0 0
+    height: 10px
 
   .noteContainer
     padding: 5px 0 5px 5px
@@ -80,12 +80,9 @@
 
   .title
     display: block
-    font-size: 1.4em
     color: black
     min-width: 40%
     margin: -5px 0 0 8rem
-    line-height: 1.75
-    min-height: 2em
     
   div.title:focus
       outline: none
@@ -116,8 +113,12 @@
   .dot
     border: solid #999 2px;
 
-.note .dot .material-icons
-  font-size: .75em;
+.note .mdl-button--icon
+  height: 1em
+  min-width: 1em
+  width: 1em
+  .material-icons
+    font-size: .6em
 
 .note-item.encrypted
   .encryptedTitle
@@ -285,3 +286,7 @@ div.pass-hint
   opacity: .5
   font-style: italic
   text-align: center
+
+.note-item.favorite > .noteContainer
+  .dot
+    background-color: rgba(255, 62, 157, 0.5)

@@ -137,6 +137,8 @@ Template.note.helpers
       className = className + ' focused'
     if @encrypted
       className = className + ' encrypted'
+    if @favorite
+      className = className + ' favorite'
     if @encryptedRoot
       className = className + ' encryptedRoot'
     className
