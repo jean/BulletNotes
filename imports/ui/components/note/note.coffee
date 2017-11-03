@@ -370,10 +370,7 @@ Template.note.events
                     FlowRouter.go('/account')
                   ,
                   actionText: 'More Info'
-            setTimeout (->
-              $(event.target).closest('.note-item')
-                .next().find('.title').focus()
-            ), 50
+              Template.note.focus $(event.target).closest('.note-item').next()[0]
 
       # Tab
       when 9
@@ -555,6 +552,7 @@ Template.note.events
     event.stopImmediatePropagation()
     if instance.state
       instance.state.set 'focused', true
+      Session.set 'focused', true
 
   'focus .title, focus .body': (event, instance) ->
       $('.title,.body').textcomplete [ {
@@ -595,6 +593,7 @@ Template.note.events
 
   'blur .title': (event, instance) ->
     Template.instance().state.set 'focused', false
+    Session.set 'focused', false
     that = this
     event.stopPropagation()
     # If we blurred because we hit tab and are causing an indent
@@ -708,6 +707,7 @@ Template.note.focus = (noteItem) ->
   $(noteItem).find('.title').first().focus()
   if instance.state
     instance.state.set 'focused', true
+    Session.set 'focused', true
 
 Template.note.stripTags = (inputText) ->
   if !inputText

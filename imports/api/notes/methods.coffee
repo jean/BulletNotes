@@ -288,12 +288,15 @@ export makeChild = new ValidatedMethod
     if !note
       throw new (Meteor.Error)('note-not-found')
     oldParent = Notes.findOne(note.parent)
-    parent = Notes.findOne(parent)
+    if parent
+      parent = Notes.findOne(parent)
+
     if upperSibling
       upperSibling = Notes.findOne(upperSibling)
       rank = upperSibling.rank + 1
     else
-      rank = Notes.find({parent:parent._id}).count() * 2
+      if parent
+        rank = Notes.find({parent:parent._id}).count() * 2
 
     if !rank
       rank = 1
