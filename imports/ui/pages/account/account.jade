@@ -1,12 +1,25 @@
 template(name='App_account')
   #adminPage.extraPage.container-fluid
     .title-message {{_ 'layouts.appBody.account'}}
-    p Sorry to limit the amount of notes you can have, but storage ain't free.
-    p You can either purchase an upgrade (soon) for unlimited notes, or you can refer your friends to tell them about this great site, and earn some extra space!
-    h2 Referrals
-    p Earn an extra {{referralNoteBonus}} notes for each friend who joins.
-    p Referrals so far: {{currentUser.referralCount}}
-    p Extra notes earned: {{extraNotesEarned}}
-    p 
-        | Your link: 
-        a(href="{{url}}?ref={{currentUser._id}}") {{url}}?ref={{currentUser._id}}
+    .mdl-grid
+      .mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--1-offset
+        .mdl-card__title
+          h2.mdl-card__title-text Free Plan
+        .mdl-card__supporting-text
+          p Sorry to limit the amount of notes you can have, but storage ain't free.
+          p You can either purchase an upgrade (soon) for unlimited notes, or you can refer your friends to tell them about this great site, and earn some extra space!
+        .mdl-card__actions.mdl-card--border
+          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href="/pricing") Upgrade Now
+
+      .mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--2-offset
+        .mdl-card__title
+          h2.mdl-card__title-text Referrals
+        .mdl-card__supporting-text
+          p Earn an extra {{referralNoteBonus}} notes for each friend who joins.
+          p Referrals so far: {{currentUser.referralCount}}
+          p Extra notes earned: {{extraNotesEarned}}
+        .mdl-card__actions.mdl-card--border
+          | Your link: 
+          a(href="{{url}}?ref={{currentUser._id}}") {{url}}?ref={{currentUser._id}}
+
+

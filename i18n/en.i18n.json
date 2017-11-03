@@ -93,7 +93,10 @@
       "oldItems": "Stale notes",
       "calendar": "Calendar View",
       "kanban": "Kanban View",
-      "account": "Account"
+      "account": "Account",
+      "pricing": "Pricing",
+      "help": "Help",
+      "about": "About"
     },
     "menu": {
       "pinMenu": "Pin Menu Open",

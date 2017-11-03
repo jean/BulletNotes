@@ -10,6 +10,7 @@ require '/imports/ui/pages/import/import.coffee'
 require '/imports/ui/pages/settings/settings.coffee'
 require '/imports/ui/pages/admin/admin.coffee'
 require '/imports/ui/pages/account/account.coffee'
+require '/imports/ui/pages/pricing/pricing.coffee'
 
 # Import to override accounts templates
 require '/imports/ui/accounts/accounts-templates.js'
