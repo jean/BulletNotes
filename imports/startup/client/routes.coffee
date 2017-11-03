@@ -131,6 +131,12 @@ FlowRouter.route '/dropboxAuth',
           message: "Error occured while linking Dropbox account."
     FlowRouter.redirect '/'
 
+FlowRouter.route '/pricing',
+  name: 'App.pricing'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_body', main: 'App_pricing'
+
 FlowRouter.notFound =
   action: ->
     BlazeLayout.render('App_body', { main: 'App_notFound' })

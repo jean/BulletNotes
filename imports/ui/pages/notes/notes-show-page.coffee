@@ -7,7 +7,7 @@ import { noteRenderHold } from '/imports/ui/launch-screen.js'
 import './notes-show-page.jade'
 
 # Components used inside the template
-import '/imports/ui/pages/app-not-found.coffee'
+import '/imports/ui/pages/404/app-not-found.coffee'
 import '/imports/ui/components/notes/notes.coffee'
 import '/imports/ui/components/kanban/kanban.coffee'
 import '/imports/ui/components/calendar/calendar.coffee'
