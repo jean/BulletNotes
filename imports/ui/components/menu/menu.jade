@@ -2,12 +2,13 @@ template(name="menu")
   span.mdl-layout-title
     a(href='/') BulletNotes.io
   if ready
-    if isAdmin
-      | Much wow
-    else
-      | Notes: {{totalNotes}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
-      #spaceUsedBar.mdl-progress.mdl-js-progress
     nav.mdl-navigation
+      .mdl-layout-spacer
+        if isAdmin
+          | Much wow admin!
+        else
+          | Notes: {{totalNotes}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
+          #spaceUsedBar.mdl-progress.mdl-js-progress
       .buttonWrap
         if hideUndoButton
           button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect

@@ -413,7 +413,7 @@ Template.note.events
           # We're showing a dropdown, don't do anything.
           return
         if event.currentTarget.innerText.trim().length == 0 || event.metaKey
-          $(event.currentTarget).closest('.note-item').prev().find('.title').focus()
+          Template.note.focus $(event.currentTarget).closest('.note-item').prev()[0]
           $(event.currentTarget).closest('.note-item').fadeOut()
           Template.App_body.playSound 'delete'
           Meteor.call 'notes.remove',

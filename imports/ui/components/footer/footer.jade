@@ -1,13 +1,30 @@
 template(name='footer')
-  footer.mdl-mini-footer
-    .mdl-mini-footer__left-section
+  footer.mdl-mega-footer
+    .mdl-mega-footer__middle-section
+      .mdl-mega-footer__drop-down-section
+        input.mdl-mega-footer__heading-checkbox(type='checkbox', checked='')
+        h1.mdl-mega-footer__heading Help
+        ul.mdl-mega-footer__link-list
+          li
+            a(href='http://bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA') User Guide
+          li
+            a(href='https://github.com/NickBusey/BulletNotes',target='_blank') GitHub
+          li
+            a(href='https://github.com/NickBusey/BulletNotes/issues',target='_blank') Support
+      .mdl-mega-footer__drop-down-section
+        input.mdl-mega-footer__heading-checkbox(type='checkbox', checked='')
+        h1.mdl-mega-footer__heading Pricing
+        ul.mdl-mega-footer__link-list
+          li
+            a(href='#') Coming Soon
+
+    .mdl-mega-footer__bottom-section
       .mdl-logo BulletNotes.io
-      ul.mdl-mini-footer__link-list
+      ul.mdl-mega-footer__link-list
         li
-          a(href='http://bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA') User Guide
+          | {{year}}
         li
-          a(href='https://github.com/NickBusey/BulletNotes',target='_blank') GitHub
+          span#version
         li
-          a(href='https://github.com/NickBusey/BulletNotes/issues',target='_blank') Support
-      | {{year}} - 
-      span#version
+          | created by
+          a(href='https://github.com/NickBusey',target='_blank') Nick Busey

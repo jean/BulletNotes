@@ -4,8 +4,8 @@
 # Import to load these templates
 require '/imports/ui/layouts/app-body.coffee'
 require '/imports/ui/pages/root-redirector.js'
-require '/imports/ui/pages/notes-show-page.coffee'
-require '/imports/ui/pages/app-not-found.coffee'
+require '/imports/ui/pages/notes/notes-show-page.coffee'
+require '/imports/ui/pages/404/app-not-found.coffee'
 require '/imports/ui/pages/import/import.coffee'
 require '/imports/ui/pages/settings/settings.coffee'
 require '/imports/ui/pages/admin/admin.coffee'
