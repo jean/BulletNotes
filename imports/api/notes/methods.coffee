@@ -71,6 +71,9 @@ export insert = new ValidatedMethod
     Meteor.users.update {_id:@userId},
       {$inc:{"profile.notes_created":1}}
 
+    if Meteor.isClient
+      Template.App_body.client.recordEvent 'newNote', owner: @userId
+
     note
 
 export share = new ValidatedMethod
