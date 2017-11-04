@@ -9,10 +9,14 @@ Meteor.publish 'notes.all', () ->
     deleted:
       $exists: false
 
-Meteor.publish 'countPublish', ->
-  new Counter 'totalNotes', Notes.find
+Meteor.publish 'notes.count.user', ->
+  new Counter 'notes.count.user', Notes.find
     owner: @userId
     deleted: {$exists: false}
+
+totalNotes = new Counter('notes.count.total', Notes.find({}))
+Meteor.publish 'notes.count.total', ->
+  totalNotes
 
 Meteor.publish 'notes.calendar', () ->
   Notes.find

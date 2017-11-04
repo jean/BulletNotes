@@ -9,7 +9,7 @@ Template.menu.onCreated ->
   @state.setDefault
     menuOpen: true
   setInterval ->
-    percentFull = Counter.get('totalNotes') / Template.App_body.getTotalNotesAllowed() * 100
+    percentFull = Counter.get('userNotes') / Template.App_body.getTotalNotesAllowed() * 100
     document.querySelector('#spaceUsedBar').MaterialProgress.setProgress(percentFull);
 
     if Meteor.user()
@@ -36,9 +36,6 @@ Template.menu.helpers
     else
       displayName = Meteor.user().profile.name
     displayName
-
-  totalNotes: ->
-    Counter.get('totalNotes')
 
   totalNotesAllowed: ->
     Template.App_body.getTotalNotesAllowed()

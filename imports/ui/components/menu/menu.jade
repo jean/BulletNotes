@@ -7,7 +7,7 @@ template(name="menu")
         if isAdmin
           | Much wow admin!
         else
-          | Notes: {{totalNotes}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
+          | Notes: {{getCount 'notes.count.user'}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
           #spaceUsedBar.mdl-progress.mdl-js-progress
       .buttonWrap
         if hideUndoButton

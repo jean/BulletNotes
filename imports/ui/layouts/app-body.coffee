@@ -21,6 +21,49 @@ CONNECTION_ISSUE_TIMEOUT = 5000
 # A store which is local to this file?
 showConnectionIssue = new ReactiveVar(false)
 Meteor.startup ->
+  !((name, path, ctx) ->
+    latest = undefined
+    prev = if name != 'Keen' and window.Keen then window.Keen else false
+    ctx[name] = ctx[name] or ready: (fn) ->
+      h = document.getElementsByTagName('head')[0]
+      s = document.createElement('script')
+      w = window
+      loaded = undefined
+      s.onload = s.onerror =
+      s.onreadystatechange = ->
+        if s.readyState and !/^c|loade/.test(s.readyState) or loaded
+          return
+        s.onload = s.onreadystatechange = null
+        loaded = 1
+        latest = w.Keen
+        if prev
+          w.Keen = prev
+        else
+          try
+            delete w.Keen
+          catch e
+            w.Keen = undefined
+        ctx[name] = latest
+        ctx[name].ready fn
+        return
+
+      s.async = 1
+      s.src = path
+      h.parentNode.insertBefore s, h
+      return
+    return
+  )('KeenAsync', 'https://d26b395fwzu5fz.cloudfront.net/keen-tracking-1.1.3.min.js', this)
+  KeenAsync.ready ->
+    # Configure a client instance
+    client = new KeenAsync(
+      projectId: Meteor.settings.public.keenProjectId
+      writeKey: Meteor.settings.public.keenWriteKey
+    )
+    # Record an event
+    client.recordEvent 'pageviews', title: document.title
+    return
+
+
   NProgress.start()
   # Only show the connection error box if it has been 5 seconds since
   # the app started
@@ -132,7 +175,8 @@ Template.App_body.onCreated ->
   self.autorun ->
     Meteor.subscribe('users.prefs')
     handle = NoteSubs.subscribe('notes.all')
-    Meteor.subscribe('countPublish')
+    Meteor.subscribe 'notes.count.total'
+    Meteor.subscribe 'notes.count.user'
     Session.set 'ready', handle.ready()
     return
   setTimeout (->
@@ -247,7 +291,6 @@ Template.App_body.helpers
       note: ->
         Notes.findOne FlowRouter.getParam('noteId')
 
-
 Template.App_body.events
   'keyup .search': (event, instance) ->
     # Throttle so we don't search for single letters
@@ -269,7 +312,6 @@ Template.App_body.events
   'blur .title-wrapper': (event, instance) ->
     event.stopPropagation()
     title = Template.note.stripTags(event.target.innerHTML)
-    console.log "Got title", title
     if title != @title
       Meteor.call 'notes.updateTitle', {
         noteId: FlowRouter.getParam('noteId')
@@ -282,6 +324,8 @@ Template.App_body.events
     if event.keyCode == 13
       event.preventDefault()
       $(event.currentTarget.blur())
+
+
 
 Template.App_body.playSound = (sound) ->
   if !Meteor.user() && Meteor.user().muted
@@ -303,3 +347,11 @@ Template.App_body.toggleMute = () ->
 Template.App_body.showSnackbar = (data) ->
   Template.App_body.playSound 'snackbar'
   document.querySelector('#snackbar').MaterialSnackbar.showSnackbar(data)
+
+UI.registerHelper 'getCount', (name) ->
+  if name
+    return Counter.get(name)
+
+UI.registerHelper 'getSetting', (name) ->
+  if name
+    return Meteor.settings.public[name]

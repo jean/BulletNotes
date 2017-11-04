@@ -42,3 +42,7 @@ App.launchScreens({
 
 App.setPreference("StatusBarOverlaysWebView", "false");
 App.setPreference("StatusBarBackgroundColor", "#000000");
+
+App.configurePlugin('cordova-plugin-googleplus', {
+  'REVERSED_CLIENT_ID': 'com.googleusercontent.apps.bulletnotes'
+});

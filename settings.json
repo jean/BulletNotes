@@ -4,7 +4,9 @@
     "dev": 1,
     "noteLimit": 250,
     "referralNoteBonus": 250,
-    "environment": "local"
+    "environment": "local",
+    "keenProjectId": "",
+    "keenWriteKey": ""
   },
   "adminUserIds": [""]
 }
