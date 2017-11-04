@@ -7,3 +7,6 @@ Template.footer.onCreated ->
 Template.footer.helpers
   year: ->
     moment().format("YYYY")
+
+  totalNotes: ->
+    Counter.get('notes.count.total').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")

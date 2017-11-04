@@ -185,7 +185,7 @@ Template.App_body.onCreated ->
   ), 5000
 
 Template.App_body.getTotalNotesAllowed = ->
-  if Meteor.user() == null
+  if !Meteor.user()
     return 0
   referrals = Meteor.user().referralCount || 0
   Meteor.settings.public.noteLimit + (Meteor.settings.public.referralNoteBonus * referrals)
