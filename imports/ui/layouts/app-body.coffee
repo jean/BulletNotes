@@ -55,12 +55,12 @@ Meteor.startup ->
   )('KeenAsync', 'https://d26b395fwzu5fz.cloudfront.net/keen-tracking-1.1.3.min.js', this)
   KeenAsync.ready ->
     # Configure a client instance
-    Template.App_body.client = new KeenAsync(
+    Template.App_body.keenClient = new KeenAsync(
       projectId: Meteor.settings.public.keenProjectId
       writeKey: Meteor.settings.public.keenWriteKey
     )
     # Record an event
-    Template.App_body.client.recordEvent 'pageviews', title: document.title
+    Template.App_body.keenClient.recordEvent 'pageviews', title: document.title
     return
 
 

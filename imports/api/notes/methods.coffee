@@ -72,7 +72,7 @@ export insert = new ValidatedMethod
       {$inc:{"profile.notes_created":1}}
 
     if Meteor.isClient
-      Template.App_body.client.recordEvent 'newNote', owner: @userId
+      Template.App_body.keenClient.recordEvent 'newNote', owner: @userId
 
     note
 

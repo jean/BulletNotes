@@ -65,9 +65,9 @@
     display: none
     position: absolute
     color: #a7a7a7
-    left: 1.5em
+    left: 4em
     font-size: 1.5em
-    margin-top: -.25em
+    margin-top: -1.4em
 
   .progress
     margin: 10px 0 0
@@ -140,16 +140,20 @@
     transition: all .2s ease-in-out;
     .expand
       opacity: 0
+      cursor: default
     .title, .encryptedTitle
       margin: -5px 5rem 0 7rem
   .note .expand, .note .menuToggle
     opacity: 0
-  .note.hasChildren .noteContainer:hover
+    cursor: default
+  .note.hasChildren > .noteContainer:hover
     > .options > .expand, > .options > .menuToggle
       opacity: 1
+      cursor: pointer
   .note .noteContainer:hover
     > .options > .menuToggle
       opacity: 1
+      cursor: pointer
 
 
   .note .favorite:hover
