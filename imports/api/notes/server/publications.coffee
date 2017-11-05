@@ -18,6 +18,14 @@ totalNotes = new Counter('notes.count.total', Notes.find({}))
 Meteor.publish 'notes.count.total', ->
   totalNotes
 
+recentNotes = new Counter 'notes.count.recent', Notes.find(
+    {
+        createdAt: { $gte :  moment().subtract(24, 'hours').toDate()  }
+    }, {})
+
+Meteor.publish 'notes.count.recent', ->
+  recentNotes
+
 Meteor.publish 'notes.calendar', () ->
   Notes.find
     owner: @userId

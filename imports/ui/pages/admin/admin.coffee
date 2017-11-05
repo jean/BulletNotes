@@ -8,8 +8,5 @@ Template.App_admin.onCreated ->
 
 Template.App_admin.onRendered ->
   NProgress.done()
-  Meteor.subscribe('users.count')
-
-Template.App_admin.helpers
-  userCount: ->
-    Counter.get('total')
+  Meteor.subscribe('users.count.total')
+  Meteor.subscribe('notes.count.recent')

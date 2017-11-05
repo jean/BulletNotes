@@ -13,5 +13,8 @@ Meteor.publish 'users.prefs', () ->
       language: 1
   user
 
-Meteor.publish 'users.count', ->
-  new Counter 'total', Meteor.users.find()
+Meteor.publish 'users.count.total', ->
+  new Counter 'users.count.total', Meteor.users.find()
+
+Meteor.publish 'users.count.recent', ->
+  new Counter 'users.count.recent', Meteor.users.find()

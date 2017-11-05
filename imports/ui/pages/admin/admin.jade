@@ -2,7 +2,8 @@ template(name='App_admin')
   #adminPage.extraPage.container-fluid
     .title-message {{_ 'layouts.appBody.admin'}}
     h2 User Info
-      p Users: {{userCount}}
-      p Last Joined: {{lastUserJoined}}
+      p Users: {{getCount 'users.count.total'}}
+    h2 Activity
+      p Notes Created in the past 24 hrs {{getCount 'notes.count.recent'}}
     h2 AB Tests
     +abtests
