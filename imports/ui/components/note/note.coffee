@@ -47,6 +47,16 @@ Template.note.onCreated ->
     showMenu: false
     focused: false
 
+  query = Notes.find({_id:@data._id})
+
+  handle = query.observeChanges(
+    changed: (id, fields) ->
+      if fields.title
+        $('#noteItem_'+id).find('.title').first().html(
+          Template.notes.formatText fields.title
+        )
+  )
+
 Template.note.onRendered ->
   noteElement = this
   Tracker.autorun ->
@@ -346,18 +356,22 @@ Template.note.events
             # put what's to the right in a note below
             position = event.target.selectionStart
             text = event.target.innerHTML
+            if !position
+              range = window.getSelection().getRangeAt(0)
+              position = range.startOffset
+
             topNote = text.substr(0, position)
             bottomNote = text.substr(position)
-            # Create a new note below the current.
-            # if topNote != Template.note.stripTags(note.title)
-            #   Meteor.call 'notes.updateTitle', {
-            #     noteId: note._id
-            #     title: topNote
-            #     shareKey: FlowRouter.getParam('shareKey')
-            #   }
+            if topNote != Template.note.stripTags(note.title)
+              Meteor.call 'notes.updateTitle', {
+                noteId: note._id
+                title: topNote
+                shareKey: FlowRouter.getParam('shareKey')
+              }
             Template.App_body.playSound 'newNote'
+            # Create a new note below the current.
             Meteor.call 'notes.insert', {
-              title: ''
+              title: bottomNote
               rank: note.rank + 1
               parent: note.parent
               shareKey: FlowRouter.getParam('shareKey')
@@ -411,6 +425,8 @@ Template.note.events
         if $('.textcomplete-dropdown:visible').length
           # We're showing a dropdown, don't do anything.
           return
+        
+        # If the note is empty and hit delete again, or delete with meta key
         if event.currentTarget.innerText.trim().length == 0 || event.metaKey
           Template.note.focus $(event.currentTarget).closest('.note-item').prev()[0]
           $(event.currentTarget).closest('.note-item').fadeOut()
@@ -418,8 +434,13 @@ Template.note.events
           Meteor.call 'notes.remove',
             noteId: @_id
             shareKey: FlowRouter.getParam 'shareKey'
+
+        # If there is no selection
         if window.getSelection().toString() == ''
           position = event.target.selectionStart
+          if !position
+            range = window.getSelection().getRangeAt(0)
+            position = range.startOffset
           if position == 0
             # We're at the start of the note,
             # add this to the note above, and remove it.
@@ -427,17 +448,19 @@ Template.note.events
             prevNote = Blaze.getData(prev.get(0))
             note = this
             Template.App_body.playSound 'delete'
-            Meteor.call 'notes.updateTitle',
-              prevNote._id,
-              prevNote.title + event.target.value,
-              FlowRouter.getParam 'shareKey',
-              (err, res) ->
+            Meteor.call 'notes.updateTitle', {
+              noteId: prevNote._id
+              title: prevNote.title + event.target.innerHTML
+              shareKey: FlowRouter.getParam 'shareKey'
+            }, (err, res) ->
+              if !err
                 Meteor.call 'notes.remove',
                   noteId: note._id,
                   shareKey: FlowRouter.getParam 'shareKey',
                   (err, res) ->
                     # Moves the caret to the correct position
-                    prev.find('div.title').focus()
+                    if !err
+                      prev.find('div.title').focus()
 
       # . Period
       when 190

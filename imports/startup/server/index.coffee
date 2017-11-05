@@ -24,7 +24,7 @@ Meteor.startup ->
 
   BrowserPolicy.framing.disallow()
   #BrowserPolicy.content.disallowInlineScripts()
-  BrowserPolicy.content.disallowEval()
+  #BrowserPolicy.content.disallowEval()
   BrowserPolicy.content.allowInlineStyles()
   BrowserPolicy.content.allowFontDataUrl()
   BrowserPolicy.content.allowImageOrigin('*')
