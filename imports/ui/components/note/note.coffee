@@ -405,9 +405,8 @@ Template.note.events
           Meteor.call 'notes.outdent', {
             noteId: noteId
             shareKey: FlowRouter.getParam 'shareKey'
-          }, (error, result) ->
-            console.log error, result, @_id, noteId
-            Template.note.focus $('#noteItem_'+noteId)[0]
+          }
+          Template.note.focus $('#noteItem_'+noteId)[0]
 
         else
           childCount = Notes.find({parent: parent_id}).count()
@@ -416,9 +415,8 @@ Template.note.events
             parent: parent_id
             rank: (childCount*2)+1
             shareKey: FlowRouter.getParam 'shareKey'
-          }, (error, result) ->
-            console.log error, result
-            Template.note.focus $('#noteItem_'+noteId)[0]
+          }
+          Template.note.focus $('#noteItem_'+noteId)[0]
 
       # Backspace / delete
       when 8
