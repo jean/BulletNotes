@@ -554,41 +554,42 @@ Template.note.events
       Session.set 'focused', true
 
   'focus .title, focus .body': (event, instance) ->
-      $('.title,.body').textcomplete [ {
-        match: /\B:([\-+\w]*)$/
-        search: (term, callback) ->
-          results = []
-          results2 = []
-          results3 = []
-          $.each Template.App_body.emojiStrategy, (shortname, data) ->
-            if shortname.indexOf(term) > -1
-              results.push shortname
-            else
-              if data.aliases != null and data.aliases.indexOf(term) > -1
-                results2.push shortname
-              else if data.keywords != null and data.keywords.indexOf(term) > -1
-                results3.push shortname
-            return
-          if term.length >= 3
-            results.sort (a, b) ->
-              a.length > b.length
-            results2.sort (a, b) ->
-              a.length > b.length
-            results3.sort()
-          newResults = results.concat(results2).concat(results3)
-          callback newResults
+    Session.set 'focused', true
+    $('.title,.body').textcomplete [ {
+      match: /\B:([\-+\w]*)$/
+      search: (term, callback) ->
+        results = []
+        results2 = []
+        results3 = []
+        $.each Template.App_body.emojiStrategy, (shortname, data) ->
+          if shortname.indexOf(term) > -1
+            results.push shortname
+          else
+            if data.aliases != null and data.aliases.indexOf(term) > -1
+              results2.push shortname
+            else if data.keywords != null and data.keywords.indexOf(term) > -1
+              results3.push shortname
           return
-        template: (shortname) ->
-          '<img class="emojione" src="//cdn.jsdelivr.net/emojione/assets/png/' +
-          Template.App_body.emojiStrategy[shortname].unicode + '.png"> :' + shortname + ':'
-        replace: (shortname) ->
-          Template.App_body.insertingData = true
-          return ':' + shortname + ': '
-        index: 1
-        maxCount: 10
-      } ], footer:
-        '<a href="http://www.emoji.codes" target="_blank">'+
-        'Browse All<span class="arrow">»</span></a>'
+        if term.length >= 3
+          results.sort (a, b) ->
+            a.length > b.length
+          results2.sort (a, b) ->
+            a.length > b.length
+          results3.sort()
+        newResults = results.concat(results2).concat(results3)
+        callback newResults
+        return
+      template: (shortname) ->
+        '<img class="emojione" src="//cdn.jsdelivr.net/emojione/assets/png/' +
+        Template.App_body.emojiStrategy[shortname].unicode + '.png"> :' + shortname + ':'
+      replace: (shortname) ->
+        Template.App_body.insertingData = true
+        return ':' + shortname + ': '
+      index: 1
+      maxCount: 10
+    } ], footer:
+      '<a href="http://www.emoji.codes" target="_blank">'+
+      'Browse All<span class="arrow">»</span></a>'
 
   'blur .title': (event, instance) ->
     Template.instance().state.set 'focused', false
@@ -616,6 +617,7 @@ Template.note.events
   'blur .body': (event, instance) ->
     event.stopPropagation()
     that = this
+    Session.set 'focused', false
     # console.log event.target
     body = Template.note.stripTags event.target.innerHTML
     if body != Template.note.stripTags(@body)
