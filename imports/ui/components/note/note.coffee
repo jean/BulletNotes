@@ -316,7 +316,6 @@ Template.note.events
   'keydown .title': (event, instance) ->
     note = this
     event.stopImmediatePropagation()
-    console.log event
     switch event.keyCode
       # Cmd ] - Zoom in
       when 221
@@ -370,7 +369,7 @@ Template.note.events
                     FlowRouter.go('/account')
                   ,
                   actionText: 'More Info'
-              Template.note.focus $(event.target).closest('.note-item').next()[0]
+            Template.note.focus $(event.target).closest('.note-item').next()[0]
 
       # Tab
       when 9
