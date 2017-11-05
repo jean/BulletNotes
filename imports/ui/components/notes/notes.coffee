@@ -65,6 +65,8 @@ Template.notes.onCreated ->
 
 Template.notes.onRendered ->
   Template.note.focus $('.note-item').first()[0]
+  
+  Template.App_body.client.recordEvent 'notesRendered', owner: @userId
 
 Template.notes.helpers
   notes: ->

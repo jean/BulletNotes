@@ -96,7 +96,8 @@
       "account": "Account",
       "pricing": "Pricing",
       "help": "Help",
-      "about": "About"
+      "about": "About",
+      "admin": "Admin"
     },
     "menu": {
       "pinMenu": "Pin Menu Open",

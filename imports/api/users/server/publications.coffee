@@ -14,4 +14,4 @@ Meteor.publish 'users.prefs', () ->
   user
 
 Meteor.publish 'users.count', ->
-  new Counter 'total', Meteor.users.find
+  new Counter 'total', Meteor.users.find()

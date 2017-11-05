@@ -44,9 +44,13 @@ template(name="App_settings")
       a#deauthLink.form-control.btn.btn-theme.btn-primary Unlink Dropbox Account
     else
       a#authlink.form-control.btn.btn-theme.btn-primary Authenticate with Dropbox
-    
-    h4 Alfred Integration
-    p Documentation: 
-      a(href="https://bulletnotes.io/note/frCTPYCuSQN2kDRdo")
-        | https://bulletnotes.io/note/frCTPYCuSQN2kDRdo
-    p Your user id is: {{currentUser._id}}
+
+    .mdl-card.mdl-shadow--2dp.mdl--centered
+      .mdl-card__title
+        h2.mdl-card__title-text Alfred Integration
+      .mdl-card__supporting-text
+        p Documentation: 
+        a(href="https://bulletnotes.io/note/frCTPYCuSQN2kDRdo")
+          | https://bulletnotes.io/note/frCTPYCuSQN2kDRdo
+      .mdl-card__actions.mdl-card--border
+        p Your user id is: {{currentUser._id}}

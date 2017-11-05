@@ -4,11 +4,8 @@ template(name="menu")
   if ready
     nav.mdl-navigation
       .mdl-layout-spacer
-        if isAdmin
-          | Much wow admin!
-        else
-          | Notes: {{getCount 'notes.count.user'}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
-          #spaceUsedBar.mdl-progress.mdl-js-progress
+        | Notes: {{getCount 'notes.count.user'}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
+        #spaceUsedBar.mdl-progress.mdl-js-progress
       .buttonWrap
         if hideUndoButton
           button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
