@@ -51,7 +51,7 @@ Template.note.onCreated ->
 
   handle = query.observeChanges(
     changed: (id, fields) ->
-      if fields.title
+      if fields.title != null
         $('#noteItem_'+id).find('.title').first().html(
           Template.notes.formatText fields.title
         )
@@ -312,8 +312,16 @@ Template.note.events
     event.stopImmediatePropagation()
 
     lines = event.originalEvent.clipboardData.getData('text/plain').split(/\n/g)
-    # console.log instance, lines
 
+    # Add the first line to the current note
+    line = lines.shift()
+    combinedTitle = event.target.innerHTML + line
+    Meteor.call 'notes.updateTitle', {
+      noteId: instance.data._id
+      title: combinedTitle
+      shareKey: FlowRouter.getParam('shareKey')
+    }
+      
     lines.forEach (line) ->
       if line
         Meteor.call 'notes.insert', {
@@ -426,12 +434,13 @@ Template.note.events
         
         # If the note is empty and hit delete again, or delete with meta key
         if event.currentTarget.innerText.trim().length == 0 || event.metaKey
-          Template.note.focus $(event.currentTarget).closest('.note-item').prev()[0]
           $(event.currentTarget).closest('.note-item').fadeOut()
           Template.App_body.playSound 'delete'
           Meteor.call 'notes.remove',
             noteId: @_id
             shareKey: FlowRouter.getParam 'shareKey'
+          Template.note.focus $(event.currentTarget).closest('.note-item').prev()[0]
+          return
 
         # If there is no selection
         if window.getSelection().toString() == ''
