@@ -112,8 +112,8 @@ Template.note.helpers
   showComplete: () ->
     Session.get 'showComplete'
 
-  completedCount: () ->
-    Notes.find({ parent: @_id, complete: true }).count()
+  # completedCount: () ->
+  #   Notes.find({ parent: @_id, complete: true }).count()
 
   childCount: () ->
     Notes.find({parent: @_id}).count()

@@ -105,7 +105,7 @@ template(name='note')
       ol
         each childNotes
           +note
-    if completedCount
+      //- if completedCount
       .toggleComplete
         if showComplete
           | Hide completed
