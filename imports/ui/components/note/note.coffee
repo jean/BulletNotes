@@ -46,6 +46,7 @@ Template.note.onCreated ->
   @state.setDefault
     showMenu: false
     focused: false
+    showComplete: false
 
   query = Notes.find({_id:@data._id})
 
@@ -104,13 +105,16 @@ Template.note.helpers
       Meteor.subscribe 'notes.children',
         @_id,
         FlowRouter.getParam 'shareKey'
-      if Session.get 'showComplete'
+      if (Template.instance().state.get('showComplete') || Session.get('alwaysShowComplete'))
         Notes.find { parent: @_id }, sort: { complete: 1, rank: 1 }
       else
         Notes.find { parent: @_id, complete: false }, sort: { rank: 1 }
 
   showComplete: () ->
-    Session.get 'showComplete'
+    Template.instance().state.get('showComplete') || Session.get('alwaysShowComplete')
+
+  alwaysShowComplete: () ->
+    Session.get 'alwaysShowComplete'
 
   completedCount: () ->
     Notes.find({ parent: @_id, complete: true }).count()
@@ -221,8 +225,14 @@ Template.note.events
   'click .toggleComplete': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
-    console.log Session.get 'showComplete'
-    Session.set('showComplete',!Session.get('showComplete'))
+
+    instance.state.set('showComplete',!instance.state.get('showComplete'))
+
+  'click .toggleAlwaysShowComplete': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+
+    Session.set('alwaysShowComplete',!Session.get('alwaysShowComplete'))
 
   'click .favorite, click .unfavorite': (event, instance) ->
     event.preventDefault()
