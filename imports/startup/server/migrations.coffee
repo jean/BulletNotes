@@ -25,3 +25,18 @@ Migrations.add {
   down: ->
     return true
 }
+
+Migrations.add {
+  version: 3
+  up: ->
+    notes = Notes.find()
+    notes.forEach (note) ->
+      complete = false
+      if note.title && note.title.match Notes.donePattern
+        complete = true
+      Notes.update note._id,
+        $set:
+          complete: complete
+  down: ->
+    return true
+}

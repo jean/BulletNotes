@@ -57,6 +57,7 @@ export insert = new ValidatedMethod
       rank: rank
       level: level
       createdAt: new Date()
+      complete: false
 
     # Only create a transaction if we are not importing.
     if isImport
@@ -237,9 +238,14 @@ export updateTitle = new ValidatedMethod
         due: moment(date).format()
       }}, tx: true
 
+    complete = false
+    if title.match Notes.donePattern
+      complete = true
+
     Notes.update noteId, {$set: {
       title: title
       updatedAt: new Date
+      complete: complete
     },$inc: {
       updateCount: 1
     }}, tx: true
@@ -453,6 +459,7 @@ Meteor.methods
       owner: @userId
       parent: parentId
       level: note.level
+      complete: false
     ,
       tx: true
       instant: true

@@ -104,7 +104,16 @@ Template.note.helpers
       Meteor.subscribe 'notes.children',
         @_id,
         FlowRouter.getParam 'shareKey'
-      Notes.find { parent: @_id }, sort: {rank: 1}
+    if Session.get 'showComplete'
+      Notes.find { parent: @_id }, sort: { complete: 1, rank: 1 }
+    else
+      Notes.find { parent: @_id, complete: false }, sort: { rank: 1 }
+
+  showComplete: () ->
+    Session.get 'showComplete'
+
+  completedCount: () ->
+    Notes.find({ parent: @_id, complete: true }).count()
 
   childCount: () ->
     Notes.find({parent: @_id}).count()
@@ -209,6 +218,11 @@ Template.note.events
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
       FlowRouter.go(event.target.pathname)
 
+  'click .toggleComplete': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    console.log Session.get 'showComplete'
+    Session.set('showComplete',!Session.get('showComplete'))
 
   'click .favorite, click .unfavorite': (event, instance) ->
     event.preventDefault()

@@ -78,9 +78,9 @@ Template.notes.helpers
     if FlowRouter.getParam 'searchTerm'
       Notes.search FlowRouter.getParam 'searchTerm'
     else if parentId
-      Notes.find { parent: parentId }, sort: rank: 1
+      Notes.find { parent: parentId }, sort: { rank: 1, complete: 1 }
     else
-      Notes.find { parent: null }, sort: rank: 1
+      Notes.find { parent: null }, sort: { rank: 1, complete: 1 }
 
   notesReady: ->
     Template.instance().subscriptionsReady()

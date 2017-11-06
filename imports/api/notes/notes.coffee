@@ -125,6 +125,9 @@ Notes.schema = new SimpleSchema
   updatedAt:
     type: Date
     optional: yes
+  deleted:
+    type: Date
+    optional: yes
   owner:
     type: String
     regEx: SimpleSchema.RegEx.Id
@@ -171,7 +174,7 @@ Notes.schema = new SimpleSchema
   deleted:
     type: Date
     optional: yes
-  done:
+  complete:
     type: Boolean
     optional: yes
   inbox:

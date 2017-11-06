@@ -33,17 +33,18 @@ export notesExport = new ValidatedMethod
     }, sort: rank: 1
     exportText = ''
     topLevelNotes.forEach (note) ->
+      spacing = new Array(level * 5).join(' ')
+      exportText += spacing + '- '
       if note.title
-        spacing = new Array(level * 5).join(' ')
-        exportText += spacing + '- ' +
-          note.title.replace(/(\r\n|\n|\r)/gm, '') + '\n'
-        if note.body
-          exportText += spacing + '  "' + note.body + '"\n'
-        exportText = exportText + notesExport.call {
-          noteId: note._id
-          userId: userId
-          level: level+1
-        }
+        exportText += note.title.replace(/(\r\n|\n|\r)/gm, '')
+      exportText += '\n'
+      if note.body
+        exportText += spacing + '  "' + note.body + '"\n'
+      exportText = exportText + notesExport.call {
+        noteId: note._id
+        userId: userId
+        level: level+1
+      }
     exportText
 
 export dropboxExport = new ValidatedMethod
@@ -108,7 +109,7 @@ export inbox = new ValidatedMethod
       owner: userId
       inbox: true
       deleted: {$exists:false}
-    console.log "Got inbox: ",inbox,userId
+
     if !inbox
       inboxId = Notes.insert
         title: "<b>Inbox</b>"
@@ -116,6 +117,7 @@ export inbox = new ValidatedMethod
         owner: userId
         inbox: true
         showChildren: true
+        complete: false
     else
       inboxId = inbox._id
     if inboxId
@@ -126,6 +128,7 @@ export inbox = new ValidatedMethod
         owner: userId
         createdAt: new Date()
         rank: 0
+        complete: false
       rankDenormalizer.updateSiblings inboxId
       return noteId
 
