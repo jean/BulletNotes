@@ -37,10 +37,10 @@ Template.note.isValidImageUrl = (url, callback) ->
       callback url, true
 
 Template.note.onCreated ->
-  # if @data.showChildren && @data.children && !FlowRouter.getParam 'searchParam'
-    # Meteor.call 'notes.setChildrenLastShown', {
-    #   noteId: @data._id
-    # }
+  if @data.showChildren && @data.children && !FlowRouter.getParam 'searchParam'
+    Meteor.call 'notes.setChildrenLastShown', {
+      noteId: @data._id
+    }
 
   @state = new ReactiveDict()
   @state.setDefault
@@ -104,16 +104,16 @@ Template.note.helpers
       Meteor.subscribe 'notes.children',
         @_id,
         FlowRouter.getParam 'shareKey'
-    if Session.get 'showComplete'
-      Notes.find { parent: @_id }, sort: { complete: 1, rank: 1 }
-    else
-      Notes.find { parent: @_id, complete: false }, sort: { rank: 1 }
+      if Session.get 'showComplete'
+        Notes.find { parent: @_id }, sort: { complete: 1, rank: 1 }
+      else
+        Notes.find { parent: @_id, complete: false }, sort: { rank: 1 }
 
   showComplete: () ->
     Session.get 'showComplete'
 
-  # completedCount: () ->
-  #   Notes.find({ parent: @_id, complete: true }).count()
+  completedCount: () ->
+    Notes.find({ parent: @_id, complete: true }).count()
 
   childCount: () ->
     Notes.find({parent: @_id}).count()
@@ -733,10 +733,10 @@ Template.note.events
 
 Template.note.toggleChildren = (instance) ->
   if Meteor.userId()
-    # if !instance.showChildren
-    #     Meteor.call 'notes.setChildrenLastShown', {
-    #       noteId: instance.data._id
-    #     }
+    if !instance.showChildren
+        Meteor.call 'notes.setChildrenLastShown', {
+          noteId: instance.data._id
+        }
 
     Meteor.call 'notes.setShowChildren', {
       noteId: instance.data._id

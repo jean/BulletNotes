@@ -101,13 +101,13 @@ template(name='note')
         +encrypt
 
 
-    if childCount
+    if childNotes
       ol
         each childNotes
           +note
-      //- if completedCount
-      .toggleComplete
-        if showComplete
-          | Hide completed
-        else
-          | Show completed ({{completedCount}} completed notes)
+      if completedCount
+        .toggleComplete
+          if showComplete
+            | Hide completed
+          else
+            | Show completed ({{completedCount}} completed notes)
