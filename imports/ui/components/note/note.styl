@@ -134,6 +134,14 @@
     z-index: 1000
     cursor: pointer
 
+.note.hasChildren > .noteContainer .expand
+    opacity: 1
+    cursor: pointer
+
+.note .expand
+    opacity: 0
+    cursor: default
+
 // Large screens
 @media screen and (min-width: 40em)
   .note
@@ -143,7 +151,7 @@
       cursor: default
     .title, .encryptedTitle
       margin: -5px 5rem 0 7rem
-  .note .expand, .note .menuToggle
+  .note .menuToggle, .note.hasChildren > .noteContainer .expand
     opacity: 0
     cursor: default
   .note.hasChildren > .noteContainer:hover
@@ -154,7 +162,6 @@
     > .options > .menuToggle
       opacity: 1
       cursor: pointer
-
 
   .note .favorite:hover
     color: rgb(255,87,34)
