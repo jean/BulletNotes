@@ -37,10 +37,10 @@ Template.note.isValidImageUrl = (url, callback) ->
       callback url, true
 
 Template.note.onCreated ->
-  if @data.showChildren && @data.children && !FlowRouter.getParam 'searchParam'
-    Meteor.call 'notes.setChildrenLastShown', {
-      noteId: @data._id
-    }
+  # if @data.showChildren && @data.children && !FlowRouter.getParam 'searchParam'
+    # Meteor.call 'notes.setChildrenLastShown', {
+    #   noteId: @data._id
+    # }
 
   @state = new ReactiveDict()
   @state.setDefault
@@ -733,10 +733,10 @@ Template.note.events
 
 Template.note.toggleChildren = (instance) ->
   if Meteor.userId()
-    if !instance.showChildren
-        Meteor.call 'notes.setChildrenLastShown', {
-          noteId: instance.data._id
-        }
+    # if !instance.showChildren
+    #     Meteor.call 'notes.setChildrenLastShown', {
+    #       noteId: instance.data._id
+    #     }
 
     Meteor.call 'notes.setShowChildren', {
       noteId: instance.data._id
