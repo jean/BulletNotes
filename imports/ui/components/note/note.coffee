@@ -345,7 +345,7 @@ Template.note.events
       title: combinedTitle
       shareKey: FlowRouter.getParam('shareKey')
     }
-      
+
     lines.forEach (line) ->
       if line
         Meteor.call 'notes.insert', {
@@ -383,6 +383,22 @@ Template.note.events
           else if event.ctrlKey
             Template.note.toggleChildren instance
           else
+            Template.App_body.playSound 'newNote'
+            # Create a new note below the current.
+            Meteor.call 'notes.insert', {
+              title: bottomNote
+              rank: note.rank + 1
+              parent: note.parent
+              shareKey: FlowRouter.getParam('shareKey')
+            }
+            Template.note.focus $(event.target).closest('.note-item').next()[0]
+
+            return
+
+            # TODO: This code needs cleaned up a bit
+            # If the cursor is at the start of the line, it duplicates rather than moves the text.
+            # Also it is wonky when links or tags are present
+
             # Chop the text in half at the cursor
             # put what's on the left in a note on top
             # put what's to the right in a note below
@@ -455,7 +471,7 @@ Template.note.events
         if $('.textcomplete-dropdown:visible').length
           # We're showing a dropdown, don't do anything.
           return
-        
+
         # If the note is empty and hit delete again, or delete with meta key
         if event.currentTarget.innerText.trim().length == 0 || event.metaKey
           $(event.currentTarget).closest('.note-item').fadeOut()
@@ -782,4 +798,3 @@ Template.note.setCursorToEnd = (ele) ->
   sel.removeAllRanges()
   sel.addRange range
   ele.focus()
-
