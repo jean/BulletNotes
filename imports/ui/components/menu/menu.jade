@@ -4,7 +4,10 @@ template(name="menu")
   if ready
     nav.mdl-navigation
       .mdl-layout-spacer
-        | Notes: {{getCount 'notes.count.user'}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
+        if currentUser.isPro
+          | Thank you!
+        else
+          | Notes: {{getCount 'notes.count.user'}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
         #spaceUsedBar.mdl-progress.mdl-js-progress
       .buttonWrap
         if hideUndoButton

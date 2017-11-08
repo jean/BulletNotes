@@ -11,6 +11,7 @@ Meteor.publish 'users.prefs', () ->
       isAdmin: 1
       theme: 1
       language: 1
+      isPro: 1
   user
 
 Meteor.publish 'users.count.total', ->

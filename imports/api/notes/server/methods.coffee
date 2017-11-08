@@ -76,7 +76,9 @@ export dropboxNightly = new ValidatedMethod
   name: 'notes.dropboxNightly'
   validate: null
   run: () ->
-    users = Meteor.users.find({})
+    users = Meteor.users.find({
+      isPro:true
+    })
     users.forEach (user) ->
       if (
         user.profile &&

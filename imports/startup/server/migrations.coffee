@@ -10,13 +10,12 @@ Migrations.add {
         $set:
           childrenLastShown: new Date
   down: ->
-    console.log "wtf"
+    return true
 }
 
 Migrations.add {
   version: 2
   up: ->
-    console.log "?"
     users = Meteor.users.find({})
     users.forEach (user) ->
       Meteor.users.update user._id,
@@ -37,6 +36,18 @@ Migrations.add {
       Notes.update note._id,
         $set:
           complete: complete
+  down: ->
+    return true
+}
+
+Migrations.add {
+  version: 4
+  up: ->
+    users = Meteor.users.find({})
+    users.forEach (user) ->
+      Meteor.users.update user._id,
+        $set:
+          isPro: true
   down: ->
     return true
 }
