@@ -8,7 +8,7 @@ https://bulletnotes.io/
 
 ## Goal
 
-An open-source, fully featured note taking, journaling, self quantification app.
+An open-source, fully featured note taking, journaling, self quantification app. Similar in many ways to Workflowy or Dynalist.
 
 ### Focus
 
