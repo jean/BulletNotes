@@ -8,7 +8,7 @@ https://bulletnotes.io/
 
 <p align="center">
   <a href="https://bulletnotes.io/">
-    <img src=".github/screenshot.png">
+    <img src=".github/demo.gif">
   </a>
 </p>
 
