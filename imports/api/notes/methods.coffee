@@ -52,7 +52,7 @@ export insert = new ValidatedMethod
 
     owner = @userId
 
-    if !Notes.isEditable parentId, shareKey
+    if parentId && !Notes.isEditable parentId, shareKey
       throw new (Meteor.Error)('not-authorized')
 
     sharedParent = Notes.getSharedParent parentId, shareKey
