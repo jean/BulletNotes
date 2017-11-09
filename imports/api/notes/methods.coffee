@@ -50,14 +50,24 @@ export insert = new ValidatedMethod
       parentId = parent._id
       level = parent.level+1
 
+    owner = @userId
+
+    if !Notes.isEditable parentId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+
+    sharedParent = Notes.getSharedParent parentId, shareKey
+    if sharedParent
+      owner = sharedParent.owner
+
     note =
-      owner: @userId
+      owner: owner
       title: title
       parent: parentId
       rank: rank
       level: level
       createdAt: new Date()
       complete: false
+      createdBy: @userId
 
     # Only create a transaction if we are not importing.
     if isImport
@@ -246,6 +256,7 @@ export updateTitle = new ValidatedMethod
     Notes.update noteId, {$set: {
       title: title
       updatedAt: new Date
+      updatedBy: @userId
       complete: complete
     },$inc: {
       updateCount: 1

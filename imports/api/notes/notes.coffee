@@ -9,16 +9,17 @@ export Notes = new Mongo.Collection 'notes'
 Notes.donePattern = /(#done|#complete|#finished)/gim
 
 Notes.isEditable = (id, shareKey) ->
-  note = Notes.findOne id
-  # The transaction library won't let us do anonymous updates, for now..
   if !Meteor.user()
     return false
-  if Meteor.user() && note.owner == Meteor.user()._id
+
+  if Notes.isOwner id
     return true
-  else
-    sharedNote = Notes.getSharedParent id, shareKey
-    if sharedNote && sharedNote.sharedEditable
-      return true
+  else if !shareKey
+    return false
+
+  sharedNote = Notes.getSharedParent id, shareKey
+  if sharedNote && sharedNote.sharedEditable
+    return true
 
 Notes.getSharedParent = (id, shareKey) ->
   note = Notes.findOne id
@@ -130,6 +131,14 @@ Notes.schema = new SimpleSchema
     type: String
     regEx: SimpleSchema.RegEx.Id
     optional: yes
+  createdBy:
+    type: String
+    regEx: SimpleSchema.RegEx.Id
+    optional: yes
+  updatedBy:
+    type: String
+    regEx: SimpleSchema.RegEx.Id
+    optional: yes
   level:
     type: Number
     optional: yes
@@ -207,7 +216,9 @@ Notes.publicFields =
   parent: 1
   title: 1
   createdAt: 1
+  createdBy: 1
   updatedAt: 1
+  updatedBy: 1
   updateCount: 1
   level: 1
   rank: 1
