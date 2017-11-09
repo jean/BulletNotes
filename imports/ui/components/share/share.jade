@@ -1,5 +1,7 @@
 template(name='share')
-  .modal.fade(id="share_{{_id}}", tabindex='-1', role='dialog', style='display: none;')
+  a.openShare(href='#', data-toggle='modal', data-target='#share_{{_id}}', data-id='{{_id}}', id='toggleShare_{{_id}}') open
+
+  .modal.fade(id="share_{{_id}}", tabindex='-1', role='dialog')
     .modal-dialog
       form.modal-content
         .modal-header

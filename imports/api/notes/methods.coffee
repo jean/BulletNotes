@@ -87,7 +87,7 @@ export share = new ValidatedMethod
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, editable = true }) ->
+  run: ({ noteId, editable = false }) ->
     if !@userId
       throw new (Meteor.Error)('not-authorized')
     Notes.update noteId, $set:
@@ -210,7 +210,7 @@ export setEncrypted = new ValidatedMethod
       encrypted: encrypted
       encryptedRoot: encryptedRoot
     }}, tx: true
- 
+
 
 export updateTitle = new ValidatedMethod
   name: 'notes.updateTitle'
@@ -227,6 +227,7 @@ export updateTitle = new ValidatedMethod
     if !Notes.isEditable noteId, shareKey
       throw new (Meteor.Error)('not-authorized')
 
+    tx.start 'Update Note Title'
     title = Notes.filterTitle title
     if title
       match = title.match(/#due-([0-9]+(-?))+/gim)
@@ -274,6 +275,8 @@ export updateTitle = new ValidatedMethod
 
     Meteor.users.update {_id:@userId},
       {$inc:{"profile.notes_edited":1}}
+
+    tx.commit()
 
 export makeChild = new ValidatedMethod
   name: 'notes.makeChild'

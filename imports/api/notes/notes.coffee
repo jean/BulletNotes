@@ -9,18 +9,16 @@ export Notes = new Mongo.Collection 'notes'
 Notes.donePattern = /(#done|#complete|#finished)/gim
 
 Notes.isEditable = (id, shareKey) ->
-  sharedNote = Notes.getSharedParent id, shareKey
-  # If we have a shareKey but can't find a valid sharedNote,
-  # aren't the sharedNote's owner,
-  # or the sharedNote is not set to sharedEditable, don't allow.
-  if shareKey && (
-    !sharedNote || (
-      sharedNote.owner != @userId && !sharedNote.sharedEditable
-    )
-  )
+  note = Notes.findOne id
+  # The transaction library won't let us do anonymous updates, for now..
+  if !Meteor.user()
     return false
-  else
+  if Meteor.user() && note.owner == Meteor.user()._id
     return true
+  else
+    sharedNote = Notes.getSharedParent id, shareKey
+    if sharedNote && sharedNote.sharedEditable
+      return true
 
 Notes.getSharedParent = (id, shareKey) ->
   note = Notes.findOne id

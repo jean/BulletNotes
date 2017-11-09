@@ -27,9 +27,9 @@ template(name='note')
               a.favorite.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
                 i.glyphicon.glyphicon-heart
                 |  {{_ 'notes.menu.favorite'}}
-            //- a.share.mdl-menu__item(href='#', data-toggle='modal', data-target='#share_{{_id}}')
-            //-   i.glyphicon.glyphicon-share
-            //-   |  {{_ 'notes.menu.share'}}
+            a.share.mdl-menu__item(href='#', data-toggle='modal', data-target='#share_{{_id}}')
+              i.glyphicon.glyphicon-share
+              |  {{_ 'notes.menu.share'}}
             a.duplicate.mdl-menu__item(href='#')
               i.glyphicon.glyphicon-duplicate
               |  {{_ 'notes.menu.duplicate'}}
@@ -68,7 +68,10 @@ template(name='note')
         if displayEncrypted
           div(class='encryptedTitle')
         else
-          div(class='title task-title-sp', contenteditable='true')
+          if editable
+            div(class='title task-title-sp', contenteditable='true')
+          else
+            div(class='title task-title-sp')
         if progress
           .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete", data-original-title="{{progress}}% Complete")
             .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
@@ -96,7 +99,8 @@ template(name='note')
             i.glyphicon.glyphicon-chevron-down
           .mdl-tooltip.mdl-tooltip--large(for='showContent_{{_id}}')
             | {{_ 'notes.tooltips.show_content'}}
-      //- +share
+      if showShare
+        +share
       if showEncrypt
         +encrypt
 

@@ -100,8 +100,10 @@ Template.note.helpers
     Files.find { noteId: @_id }
 
   childNotes: () ->
-    if ( @showChildren && !FlowRouter.getParam 'searchParam' ) ||
-    Session.get 'expand_'+@_id
+    if (
+      (@showChildren && !FlowRouter.getParam('searchParam')) ||
+      Session.get('expand_'+@_id)
+    )
       Meteor.subscribe 'notes.children',
         @_id,
         FlowRouter.getParam 'shareKey'
@@ -127,8 +129,10 @@ Template.note.helpers
 
   expandClass: () ->
     if Notes.find({parent: @_id}).count() > 0
-      if ( @showChildren && !FlowRouter.getParam 'searchParam' ) ||
-      Session.get('expand_'+@_id)
+      if (
+        (@showChildren && !FlowRouter.getParam('searchParam')) ||
+        Session.get('expand_'+@_id)
+      )
         'remove'
       else
         'add'
@@ -150,7 +154,10 @@ Template.note.helpers
       if tags
         tags.forEach (tag) ->
           className = className + ' tag-' + tag.substr(1).toLowerCase()
-    if !@showChildren && @children > 0
+
+    if @showChildren || Session.get('expand_'+@_id)
+      showChildren = true
+    if !showChildren && @children > 0
       className = className + ' hasHiddenChildren'
     if @children > 0
       className = className + ' hasChildren'
@@ -184,9 +191,18 @@ Template.note.helpers
   showEncrypt: ->
     Template.instance().state.get 'showEncrypt'
 
+  showShare: ->
+    Template.instance().state.get 'showShare'
+
   displayEncrypted: ->
     if @encrypted || @encryptedRoot
       true
+
+  editable: ->
+    if !Meteor.userId()
+      return false
+    else
+      return true
 
   # hasContent: ->
   #   Meteor.subscribe 'files.note', @_id
@@ -204,13 +220,22 @@ Template.note.events
       setTimeout ->
         $('.modal.in').parent().append($('.modal-backdrop'))
         $('input.cryptPass').focus()
-      , 50
+      , 250
     , 50
 
-  'click .share': (event, template) ->
+  'click .share': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+
+    instance.state.set 'showShare', true
+
+    that = this
     setTimeout ->
-      $('#__blaze-root').append($('.modal.in'))
-    , 200
+      $('#toggleShare_'+that._id).click()
+      setTimeout ->
+        $('.modal.in').parent().append($('.modal-backdrop'))
+      , 250
+    , 50
 
   'click .title a': (event, instance) ->
     event.preventDefault()
@@ -682,7 +707,10 @@ Template.note.events
         noteId: instance.data._id
         title: title
         shareKey: FlowRouter.getParam 'shareKey'
-      }
+      }, (err, res) ->
+        if err
+          Template.App_body.showSnackbar
+            message: err.error
 
   'blur .body': (event, instance) ->
     event.stopPropagation()
@@ -767,10 +795,12 @@ Template.note.toggleChildren = (instance) ->
     Meteor.call 'notes.setShowChildren', {
       noteId: instance.data._id
       show: !instance.data.showChildren
-      shareKey: FlowRouter.getParam 'shareKey'
-    }
+      shareKey: FlowRouter.getParam('shareKey')
+    }, (err, res) ->
+      if err
+        Session.set('expand_'+instance.data._id, !Session.get('expand_'+instance.data._id))
   else
-    Session.set 'expand_'+instance.data._id, !Session.get('expand_'+instance.data._id)
+    Session.set('expand_'+instance.data._id, !Session.get('expand_'+instance.data._id))
 
 Template.note.focus = (noteItem) ->
   view = Blaze.getView(noteItem)

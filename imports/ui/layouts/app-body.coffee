@@ -328,7 +328,7 @@ Template.App_body.events
 
 
 Template.App_body.playSound = (sound) ->
-  if !Meteor.user() && Meteor.user().muted
+  if Meteor.user() && Meteor.user().muted
     audio = new Audio('/snd/'+sound+'.wav')
     audio.volume = .5
     audio.play()
