@@ -38,6 +38,16 @@ template(name='note')
             a.duplicate.mdl-menu__item(href='#')
               i.glyphicon.glyphicon-duplicate
               |  {{_ 'notes.menu.duplicate'}}
+            if canIndent
+              a.indent.mdl-menu__item(href='#')
+                i.glyphicon.glyphicon-indent-left
+                |  {{_ 'notes.menu.indent'}}
+                span.keyboardShortcutHint Tab
+            if canUnindent
+              a.unindent.mdl-menu__item(href='#')
+                i.glyphicon.glyphicon-indent-right
+                |  {{_ 'notes.menu.unindent'}}
+                span.keyboardShortcutHint Shift Tab 
             if displayEncrypted
               a.decryptLink.mdl-menu__item(href='#')
                 i.glyphicon.glyphicon-eye-open

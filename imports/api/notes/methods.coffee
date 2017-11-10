@@ -297,7 +297,6 @@ export makeChild = new ValidatedMethod
     shareKey: Notes.simpleSchema().schema('shareKey')
     upperSibling: Notes.simpleSchema().schema('_id')
     rank: Notes.simpleSchema().schema('rank')
-    expandParent: new Boolean
   .validator
     clean: yes
     filter: no

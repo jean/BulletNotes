@@ -31,3 +31,4 @@ Template.moveTo.events
             actionHandler: ->
                 FlowRouter.go('/note/'+selected._id)
             actionText: 'View'
+            timeout: 5000

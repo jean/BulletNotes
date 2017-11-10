@@ -28,7 +28,9 @@
       "unfavorite": "Unfavorite",
       "encrypt": "Encrypt",
       "decrypt": "Decrypt",
-      "moveTo": "Move to.."
+      "moveTo": "Move to..",
+      "indent": "Indent",
+      "unindent": "Unindent"
     },
     "show": {
       "cancel": "Cancel",

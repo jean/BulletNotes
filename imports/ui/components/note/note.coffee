@@ -213,6 +213,13 @@ Template.note.helpers
   #   Meteor.subscribe 'files.note', @_id
   #   (@body || Files.find({ noteId: @_id }).count() > 0)
 
+  canIndent: ->
+    if $('#noteItem_'+@_id).prev('.note-item').length
+      true
+
+  canUnindent: ->
+    $('#noteItem_'+@_id).parentsUntil('.note-item').closest('.note-item').length
+  
 Template.note.events
   'click .encryptLink, click .decryptLink, click .encryptedIcon': (event, instance) ->
     event.preventDefault()
@@ -241,6 +248,20 @@ Template.note.events
         $('.modal.in').parent().append($('.modal-backdrop'))
       , 250
     , 50
+
+  'click .indent': (event, instance) ->
+    Meteor.call 'notes.makeChild', {
+      noteId: instance.data._id
+      parent: $('#noteItem_'+instance.data._id).prev().data('id')
+      shareKey: FlowRouter.getParam 'shareKey'
+    }
+
+  'click .unindent': (event, instance) ->
+    Meteor.call 'notes.makeChild', {
+      noteId: instance.data._id
+      parent: $('#noteItem_'+instance.data._id).parentsUntil('.note-item').closest('.note-item').parentsUntil('.note-item').closest('.note-item').data('id')
+      shareKey: FlowRouter.getParam 'shareKey'
+    }
 
   'click .title a': (event, instance) ->
     event.preventDefault()
