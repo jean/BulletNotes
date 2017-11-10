@@ -29,5 +29,7 @@ template(name='footer')
           | created by
           a(href='https://twitter.com/nickbusey',target='_blank') Nick Busey
         li
-          | {{totalNotes}} notes and counting!
+          div#totalNotes {{totalNotes}}
+          span#totalNotesSpacer {{totalNotes}}
+          span#totalNotesCaption notes and counting!
 

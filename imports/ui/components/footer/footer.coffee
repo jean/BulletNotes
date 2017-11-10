@@ -9,4 +9,6 @@ Template.footer.helpers
     moment().format("YYYY")
 
   totalNotes: ->
+    $('#totalNotes').clone().attr('id','totalNotesFall').insertAfter('#totalNotes')
+    $('#totalNotesFall').toggle('drop',{direction:'down'}, 1000)
     Counter.get('notes.count.total').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
