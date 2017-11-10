@@ -16,10 +16,11 @@ template(name='note')
             a.zoom.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
               i.glyphicon.glyphicon-search
               |  {{_ 'notes.menu.zoom'}}
+              span.keyboardShortcutHint ⌘ + ]
             a.addBody.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
               i.glyphicon.glyphicon-info-sign
               |  {{_ 'notes.menu.addBody'}}
-              span.keyboardShortcutHint Shift + Enter
+              span.keyboardShortcutHint ⇧ + Enter
             if favorite
               a.unfavorite.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
                 i.glyphicon.glyphicon-heart-empty
@@ -31,7 +32,7 @@ template(name='note')
             a.moveTo.mdl-menu__item(href='#', data-toggle='modal', data-target='#moveTo_{{_id}}')
               i.glyphicon.glyphicon-share-alt
               |  {{_ 'notes.menu.moveTo'}}
-              span.keyboardShortcutHint Cmd + Shift + M
+              span.keyboardShortcutHint ⌘ + ⇧ + M
             a.share.mdl-menu__item(href='#', data-toggle='modal', data-target='#share_{{_id}}')
               i.glyphicon.glyphicon-share
               |  {{_ 'notes.menu.share'}}
@@ -47,7 +48,7 @@ template(name='note')
               a.unindent.mdl-menu__item(href='#')
                 i.glyphicon.glyphicon-indent-right
                 |  {{_ 'notes.menu.unindent'}}
-                span.keyboardShortcutHint Shift Tab 
+                span.keyboardShortcutHint ⇧ + Tab 
             if displayEncrypted
               a.decryptLink.mdl-menu__item(href='#')
                 i.glyphicon.glyphicon-eye-open

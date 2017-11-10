@@ -779,7 +779,7 @@ Template.note.events
 
     Template.note.toggleChildren(instance)
 
-  'click .dot': (event, instance) ->
+  'click .dot, click .zoom': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
     if !Session.get 'dragging'
