@@ -290,18 +290,7 @@ Template.note.events
     event.preventDefault()
     event.stopImmediatePropagation()
 
-    instance.state.set 'showMoveTo', true
-
-    that = this
-    setTimeout ->
-      $('#toggleMoveTo_'+that._id).click()
-      setTimeout ->
-        $('.modal.in').parent().append($('.modal-backdrop'))
-        setTimeout ->
-          $('input.moveTo').focus()
-        , 100
-      , 250
-    , 50
+    Template.note.showMoveTo instance
 
   'click .duplicate': (event) ->
     event.preventDefault()
@@ -652,6 +641,11 @@ Template.note.events
         $(event.currentTarget).blur()
         window.getSelection().removeAllRanges()
 
+      # M - Move To
+      when 77
+        if event.metaKey && event.shiftKey
+          Template.note.showMoveTo instance
+
   'keydown .body': (event, instance) ->
     note = this
     event.stopImmediatePropagation()
@@ -852,3 +846,15 @@ Template.note.setCursorToEnd = (ele) ->
   sel.removeAllRanges()
   sel.addRange range
   ele.focus()
+
+Template.note.showMoveTo = (instance) ->
+    instance.state.set 'showMoveTo', true
+    setTimeout ->
+      $('#toggleMoveTo_'+instance.data._id).click()
+      setTimeout ->
+        $('.modal.in').parent().append($('.modal-backdrop'))
+        setTimeout ->
+          $('input.moveToInput').focus()
+        , 500
+      , 250
+    , 50

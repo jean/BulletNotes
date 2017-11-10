@@ -297,10 +297,11 @@ export makeChild = new ValidatedMethod
     shareKey: Notes.simpleSchema().schema('shareKey')
     upperSibling: Notes.simpleSchema().schema('_id')
     rank: Notes.simpleSchema().schema('rank')
+    expandParent: new Boolean
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, parent = null, shareKey = null, upperSibling = null, rank = null }) ->
+  run: ({ noteId, parent = null, shareKey = null, upperSibling = null, rank = null, expandParent = true }) ->
     if !@userId || !Notes.isEditable noteId, shareKey
       throw new (Meteor.Error)('not-authorized')
 
@@ -327,10 +328,11 @@ export makeChild = new ValidatedMethod
     if parent
       parentId = parent._id
 
-    Notes.update parentId, {$set:
-      showChildren: true
-      childrenLastShown: new Date
-    }, {tx: true }
+    if expandParent
+      Notes.update parentId, {$set:
+        showChildren: true
+        childrenLastShown: new Date
+      }, {tx: true }
 
     Notes.update noteId, {$set:
       rank: rank

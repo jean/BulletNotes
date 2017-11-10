@@ -17,7 +17,7 @@
       "confirm": "Are you sure you want to delete the note"
     },
     "menu": {
-      "share": "Share",
+      "share": "Share...",
       "zoom": "Zoom in",
       "calendar": "Calendar",
       "kanban": "Kanban",
@@ -27,7 +27,8 @@
       "favorite": "Favorite",
       "unfavorite": "Unfavorite",
       "encrypt": "Encrypt",
-      "decrypt": "Decrypt"
+      "decrypt": "Decrypt",
+      "moveTo": "Move to.."
     },
     "show": {
       "cancel": "Cancel",

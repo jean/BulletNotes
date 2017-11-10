@@ -31,6 +31,7 @@ template(name='note')
             a.moveTo.mdl-menu__item(href='#', data-toggle='modal', data-target='#moveTo_{{_id}}')
               i.glyphicon.glyphicon-share-alt
               |  {{_ 'notes.menu.moveTo'}}
+              span.keyboardShortcutHint Cmd + Shift + M
             a.share.mdl-menu__item(href='#', data-toggle='modal', data-target='#share_{{_id}}')
               i.glyphicon.glyphicon-share
               |  {{_ 'notes.menu.share'}}

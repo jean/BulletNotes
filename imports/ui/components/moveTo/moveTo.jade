@@ -6,10 +6,10 @@ template(name='moveTo')
       form.modal-content
         .modal-header
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-          h4#myModalLabel.modal-title moveTo
+          h4#myModalLabel.modal-title Move Note
         .modal-body
             p 
-            {{> inputAutocomplete settings=settings class="moveTo input-xlarge" placeholder="Chat..."}}
+            {{> inputAutocomplete settings=settings class="moveToInput input-xlarge" placeholder="Select a note to move this note under.." size="40"}}
         .modal-footer
           button.btn.btn-sm(data-dismiss='modal') Cancel
 
