@@ -1,0 +1,17 @@
+template(name='moveTo')
+  a.openMoveTo(href='#', data-toggle='modal', data-target='#moveTo_{{_id}}', data-id='{{_id}}', id='toggleMoveTo_{{_id}}') open
+
+  .modal.fade(id="moveTo_{{_id}}", tabindex='-1', role='dialog')
+    .modal-dialog
+      form.modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h4#myModalLabel.modal-title moveTo
+        .modal-body
+            p 
+            {{> inputAutocomplete settings=settings class="moveTo input-xlarge" placeholder="Chat..."}}
+        .modal-footer
+          button.btn.btn-sm(data-dismiss='modal') Cancel
+
+template(name="notePill")
+    span.moveToResult {{title}}

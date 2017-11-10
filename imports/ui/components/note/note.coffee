@@ -7,6 +7,7 @@ require './note.jade'
 require '/imports/ui/components/file/file.coffee'
 require '/imports/ui/components/share/share.coffee'
 require '/imports/ui/components/encrypt/encrypt.coffee'
+require '/imports/ui/components/moveTo/moveTo.coffee'
 
 import {
   favorite,
@@ -47,6 +48,7 @@ Template.note.onCreated ->
     showMenu: false
     focused: false
     showComplete: false
+    showMoveTo: false
 
   query = Notes.find({_id:@data._id})
 
@@ -194,6 +196,9 @@ Template.note.helpers
   showShare: ->
     Template.instance().state.get 'showShare'
 
+  showMoveTo: ->
+    Template.instance().state.get 'showMoveTo'
+
   displayEncrypted: ->
     if @encrypted || @encryptedRoot
       true
@@ -280,6 +285,23 @@ Template.note.events
     setShowContent.call
       noteId: instance.data._id
       showContent: false
+
+  'click .moveTo': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+
+    instance.state.set 'showMoveTo', true
+
+    that = this
+    setTimeout ->
+      $('#toggleMoveTo_'+that._id).click()
+      setTimeout ->
+        $('.modal.in').parent().append($('.modal-backdrop'))
+        setTimeout ->
+          $('input.moveTo').focus()
+        , 100
+      , 250
+    , 50
 
   'click .duplicate': (event) ->
     event.preventDefault()
@@ -397,6 +419,8 @@ Template.note.events
       # Enter
       when 13
         event.preventDefault()
+        event.stopImmediatePropagation()
+
         if $('.textcomplete-dropdown:visible').length < 1
           if event.shiftKey
             # Edit the body
@@ -497,8 +521,8 @@ Template.note.events
           # We're showing a dropdown, don't do anything.
           return
 
-        # If the note is empty and hit delete again, or delete with meta key
-        if event.currentTarget.innerText.trim().length == 0 || event.metaKey
+        # If the note is empty and hit delete again, or delete with ctrl key
+        if event.currentTarget.innerText.trim().length == 0 || event.ctrlKey
           $(event.currentTarget).closest('.note-item').fadeOut()
           Template.App_body.playSound 'delete'
           Meteor.call 'notes.remove',
