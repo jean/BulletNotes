@@ -14,6 +14,16 @@ template(name='notes')
     if notesReady
       each notes
         +note
+      if completedCount
+        .toggleComplete
+          if showComplete
+            if alwaysShowComplete
+              a.toggleAlwaysShowComplete Don't Always Show Complete
+            else
+              | Hide completed
+              a.toggleAlwaysShowComplete Always Show Complete
+          else
+            | Show completed ({{completedCount}} completed notes)
       li.newNote
         | Add a new note..
     else

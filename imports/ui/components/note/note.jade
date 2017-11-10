@@ -112,10 +112,10 @@ template(name='note')
       if completedCount
         .toggleComplete
           if showComplete
-            | Hide completed
             if alwaysShowComplete
-              a.toggleAlwaysShowComplete Hide Complete
+              a.toggleAlwaysShowComplete Don't Always Show Complete
             else
+              | Hide completed
               a.toggleAlwaysShowComplete Always Show Complete
           else
             | Show completed ({{completedCount}} completed notes)

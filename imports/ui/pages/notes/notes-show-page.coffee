@@ -121,22 +121,6 @@ Template.Notes_show_page.helpers
         _id: yes
     Template.notes.getProgressClass note
 
-  childNoteCount: ->
-    if Notes.findOne FlowRouter.getParam 'noteId'
-      Notes.find
-        parent:FlowRouter.getParam 'noteId'
-      ,
-        fields:
-          _id: yes
-      .count()
-    else
-      Notes.find
-        parent:null
-      ,
-        fields:
-          _id: yes
-      .count()
-
   searchTerm: ->
     FlowRouter.getParam 'searchTerm'
 

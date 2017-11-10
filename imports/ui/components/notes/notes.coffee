@@ -42,6 +42,15 @@ Template.notes.urlPattern2 =
   /(^|[^\/])(www\.[\S]+(\b|$))/gim
 
 Template.notes.onCreated ->
+  if @data.showChildren && @data.children && !FlowRouter.getParam 'searchParam'
+    Meteor.call 'notes.setChildrenLastShown', {
+      noteId: @data._id
+    }
+
+  @state = new ReactiveDict()
+  @state.setDefault
+    showComplete: false
+
   if @data.note()
     @noteId = @data.note()._id
   else
@@ -78,9 +87,15 @@ Template.notes.helpers
     if FlowRouter.getParam 'searchTerm'
       Notes.search FlowRouter.getParam 'searchTerm'
     else if parentId
-      Notes.find { parent: parentId }, sort: { rank: 1, complete: 1 }
+      if (Template.instance().state.get('showComplete') || Session.get('alwaysShowComplete'))
+        Notes.find { parent: parentId }, sort: { complete: 1, rank: 1 }
+      else
+         Notes.find { parent: parentId, complete: false }, sort: { rank: 1 } 
     else
-      Notes.find { parent: null }, sort: { rank: 1, complete: 1 }
+      if (Template.instance().state.get('showComplete') || Session.get('alwaysShowComplete'))
+        Notes.find { parent: null }, sort: { complete: 1, rank: 1 }
+      else
+         Notes.find { parent: null, complete: false }, sort: { rank: 1 } 
 
   notesReady: ->
     Template.instance().subscriptionsReady()
@@ -105,7 +120,29 @@ Template.notes.helpers
         title: yes
     emojione.shortnameToUnicode note.body
 
+  showComplete: () ->
+    Template.instance().state.get('showComplete') || Session.get('alwaysShowComplete')
+
+  alwaysShowComplete: () ->
+    Session.get 'alwaysShowComplete'
+
+  completedCount: () ->
+    Notes.find({ parent: @note()._id, complete: true }).count()
+
+
 Template.notes.events
+  'click .toggleComplete': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+
+    instance.state.set('showComplete',!instance.state.get('showComplete'))
+
+  'click .toggleAlwaysShowComplete': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+
+    Session.set('alwaysShowComplete',!Session.get('alwaysShowComplete'))
+
   'click .js-cancel': (event, instance) ->
     instance.state.set 'editing', false
 
