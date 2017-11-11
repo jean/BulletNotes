@@ -18,7 +18,7 @@ import {
   upload
 } from '/imports/api/files/methods.coffee'
 
-Template.note.previewXOffset = -20
+Template.note.previewXOffset = 20
 Template.note.previewYOffset = 20
 
 Template.note.encodeImageFileAsURL = (cb,file) ->
@@ -338,7 +338,7 @@ Template.note.events
       if err
         window.location = window.location
 
-  'mouseover .tagLink': (event) ->
+  'mouseover .tagLink, mouseover .atLink': (event) ->
     if Session.get 'dragging'
       return
     notes = Notes.search event.target.innerHTML, null, 5
@@ -353,11 +353,11 @@ Template.note.events
           .show()
     $('#tagSearchPreview').append('<li><a class="previewTagViewAll">Click to view all</a></li>')
 
-  'mousemove .tagLink': (event) ->
-    $('#tagSearchPreview').css('top', event.pageY - Template.note.previewXOffset + 'px')
-      .css 'left', event.pageX + Template.note.previewYOffset + 'px'
+  'mousemove .tagLink, mousemove .atLink': (event) ->
+    $('#tagSearchPreview').css('top', event.pageY - Template.note.previewYOffset + 'px')
+      .css 'left', event.pageX + Template.note.previewXOffset + 'px'
 
-  'mouseleave .tagLink': (event) ->
+  'mouseleave .tagLink, mouseleave .atLink': (event) ->
     $('#tagSearchPreview').hide()
 
   'mouseover .previewLink': (event) ->
