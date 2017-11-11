@@ -784,9 +784,20 @@ Template.note.events
     event.stopImmediatePropagation()
     if !Session.get 'dragging'
       Template.App_body.playSound 'navigate'
+      offset = $(instance.firstNode).find('.title').offset()
+      $('body').append($(instance.firstNode).find('.title').first().clone().addClass('zoomingTitle'))
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
-      FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
-
+      headerOffset = $('.title-wrapper').offset()
+      $('.zoomingTitle').offset(offset).animate({
+        left: headerOffset.left
+        top: headerOffset.top
+        color: 'white'
+        fontSize: '20px'
+      }, ->
+        $('.zoomingTitle').remove()
+        FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
+      )
+      
   'click .menuToggle': (event, instance) ->
     event.stopImmediatePropagation()
     if instance.state.get('showMenu') == true

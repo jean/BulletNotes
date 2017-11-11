@@ -255,13 +255,13 @@ Template.notes.formatText = (inputText, createLinks = true) ->
   # replacedText = replacedText.replace searchTerm,
   #   '<span class=\'searchResult\'>$&</span>'
 
-  hashtagPattern = /((\s#)([a-z\d-]+))/gim
+  hashtagPattern = /(((^|\s)#)([a-z\d-]+))/gim
   replacedText = replacedText.replace hashtagPattern,
-    ' <'+element+' href="/search/%23$3" class="tagLink tag-$3">#$3</'+element+'>'
+    ' <'+element+' href="/search/%23$4" class="tagLink tag-$4">#$4</'+element+'>'
 
-  namePattern = /((\s@)([a-z\d-]+))/gim
+  namePattern = /(((^|\s)@)([a-z\d-]+))/gim
   replacedText = replacedText.replace namePattern,
-    ' <'+element+' href="/search/%40$3" class="atLink at-$3">@$3</'+element+'>'
+    ' <'+element+' href="/search/%40$4" class="atLink at-$4">@$4</'+element+'>'
 
   replacedText = emojione.shortnameToUnicode replacedText
 
@@ -270,6 +270,10 @@ Template.notes.formatText = (inputText, createLinks = true) ->
 Template.notes.rendered = ->
   notes = this
   NProgress.done()
+  $('.mdl-layout__tab-bar').animate({
+    scrollLeft: $('.mdl-layout__tab-bar-container').innerWidth()+500
+  })
+
   # $('#notes').selectable
   #   delay: 150
   $('.sortable').nestedSortable
