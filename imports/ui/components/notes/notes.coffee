@@ -73,6 +73,7 @@ Template.notes.onCreated ->
     return no
 
 Template.notes.onRendered ->
+  $('.title-wrapper').show()
   Template.App_body.keenClient.recordEvent 'notesRendered', owner: @userId
 
 Template.notes.helpers

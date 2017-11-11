@@ -3,26 +3,28 @@ template(name="menu")
     a(href='/') BulletNotes.io
   if ready
     nav.mdl-navigation
-      .mdl-layout-spacer
-        if currentUser.isPro
-          | Thank you!
-        else
-          | Notes: {{getCount 'notes.count.user'}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
-        #spaceUsedBar.mdl-progress.mdl-js-progress
-      .buttonWrap
-        if hideUndoButton
-          button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
-            i.material-icons undo
-          .mdl-tooltip.mdl-tooltip--large(for='undo')
-            | Undo {{action undo}}
-
-        if hideRedoButton
-          button#redo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
-            i.material-icons redo
-          .mdl-tooltip.mdl-tooltip--large(for='redo')
-            | Redo {{action redo}}
+      .mdl-layout__drawer-button.menuToggle(aria-expanded='false', role='button', tabindex='0')
+        i.material-icons menu
 
       if currentUser
+        .mdl-layout-spacer
+          if currentUser.isPro
+            | Thank you!
+          else
+            | Notes: {{getCount 'notes.count.user'}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
+          #spaceUsedBar.mdl-progress.mdl-js-progress
+        .buttonWrap
+          if hideUndoButton
+            button#undo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
+              i.material-icons undo
+            .mdl-tooltip.mdl-tooltip--large(for='undo')
+              | Undo {{action undo}}
+
+          if hideRedoButton
+            button#redo.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect
+              i.material-icons redo
+            .mdl-tooltip.mdl-tooltip--large(for='redo')
+              | Redo {{action redo}}
         .buttonWrap
           button#menuPin.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--primary.mdl-button--raised(class="{{muteClass}}")
             i.material-icons {{menuPinIcon}}
@@ -56,19 +58,21 @@ template(name="menu")
           a.mdl-menu__item.js-logout {{_ 'layouts.appBody.logout'}}
 
       else
-          a.login.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'signin'}}")
+          a.loginBtn.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'signin'}}")
+            i.material-icons account_box
             | {{_ 'layouts.appBody.login'}}
-          a.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'join'}}")
+          a.joinBtn.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'join'}}")
             | {{_ 'layouts.appBody.join'}}
-    span.mdl-layout-title {{_ 'layouts.appBody.favorites'}}
-    nav.mdl-navigation
-      if notes.count
-        each note in notes
-          a.favoriteNote.mdl-navigation__link(href="{{pathFor 'Notes.show' noteId=note._id}}", class='{{activeNoteClass note}}', data-count="{{increment @index}}")
-            | {{{ emoji note.title }}}
-            span.hotkeyHint {{ increment @index }}
-      else
-        p(style="margin: 1em;color:white;")
-          | No favorites yet, click the
-          span.glyphicon.glyphicon-heart(style="font-size: .8em; margin: 0 .2em")
-          | icon on some notes to the right.
+    if currentUser
+      span.mdl-layout-title {{_ 'layouts.appBody.favorites'}}
+      nav.mdl-navigation
+        if notes.count
+          each note in notes
+            a.favoriteNote.mdl-navigation__link(href="{{pathFor 'Notes.show' noteId=note._id}}", class='{{activeNoteClass note}}', data-count="{{increment @index}}")
+              | {{{ emoji note.title }}}
+              span.hotkeyHint {{ increment @index }}
+        else
+          p(style="margin: 1em;color:white;")
+            | No favorites yet, click the
+            span.glyphicon.glyphicon-heart(style="font-size: .8em; margin: 0 .2em")
+            | icon on some notes to the right.

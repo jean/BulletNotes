@@ -3,4 +3,4 @@ template(name='breadcrumbs')
   +each parents
     a.mdl-layout__tab(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
   if focusedTitle
-    a.mdl-layout__tab.is-active {{{focusedTitle}}}
+    a.mdl-layout__tab.is-active(href='/note/{{focusedId}}/{{shareKey}}') {{{focusedTitle}}}

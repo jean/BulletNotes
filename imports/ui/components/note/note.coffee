@@ -785,9 +785,11 @@ Template.note.events
     if !Session.get 'dragging'
       Template.App_body.playSound 'navigate'
       offset = $(instance.firstNode).find('.title').offset()
-      $('body').append($(instance.firstNode).find('.title').first().clone().addClass('zoomingTitle'))
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
       headerOffset = $('.title-wrapper').offset()
+      $('.title-wrapper').fadeOut()
+
+      $('body').append($(instance.firstNode).find('.title').first().clone().addClass('zoomingTitle'))
       $('.zoomingTitle').offset(offset).animate({
         left: headerOffset.left
         top: headerOffset.top

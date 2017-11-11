@@ -13,7 +13,7 @@ require '/imports/ui/pages/account/account.coffee'
 require '/imports/ui/pages/pricing/pricing.coffee'
 
 # Import to override accounts templates
-require '/imports/ui/accounts/accounts-templates.js'
+require '/imports/ui/accounts/accounts-templates.coffee'
 
 FlowRouter.route '/',
   name: 'App.home'

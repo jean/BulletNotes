@@ -4,7 +4,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router'
 import { Notes } from '/imports/api/notes/notes.coffee'
 
 import { noteRenderHold } from '/imports/ui/launch-screen.js'
-import './notes-show-page.jade'
+import './notes-show-page.html'
 
 # Components used inside the template
 import '/imports/ui/pages/404/app-not-found.coffee'

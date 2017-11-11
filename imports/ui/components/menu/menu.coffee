@@ -5,9 +5,6 @@
 require './menu.jade'
 
 Template.menu.onCreated ->
-  @state = new ReactiveDict
-  @state.setDefault
-    menuOpen: true
   setInterval ->
     percentFull = Counter.get('userNotes') / Template.App_body.getTotalNotesAllowed() * 100
     if document.querySelector('#spaceUsedBar')
@@ -123,8 +120,14 @@ Template.menu.helpers
       'mdl-button--colored'
 
 Template.menu.events
-  'click .js-menu': (event, instance) ->
-    Session.set 'menuOpen', !Session.get('menuOpen')
+  'click .menuToggle': (event, instance) ->
+    Meteor.call('users.setMenuPin', {menuPin:false}, ->
+      $( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" )
+    )
+
+  'click .loginBtn, click .joinBtn': (event, instance) ->
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
+    $( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" )
 
   'click .js-logout': ->
     Meteor.logout()

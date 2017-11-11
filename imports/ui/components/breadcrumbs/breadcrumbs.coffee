@@ -20,12 +20,18 @@ Template.breadcrumbs.helpers
             parent: yes
             title: yes
     parents
+
   focusedTitle: ->
     note = Notes.findOne FlowRouter.getParam 'noteId'
-    if note
-      emojione.shortnameToUnicode note.title
+    emojione.shortnameToUnicode note.title
+
+  focusedId: ->
+    note = Notes.findOne FlowRouter.getParam 'noteId'
+    note._id
+
   title: ->
     emojione.shortnameToUnicode @title
+
   shareKey: ->
     FlowRouter.getParam 'shareKey'
 

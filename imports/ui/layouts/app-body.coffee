@@ -238,7 +238,8 @@ Template.App_body.helpers
       fields:
         _id: yes
         title: yes
-    emojione.shortnameToUnicode note.title
+    Template.notes.formatText note.title
+
 
   focusedNoteFiles: () ->
     Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
