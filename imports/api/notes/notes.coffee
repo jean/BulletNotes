@@ -206,6 +206,9 @@ Notes.schema = new SimpleSchema
   encryptedRoot:
     type: Boolean
     optional: yes
+  transaction_id:
+    type: SimpleSchema.RegEx.Id
+    optional: true
 
 Notes.attachSchema Notes.schema
 

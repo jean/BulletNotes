@@ -22,7 +22,7 @@ binary-heap@1.0.10
 blaze@2.3.2
 blaze-html-templates@1.1.2
 blaze-tools@1.0.10
-boilerplate-generator@1.3.0
+boilerplate-generator@1.3.1
 browser-policy@1.1.0
 browser-policy-common@1.0.11
 browser-policy-content@1.1.0
@@ -46,13 +46,13 @@ ddp@1.4.0
 ddp-client@2.2.0
 ddp-common@1.3.0
 ddp-rate-limiter@1.0.7
-ddp-server@2.1.0
+ddp-server@2.1.1
 deps@1.0.12
 diff-sequence@1.0.7
 dispatch:mocha-phantomjs@0.1.7
 dispatch:phantomjs-tests@0.0.5
 dsyko:jquery-ui-touch-punch@1.2.4
-dynamic-import@0.2.0
+dynamic-import@0.2.1
 ecmascript@0.9.0
 ecmascript-runtime@0.5.0
 ecmascript-runtime-client@0.5.0
@@ -63,7 +63,7 @@ emojione:emojione@2.2.6
 es5-shim@4.6.15
 force-ssl@1.1.0
 force-ssl-common@1.1.0
-fourseven:scss@3.13.0
+fourseven:scss@4.5.4
 geojson-utils@1.0.10
 google-config-ui@1.0.0
 google-oauth@1.2.4
@@ -95,7 +95,7 @@ logging@1.1.19
 manuel:abtest@1.1.0
 mdg:validated-method@1.1.0
 mdg:validation-error@0.5.1
-meteor@1.8.0
+meteor@1.8.1
 meteor-base@1.2.0
 meteorhacks:picker@1.0.3
 meteorhacks:ssr@2.2.0
@@ -118,7 +118,7 @@ meteortoys:throttle@3.0.0
 meteortoys:toykit@3.0.4
 minifier-css@1.2.16
 minifiers@1.1.7
-minimongo@1.4.0
+minimongo@1.4.1
 mizzao:autocomplete@0.5.1
 mobile-experience@1.0.5
 mobile-status-bar@1.0.14
@@ -205,5 +205,5 @@ xolvio:cleaner@0.3.1
 zimme:active-route@2.3.2
 zodiase:check@0.0.5
 zodiase:material-design-icons-fonts@3.0.1
-zodiase:mdl@1.3.0
-zodiase:mdl-assets@1.3.0
+zodiase:mdl@1.3.0_1
+zodiase:mdl-assets@1.3.0_1

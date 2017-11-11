@@ -368,9 +368,6 @@ export remove = new ValidatedMethod
     if !@userId || !Notes.isEditable noteId, shareKey
       throw new (Meteor.Error)('not-authorized')
 
-    if Notes.find({owner:@userId}).count() == 1
-      throw new (Meteor.Error)('Can\'t delete last note')
-
     tx.start 'delete note'
     removeRun noteId
     tx.commit()
