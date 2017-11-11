@@ -492,6 +492,11 @@ Template.note.events
                   actionText: 'More Info'
             Template.note.focus $(event.target).closest('.note-item').next()[0]
 
+      # D
+      when 68
+        event.preventDefault()
+        Meteor.call 'notes.duplicate', instance.data._id
+
       # Tab
       when 9
         event.preventDefault()

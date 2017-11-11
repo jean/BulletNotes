@@ -14,7 +14,7 @@ template(name='App_body')
                     else if searchTerm
                       .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
                     else
-                      .title-wrapper(style='opacity:.5;cursor:default') {{ siteName }}
+                      .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
                 .mdl-layout-spacer
                 .searchIcon.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
                   label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
@@ -24,7 +24,7 @@ template(name='App_body')
 
               // Tabs
               //if focusedNote
-              .mdl-layout__tab-bar.mdl-js-ripple-effect
+              .mdl-layout__tab-bar
                 +breadcrumbs (noteArgs focusedNoteId)
             .mdl-layout__drawer
               +menu

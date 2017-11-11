@@ -37,9 +37,29 @@ Template.breadcrumbs.helpers
 
 Template.breadcrumbs.events
   "click a": (event, template) ->
+    if ($(event.currentTarget).hasClass('is-active'))
+      return false
+
+    if $(event.currentTarget).hasClass('home') && window.location.pathname == '/'
+      return false
+
     Template.App_body.playSound('navigate')
     event.preventDefault()
     $('input.search').val('')
-    setTimeout ->
+
+    offset = $(event.currentTarget).offset()
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
+    headerOffset = $('.title-wrapper').offset()
+    $('.title-wrapper').fadeOut()
+
+    $('body').append($(event.currentTarget).clone().addClass('zoomingTitle'))
+    $('.zoomingTitle').offset(offset).animate({
+      left: headerOffset.left
+      top: headerOffset.top
+      color: 'white'
+      fontSize: '20px'
+    }, ->
+      $('.zoomingTitle').remove()
       FlowRouter.go event.currentTarget.pathname
-    , 50
+    )
+

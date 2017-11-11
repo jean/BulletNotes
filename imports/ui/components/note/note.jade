@@ -39,6 +39,7 @@ template(name='note')
             a.duplicate.mdl-menu__item(href='#')
               i.glyphicon.glyphicon-duplicate
               |  {{_ 'notes.menu.duplicate'}}
+              span.keyboardShortcutHint Ctrl + D
             if canIndent
               a.indent.mdl-menu__item(href='#')
                 i.glyphicon.glyphicon-indent-left
@@ -49,14 +50,17 @@ template(name='note')
                 i.glyphicon.glyphicon-indent-right
                 |  {{_ 'notes.menu.unindent'}}
                 span.keyboardShortcutHint ⇧ + Tab 
-            if displayEncrypted
-              a.decryptLink.mdl-menu__item(href='#')
-                i.glyphicon.glyphicon-eye-open
-                |  {{_ 'notes.menu.decrypt'}}
-            else
-              a.encryptLink.mdl-menu__item(href='#')
-                i.glyphicon.glyphicon-eye-close
-                |  {{_ 'notes.menu.encrypt'}}
+  
+            //- Disabling encryption, calendar and kanban for now
+
+            //- if displayEncrypted
+            //-   a.decryptLink.mdl-menu__item(href='#')
+            //-     i.glyphicon.glyphicon-eye-open
+            //-     |  {{_ 'notes.menu.decrypt'}}
+            //- else
+            //-   a.encryptLink.mdl-menu__item(href='#')
+            //-     i.glyphicon.glyphicon-eye-close
+            //-     |  {{_ 'notes.menu.encrypt'}}
             //- a.calendar.mdl-menu__item(href='/calendar/{{_id}}')
             //-   i.glyphicon.glyphicon-calendar
             //-   |  {{_ 'notes.menu.calendar'}}

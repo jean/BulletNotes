@@ -1,5 +1,5 @@
 template(name='breadcrumbs')
-  a.mdl-layout__tab(href='/') {{_ 'layouts.appBody.home'}}
+  a.mdl-layout__tab.home(href='/') {{_ 'layouts.appBody.home'}}
   +each parents
     a.mdl-layout__tab(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
   if focusedTitle
