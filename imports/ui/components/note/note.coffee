@@ -826,7 +826,7 @@ Template.note.events
 
 Template.note.toggleChildren = (instance) ->
   if Meteor.userId()
-    if !instance.showChildren
+    if !instance.data.showChildren
         Meteor.call 'notes.setChildrenLastShown', {
           noteId: instance.data._id
         }
@@ -835,11 +835,20 @@ Template.note.toggleChildren = (instance) ->
       noteId: instance.data._id
       show: !instance.data.showChildren
       shareKey: FlowRouter.getParam('shareKey')
-    }, (err, res) ->
-      if err
-        Session.set('expand_'+instance.data._id, !Session.get('expand_'+instance.data._id))
+    }
+
+  if !Session.get('expand_'+instance.data._id)
+    $(instance.firstNode).find('.childWrap').first().hide()
+    Session.set('expand_'+instance.data._id, true)
+    # Hacky fun to let Meteor render the child notes first
+    setTimeout ->
+      $(instance.firstNode).find('ol').first().hide()
+      $(instance.firstNode).find('.childWrap').first().show()
+      $(instance.firstNode).find('ol').first().slideDown(200)
+    , 1
   else
-    Session.set('expand_'+instance.data._id, !Session.get('expand_'+instance.data._id))
+    $(instance.firstNode).find('ol').first().slideUp 200, ->
+      Session.set('expand_'+instance.data._id, false)
 
 Template.note.focus = (noteItem) ->
   view = Blaze.getView(noteItem)

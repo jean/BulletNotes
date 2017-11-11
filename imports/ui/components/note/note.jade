@@ -123,18 +123,18 @@ template(name='note')
       if showMoveTo
         +moveTo
 
-
-    if childNotes
-      ol
-        each childNotes
-          +note
-      if completedCount
-        .toggleComplete
-          if showComplete
-            if alwaysShowComplete
-              a.toggleAlwaysShowComplete Don't Always Show Complete
+    .childWrap
+      if childNotes
+        ol
+          each childNotes
+            +note
+        if completedCount
+          .toggleComplete
+            if showComplete
+              if alwaysShowComplete
+                a.toggleAlwaysShowComplete Don't Always Show Complete
+              else
+                | Hide completed
+                a.toggleAlwaysShowComplete Always Show Complete
             else
-              | Hide completed
-              a.toggleAlwaysShowComplete Always Show Complete
-          else
-            | Show completed ({{completedCount}} completed notes)
+              | Show completed ({{completedCount}} completed notes)

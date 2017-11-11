@@ -303,7 +303,7 @@ export makeChild = new ValidatedMethod
   run: ({ noteId, parent = null, shareKey = null, upperSibling = null, rank = null, expandParent = true }) ->
     if !@userId || !Notes.isEditable noteId, shareKey
       throw new (Meteor.Error)('not-authorized')
-
+    console.log "Rank: ", rank
     note = Notes.findOne(noteId)
     if !note
       throw new (Meteor.Error)('note-not-found')
@@ -311,14 +311,15 @@ export makeChild = new ValidatedMethod
     if parent
       parent = Notes.findOne(parent)
 
-    if upperSibling
-      upperSibling = Notes.findOne(upperSibling)
-      rank = upperSibling.rank + 1
-    else
-      if parent
-        rank = Notes.find({parent:parent._id}).count() * 2
+    if rank == null  
+      if upperSibling
+        upperSibling = Notes.findOne(upperSibling)
+        rank = upperSibling.rank + 1
+      else
+        if parent
+          rank = Notes.find({parent:parent._id}).count() * 2
 
-    if !rank
+    if rank == null
       rank = 1
 
     tx.start 'note makeChild'
@@ -332,7 +333,7 @@ export makeChild = new ValidatedMethod
         showChildren: true
         childrenLastShown: new Date
       }, {tx: true }
-
+    console.log "Rank: ", rank
     Notes.update noteId, {$set:
       rank: rank
       parent: parentId
