@@ -138,9 +138,6 @@ Template.menu.events
       Meteor.call('users.setMenuPin', {menuPin:true})
       Template.App_body.playSound 'menuOpen'
 
-  'click .login, click .favoriteNote': ->
-    $('.mdl-layout__obfuscator').trigger('click')
-
   'click #mute': ->
     Template.App_body.toggleMute()
 

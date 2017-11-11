@@ -159,12 +159,12 @@ Template.App_body.onRendered ->
         Template.note.focus $('.title').first()[0]
 
       # Cmd + Z Undo
-      if event.keyCode == 90 && event.metaKey
+      if event.keyCode == 90 && (event.metaKey || event.ctrlKey)
         event.preventDefault()
         tx.undo()
 
       # Cmd + Y Redo
-      else if event.keyCode == 89 && event.metaKey
+      else if event.keyCode == 89 && (event.metaKey || event.ctrlKey)
         event.preventDefault()
         tx.redo()
 
