@@ -73,8 +73,6 @@ Template.notes.onCreated ->
     return no
 
 Template.notes.onRendered ->
-  Template.note.focus $('.note-item').first()[0]
-  
   Template.App_body.keenClient.recordEvent 'notesRendered', owner: @userId
 
 Template.notes.helpers
@@ -127,8 +125,8 @@ Template.notes.helpers
     Session.get 'alwaysShowComplete'
 
   completedCount: () ->
-    Notes.find({ parent: @note()._id, complete: true }).count()
-
+    if @note()
+      Notes.find({ parent: @note()._id, complete: true }).count()
 
 Template.notes.events
   'click .toggleComplete': (event, instance) ->

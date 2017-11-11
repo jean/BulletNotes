@@ -144,7 +144,8 @@ Meteor.startup ->
 Template.App_body.onRendered ->
   $.urlParam = (name) ->
     results = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.href)
-    results[1] or 0
+    if results
+      results[1] or 0
 
   Session.set 'referral', $.urlParam('ref')
 
@@ -155,7 +156,6 @@ Template.App_body.onRendered ->
       # Up or down
       if event.keyCode == 40 || event.keyCode == 38
         event.preventDefault()
-        $('.title').first().focus()
         Template.note.focus $('.title').first()[0]
 
       # Cmd + Z Undo

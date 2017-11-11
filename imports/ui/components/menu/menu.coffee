@@ -10,7 +10,8 @@ Template.menu.onCreated ->
     menuOpen: true
   setInterval ->
     percentFull = Counter.get('userNotes') / Template.App_body.getTotalNotesAllowed() * 100
-    document.querySelector('#spaceUsedBar').MaterialProgress.setProgress(percentFull);
+    if document.querySelector('#spaceUsedBar')
+      document.querySelector('#spaceUsedBar').MaterialProgress.setProgress(percentFull);
 
     if Meteor.user()
       # THis is hacky. Should be somewhere else.
