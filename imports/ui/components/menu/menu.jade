@@ -47,6 +47,7 @@ template(name="menu")
         button#userMenu.mdl-button.mdl-js-button.mdl-js-ripple-effect.mdl-button--accent.mdl-button--raised
           i.material-icons account_box
           | {{displayName}}
+          i.material-icons expand_more
         div.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for='userMenu')
           a.mdl-menu__item.mdl-menu__item--full-bleed-divider(href='/settings') {{_ 'layouts.appBody.settings'}}
           a.mdl-menu__item.mdl-menu__item--full-bleed-divider(href='/account') {{_ 'layouts.appBody.account'}}

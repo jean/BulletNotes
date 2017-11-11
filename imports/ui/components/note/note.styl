@@ -280,6 +280,7 @@
 
 #tagSearchPreview
   width: 500px
+  opacity: 0
   position: fixed
   li
     border-bottom: 1px solid lightgray
@@ -292,6 +293,10 @@
     overflow: hidden
   .tagLink
     display: inline
+
+@media screen and (min-width: 60em)
+  #tagSearchPreview
+    opacity: 1
 
 .modal.encrypt
   margin-top: 10em

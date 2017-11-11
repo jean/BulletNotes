@@ -281,14 +281,15 @@ Template.notes.rendered = ->
     opacity: .6
     toleranceElement: '> div.noteContainer'
 
-    # revert: 100
-    # distance: 5
+    stop: (event, ui) ->
+      Session.set 'dragging', false
+      $('.sortable').removeClass 'sorting'
+
     sort: (event, ui) ->
       Session.set 'dragging', true
       $('.sortable').addClass 'sorting'
 
     revert: (event, ui) ->
-      console.log "reverting"
       Session.set 'dragging', false
       $('.sortable').removeClass 'sorting'
 

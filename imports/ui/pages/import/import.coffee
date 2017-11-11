@@ -10,6 +10,7 @@ require './import.jade'
 
 Template.Notes_import.onRendered ->
   NProgress.done()
+  $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
 
 Template.Notes_import.events
   'submit .importForm': (event, instance) ->
@@ -30,9 +31,7 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
   NProgress.set(ii/data.importLines.length)
   if (data.importLines.length - 1 == ii)
     NProgress.done()
-  if !line
-    return
-  if line.trim().substr(0, 1) != '-'
+  if !line || line.trim().substr(0, 1) != '-'
     # Invalid line, skip it move to the next.
     Template.Notes_import.import data, ii + 1, lastNote
     return
@@ -69,6 +68,7 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
     parent: parent
     isImport: true
   }, (err, res) ->
+
     if !level
       FlowRouter.go('/')
 

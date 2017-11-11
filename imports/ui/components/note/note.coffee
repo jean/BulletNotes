@@ -18,7 +18,7 @@ import {
   upload
 } from '/imports/api/files/methods.coffee'
 
-Template.note.previewXOffset = 100
+Template.note.previewXOffset = -20
 Template.note.previewYOffset = 20
 
 Template.note.encodeImageFileAsURL = (cb,file) ->
@@ -144,7 +144,7 @@ Template.note.helpers
     if @updatedAt
       info += ' Updated '+moment(@updatedAt).fromNow()+'.'
     if @updateCount
-      info += ' Version: '+@updateCount
+      info += ' Edits: '+@updateCount
     if @childrenShownCount
       info += ' Views: '+@childrenShownCount
     info
@@ -844,10 +844,10 @@ Template.note.toggleChildren = (instance) ->
     setTimeout ->
       $(instance.firstNode).find('ol').first().hide()
       $(instance.firstNode).find('.childWrap').first().show()
-      $(instance.firstNode).find('ol').first().slideDown(200)
+      $(instance.firstNode).find('ol').first().slideDown()
     , 1
   else
-    $(instance.firstNode).find('ol').first().slideUp 200, ->
+    $(instance.firstNode).find('ol').first().slideUp ->
       Session.set('expand_'+instance.data._id, false)
 
 Template.note.focus = (noteItem) ->
