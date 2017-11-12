@@ -492,10 +492,11 @@ Template.note.events
                   actionText: 'More Info'
             Template.note.focus $(event.target).closest('.note-item').next()[0]
 
-      # D
+      # D - Duplicate
       when 68
-        event.preventDefault()
-        Meteor.call 'notes.duplicate', instance.data._id
+        if event.metaKey || event.ctrlKey
+          event.preventDefault()
+          Meteor.call 'notes.duplicate', instance.data._id
 
       # Tab
       when 9
@@ -585,10 +586,12 @@ Template.note.events
           event.preventDefault()
           return false
         if $(event.currentTarget).closest('.note-item').prev().length
-          if event.metaKey
+          if event.metaKey || event.ctrlKey
+            event.stopImmediatePropagation()
             # Move note above the previous note
             item = $(event.currentTarget).closest('.note-item')
             prev = item.prev()
+            upperSibling = Blaze.getView(prev.prev()[0]).templateInstance()
             if prev.length == 0
               return
             prev.css('z-index', 999).css('position', 'relative').animate { top: item.height() }, 250
@@ -597,7 +600,16 @@ Template.note.events
                 prev.css('z-index', '').css('top', '').css 'position', ''
                 item.css('z-index', '').css('top', '').css 'position', ''
                 item.insertBefore prev
-                Template.note.focus item[0]
+                setTimeout ->
+                  Template.note.focus item[0]
+                , 100
+
+                Meteor.call 'notes.makeChild', {
+                  noteId: instance.data._id
+                  parent: instance.data.parent
+                  upperSibling: upperSibling.data._id
+                  shareKey: FlowRouter.getParam 'shareKey'
+                }
               , 50
           else
             # Focus on the previous note
@@ -609,7 +621,7 @@ Template.note.events
       # Down
       when 40
         # Command is held
-        if event.metaKey
+        if event.metaKey || event.ctrlKey
           # Move down
           item = $(event.currentTarget).closest('.note-item')
           next = item.next()
@@ -621,15 +633,18 @@ Template.note.events
               next.css('z-index', '').css('top', '').css 'position', ''
               item.css('z-index', '').css('top', '').css 'position', ''
               item.insertAfter next
-              Template.note.focus item.find('div.title').last()[0]
-              upperSibling = item.prev()
-              view = Blaze.getView(upperSibling)
-              instance = view.templateInstance()
-              # console.log instance
+
+              setTimeout ->
+                Template.note.focus item[0]
+              , 100
+
+              view = Blaze.getView(next[0])
+              upperSibling = view.templateInstance()
+              
               Meteor.call 'notes.makeChild', {
-                noteId: @_id
-                parent: parent_id
-                upperSibling: upperSiblingId
+                noteId: instance.data._id
+                parent: instance.data.parent
+                upperSibling: upperSibling.data._id
                 shareKey: FlowRouter.getParam 'shareKey'
               }
             , 50
