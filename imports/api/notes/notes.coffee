@@ -115,6 +115,7 @@ Notes.schema = new SimpleSchema
     type: String
     regEx: SimpleSchema.RegEx.Id
     optional: yes
+    index: 1
   title:
     type: String
     optional: yes
@@ -127,10 +128,12 @@ Notes.schema = new SimpleSchema
   deleted:
     type: Date
     optional: yes
+    index: 1
   owner:
     type: String
     regEx: SimpleSchema.RegEx.Id
     optional: yes
+    index: 1
   createdBy:
     type: String
     regEx: SimpleSchema.RegEx.Id
