@@ -125,7 +125,7 @@ Template.menu.events
       $( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" )
     )
 
-  'click .loginBtn, click .joinBtn': (event, instance) ->
+  'click .loginBtn, click .joinBtn, click .favoriteNote': (event, instance) ->
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
     $( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" )
 

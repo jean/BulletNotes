@@ -61,7 +61,7 @@ template(name="menu")
           a.loginBtn.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'signin'}}")
             i.material-icons account_box
             | {{_ 'layouts.appBody.login'}}
-          a.joinBtn.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'join'}}")
+          a.joinBtn.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent.mdl-button--raised(href="{{pathFor 'join'}}",style="padding: 0")
             | {{_ 'layouts.appBody.join'}}
     if currentUser
       span.mdl-layout-title {{_ 'layouts.appBody.favorites'}}

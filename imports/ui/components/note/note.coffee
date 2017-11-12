@@ -62,6 +62,9 @@ Template.note.onCreated ->
 
 Template.note.onRendered ->
   noteElement = this
+
+  Session.set('expand_'+this.data._id, this.data.showChildren)
+
   Tracker.autorun ->
     # console.log noteElement
 

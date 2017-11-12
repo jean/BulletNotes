@@ -18,13 +18,15 @@ export insert = new ValidatedMethod
     rank: Notes.simpleSchema().schema('rank')
     parent: Notes.simpleSchema().schema('parent')
     shareKey: Notes.simpleSchema().schema('shareKey')
+    complete: Notes.simpleSchema().schema('complete')
+    showChildren: Notes.simpleSchema().schema('showChildren')
     isImport:
       type: Boolean
       optional: true
   .validator
     clean: yes
     filter: no
-  run: ({ title, rank, parent, shareKey = null, isImport = false }) ->
+  run: ({ title, rank, parent, shareKey = null, isImport = false, complete = false, showChildren = false }) ->
     parent = Notes.findOne parent
 
     # if note.isPrivate() and note.userId isnt @userId
@@ -66,7 +68,8 @@ export insert = new ValidatedMethod
       rank: rank
       level: level
       createdAt: new Date()
-      complete: false
+      complete: complete
+      showChildren: showChildren
       createdBy: @userId
 
     # Only create a transaction if we are not importing.

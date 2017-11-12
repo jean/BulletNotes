@@ -1,1 +1,1 @@
-import './useraccounts-configuration.js';
+import './useraccounts-configuration.coffee';
