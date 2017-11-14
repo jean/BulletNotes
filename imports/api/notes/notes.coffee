@@ -154,12 +154,14 @@ Notes.schema = new SimpleSchema
   due:
     type: Date
     optional: yes
+    index: 1
   showChildren:
     type: Boolean
     optional: yes
   favorite:
     type: Boolean
     optional: yes
+    index: 1
   favoritedAt:
     type: Date
     optional: yes
