@@ -1,9 +1,13 @@
 .kanbanList
-    background: gray
+    background: #999
     width: 15em
     margin: .25em
     border-radius: .5em
-    float: left
+    padding: .25em
+    height: 100px;
+    width: 100px;
+    border: 1px solid red;
+    display: inline-block;
 
     .kanbanItem
       display: block
@@ -11,3 +15,84 @@
       margin: .25em
       border-radius: .5em
       color: black
+
+ul.kanbanWrap
+    width: 100%;
+    list-style-type: none;
+    margin: auto;
+    overflow-x: scroll;
+    white-space: nowrap;
+/* Some Sass variables */
+// Layout
+$appbar-height = 40px
+$navbar-height = 50px
+$list-width = 300px
+$gap = 10px
+$scrollbar-thickness = 17px
+$list-header-height = 36px
+$list-footer-height = 36px
+// Misc
+$list-border-radius = 5px
+$card-border-radius = 3px
+
+.ui
+  height: 80vh
+  display: grid
+  grid-template-rows: $appbar-height $navbar-height 1fr
+
+.navbar
+  padding-left: $gap
+  display: flex
+  align-items: center
+  &.app
+    background-color: white
+    font-size: 1.5rem
+  &.board
+    font-size: 1.1rem
+.lists
+  display: flex
+  overflow-x: auto
+  //width: 100%; // This is needed for FF < 54
+  > *
+    flex: 0 0 auto
+    // 'rigid' lists
+    margin-left: $gap
+  &::after
+    content: ''
+    flex: 0 0 $gap
+.list
+  width: $list-width
+  height: calc(100% - 27px)
+  > *
+    background-color: #e2e4e6
+    color: #333
+    padding: 0 10px
+  header
+    line-height: $list-header-height
+    font-size: 16px
+    font-weight: bold
+    border-top-left-radius: $list-border-radius
+    border-top-right-radius: $list-border-radius
+  footer
+    line-height: $list-footer-height
+    border-bottom-left-radius: $list-border-radius
+    border-bottom-right-radius: $list-border-radius
+    color: #888
+  ul
+    list-style: none
+    margin: 0
+    max-height: calc(100% - 27px)
+    overflow-y: auto
+    li
+      background-color: #fff
+      padding: 10px
+      &:not(:last-child)
+        margin-bottom: 10px
+      border-radius: $card-border-radius
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1)
+      img
+        display: block
+        width: calc(100% + 2 * 10px)
+        margin: (-10px) 0 $gap (-10px)
+        border-top-left-radius: $card-border-radius
+        border-top-right-radius: $card-border-radius

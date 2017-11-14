@@ -1,13 +1,12 @@
 template(name='kanbanList')
-  .kanbanList
-    span {{title}}
-    .kanbanChildNotes(data-id="{{_id}}")
+  .list
+    header {{title}}
+    ul.kanbanChildNotes(data-id="{{_id}}")
       +each childNotes
-        .kanbanItem(data-id="{{_id}}")
-          .title {{title}}
-          a.edit
-            .glyphicon.glyphicon-edit
-        
-          a.zoom(href='/note/{{_id}}')
-            .glyphicon.glyphicon-fullscreen
-          
+        +note
+        //- li.kanbanItem(data-id="{{_id}}")
+        //-   .title {{title}}
+        //-   a.zoom(href='/note/{{_id}}')
+        //-     .glyphicon.glyphicon-fullscreen
+
+    footer Add a card...

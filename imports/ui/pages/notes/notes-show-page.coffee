@@ -33,33 +33,6 @@ Template.Notes_show_page.onRendered ->
       FlowRouter.getParam 'noteId'
       FlowRouter.getParam 'shareKey'
 
-Template.Notes_show_page.events
-  'change .note-edit': (event, instance) ->
-    # console.log event, instance
-    target = event.target
-    if $(target).val() == 'edit'
-      instance.editNote()
-    else if $(target).val() == 'delete'
-      instance.deleteNote()
-    else if $(target).val() == 'favorite'
-      instance.favoriteNote()
-    else if $(target).val() == 'list'
-      if instance.getNoteId()
-        FlowRouter.go('/note/'+instance.getNoteId())
-      else
-        FlowRouter.go('/')
-    else if $(target).val() == 'calendar'
-      if instance.getNoteId()
-        FlowRouter.go('/calendar/'+instance.getNoteId())
-      else
-        FlowRouter.go('/calendar')
-    else if $(target).val() == 'kanban'
-      if instance.getNoteId()
-        FlowRouter.go('/kanban/'+instance.getNoteId())
-      else
-        FlowRouter.go('/kanban')
-    target.selectedIndex = 0
-
 Template.Notes_show_page.helpers
   showNotes: ->
     if Session.get('viewMode') != "kanban" && Session.get('viewMode') != "calendar"

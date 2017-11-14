@@ -1,3 +1,7 @@
 template(name='kanban')
-  +each childNotes
-    +kanbanList
+  .ui
+    nav.navbar.app App bar
+    nav.navbar.board Board bar
+    .lists
+      +each childNotes
+        +kanbanList
