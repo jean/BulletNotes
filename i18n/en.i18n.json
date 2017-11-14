@@ -100,7 +100,10 @@
       "pricing": "Pricing",
       "help": "Help",
       "about": "About",
-      "admin": "Admin"
+      "admin": "Admin",
+      "noteMode": "Bullet Notes Mode",
+      "kanbanMode": "Kanban Mode",
+      "calendarMode": "Calendar Mode"
     },
     "menu": {
       "pinMenu": "Pin Menu Open",

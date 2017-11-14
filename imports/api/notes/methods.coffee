@@ -167,7 +167,8 @@ export setDueDate = new ValidatedMethod
   name: 'notes.setDueDate'
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
-    due: Notes.simpleSchema().schema('due')
+    due: 
+      type: String
     createTransaction:
       type: Boolean
       optional: true
@@ -179,11 +180,13 @@ export setDueDate = new ValidatedMethod
     if note.owner != @userId
       return
 
+    console.log "Got due date: ", due
+    
     title = note.title.replace(/#due-([0-9]+(-?))+/gim,'')
     title = title.trim()
-    title = title+' #due-'+moment(due).format('YYYY-MM-DD')
+    title = title+' #due-'+due
     Notes.update noteId, $set:
-      due: due,
+      due: due
       title: title
       updatedAt: new Date
 
@@ -246,12 +249,17 @@ export updateTitle = new ValidatedMethod
       match = title.match(/#due-([0-9]+(-?))+/gim)
     else
       title = ''
+
     if match
       date = match[0]
       Notes.update noteId, {$set: {
         due: moment(date).format()
       }}, tx: true
-
+    else
+      Notes.update noteId, {$unset: {
+        due: 1
+      }}, tx: true
+    
     complete = false
     if title.match Notes.donePattern
       complete = true

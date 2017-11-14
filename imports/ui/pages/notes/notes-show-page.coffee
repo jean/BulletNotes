@@ -62,18 +62,16 @@ Template.Notes_show_page.events
 
 Template.Notes_show_page.helpers
   showNotes: ->
-    (
-      FlowRouter.getRouteName() == "Notes.show" or
-      FlowRouter.getRouteName() == "Notes.showShared" or
-      FlowRouter.getRouteName() == "Notes.search" or
-      FlowRouter.getRouteName() == "App.home"
-    )
+    if Session.get('viewMode') != "kanban" && Session.get('viewMode') != "calendar"
+      true
 
   showKanban: ->
-    FlowRouter.getRouteName() == "Notes.kanban"
+    if Session.get('viewMode') == "kanban"
+      true
 
   showCalendar: ->
-    FlowRouter.getRouteName() == "Notes.calendar"
+    if Session.get('viewMode') == "calendar"
+      true
 
   focusedNoteId: ->
     FlowRouter.getParam 'noteId'

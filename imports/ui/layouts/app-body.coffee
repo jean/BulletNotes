@@ -292,6 +292,14 @@ Template.App_body.helpers
       note: ->
         Notes.findOne FlowRouter.getParam('noteId')
 
+  viewModeIcon: ->
+    if Session.get('viewMode') == "calendar"
+      "date_range"
+    else if Session.get('viewMode') == "kanban"
+      "view_column"
+    else
+      "fiber_manual_record"
+
 Template.App_body.events
   'keyup .search': (event, instance) ->
     # Throttle so we don't search for single letters
@@ -326,6 +334,14 @@ Template.App_body.events
       event.preventDefault()
       $(event.currentTarget.blur())
 
+  'click .calendarMode': ->
+    Session.set('viewMode','calendar')
+
+  'click .noteMode': ->
+    Session.set('viewMode','note')
+
+  'click .kanbanMode': ->
+    Session.set('viewMode','kanban')
 
 
 Template.App_body.playSound = (sound) ->

@@ -16,6 +16,7 @@ template(name='encrypt')
             else
               p Encrypt this note.
               p Beware! This is client-side, strong encryption. If you lose this password, you will lose whatever you encrypt, forever. There is no recovery process. The website admins are just as unable as anyone else to access your encrypted material without a password. If you are encrypting important data, be sure you have a backup and be sure you remember or save your password.
+              p Secondary beware, this feature is still experimental. Be careful with this, it may break.
               p
                 input.encryptPassword.cryptPass(type='password', size='60')
                 input.encryptPasswordVerify(type='password', size='60')
