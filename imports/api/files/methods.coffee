@@ -68,6 +68,8 @@ export upload = new ValidatedMethod
       owner: @userId
       uploadedAt: new Date
     }
+    Notes.update noteId, $set:
+      showContent: true
 
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([

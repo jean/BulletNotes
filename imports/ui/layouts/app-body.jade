@@ -12,15 +12,15 @@ template(name='App_body')
                   button#notesMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
                     i.material-icons fiber_manual_record
                   .mdl-tooltip.mdl-tooltip--large(for='notesMode')
-                    | Bullet List mode
+                    | Bullet List View
                   button#calendarMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
                     i.material-icons date_range
                   .mdl-tooltip.mdl-tooltip--large(for='calendarMode')
-                    | Calendar Mode
+                    | Calendar View
                   button#kanbanMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
                     i.material-icons view_column
-                  .mdl-tooltip.mdl-tooltip--large(for='viewModeMenu')
-                    | Kanban Mode
+                  .mdl-tooltip.mdl-tooltip--large(for='kanbanMode')
+                    | Kanban View
                   .js-edit-note.title-page
                     if focusedNote
                       .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}

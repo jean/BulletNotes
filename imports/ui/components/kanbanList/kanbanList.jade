@@ -1,6 +1,7 @@
 template(name='kanbanList')
   .kanbanList(class=className)
-    header {{title}}
+    header
+      +noteTitle
     if photo
       img(src=photo,width="100%")
     ul.kanbanChildNotes(data-id="{{_id}}")

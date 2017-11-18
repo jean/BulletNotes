@@ -30,7 +30,8 @@
       "decrypt": "Decrypt",
       "moveTo": "Move to..",
       "indent": "Indent",
-      "unindent": "Unindent"
+      "unindent": "Unindent",
+      "upload": "Upload a file"
     },
     "show": {
       "cancel": "Cancel",

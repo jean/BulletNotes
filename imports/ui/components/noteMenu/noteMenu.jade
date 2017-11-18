@@ -1,0 +1,72 @@
+template(name='noteMenu')
+  // Menu
+  .noteMenu.mdl-menu.mdl-menu--bottom-left.mdl-js-menu(id="menu_{{_id}}")
+    a.zoom.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
+      i.glyphicon.glyphicon-search
+      |  {{_ 'notes.menu.zoom'}}
+      span.keyboardShortcutHint ⌘ + ]
+      
+    a.addBody.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
+      i.glyphicon.glyphicon-info-sign
+      |  {{_ 'notes.menu.addBody'}}
+      span.keyboardShortcutHint ⇧ + Enter
+      
+    if favorite
+      a.unfavorite.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
+        i.glyphicon.glyphicon-heart-empty
+        |  {{_ 'notes.menu.unfavorite'}}
+    else
+      a.favorite.mdl-menu__item(href='#', data-toggle='modal', data-target='#zoom_{{_id}}')
+        i.glyphicon.glyphicon-heart
+        |  {{_ 'notes.menu.favorite'}}
+        
+    a.moveTo.mdl-menu__item(href='#', data-toggle='modal', data-target='#moveTo_{{_id}}')
+      i.glyphicon.glyphicon-share-alt
+      |  {{_ 'notes.menu.moveTo'}}
+      span.keyboardShortcutHint ⌘ + ⇧ + M
+
+    if currentUser.isAdmin
+      a.upload.mdl-menu__item(href='#')
+        i.glyphicon.glyphicon-upload
+        |  {{_ 'notes.menu.upload'}}
+        span.keyboardShortcutHint ⌘ + ⇧ + U
+      
+    a.share.mdl-menu__item(href='#', data-toggle='modal', data-target='#share_{{_id}}')
+      i.glyphicon.glyphicon-share
+      |  {{_ 'notes.menu.share'}}
+      
+    a.duplicate.mdl-menu__item(href='#')
+      i.glyphicon.glyphicon-duplicate
+      |  {{_ 'notes.menu.duplicate'}}
+      span.keyboardShortcutHint Ctrl + D
+      
+    if canIndent
+      a.indent.mdl-menu__item(href='#')
+        i.glyphicon.glyphicon-indent-left
+        |  {{_ 'notes.menu.indent'}}
+        span.keyboardShortcutHint Tab
+    if canUnindent
+      a.unindent.mdl-menu__item(href='#')
+        i.glyphicon.glyphicon-indent-right
+        |  {{_ 'notes.menu.unindent'}}
+        span.keyboardShortcutHint ⇧ + Tab 
+
+    if displayEncrypted
+      a.decryptLink.mdl-menu__item(href='#')
+        i.glyphicon.glyphicon-eye-open
+        |  {{_ 'notes.menu.decrypt'}}
+    else
+      a.encryptLink.mdl-menu__item(href='#')
+        i.glyphicon.glyphicon-eye-close
+        |  {{_ 'notes.menu.encrypt'}}
+
+    a.delete.mdl-menu__item(href='#')
+      i.glyphicon.glyphicon-trash
+      |  {{_ 'notes.menu.delete'}}
+      span.keyboardShortcutHint Ctrl + Delete
+      
+    if inbox
+      li.mdl-menu__item
+        a(href="javascript:function bninbox(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','http://localhost:3000/notes/inbox/'+encodeURIComponent(d.location.href)+'&t='+(new Date().getTime()));b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}bninbox();void(0)")
+          i.glyphicon.glyphicon-envelope
+          | Drag this link to your bookmarks to save pages to this list.

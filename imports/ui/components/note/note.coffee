@@ -8,6 +8,8 @@ require '/imports/ui/components/file/file.coffee'
 require '/imports/ui/components/share/share.coffee'
 require '/imports/ui/components/encrypt/encrypt.coffee'
 require '/imports/ui/components/moveTo/moveTo.coffee'
+require '/imports/ui/components/noteMenu/noteMenu.coffee'
+require '/imports/ui/components/noteTitle/noteTitle.coffee'
 
 import {
   favorite,
@@ -68,18 +70,12 @@ Template.note.onRendered ->
   Tracker.autorun ->
     # console.log noteElement
 
-    if noteElement.data.title
-      $(noteElement.firstNode).find('.title').first().html(
-        Template.notes.formatText noteElement.data.title
+
+    if noteElement.data.body
+      bodyHtml = Template.notes.formatText noteElement.data.body
+      $(noteElement.firstNode).find('.body').first().show().html(
+        bodyHtml
       )
-      $(noteElement.firstNode).find('> .noteContainer .encryptedTitle').first().html(
-        Template.notes.formatText noteElement.data.title
-      )
-      if noteElement.data.body
-        bodyHtml = Template.notes.formatText noteElement.data.body
-        $(noteElement.firstNode).find('.body').first().show().html(
-          bodyHtml
-        )
 
     $('.fileItem').draggable
       revert: true
@@ -453,6 +449,11 @@ Template.note.events
         if event.metaKey
           FlowRouter.go('/note/'+instance.data.parent)
 
+      # U - Upload
+      when 85
+        if event.metaKey && event.shiftKey
+          $('#noteItem_'+instance.data._id).find('.fileInput').first().trigger('click')
+
       # Enter
       when 13
         event.preventDefault()
@@ -727,13 +728,6 @@ Template.note.events
         $(event.currentTarget).blur()
         window.getSelection().removeAllRanges()
 
-
-  'click .title': (event, instance) ->
-    event.stopImmediatePropagation()
-    if instance.state
-      instance.state.set 'focused', true
-      Session.set 'focused', true
-
   'focus .title, focus .body': (event, instance) ->
     Session.set 'focused', true
     $('.title,.body').textcomplete [ {
@@ -771,32 +765,6 @@ Template.note.events
     } ], footer:
       '<a href="http://www.emoji.codes" target="_blank">'+
       'Browse All<span class="arrow">»</span></a>'
-
-  'blur .title': (event, instance) ->
-    Template.instance().state.set 'focused', false
-    Session.set 'focused', false
-    that = this
-    event.stopPropagation()
-    # If we blurred because we hit tab and are causing an indent
-    # don't save the title here, it was already saved with the
-    # indent event.
-    if Session.get 'indenting'
-      Session.set 'indenting', false
-      return
-
-    title = Template.note.stripTags(event.target.innerHTML)
-    if !@title || title != Template.note.stripTags emojione.shortnameToUnicode @title
-      setTimeout ->
-        $(event.target).html Template.notes.formatText title
-      , 20
-      Meteor.call 'notes.updateTitle', {
-        noteId: instance.data._id
-        title: title
-        shareKey: FlowRouter.getParam 'shareKey'
-      }, (err, res) ->
-        if err
-          Template.App_body.showSnackbar
-            message: err.error
 
   'blur .body': (event, instance) ->
     event.stopPropagation()
@@ -868,7 +836,6 @@ Template.note.events
   'drop .title, drop .filesContainer, drop .noteContainer': (event, instance) ->
     event.preventDefault()
     event.stopPropagation()
-
 
     if event.toElement
       console.log "Move file!"

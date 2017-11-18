@@ -35,6 +35,7 @@ $card-border-radius = 3px
   display: flex
   overflow-x: auto
   margin-top: 1em
+  font-size: .9em
   //width: 100%; // This is needed for FF < 54
   > *
     flex: 0 0 auto
@@ -76,14 +77,17 @@ $card-border-radius = 3px
     border-bottom-right-radius: $list-border-radius
     color: #888
     cursor: pointer
+  li
+    list-style: none
+    margin: 0
   ul
+    padding-top: 1em
     list-style: none
     margin: 0
     max-height: calc(100% - 27px)
     overflow-y: auto
     li
       background-color: #fff
-      padding: 10px
       &:not(:last-child)
         margin-bottom: 10px
       border-radius: $card-border-radius
@@ -94,3 +98,8 @@ $card-border-radius = 3px
         margin: (-10px) 0 $gap (-10px)
         border-top-left-radius: $card-border-radius
         border-top-right-radius: $card-border-radius
+
+  .noteContainer
+    padding: 5px 0 0
+  .title
+    font-size: .9em
