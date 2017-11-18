@@ -41,6 +41,12 @@ template(name='note')
               i.glyphicon.glyphicon-share-alt
               |  {{_ 'notes.menu.moveTo'}}
               span.keyboardShortcutHint ⌘ + ⇧ + M
+
+            if currentUser.isAdmin
+              a.upload.mdl-menu__item(href='#')
+                i.glyphicon.glyphicon-upload
+                |  {{_ 'notes.menu.upload'}}
+                span.keyboardShortcutHint ⌘ + ⇧ + U
               
             a.share.mdl-menu__item(href='#', data-toggle='modal', data-target='#share_{{_id}}')
               i.glyphicon.glyphicon-share
@@ -108,9 +114,9 @@ template(name='note')
               | {{body}}
             else
               |  
+      input.fileInput(type='file',style='display:none')
       if showContent
         if hasContent
-          input.fileInput(type='file',style='display:none')
           if files
             .filesContainer
               each files

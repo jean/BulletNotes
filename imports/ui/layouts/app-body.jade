@@ -8,12 +8,19 @@ template(name='App_body')
               .mdl-layout__header-row
                 // Title
                 span.mdl-layout-title
-
-                  button#viewModeMenu.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--colored.mdl-button--raised(class="{{muteClass}}")
-                    i.material-icons {{viewModeIcon}}
+                  button#modeBackground.mdl-button.mdl-button--icon.mdl-button--colored.mdl-button--raised(style="left:{{modeBackgroundLeft}}px")
+                  button#notesMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
+                    i.material-icons fiber_manual_record
+                  .mdl-tooltip.mdl-tooltip--large(for='notesMode')
+                    | Bullet List mode
+                  button#calendarMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
+                    i.material-icons date_range
+                  .mdl-tooltip.mdl-tooltip--large(for='calendarMode')
+                    | Calendar Mode
+                  button#kanbanMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
+                    i.material-icons view_column
                   .mdl-tooltip.mdl-tooltip--large(for='viewModeMenu')
-                    | View Mode
-
+                    | Kanban Mode
                   .js-edit-note.title-page
                     if focusedNote
                       .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
@@ -21,19 +28,7 @@ template(name='App_body')
                       .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
                     else
                       .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
-                  div.mdl-menu.mdl-menu--bottom-left.mdl-js-menu.mdl-js-ripple-effect(for='viewModeMenu')
-                    a.mdl-menu__item.noteMode
-                      label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
-                        i.material-icons fiber_manual_record
-                      | {{_ 'layouts.appBody.noteMode'}}
-                    a.mdl-menu__item.calendarMode
-                      label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
-                        i.material-icons date_range
-                      | {{_ 'layouts.appBody.calendarMode'}}
-                    a.mdl-menu__item.kanbanMode
-                      label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
-                        i.material-icons view_column
-                      | {{_ 'layouts.appBody.kanbanMode'}}
+                  
                 .mdl-layout-spacer
                 .searchIcon.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
                   label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
@@ -43,7 +38,7 @@ template(name='App_body')
 
               // Tabs
               //if focusedNote
-              .mdl-layout__tab-bar
+              .mdl-layout__tab-bar.mdl-js-ripple-effect
                 +breadcrumbs (noteArgs focusedNoteId)
             .mdl-layout__drawer
               +menu

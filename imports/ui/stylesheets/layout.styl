@@ -128,12 +128,19 @@ a.mdl-layout__tab:hover, a.mdl-layout__tab:focus
   cursor: default
   text-decoration: none
 
-#viewModeMenu
+#notesMode, #calendarMode, #kanbanMode, #modeBackground
   position: absolute
   top: -5px
+  transition: left .5s ease-in-out
+
+#calendarMode
+  left: 40px
+
+#kanbanMode
+  left: 80px
 
 .title-page
-  margin-left: 3em
+  margin-left: 6em
 
 .contentSection
   margin: 0 1em

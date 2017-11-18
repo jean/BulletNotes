@@ -225,26 +225,13 @@ Template.App_body.helpers
     true
 
   focusedNote: ->
-    note = Notes.findOne FlowRouter.getParam 'noteId',
+    Notes.findOne FlowRouter.getParam 'noteId',
       fields:
         _id: yes
         body: yes
         title: yes
         favorite: yes
         children: yes
-
-    console.log note
-
-    if note.title.indexOf('#kanban') > -1
-      Session.set('viewMode',"kanban")
-
-    else if note.title.indexOf('#calendar') > -1
-      Session.set('viewMode',"calendar")
-
-    else
-      Session.set('viewMode',"notes")
-
-    note
 
   focusedNoteTitle: ->
     note = Notes.findOne FlowRouter.getParam('noteId'),
@@ -313,6 +300,14 @@ Template.App_body.helpers
     else
       "fiber_manual_record"
 
+  modeBackgroundLeft: ->
+    if Session.get('viewMode') == "calendar"
+      40
+    else if Session.get('viewMode') == "kanban"
+      80
+    else
+      0
+
 Template.App_body.events
   'keyup .search': (event, instance) ->
     # Throttle so we don't search for single letters
@@ -347,13 +342,13 @@ Template.App_body.events
       event.preventDefault()
       $(event.currentTarget.blur())
 
-  'click .calendarMode': ->
+  'click #calendarMode': ->
     Session.set('viewMode','calendar')
 
-  'click .noteMode': ->
+  'click #notesMode': ->
     Session.set('viewMode','note')
 
-  'click .kanbanMode': ->
+  'click #kanbanMode': ->
     Session.set('viewMode','kanban')
 
 

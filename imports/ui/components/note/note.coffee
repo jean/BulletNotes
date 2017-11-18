@@ -266,6 +266,30 @@ Template.note.events
       shareKey: FlowRouter.getParam 'shareKey'
     }
 
+  'click .upload': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    $('#noteItem_'+instance.data._id).find('.fileInput').first().trigger('click')
+
+  'change .fileInput': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+
+    console.log event
+    console.log instance
+    for file in event.currentTarget.files
+      name = file.name
+      Template.note.encodeImageFileAsURL (res) ->
+        upload.call {
+          noteId: instance.data._id
+          data: res
+          name: name
+        }, (err, res) ->
+          if err
+            alert err
+          $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
+      , file
+
   'click .title a': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
