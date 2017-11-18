@@ -44,24 +44,28 @@ FlowRouter.route '/calendar',
   name: 'Notes.calendar'
   action: ->
     NProgress.start()
+    Session.set('viewMode',"calendar")
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/calendar/:noteId',
   name: 'Notes.calendar'
   action: ->
     NProgress.start()
+    Session.set('viewMode',"calendar")
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/kanban',
   name: 'Notes.kanban'
   action: ->
     NProgress.start()
+    Session.set('viewMode',"kanban")
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/kanban/:noteId',
   name: 'Notes.kanban'
   action: ->
     NProgress.start()
+    Session.set('viewMode',"kanban")
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/import',

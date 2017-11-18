@@ -81,17 +81,17 @@ Template.note.onRendered ->
           bodyHtml
         )
 
-    # $('.fileItem').draggable
-    #   revert: true
-    #
-    # $('.note-item').droppable
-    #   drop: (event, ui ) ->
-    #     event.stopPropagation()
-    #     if event.toElement.className.indexOf('fileItem') > -1
-    #       Meteor.call 'files.setNote',
-    #         fileId: event.toElement.dataset.id
-    #         noteId: event.target.dataset.id
-    #       , (err, res) ->
+    $('.fileItem').draggable
+      revert: true
+
+    $('.note-item').droppable
+      drop: (event, ui ) ->
+        event.stopPropagation()
+        if event.toElement.className.indexOf('fileItem') > -1
+          Meteor.call 'files.setNote',
+            fileId: event.toElement.dataset.id
+            noteId: event.target.dataset.id
+          , (err, res) ->
 
 Template.note.helpers
   currentShareKey: () ->
@@ -212,9 +212,9 @@ Template.note.helpers
     else
       return true
 
-  # hasContent: ->
-  #   Meteor.subscribe 'files.note', @_id
-  #   (@body || Files.find({ noteId: @_id }).count() > 0)
+  hasContent: ->
+    Meteor.subscribe 'files.note', @_id
+    (@body || Files.find({ noteId: @_id }).count() > 0)
 
   canIndent: ->
     if $('#noteItem_'+@_id).prev('.note-item').length
@@ -222,7 +222,7 @@ Template.note.helpers
 
   canUnindent: ->
     $('#noteItem_'+@_id).parentsUntil('.note-item').closest('.note-item').length
-  
+
 Template.note.events
   'click .encryptLink, click .decryptLink, click .encryptedIcon': (event, instance) ->
     event.preventDefault()
@@ -643,7 +643,7 @@ Template.note.events
 
               view = Blaze.getView(next[0])
               upperSibling = view.templateInstance()
-              
+
               Meteor.call 'notes.makeChild', {
                 noteId: instance.data._id
                 parent: instance.data.parent
@@ -822,7 +822,7 @@ Template.note.events
         $('.zoomingTitle').remove()
         FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
       )
-      
+
   'click .menuToggle': (event, instance) ->
     event.stopImmediatePropagation()
     if instance.state.get('showMenu') == true
@@ -857,6 +857,8 @@ Template.note.events
             data: res
             name: name
           }, (err, res) ->
+            if err
+              alert err
             $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
         , file
 

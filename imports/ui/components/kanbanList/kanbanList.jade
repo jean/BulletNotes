@@ -1,12 +1,9 @@
 template(name='kanbanList')
-  .list
+  .kanbanList(class=className)
     header {{title}}
+    if photo
+      img(src=photo,width="100%")
     ul.kanbanChildNotes(data-id="{{_id}}")
       +each childNotes
         +note
-        //- li.kanbanItem(data-id="{{_id}}")
-        //-   .title {{title}}
-        //-   a.zoom(href='/note/{{_id}}')
-        //-     .glyphicon.glyphicon-fullscreen
-
     footer Add a card...

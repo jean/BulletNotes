@@ -1,20 +1,27 @@
 template(name='calendar')
-  .contentSection.content-scrollable
-    button#calendarHelp.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--colored.mdl-button--raised(class="{{muteClass}}",style="float:right")
-      i.material-icons help
-    .mdl-tooltip.mdl-tooltip--large(for='calendarHelp')
-      | Drag items from the area below the calendar to assign them dates.
-    #calendar.has-toolbar
-    #external-events
-      h2 
-        | Unscheduled Notes
-        button#calendarHelp2.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--colored.mdl-button--raised(class="{{muteClass}}")
-          i.material-icons help
-        .mdl-tooltip.mdl-tooltip--large(for='calendarHelp2')
-          | These notes are the notes underneath whatever note is currently zoomed.
-      +each unscheduledNotes
-        span.external-event.mdl-chip(data-id="{{_id}}")
-          a(href="/note/{{_id}}")
-            button(type="button",class="mdl-chip__action")
-              i.material-icons fiber_manual_record
-          span.mdl-chip__text {{ trimTitle title }}
+  .mdl-grid.contentSection.content-scrollable#calendarWrap
+    .mdl-cell.mdl-cell--12-col
+      button#toggleSidebar.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(class="{{sidebarClass}}")
+        i.material-icons {{sidebarIcon}}
+      .mdl-tooltip.mdl-tooltip--large(for='toggleSidebar')
+        | Toggle showing events on the side
+      button#togglePhotoMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(class="{{photoModeClass}}")
+        i.material-icons camera
+      .mdl-tooltip.mdl-tooltip--large(for='togglePhotoMode')
+        | Hide events to show photos better.
+    .mdl-cell(class="{{calendarCellClass}}")
+      #calendar.has-toolbar(class="{{calendarClass}}")
+    .mdl-cell(class="{{externalEventsCellClass}}")
+      #external-events
+        h2 
+          | Unscheduled Notes
+          button#calendarHelp2.mdl-button.mdl-button--icon.mdl-button--raised(class="{{muteClass}}")
+            i.material-icons help
+          .mdl-tooltip.mdl-tooltip--large(for='calendarHelp2')
+            | These notes are the notes underneath whatever note is currently zoomed.
+        +each unscheduledNotes
+          span.external-event.mdl-chip(data-id="{{_id}}")
+            a(href="/note/{{_id}}")
+              button(type="button",class="mdl-chip__action")
+                i.material-icons fiber_manual_record
+            span.mdl-chip__text {{ trimTitle title }}

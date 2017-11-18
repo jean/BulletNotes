@@ -151,7 +151,7 @@ Notes.schema = new SimpleSchema
   rank:
     type: Number
     optional: yes
-  due:
+  date:
     type: Date
     optional: yes
     index: 1
@@ -230,7 +230,7 @@ Notes.publicFields =
   updateCount: 1
   level: 1
   rank: 1
-  due: 1
+  date: 1
   showChildren: 1
   favorite: 1
   body: 1

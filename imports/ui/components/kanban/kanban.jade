@@ -1,7 +1,7 @@
 template(name='kanban')
   .ui
-    nav.navbar.app App bar
-    nav.navbar.board Board bar
-    .lists
+    .kanbanLists
       +each childNotes
         +kanbanList
+      .kanbanList.newKanbanList
+        header Add new column

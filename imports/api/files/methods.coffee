@@ -59,7 +59,7 @@ export upload = new ValidatedMethod
   .validator
     clean: yes
   run: ({noteId, data, name}) ->
-    if !@userId
+    if !@userId || !Meteor.user().isAdmin
       throw new (Meteor.Error)('not-authorized')
     Files.insert {
       noteId: noteId

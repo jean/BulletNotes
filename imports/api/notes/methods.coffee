@@ -86,7 +86,7 @@ export insert = new ValidatedMethod
       {$inc:{"profile.notes_created":1}}
 
     if Meteor.isClient
-      Template.App_body.keenClient.recordEvent 'newNote', owner: @userId
+      Template.App_body.recordEvent 'newNote', owner: @userId
 
     note
 
@@ -167,7 +167,7 @@ export setDueDate = new ValidatedMethod
   name: 'notes.setDueDate'
   validate: new SimpleSchema
     noteId: Notes.simpleSchema().schema('_id')
-    due: 
+    date:
       type: String
     createTransaction:
       type: Boolean
@@ -175,18 +175,18 @@ export setDueDate = new ValidatedMethod
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, due, createTransaction = true }) ->
+  run: ({ noteId, date, createTransaction = true }) ->
     note = Notes.findOne(noteId)
     if note.owner != @userId
       return
 
-    console.log "Got due date: ", due
-    
-    title = note.title.replace(/#due-([0-9]+(-?))+/gim,'')
+    console.log "Got date date: ", date
+
+    title = note.title.replace(/#(date|due)-([0-9]+(-?))+/gim,'')
     title = title.trim()
-    title = title+' #due-'+due
+    title = title+' #date-'+date
     Notes.update noteId, $set:
-      due: due
+      date: date
       title: title
       updatedAt: new Date
 
@@ -246,20 +246,20 @@ export updateTitle = new ValidatedMethod
     tx.start 'Update Note Title'
     title = Notes.filterTitle title
     if title
-      match = title.match(/#due-([0-9]+(-?))+/gim)
+      match = title.match(/#date-([0-9]+(-?))+/gim)
     else
       title = ''
 
     if match
       date = match[0]
       Notes.update noteId, {$set: {
-        due: moment(date).format()
+        date: moment(date).format()
       }}, tx: true
     else
       Notes.update noteId, {$unset: {
-        due: 1
+        date: 1
       }}, tx: true
-    
+
     complete = false
     if title.match Notes.donePattern
       complete = true
@@ -322,7 +322,7 @@ export makeChild = new ValidatedMethod
     if parent
       parent = Notes.findOne(parent)
 
-    if rank == null  
+    if rank == null
       if upperSibling
         upperSibling = Notes.findOne(upperSibling)
         rank = upperSibling.rank + 1

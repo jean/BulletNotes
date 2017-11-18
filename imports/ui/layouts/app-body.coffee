@@ -82,7 +82,7 @@ Meteor.startup ->
       # ` Back Tick - toggle menu
       when 192
         if Template.App_body.shouldNav()
-          if Meteor.user().menuPin
+          if Meteor.user() && Meteor.user().menuPin
             Meteor.call('users.setMenuPin', {menuPin:false})
             Template.App_body.playSound 'menuClose'
             Template.App_body.showSnackbar
@@ -225,7 +225,7 @@ Template.App_body.helpers
     true
 
   focusedNote: ->
-    Notes.findOne FlowRouter.getParam 'noteId',
+    note = Notes.findOne FlowRouter.getParam 'noteId',
       fields:
         _id: yes
         body: yes
@@ -233,13 +233,26 @@ Template.App_body.helpers
         favorite: yes
         children: yes
 
+    console.log note
+
+    if note.title.indexOf('#kanban') > -1
+      Session.set('viewMode',"kanban")
+
+    else if note.title.indexOf('#calendar') > -1
+      Session.set('viewMode',"calendar")
+
+    else
+      Session.set('viewMode',"notes")
+
+    note
+
   focusedNoteTitle: ->
     note = Notes.findOne FlowRouter.getParam('noteId'),
       fields:
         _id: yes
         title: yes
-    Template.notes.formatText note.title
 
+    Template.notes.formatText note.title
 
   focusedNoteFiles: () ->
     Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
@@ -372,3 +385,11 @@ UI.registerHelper 'getCount', (name) ->
 UI.registerHelper 'getSetting', (name) ->
   if name
     return Meteor.settings.public[name]
+
+UI.registerHelper 'getTimeFromNow', (time) ->
+  if time
+    moment(time).fromNow()
+
+Template.App_body.recordEvent = (event, data) ->
+  if Template.App_body.keenClient
+    Template.App_body.keenClient.recordEvent event, data

@@ -31,3 +31,25 @@ Template.kanban.helpers
     Notes.find {
       parent: FlowRouter.getParam('noteId')
     }, sort: rank: 1
+
+Template.kanban.events
+  'click .newKanbanList header': (event, instance) ->
+    Template.App_body.playSound 'newNote'
+    note = Notes.findOne FlowRouter.getParam('noteId')
+    if note
+      children = Notes.find { parent: note._id }
+      parent = note._id
+    else
+      children = Notes.find { parent: null }
+      parent = null
+    if children
+      # Overkill, but, meh. It'll get sorted. Literally.
+      rank = (children.count() * 40)
+    else
+      rank = 1
+    Meteor.call 'notes.insert', {
+      title: ''
+      rank: rank
+      parent: parent
+      shareKey: FlowRouter.getParam('shareKey')
+    }

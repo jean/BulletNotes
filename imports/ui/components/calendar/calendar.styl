@@ -2,8 +2,31 @@
   .mdl-chip
     cursor: move
 
+#calendarWrap
+  button
+    float: right
+    margin: 0 1em
+
 #calendar
   color: black
 
 .fc-title
   color: white
+
+.fc-day
+  background-size: cover
+
+.fc-day-number
+  text-shadow: 2px 2px white
+
+.fc-event
+  opacity: 1
+  transition: opacity .5s ease-in-out
+
+#calendar.photoMode
+  .fc-event
+    opacity: 0
+
+.fc-scroller {
+   overflow-y: hidden !important;
+}

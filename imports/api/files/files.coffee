@@ -18,6 +18,7 @@ Files.schema = new SimpleSchema
   noteId:
     type: String
     regEx: SimpleSchema.RegEx.Id
+    index: 1
   data:
     type: String
   name:
@@ -27,6 +28,7 @@ Files.schema = new SimpleSchema
   owner:
     type: String
     regEx: SimpleSchema.RegEx.Id
+    index: 1
 
 Files.attachSchema Files.schema
 

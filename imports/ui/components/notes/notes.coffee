@@ -74,7 +74,7 @@ Template.notes.onCreated ->
 
 Template.notes.onRendered ->
   $('.title-wrapper').show()
-  Template.App_body.keenClient.recordEvent 'notesRendered', owner: @userId
+  Template.App_body.recordEvent 'notesRendered', owner: @userId
 
 Template.notes.helpers
   notes: ->
@@ -89,12 +89,12 @@ Template.notes.helpers
       if (Template.instance().state.get('showComplete') || Session.get('alwaysShowComplete'))
         Notes.find { parent: parentId }, sort: { complete: 1, rank: 1 }
       else
-         Notes.find { parent: parentId, complete: false }, sort: { rank: 1 } 
+         Notes.find { parent: parentId, complete: false }, sort: { rank: 1 }
     else
       if (Template.instance().state.get('showComplete') || Session.get('alwaysShowComplete'))
         Notes.find { parent: null }, sort: { complete: 1, rank: 1 }
       else
-         Notes.find { parent: null, complete: false }, sort: { rank: 1 } 
+         Notes.find { parent: null, complete: false }, sort: { rank: 1 }
 
   notesReady: ->
     Template.instance().subscriptionsReady()
