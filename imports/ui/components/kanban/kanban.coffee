@@ -13,13 +13,13 @@ Template.kanban.onRendered ->
   NProgress.done()
   $('.kanbanChildNotes').sortable
     connectWith: '.kanbanChildNotes'
+    handle: '.dot'
     update: (event, ui) ->
-      parent = $(event.toElement).closest('ol').closest('li').data('id')
-      if !parent
-        parent = FlowRouter.getParam 'noteId'
-      upperSibling = $(event.toElement).closest('li').prev('li').data('id')
+      console.log event, ui
+      parent = $(event.target).closest('.kanbanList').data('id')
+      upperSibling = $(ui.item[0]).prev('li').data('id')
       makeChild.call
-        noteId: $(event.toElement).closest('li').data('id')
+        noteId: $(ui.item[0]).data('id')
         shareKey: FlowRouter.getParam('shareKey')
         upperSibling: upperSibling
         parent: parent

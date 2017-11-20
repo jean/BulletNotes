@@ -23,11 +23,13 @@ Template.breadcrumbs.helpers
 
   focusedTitle: ->
     note = Notes.findOne FlowRouter.getParam 'noteId'
-    emojione.shortnameToUnicode note.title
+    if note
+      emojione.shortnameToUnicode note.title
 
   focusedId: ->
     note = Notes.findOne FlowRouter.getParam 'noteId'
-    note._id
+    if note
+      note._id
 
   title: ->
     emojione.shortnameToUnicode @title
@@ -62,4 +64,3 @@ Template.breadcrumbs.events
       $('.zoomingTitle').remove()
       FlowRouter.go event.currentTarget.pathname
     )
-

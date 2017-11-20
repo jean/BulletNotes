@@ -142,9 +142,6 @@ Template.notes.events
 
     Session.set('alwaysShowComplete',!Session.get('alwaysShowComplete'))
 
-  'click .js-cancel': (event, instance) ->
-    instance.state.set 'editing', false
-
   'keydown input[type=text]': (event) ->
     # ESC
     if event.which == 27
