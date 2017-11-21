@@ -1,16 +1,13 @@
 template(name='kanbanList')
   .kanbanList(class=className, data-id="{{_id}}")
     header
-      +noteTitle
       +noteMenu
+      +noteTitle
       +noteBody
     if photo
       img(src=photo,width="100%")
     
     ul.kanbanChildNotes
       +each childNotes
-        li(data-id="{{_id}}")
-          .dot.mdl-button.mdl-button--icon.hasChildren(title="{{hoverInfo}}")
-            i.material-icons.zoom(id="drag_{{_id}}") fiber_manual_record
-          +noteTitle
+        +kanbanListItem
     footer Add a card...

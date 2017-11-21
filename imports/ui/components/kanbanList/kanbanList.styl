@@ -61,6 +61,14 @@ $card-border-radius = 3px
 .kanbanList
   width: $list-width
   height: calc(100% - 27px)
+
+  .dot
+    float: left
+
+
+  .menuToggle
+    float: right
+
   > *
     background-color: #e2e4e6
     color: #333
@@ -71,6 +79,8 @@ $card-border-radius = 3px
     font-weight: bold
     border-top-left-radius: $list-border-radius
     border-top-right-radius: $list-border-radius
+    .noteTitle
+      margin-right: 2.5em
   footer
     line-height: $list-footer-height
     border-bottom-left-radius: $list-border-radius
@@ -80,6 +90,15 @@ $card-border-radius = 3px
   li
     list-style: none
     margin: 0
+
+    .noteTitle
+      margin-left: 3em
+      padding-top: .5em
+      padding-bottom: .5em
+
+  .body
+    margin: 0
+
   ul
     padding-top: 1em
     list-style: none

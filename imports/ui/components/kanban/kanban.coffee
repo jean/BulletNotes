@@ -1,5 +1,6 @@
 { Template } = require 'meteor/templating'
 { Notes } = require '/imports/api/notes/notes.coffee'
+
 require './kanban.jade'
 require '/imports/ui/components/kanbanList/kanbanList.coffee'
 

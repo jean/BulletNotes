@@ -12,7 +12,7 @@ Template.noteTitle.onRendered ->
   Tracker.autorun ->
     if noteElement.data.title
       $(noteElement.firstNode).find('.title').first().html(
-        noteElement.data.title
+        Template.bulletNotes.formatText noteElement.data.title
       )
 
 Template.noteTitle.helpers
