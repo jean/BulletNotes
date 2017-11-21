@@ -12,7 +12,7 @@ Template.noteTitle.onRendered ->
   Tracker.autorun ->
     if noteElement.data.title
       $(noteElement.firstNode).find('.title').first().html(
-        Template.notes.formatText noteElement.data.title
+        noteElement.data.title
       )
 
 Template.noteTitle.helpers
@@ -33,7 +33,10 @@ Template.noteTitle.events
     console.log instance
     if instance.state
       instance.view.parentView.templateInstance().state.set 'focused', true
-      Session.set 'focused', true
+
+  'focus .title': (event, instance) ->
+    Session.set 'focused', true
+    Template.bulletNoteItem.addAutoComplete event.currentTarget
 
   'blur .title': (event, instance) ->
     # If we blurred because we hit tab and are causing an indent
@@ -43,12 +46,12 @@ Template.noteTitle.events
       Session.set 'indenting', false
       return
 
-    title = Template.note.stripTags(event.target.innerHTML)
+    title = Template.bulletNoteItem.stripTags(event.target.innerHTML)
 
-    if !@title || title != Template.note.stripTags emojione.shortnameToUnicode @title
+    if !@title || title != Template.bulletNoteItem.stripTags emojione.shortnameToUnicode @title
       instance.state.set 'dirty', true
       setTimeout ->
-        $(event.target).html Template.notes.formatText title
+        $(event.target).html Template.bulletNotes.formatText title
       , 20
 
       Meteor.call 'notes.updateTitle', {

@@ -3,8 +3,10 @@ template(name='kanbanList')
     header
       +noteTitle
       +noteMenu
+      +noteBody
     if photo
       img(src=photo,width="100%")
+    
     ul.kanbanChildNotes
       +each childNotes
         li(data-id="{{_id}}")

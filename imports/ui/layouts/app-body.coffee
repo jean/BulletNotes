@@ -156,7 +156,7 @@ Template.App_body.onRendered ->
       # Up or down
       if event.keyCode == 40 || event.keyCode == 38
         event.preventDefault()
-        Template.note.focus $('.title').first()[0]
+        Template.bulletNoteItem.focus $('.title').first()[0]
 
       # Cmd + Z Undo
       if event.keyCode == 90 && (event.metaKey || event.ctrlKey)
@@ -239,7 +239,7 @@ Template.App_body.helpers
         _id: yes
         title: yes
 
-    Template.notes.formatText note.title
+    Template.bulletNotes.formatText note.title
 
   focusedNoteFiles: () ->
     Meteor.subscribe 'files.note', FlowRouter.getParam 'noteId'
@@ -328,14 +328,14 @@ Template.App_body.events
 
   'blur .title-wrapper': (event, instance) ->
     event.stopPropagation()
-    title = Template.note.stripTags(event.target.innerHTML)
+    title = Template.bulletNoteItem.stripTags(event.target.innerHTML)
     if title != @title
       Meteor.call 'notes.updateTitle', {
         noteId: FlowRouter.getParam('noteId')
         title: title
         # FlowRouter.getParam 'shareKey',
       }, (err, res) ->
-        $(event.target).html Template.notes.formatText title
+        $(event.target).html Template.bulletNotes.formatText title
 
   'keydown .title-wrapper': (event, instance) ->
     if event.keyCode == 13

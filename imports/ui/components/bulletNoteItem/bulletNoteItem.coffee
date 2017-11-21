@@ -3,13 +3,15 @@
 { Files } = require '/imports/api/files/files.coffee'
 { ReactiveDict } = require 'meteor/reactive-dict'
 
-require './note.jade'
+require './bulletNoteItem.jade'
+
 require '/imports/ui/components/file/file.coffee'
 require '/imports/ui/components/share/share.coffee'
 require '/imports/ui/components/encrypt/encrypt.coffee'
 require '/imports/ui/components/moveTo/moveTo.coffee'
 require '/imports/ui/components/noteMenu/noteMenu.coffee'
 require '/imports/ui/components/noteTitle/noteTitle.coffee'
+require '/imports/ui/components/noteBody/noteBody.coffee'
 
 import {
   favorite,
@@ -20,10 +22,10 @@ import {
   upload
 } from '/imports/api/files/methods.coffee'
 
-Template.note.previewXOffset = 20
-Template.note.previewYOffset = 20
+Template.bulletNoteItem.previewXOffset = 20
+Template.bulletNoteItem.previewYOffset = 20
 
-Template.note.encodeImageFileAsURL = (cb,file) ->
+Template.bulletNoteItem.encodeImageFileAsURL = (cb,file) ->
   reader = new FileReader
 
   reader.onloadend = ->
@@ -31,7 +33,7 @@ Template.note.encodeImageFileAsURL = (cb,file) ->
 
   reader.readAsDataURL file
 
-Template.note.isValidImageUrl = (url, callback) ->
+Template.bulletNoteItem.isValidImageUrl = (url, callback) ->
   $ '<img>',
     src: url
     error: ->
@@ -39,7 +41,7 @@ Template.note.isValidImageUrl = (url, callback) ->
     load: ->
       callback url, true
 
-Template.note.onCreated ->
+Template.bulletNoteItem.onCreated ->
   if @data.showChildren && @data.children && !FlowRouter.getParam 'searchParam'
     Meteor.call 'notes.setChildrenLastShown', {
       noteId: @data._id
@@ -57,22 +59,16 @@ Template.note.onCreated ->
     changed: (id, fields) ->
       if fields.title != null
         $('#noteItem_'+id).find('.title').first().html(
-          Template.notes.formatText fields.title
+          Template.bulletNotes.formatText fields.title
         )
   )
 
-Template.note.onRendered ->
+Template.bulletNoteItem.onRendered ->
   noteElement = this
 
   Session.set('expand_'+this.data._id, this.data.showChildren)
 
   Tracker.autorun ->
-    if noteElement.data.body
-      bodyHtml = Template.notes.formatText noteElement.data.body
-      $(noteElement.firstNode).find('.body').first().show().html(
-        bodyHtml
-      )
-
     $('.fileItem').draggable
       revert: true
 
@@ -85,7 +81,7 @@ Template.note.onRendered ->
             noteId: event.target.dataset.id
           , (err, res) ->
 
-Template.note.helpers
+Template.bulletNoteItem.helpers
   currentShareKey: () ->
     FlowRouter.getParam('shareKey')
 
@@ -177,7 +173,7 @@ Template.note.helpers
     @progress
 
   progressClass: ->
-    Template.notes.getProgressClass this
+    Template.bulletNotes.getProgressClass this
 
   showEncrypt: ->
     Template.instance().state.get 'showEncrypt'
@@ -209,7 +205,7 @@ Template.note.helpers
   canUnindent: ->
     $('#noteItem_'+@_id).parentsUntil('.note-item').closest('.note-item').length
 
-Template.note.events
+Template.bulletNoteItem.events
   'click .encryptLink, click .decryptLink, click .encryptedIcon': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -265,7 +261,7 @@ Template.note.events
     console.log instance
     for file in event.currentTarget.files
       name = file.name
-      Template.note.encodeImageFileAsURL (res) ->
+      Template.bulletNoteItem.encodeImageFileAsURL (res) ->
         upload.call {
           noteId: instance.data._id
           data: res
@@ -324,7 +320,7 @@ Template.note.events
     event.preventDefault()
     event.stopImmediatePropagation()
 
-    Template.note.showMoveTo instance
+    Template.bulletNoteItem.showMoveTo instance
 
   'click .duplicate': (event) ->
     event.preventDefault()
@@ -360,15 +356,15 @@ Template.note.events
       # Only show the note in the preview box if it is not the current note being hovered.
       if note._id != $(event.target).closest('.note-item').data('id')
         $('#tagSearchPreview').append('<li><a class="previewTagLink">'+
-        Template.notes.formatText(note.title,false)+'</a></li>')
-          .css('top', event.pageY - Template.note.previewYOffset + 'px')
-          .css('left', event.pageX + Template.note.previewXOffset + 'px')
+        Template.bulletNotes.formatText(note.title,false)+'</a></li>')
+          .css('top', event.pageY - Template.bulletNoteItem.previewYOffset + 'px')
+          .css('left', event.pageX + Template.bulletNoteItem.previewXOffset + 'px')
           .show()
     $('#tagSearchPreview').append('<li><a class="previewTagViewAll">Click to view all</a></li>')
 
   'mousemove .tagLink, mousemove .atLink': (event) ->
-    $('#tagSearchPreview').css('top', event.pageY - Template.note.previewYOffset + 'px')
-      .css 'left', event.pageX + Template.note.previewXOffset + 'px'
+    $('#tagSearchPreview').css('top', event.pageY - Template.bulletNoteItem.previewYOffset + 'px')
+      .css 'left', event.pageX + Template.bulletNoteItem.previewXOffset + 'px'
 
   'mouseleave .tagLink, mouseleave .atLink': (event) ->
     $('#tagSearchPreview').hide()
@@ -378,7 +374,7 @@ Template.note.events
       return
     date = new Date
     url = event.currentTarget.href
-    Template.note.isValidImageUrl url, (url, valid) ->
+    Template.bulletNoteItem.isValidImageUrl url, (url, valid) ->
       if valid
         if url.indexOf("?") > -1
           imageUrl = url + "&" + date.getTime()
@@ -387,16 +383,16 @@ Template.note.events
         $('body').append '<p id=\'preview\'><a href=\'' +
           url + '\' target=\'_blank\'><img src=\'' + imageUrl +
           '\' alt=\'Image preview\' /></p>'
-        $('#preview').css('top', event.pageY - Template.note.previewYOffset + 'px')
-          .css('left', event.pageX + Template.note.previewXOffset + 'px')
+        $('#preview').css('top', event.pageY - Template.bulletNoteItem.previewYOffset + 'px')
+          .css('left', event.pageX + Template.bulletNoteItem.previewXOffset + 'px')
           .fadeIn 'fast'
         # This needs to be here
         $('#preview img').mouseleave ->
           $('#preview').remove()
 
   'mousemove .previewLink': (event) ->
-    $('#preview').css('top', event.pageY - Template.note.previewYOffset + 'px')
-      .css 'left', event.pageX + Template.note.previewXOffset + 'px'
+    $('#preview').css('top', event.pageY - Template.bulletNoteItem.previewYOffset + 'px')
+      .css 'left', event.pageX + Template.bulletNoteItem.previewXOffset + 'px'
 
   'mouseleave .previewLink': (event) ->
     $('#preview').remove()
@@ -458,17 +454,17 @@ Template.note.events
             , (err, res) ->
               $(event.target).siblings('.body').fadeIn().focus()
           else if event.ctrlKey
-            Template.note.toggleChildren instance
+            Template.bulletNoteItem.toggleChildren instance
           else
             Template.App_body.playSound 'newNote'
             # Create a new note below the current.
             Meteor.call 'notes.insert', {
-              title: bottomNote
+              title: ''
               rank: note.rank + 1
               parent: note.parent
               shareKey: FlowRouter.getParam('shareKey')
             }
-            Template.note.focus $(event.target).closest('.note-item').next()[0]
+            Template.bulletNoteItem.focus $(event.target).closest('.note-item').next()[0]
 
             return
 
@@ -487,7 +483,7 @@ Template.note.events
             #
             # topNote = text.substr(0, position)
             # bottomNote = text.substr(position)
-            # if topNote != Template.note.stripTags(note.title)
+            # if topNote != Template.bulletNoteItem.stripTags(note.title)
             #   Meteor.call 'notes.updateTitle', {
             #     noteId: note._id
             #     title: topNote
@@ -508,7 +504,7 @@ Template.note.events
             #         FlowRouter.go('/account')
             #       ,
             #       actionText: 'More Info'
-            # Template.note.focus $(event.target).closest('.note-item').next()[0]
+            # Template.bulletNoteItem.focus $(event.target).closest('.note-item').next()[0]
 
       # D - Duplicate
       when 68
@@ -521,7 +517,7 @@ Template.note.events
         event.preventDefault()
         Session.set 'indenting', true
         # First save the title in case it was changed.
-        title = Template.note.stripTags(event.target.innerHTML)
+        title = Template.bulletNoteItem.stripTags(event.target.innerHTML)
         if title != @title
           Meteor.call 'notes.updateTitle',
             noteId: @_id
@@ -537,7 +533,7 @@ Template.note.events
             noteId: noteId
             shareKey: FlowRouter.getParam 'shareKey'
           }
-          Template.note.focus $('#noteItem_'+noteId)[0]
+          Template.bulletNoteItem.focus $('#noteItem_'+noteId)[0]
 
         else
           childCount = Notes.find({parent: parent_id}).count()
@@ -547,7 +543,7 @@ Template.note.events
             rank: (childCount*2)+1
             shareKey: FlowRouter.getParam 'shareKey'
           }
-          Template.note.focus $('#noteItem_'+noteId)[0]
+          Template.bulletNoteItem.focus $('#noteItem_'+noteId)[0]
 
       # Backspace / delete
       when 8
@@ -562,7 +558,7 @@ Template.note.events
           Meteor.call 'notes.remove',
             noteId: @_id
             shareKey: FlowRouter.getParam 'shareKey'
-          Template.note.focus $(event.currentTarget).closest('.note-item').prev()[0]
+          Template.bulletNoteItem.focus $(event.currentTarget).closest('.note-item').prev()[0]
           return
 
         # If there is no selection
@@ -595,7 +591,7 @@ Template.note.events
       # . Period
       when 190
         if event.metaKey
-          Template.note.toggleChildren(instance)
+          Template.bulletNoteItem.toggleChildren(instance)
 
       # Up
       when 38
@@ -619,7 +615,7 @@ Template.note.events
                 item.css('z-index', '').css('top', '').css 'position', ''
                 item.insertBefore prev
                 setTimeout ->
-                  Template.note.focus item[0]
+                  Template.bulletNoteItem.focus item[0]
                 , 100
 
                 Meteor.call 'notes.makeChild', {
@@ -631,10 +627,10 @@ Template.note.events
               , 50
           else
             # Focus on the previous note
-            Template.note.focus $(event.currentTarget).closest('.note-item').prev()[0]
+            Template.bulletNoteItem.focus $(event.currentTarget).closest('.note-item').prev()[0]
         else
           # There is no previous note in the current sub list, go up a note.
-          Template.note.focus $(event.currentTarget).closest('ol').closest('.note-item')[0]
+          Template.bulletNoteItem.focus $(event.currentTarget).closest('ol').closest('.note-item')[0]
 
       # Down
       when 40
@@ -653,7 +649,7 @@ Template.note.events
               item.insertAfter next
 
               setTimeout ->
-                Template.note.focus item[0]
+                Template.bulletNoteItem.focus item[0]
               , 100
 
               view = Blaze.getView(next[0])
@@ -687,7 +683,7 @@ Template.note.events
                 searchNote = searchNote.parent().closest('.note-item')
                 count++
           if note.length
-            Template.note.focus note[0]
+            Template.bulletNoteItem.focus note[0]
           else
             $('#new-note').focus()
 
@@ -703,7 +699,7 @@ Template.note.events
       # M - Move To
       when 77
         if event.metaKey && event.shiftKey
-          Template.note.showMoveTo instance
+          Template.bulletNoteItem.showMoveTo instance
 
   'keydown .body': (event, instance) ->
     note = this
@@ -722,27 +718,6 @@ Template.note.events
     instance.state.set 'focused', false
     Session.set 'focused', false
 
-  'focus .title, focus .body': (event, instance) ->
-    Session.set 'focused', true
-    Template.note.addAutoComplete event.currentTarget
-
-  'blur .body': (event, instance) ->
-    event.stopPropagation()
-    that = this
-    Session.set 'focused', false
-    # console.log event.target
-    body = Template.note.stripTags event.target.innerHTML
-    if body != Template.note.stripTags(@body)
-      Meteor.call 'notes.updateBody', {
-        noteId: instance.data._id
-        body: body
-        shareKey: FlowRouter.getParam 'shareKey'
-      }, (err, res) ->
-        that.body = body
-        $(event.target).html Template.notes.formatText body
-    if !body
-      $(event.target).fadeOut()
-
   'click .expand': (event, instance) ->
     event.stopImmediatePropagation()
     event.preventDefault()
@@ -752,7 +727,7 @@ Template.note.events
     else
       Template.App_body.playSound 'expand'
 
-    Template.note.toggleChildren(instance)
+    Template.bulletNoteItem.toggleChildren(instance)
 
   'click .dot': (event, instance) ->
     event.preventDefault()
@@ -790,7 +765,7 @@ Template.note.events
     else
       for file in event.originalEvent.dataTransfer.files
         name = file.name
-        Template.note.encodeImageFileAsURL (res) ->
+        Template.bulletNoteItem.encodeImageFileAsURL (res) ->
           upload.call {
             noteId: instance.data._id
             data: res
@@ -801,7 +776,7 @@ Template.note.events
             $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
         , file
 
-Template.note.toggleChildren = (instance) ->
+Template.bulletNoteItem.toggleChildren = (instance) ->
   if Meteor.userId()
     if !instance.data.showChildren
         Meteor.call 'notes.setChildrenLastShown', {
@@ -827,7 +802,7 @@ Template.note.toggleChildren = (instance) ->
     $(instance.firstNode).find('ol').first().slideUp ->
       Session.set('expand_'+instance.data._id, false)
 
-Template.note.focus = (noteItem) ->
+Template.bulletNoteItem.focus = (noteItem) ->
   view = Blaze.getView(noteItem)
   instance = view.templateInstance()
   $(noteItem).find('.title').first().focus()
@@ -835,7 +810,7 @@ Template.note.focus = (noteItem) ->
     instance.state.set 'focused', true
     Session.set 'focused', true
 
-Template.note.stripTags = (inputText) ->
+Template.bulletNoteItem.stripTags = (inputText) ->
   if !inputText
     return
   inputText = inputText.replace(/<\/?span[^>]*>/g, '')
@@ -845,7 +820,7 @@ Template.note.stripTags = (inputText) ->
     inputText = inputText.trim()
   inputText
 
-Template.note.setCursorToEnd = (ele) ->
+Template.bulletNoteItem.setCursorToEnd = (ele) ->
   range = document.createRange()
   sel = window.getSelection()
   range.setStart ele, 1
@@ -854,7 +829,7 @@ Template.note.setCursorToEnd = (ele) ->
   sel.addRange range
   ele.focus()
 
-Template.note.showMoveTo = (instance) ->
+Template.bulletNoteItem.showMoveTo = (instance) ->
     instance.state.set 'showMoveTo', true
     setTimeout ->
       $('#toggleMoveTo_'+instance.data._id).click()
@@ -866,7 +841,7 @@ Template.note.showMoveTo = (instance) ->
       , 250
     , 50
 
-Template.note.addAutoComplete = (target) ->
+Template.bulletNoteItem.addAutoComplete = (target) ->
   $(target).textcomplete [ {
     match: /\B:([\-+\w]*)$/
     search: (term, callback) ->

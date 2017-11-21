@@ -8,7 +8,7 @@ import './notes-show-page.jade'
 
 # Components used inside the template
 import '/imports/ui/pages/404/app-not-found.coffee'
-import '/imports/ui/components/notes/notes.coffee'
+import '/imports/ui/components/bulletNotes/bulletNotes.coffee'
 import '/imports/ui/components/kanban/kanban.coffee'
 import '/imports/ui/components/calendar/calendar.coffee'
 
@@ -83,7 +83,7 @@ Template.Notes_show_page.helpers
     note = Notes.findOne FlowRouter.getParam 'noteId',
       fields:
         _id: yes
-    Template.notes.getProgressClass note
+    Template.bulletNotes.getProgressClass note
 
   searchTerm: ->
     FlowRouter.getParam 'searchTerm'

@@ -11,11 +11,11 @@ sanitizeHtml = require('sanitize-html')
 { Notes } = require '/imports/api/notes/notes.coffee'
 { Files } = require '/imports/api/files/files.coffee'
 
-require './notes.jade'
+require './bulletNotes.jade'
 
 import '/imports/ui/components/breadcrumbs/breadcrumbs.coffee'
 import '/imports/ui/components/footer/footer.coffee'
-import '/imports/ui/components/note/note.coffee'
+import '/imports/ui/components/bulletNoteItem/bulletNoteItem.coffee'
 
 import {
   updateTitle,
@@ -33,15 +33,15 @@ import {
 { displayError } = '../../lib/errors.js'
 
 # URLs starting with http://, https://, or ftp://
-Template.notes.urlPattern1 =
+Template.bulletNotes.urlPattern1 =
   /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
 
 # URLs starting with "www." (without // before it
 # or it'd re-link the ones done above).
-Template.notes.urlPattern2 =
+Template.bulletNotes.urlPattern2 =
   /(^|[^\/])(www\.[\S]+(\b|$))/gim
 
-Template.notes.onCreated ->
+Template.bulletNotes.onCreated ->
   if @data.showChildren && @data.children && !FlowRouter.getParam 'searchParam'
     Meteor.call 'notes.setChildrenLastShown', {
       noteId: @data._id
@@ -72,11 +72,11 @@ Template.notes.onCreated ->
       return yes
     return no
 
-Template.notes.onRendered ->
+Template.bulletNotes.onRendered ->
   $('.title-wrapper').show()
   Template.App_body.recordEvent 'notesRendered', owner: @userId
 
-Template.notes.helpers
+Template.bulletNotes.helpers
   notes: ->
     NProgress.done()
     parentId = null
@@ -129,7 +129,7 @@ Template.notes.helpers
     if @note()
       Notes.find({ parent: @note()._id, complete: true }).count()
 
-Template.notes.events
+Template.bulletNotes.events
   'click .toggleComplete': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -166,7 +166,7 @@ Template.notes.events
       console.log submitEvent
       file = submitEvent.currentTarget.files[0]
       name = file.name
-      Template.note.encodeImageFileAsURL (res) ->
+      Template.bulletNoteItem.encodeImageFileAsURL (res) ->
         upload.call {
           noteId: instance.data.note()._id
           data: res
@@ -214,7 +214,7 @@ Template.notes.events
 
   'blur .title-wrapper': (event, instance) ->
     event.stopPropagation()
-    title = Template.note.stripTags(event.target.innerHTML)
+    title = Template.bulletNoteItem.stripTags(event.target.innerHTML)
     console.log "Got title 191", title
     if title != @title
       Meteor.call 'notes.updateTitle', {
@@ -222,9 +222,9 @@ Template.notes.events
         title: title
         # FlowRouter.getParam 'shareKey',
       }, (err, res) ->
-        $(event.target).html Template.notes.formatText title
+        $(event.target).html Template.bulletNotes.formatText title
 
-Template.notes.formatText = (inputText, createLinks = true) ->
+Template.bulletNotes.formatText = (inputText, createLinks = true) ->
   if !inputText
     return
   if createLinks
@@ -238,9 +238,9 @@ Template.notes.formatText = (inputText, createLinks = true) ->
   replacePattern3 = undefined
 
   replacedText = inputText.replace(/&nbsp;/gim, ' ')
-  replacedText = replacedText.replace Template.notes.urlPattern1,
+  replacedText = replacedText.replace Template.bulletNotes.urlPattern1,
     '<'+element+' href="$1" target="_blank" class="previewLink">$1</'+element+'>'
-  replacedText = replacedText.replace Template.notes.urlPattern2,
+  replacedText = replacedText.replace Template.bulletNotes.urlPattern2,
     '<'+element+' href="http://$2" target="_blank" class="previewLink">$2</'+element+'>'
 
   # Change email addresses to mailto:: links.
@@ -265,7 +265,7 @@ Template.notes.formatText = (inputText, createLinks = true) ->
 
   return replacedText
 
-Template.notes.rendered = ->
+Template.bulletNotes.rendered = ->
   notes = this
   NProgress.done()
   $('.mdl-layout__tab-bar').animate({
@@ -315,7 +315,7 @@ Template.notes.rendered = ->
           rank: 0
           parent: parent
 
-Template.notes.getProgressClass = (note) ->
+Template.bulletNotes.getProgressClass = (note) ->
   if (note.progress < 25)
     return 'danger'
   else if (note.progress > 74)

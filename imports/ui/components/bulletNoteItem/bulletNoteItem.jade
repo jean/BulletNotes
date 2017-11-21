@@ -1,4 +1,4 @@
-template(name='note')
+template(name='bulletNoteItem')
   li.note-item(class='{{className}}',id="noteItem_{{_id}}",data-id="{{_id}}")
     .noteContainer
       .options.pull-left
@@ -22,11 +22,7 @@ template(name='note')
           .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
             span.sr-only {{progress}}% Complete (success)
       if showContent
-        p.body(contenteditable='true')
-          if body
-            | {{body}}
-          else
-            |  
+        +noteBody
       input.fileInput(type='file',style='display:none')
       if showContent
         if hasContent
@@ -55,7 +51,7 @@ template(name='note')
       if childNotes
         ol
           each childNotes
-            +note
+            +bulletNoteItem
         if completedCount
           .toggleComplete
             if showComplete

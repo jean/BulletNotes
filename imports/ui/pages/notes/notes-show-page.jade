@@ -26,7 +26,7 @@ template(name='Notes_show_page')
               span.sr-only {{progress}}% Complete (success)
         +each noteId in noteIdArray
           if showNotes
-            +notes (noteArgs noteId)
+            +bulletNotes (noteArgs noteId)
           if showKanban
             +kanban (noteArgs noteId)
           if showCalendar

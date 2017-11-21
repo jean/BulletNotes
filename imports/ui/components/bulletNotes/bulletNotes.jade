@@ -1,4 +1,4 @@
-template(name='notes')
+template(name='bulletNotes')
   ol#notes.content-scrollable.note-items.sortable
     if focusedNote.body
       li.body(contenteditable='true')
@@ -13,7 +13,7 @@ template(name='notes')
           
     if notesReady
       each notes
-        +note
+        +bulletNoteItem
       if completedCount
         .toggleComplete
           if showComplete
