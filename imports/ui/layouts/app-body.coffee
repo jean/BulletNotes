@@ -358,12 +358,15 @@ Template.App_body.events
 
   'click #calendarMode': ->
     Session.set('viewMode','calendar')
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
   'click #noteMode': ->
     Session.set('viewMode','note')
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
   'click #kanbanMode': ->
     Session.set('viewMode','kanban')
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
 
 Template.App_body.playSound = (sound) ->

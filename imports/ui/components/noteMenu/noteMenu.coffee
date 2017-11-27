@@ -1,6 +1,10 @@
 import './noteMenu.styl'
 import './noteMenu.jade'
 
+import {
+  favorite
+} from '/imports/api/notes/methods.coffee'
+
 Template.noteMenu.onCreated ->
   @state = new ReactiveDict()
   @state.setDefault
@@ -103,6 +107,7 @@ Template.noteMenu.events
     event.preventDefault()
     event.stopImmediatePropagation()
     Template.App_body.playSound 'favorite'
+
     favorite.call
       noteId: instance.data._id
 

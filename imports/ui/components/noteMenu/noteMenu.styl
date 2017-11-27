@@ -1,5 +1,30 @@
+.menuWrap
+  display: inline
+
 .noteMenu
-	.mdl-menu__item
-		height: 30px
-		line-height: 35px
-		margin: 5px 0
+  .mdl-menu__item
+    height: 30px
+    line-height: 35px
+    margin: 5px 0
+    
+// Large screens
+@media screen and (min-width: 40em)
+  .note
+    transition: all .2s ease-in-out;
+    .expand
+      opacity: 0
+      cursor: default
+
+  .note .menuToggle, .note.hasChildren > .noteContainer .expand
+    opacity: 0
+    cursor: default
+
+  .note.hasChildren > .noteContainer:hover
+    > .options .expand
+      opacity: 1
+      cursor: pointer
+
+  .note .noteContainer:hover
+    > .options .menuToggle
+      opacity: 1
+      cursor: pointer

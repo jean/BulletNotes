@@ -154,9 +154,6 @@ Template.bulletNotes.events
     event.preventDefault()
     instance.state.set 'editing', false
 
-  'click .favorite': (event, instance) ->
-    instance.favoriteNote()
-
   'click .uploadHeaderBtn': (event, instance) ->
     input = $(document.createElement('input'))
     input.attr("type", "file")

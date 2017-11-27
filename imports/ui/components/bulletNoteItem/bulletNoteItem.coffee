@@ -15,7 +15,6 @@ require '/imports/ui/components/noteBody/noteBody.coffee'
 # require '/imports/ui/components/noteDetailCard/noteDetailCard.coffee'
 
 import {
-  favorite,
   setShowContent
 } from '/imports/api/notes/methods.coffee'
 
@@ -223,39 +222,6 @@ Template.bulletNoteItem.events
       , 250
     , 50
 
-  'click .share': (event, instance) ->
-    event.preventDefault()
-    event.stopImmediatePropagation()
-
-    instance.state.set 'showShare', true
-
-    that = this
-    setTimeout ->
-      $('#toggleShare_'+that._id).click()
-      setTimeout ->
-        $('.modal.in').parent().append($('.modal-backdrop'))
-      , 250
-    , 50
-
-  'click .indent': (event, instance) ->
-    Meteor.call 'notes.makeChild', {
-      noteId: instance.data._id
-      parent: $('#noteItem_'+instance.data._id).prev().data('id')
-      shareKey: FlowRouter.getParam 'shareKey'
-    }
-
-  'click .unindent': (event, instance) ->
-    Meteor.call 'notes.makeChild', {
-      noteId: instance.data._id
-      parent: $('#noteItem_'+instance.data._id).parentsUntil('.note-item').closest('.note-item').parentsUntil('.note-item').closest('.note-item').data('id')
-      shareKey: FlowRouter.getParam 'shareKey'
-    }
-
-  'click .upload': (event, instance) ->
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    $('#noteItem_'+instance.data._id).find('.fileInput').first().trigger('click')
-
   'change .fileInput': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -297,13 +263,6 @@ Template.bulletNoteItem.events
 
     Session.set('alwaysShowComplete',!Session.get('alwaysShowComplete'))
 
-  'click .favorite, click .unfavorite': (event, instance) ->
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    Template.App_body.playSound 'favorite'
-    favorite.call
-      noteId: instance.data._id
-
   'click .showContent': (event, instance) ->
     event.stopImmediatePropagation()
     setShowContent.call
@@ -318,37 +277,6 @@ Template.bulletNoteItem.events
     setShowContent.call
       noteId: instance.data._id
       showContent: false
-
-  'click .moveTo': (event, instance) ->
-    event.preventDefault()
-    event.stopImmediatePropagation()
-
-    Template.bulletNoteItem.showMoveTo instance
-
-  'click .duplicate': (event) ->
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    Meteor.call 'notes.duplicate', @_id
-
-  'click .addBody': (event, instance) ->
-    setShowContent.call
-      noteId: instance.data._id
-      showContent: true
-    , (err, res) ->
-      setTimeout (->
-        $(event.target).closest('.noteContainer').find('.body').fadeIn().focus()
-      ), 20
-
-  'click a.delete': (event) ->
-    event.preventDefault()
-    Template.App_body.playSound 'delete'
-    $(event.currentTarget).closest('.note').remove()
-    Meteor.call 'notes.remove',
-      noteId: @_id
-      shareKey: FlowRouter.getParam 'shareKey'
-    , (err, res) ->
-      if err
-        window.location = window.location
 
   'mouseover .tagLink, mouseover .atLink': (event) ->
     if Session.get 'dragging'
