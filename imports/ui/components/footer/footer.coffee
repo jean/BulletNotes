@@ -9,7 +9,10 @@ Template.footer.onCreated ->
 
 Template.footer.events
 	'click .introTour': (event, instance) ->
-		introjs.introJs().start()
+		$(".mdl-layout__content").animate({ scrollTop: 0 }, 200, 'swing', ->
+			introjs.introJs().start()	
+		)
+		
 
 Template.footer.helpers
 	year: ->

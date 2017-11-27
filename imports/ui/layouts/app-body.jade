@@ -4,7 +4,7 @@ template(name='App_body')
       +momentum(plugin="fade")
         .mdl-layout.mdl-js-layout
           .mdl-layout.mdl-js-layout.mdl-layout--fixed-header(class="{{menuPin}}")
-            header.mdl-layout__header.mdl-layout__header--waterfall
+            header.mdl-layout__header.mdl-layout__header--waterfall(data-intro="{{_ 'tours.intro.begin'}}", data-step='1')
               .mdl-layout__header-row
                 // Title
                 span.mdl-layout-title
@@ -13,14 +13,14 @@ template(name='App_body')
                     i.material-icons fiber_manual_record
                   .mdl-tooltip.mdl-tooltip--large(for='notesMode')
                     | {{_ 'layouts.appBody.noteMode'}}
-                  button#calendarMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.calendarMode' }}", data-step='3')
-                    i.material-icons date_range
-                  .mdl-tooltip.mdl-tooltip--large(for='calendarMode')
-                    | {{_ 'layouts.appBody.calendarMode'}}
-                  button#kanbanMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.kanbanMode' }}", data-step='4')
+                  button#kanbanMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.kanbanMode' }}", data-step='3')
                     i.material-icons view_column
                   .mdl-tooltip.mdl-tooltip--large(for='kanbanMode')
                     | {{_ 'layouts.appBody.kanbanMode'}}
+                  button#calendarMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.calendarMode' }}", data-step='4')
+                    i.material-icons date_range
+                  .mdl-tooltip.mdl-tooltip--large(for='calendarMode')
+                    | {{_ 'layouts.appBody.calendarMode'}}
                   .js-edit-note.title-page(data-intro="{{_ 'tours.intro.viewModes' }}", data-step='5')
                     if focusedNote
                       .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}

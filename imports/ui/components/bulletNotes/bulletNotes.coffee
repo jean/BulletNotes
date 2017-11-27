@@ -197,7 +197,10 @@ Template.bulletNotes.events
       rank: rank
       parent: parent
       shareKey: FlowRouter.getParam('shareKey')
-    }
+    }, (err, res) ->
+      if err
+         Template.App_body.showSnackbar
+           message: err.message
 
   'change .note-edit': (event, instance) ->
     target = event.target

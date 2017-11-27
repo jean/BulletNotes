@@ -33,6 +33,14 @@ export insert = new ValidatedMethod
     #   throw new Meteor.Error 'notes.insert.accessDenied',
     # 'Cannot add notes to a private note that is not yours'
 
+    if !Meteor.user()
+      throw new Meteor.Error 'not-authorized',
+        'Please login'
+
+    if parentId && !Notes.isEditable parentId, shareKey
+      throw new Meteor.Error 'not-authorized',
+        'Cannot edit this note'
+
     noteCount = Notes.find
       owner: @userId
       deleted: {$exists: false}
@@ -53,9 +61,6 @@ export insert = new ValidatedMethod
       level = parent.level+1
 
     owner = @userId
-
-    if parentId && !Notes.isEditable parentId, shareKey
-      throw new (Meteor.Error)('not-authorized')
 
     sharedParent = Notes.getSharedParent parentId, shareKey
     if sharedParent

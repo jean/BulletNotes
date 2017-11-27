@@ -316,9 +316,9 @@ Template.App_body.helpers
 
   modeBackgroundLeft: ->
     if Session.get('viewMode') == "calendar"
-      40
-    else if Session.get('viewMode') == "kanban"
       80
+    else if Session.get('viewMode') == "kanban"
+      40
     else
       0
 
