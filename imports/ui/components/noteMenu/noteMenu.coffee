@@ -11,25 +11,17 @@ Template.noteMenu.helpers
     Template.instance().state.get 'showMenu'
 
 Template.noteMenu.events
-  'mouseover .menuToggle': (event, instance) ->
+  'click .menuToggle': (event, instance) ->
     event.stopImmediatePropagation()
-    instance.state.set 'showMenu', true
-    # Give the menu time to render
-    instance.menuTimer = setTimeout ->
-      document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
-    , 20
-
-  'mouseover .noteMenu, mouseover .menuToggle': (event, instance) ->
-    console.log "Mouse over notemenu", instance
-    clearTimeout instance.hideMenuTimer
-
-  # 'mouseleave .noteMenu, mouseleave .menuToggle': (event, instance) ->
-  #   event.stopImmediatePropagation()
-  #   instance.hideMenuTimer = setTimeout ->
-  #     if instance.state.get('showMenu') == true
-  #       document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
-  #       instance.state.set 'showMenu', false
-  #   , 500
+    if instance.state.get('showMenu') == true
+      document.querySelector('#menu_'+instance.data._id).MaterialMenu.hide()
+      instance.state.set 'showMenu', false
+    else
+      instance.state.set 'showMenu', true
+      # Give the menu time to render
+      instance.menuTimer = setTimeout ->
+        document.querySelector('#menu_'+instance.data._id).MaterialMenu.show()
+      , 20
 
   'click .zoom': (event, instance) ->
     event.preventDefault()

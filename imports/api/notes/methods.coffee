@@ -243,7 +243,8 @@ export updateTitle = new ValidatedMethod
     if !Notes.isEditable noteId, shareKey
       throw new (Meteor.Error)('not-authorized')
 
-    tx.start 'Update Note Title'
+    tx.start 'Update Note Title', { context:{ noteId: noteId } }
+    
     title = Notes.filterTitle title
     if title
       match = title.match(/#date-([0-9]+(-?))+/gim)
@@ -254,11 +255,15 @@ export updateTitle = new ValidatedMethod
       date = match[0]
       Notes.update noteId, {$set: {
         date: moment(date).format()
-      }}, tx: true
+      },$inc: {
+        updateCount: 1
+      }}
     else
       Notes.update noteId, {$unset: {
         date: 1
-      }}, tx: true
+      },$inc: {
+        updateCount: 1
+      }}
 
     complete = false
     if title.match Notes.donePattern
@@ -269,8 +274,6 @@ export updateTitle = new ValidatedMethod
       updatedAt: new Date
       updatedBy: @userId
       complete: complete
-    },$inc: {
-      updateCount: 1
     }}, tx: true
 
     pattern = /#pct-([0-9]+)/gim
@@ -295,10 +298,10 @@ export updateTitle = new ValidatedMethod
         progress: Math.round((done/total)*100)
       }}
 
+    tx.commit()
+
     Meteor.users.update {_id:@userId},
       {$inc:{"profile.notes_edited":1}}
-
-    tx.commit()
 
 export makeChild = new ValidatedMethod
   name: 'notes.makeChild'

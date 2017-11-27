@@ -5,6 +5,7 @@ import faker from 'faker'
 sanitizeHtml = require('sanitize-html')
 
 export Notes = new Mongo.Collection 'notes'
+export NoteLogs = new Mongo.Collection 'tx.Transactions'
 
 Notes.donePattern = /(#done|#complete|#finished)/gim
 

@@ -1,7 +1,7 @@
 { Meteor } = require 'meteor/meteor'
 { check } = require 'meteor/check'
 { Match } = require 'meteor/check'
-{ Notes } = require '../notes.coffee'
+{ Notes, NoteLogs } = require '../notes.coffee'
 
 Meteor.publish 'notes.all', () ->
   Notes.find
@@ -32,6 +32,21 @@ Meteor.publish 'notes.calendar', () ->
     due: {$exists: true}
     deleted: {$exists: false}
 
+Meteor.publish 'notes.logs', (noteId, shareKey = null) ->
+  check noteId, Match.Maybe(String)
+  check shareKey, Match.Maybe(String)
+  if shareKey
+    if Notes.getSharedParent noteId, shareKey
+    # We have a valid shared parent key for this noteid and shareKey
+    # Go ahead and return the requested note.
+      note = Notes.find
+        _id: noteId
+        deleted: {$exists: false}
+  else
+    NoteLogs.find
+      user_id: @userId
+      "context.noteId": noteId
+
 Meteor.publish 'notes.view', (noteId, shareKey = null) ->
   check noteId, Match.Maybe(String)
   check shareKey, Match.Maybe(String)
@@ -47,9 +62,6 @@ Meteor.publish 'notes.view', (noteId, shareKey = null) ->
       owner: @userId
       _id: noteId
       deleted: {$exists: false}
-
-  Notes.update noteId, $set:
-    updatedAt: new Date
 
   return note
 
