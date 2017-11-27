@@ -1,7 +1,8 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { BlazeLayout } = require 'meteor/kadira:blaze-layout'
 
-# Import to load these templates
+import { Notes } from '/imports/api/notes/notes.coffee'
+
 require '/imports/ui/layouts/app-body.coffee'
 require '/imports/ui/pages/root-redirector.js'
 require '/imports/ui/pages/notes/notes-show-page.coffee'
@@ -26,6 +27,24 @@ FlowRouter.route '/note/:noteId',
   name: 'Notes.show'
   action: ->
     NProgress.start()
+
+    # Check if the note is a Kanban or Calendar note
+    # If so, set the view mode to that
+    Meteor.subscribe 'notes.view',
+      FlowRouter.getParam 'noteId'
+      FlowRouter.getParam 'shareKey'
+    note = Notes.findOne FlowRouter.getParam 'noteId',
+      fields:
+        title: yes
+
+    if note
+      if note.title.includes "#kanban"
+        Session.set 'viewMode', "kanban"
+      else if note.title.includes "#calendar"
+        Session.set 'viewMode', "calendar"
+      else if note.title.includes "#notes"
+        Session.set 'viewMode', "notes"
+
     BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/note/:noteId/:shareKey',
