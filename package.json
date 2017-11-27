@@ -20,6 +20,7 @@
     "body-parser": "^1.17.1",
     "dropbox": "^2.5.1",
     "faker": "^3.0.1",
+    "intro.js": "^2.8.0-alpha.1",
     "meteor-node-stubs": "^0.2.5",
     "sanitize-html": "^1.14.1",
     "simpl-schema": "^0.1.1"

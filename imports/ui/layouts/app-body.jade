@@ -9,19 +9,19 @@ template(name='App_body')
                 // Title
                 span.mdl-layout-title
                   button#modeBackground.mdl-button.mdl-button--icon.mdl-button--colored.mdl-button--raised(style="left:{{modeBackgroundLeft}}px")
-                  button#noteMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
+                  button#noteMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.noteMode' }}", data-step='2')
                     i.material-icons fiber_manual_record
                   .mdl-tooltip.mdl-tooltip--large(for='notesMode')
                     | {{_ 'layouts.appBody.noteMode'}}
-                  button#calendarMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
+                  button#calendarMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.calendarMode' }}", data-step='3')
                     i.material-icons date_range
                   .mdl-tooltip.mdl-tooltip--large(for='calendarMode')
                     | {{_ 'layouts.appBody.calendarMode'}}
-                  button#kanbanMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
+                  button#kanbanMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.kanbanMode' }}", data-step='4')
                     i.material-icons view_column
                   .mdl-tooltip.mdl-tooltip--large(for='kanbanMode')
                     | {{_ 'layouts.appBody.kanbanMode'}}
-                  .js-edit-note.title-page
+                  .js-edit-note.title-page(data-intro="{{_ 'tours.intro.viewModes' }}", data-step='5')
                     if focusedNote
                       .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
                     else if searchTerm
@@ -34,7 +34,7 @@ template(name='App_body')
                     i.material-icons search
                   .mdl-textfield__expandable-holder
                     input#waterfall-exp.mdl-textfield__input.search(placeholder="{{_ 'layouts.appBody.search'}}...")
-              .mdl-layout__header-row
+              .mdl-layout__header-row(data-intro="{{_ 'tours.intro.breadcrumbs' }}", data-step='6')
                 +breadcrumbs (noteArgs focusedNoteId)
             .mdl-layout__drawer
               +menu

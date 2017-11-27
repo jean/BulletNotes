@@ -158,6 +158,7 @@ Meteor.startup ->
   return
 
 Template.App_body.onRendered ->
+
   $.urlParam = (name) ->
     results = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.href)
     if results

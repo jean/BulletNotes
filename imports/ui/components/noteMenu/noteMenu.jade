@@ -54,14 +54,14 @@ template(name='noteMenu')
           |  {{_ 'notes.menu.unindent'}}
           span.keyboardShortcutHint ⇧ + Tab 
 
-      if displayEncrypted
-        a.decryptLink.mdl-menu__item(href='#')
-          i.glyphicon.glyphicon-eye-open
-          |  {{_ 'notes.menu.decrypt'}}
-      else
-        a.encryptLink.mdl-menu__item(href='#')
-          i.glyphicon.glyphicon-eye-close
-          |  {{_ 'notes.menu.encrypt'}}
+      //- if displayEncrypted
+      //-   a.decryptLink.mdl-menu__item(href='#')
+      //-     i.glyphicon.glyphicon-eye-open
+      //-     |  {{_ 'notes.menu.decrypt'}}
+      //- else
+      //-   a.encryptLink.mdl-menu__item(href='#')
+      //-     i.glyphicon.glyphicon-eye-close
+      //-     |  {{_ 'notes.menu.encrypt'}}
 
       a.delete.mdl-menu__item(href='#')
         i.glyphicon.glyphicon-trash

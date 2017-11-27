@@ -30,8 +30,7 @@ Template.noteTitle.helpers
 
 Template.noteTitle.events
   'click .title': (event, instance) ->
-    console.log instance
-    if instance.state
+    if instance.view.parentView.templateInstance().state
       instance.view.parentView.templateInstance().state.set 'focused', true
 
   'focus .title': (event, instance) ->

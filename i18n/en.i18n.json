@@ -115,5 +115,16 @@
     "appNotFound": {
       "pageNotFound": "Page not found"
     }
+  },
+  "tours": {
+    "intro": {
+      "begin": "Welcome to BulletNotes.io!",
+      "noteMode": "BulletNotes.io has 3 main views. The default is Bullet Notes view where notes are nested under each other, and can be expanded and collapsed.",
+      "calendarMode": "The Calendar view lets you drag items onto a calendar to be scheduled.",
+      "kanbanMode": "Kanban view gives you a classic GTD style interface into your notes.",
+      "viewModes": "Whichever mode you pick, you can zoom into notes by opening their menu and clicking 'Zoom in'. This will make that the new Top Level note, and only display notes underneath that note.",
+      "breadcrumbs": "To navigate back up through your note tree, you can use this breadcrumbs panel.",
+      "support": "Still have questions? Things aren't working? Please let us know!"
+    }
   }
 }
