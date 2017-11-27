@@ -9,18 +9,18 @@ template(name='App_body')
                 // Title
                 span.mdl-layout-title
                   button#modeBackground.mdl-button.mdl-button--icon.mdl-button--colored.mdl-button--raised(style="left:{{modeBackgroundLeft}}px")
-                  button#notesMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
+                  button#noteMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
                     i.material-icons fiber_manual_record
                   .mdl-tooltip.mdl-tooltip--large(for='notesMode')
-                    | Bullet List View
+                    | {{_ 'layouts.appBody.noteMode'}}
                   button#calendarMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
                     i.material-icons date_range
                   .mdl-tooltip.mdl-tooltip--large(for='calendarMode')
-                    | Calendar View
+                    | {{_ 'layouts.appBody.calendarMode'}}
                   button#kanbanMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
                     i.material-icons view_column
                   .mdl-tooltip.mdl-tooltip--large(for='kanbanMode')
-                    | Kanban View
+                    | {{_ 'layouts.appBody.kanbanMode'}}
                   .js-edit-note.title-page
                     if focusedNote
                       .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
@@ -28,17 +28,13 @@ template(name='App_body')
                       .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
                     else
                       .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
-                  
                 .mdl-layout-spacer
                 .searchIcon.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
                   label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
                     i.material-icons search
                   .mdl-textfield__expandable-holder
                     input#waterfall-exp.mdl-textfield__input.search(placeholder="{{_ 'layouts.appBody.search'}}...")
-
-              // Tabs
-              //if focusedNote
-              .mdl-layout__tab-bar.mdl-js-ripple-effect
+              .mdl-layout__header-row
                 +breadcrumbs (noteArgs focusedNoteId)
             .mdl-layout__drawer
               +menu

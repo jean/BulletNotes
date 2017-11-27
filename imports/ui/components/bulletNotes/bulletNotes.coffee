@@ -128,6 +128,8 @@ Template.bulletNotes.helpers
   completedCount: () ->
     if @note()
       Notes.find({ parent: @note()._id, complete: true }).count()
+    else
+      Notes.find({ parent: null, complete: true }).count()
 
 Template.bulletNotes.events
   'click .toggleComplete': (event, instance) ->

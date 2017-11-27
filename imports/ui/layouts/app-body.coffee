@@ -361,7 +361,7 @@ Template.App_body.events
   'click #calendarMode': ->
     Session.set('viewMode','calendar')
 
-  'click #notesMode': ->
+  'click #noteMode': ->
     Session.set('viewMode','note')
 
   'click #kanbanMode': ->
