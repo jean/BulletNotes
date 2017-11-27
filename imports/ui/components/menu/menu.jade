@@ -1,6 +1,6 @@
 template(name="menu")
   span.mdl-layout-title
-    a(href='/') BulletNotes.io
+    a(href='/') {{_ 'app.general.siteName' }}
   if ready
     nav.mdl-navigation
       .mdl-layout__drawer-button.menuToggle(aria-expanded='false', role='button', tabindex='0')

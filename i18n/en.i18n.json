@@ -1,4 +1,9 @@
 {
+  "app": {
+    "general": {
+      "siteName": "BulletNotes.io"
+    }
+  },
   "notes": {
     "makePrivate": {
       "notLoggedIn": "Must be logged in to make private notes.",
@@ -104,11 +109,17 @@
       "admin": "Admin",
       "noteMode": "Bullet Notes Mode",
       "kanbanMode": "Kanban Mode",
-      "calendarMode": "Calendar Mode"
+      "calendarMode": "Calendar Mode",
+      "support": "Support",
+      "userGuide": "User Guide"
     },
     "menu": {
       "pinMenu": "Pin Menu Open",
       "unpinMenu": "Unpin Menu"
+    },
+    "footer": {
+      "createdBy": "created by",
+      "notesCounting": "notes and counting"
     }
   },
   "pages": {
@@ -118,7 +129,7 @@
   },
   "tours": {
     "intro": {
-      "begin": "Welcome to BulletNotes.io!",
+      "begin": "Welcome to BulletNotes.io! BulletNotes is the easiest way to keep everything in your life organized, while also keeping it private, and future safe.<br/><br/>It can export all your notes every night to a flat text file in your DropBox account, so even if this service goes away tomorrow, you don't lose all your notes. Also since the code is open source, you can run it on your computer and not rely on anyone else!",
       "noteMode": "BulletNotes.io has 3 main views. The default is Bullet Notes view where notes are nested under each other, and can be expanded and collapsed.",
       "calendarMode": "The Calendar view lets you drag items onto a calendar to be scheduled.",
       "kanbanMode": "Kanban view gives you a classic GTD style interface into your notes.",

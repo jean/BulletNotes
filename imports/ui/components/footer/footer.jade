@@ -6,11 +6,13 @@ template(name='footer')
         h1.mdl-mega-footer__heading {{_ 'layouts.appBody.help'}}
         ul.mdl-mega-footer__link-list
           li
-            a(href='http://bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA') User Guide
-          li
-            a(href='https://github.com/NickBusey/BulletNotes/issues',target='_blank',data-intro="{{_ 'tours.intro.support' }}", data-step='7') Support
-          li
             a.introTour(href='#') Tour
+          li
+            a(href='http://bulletnotes.io/note/gPQcYmjmqwfnHeTWE/GjT4R6pMFA') {{_ 'layouts.appBody.userGuide' }}
+          li
+            a(href='http://bulletnotes.helpy.io/',target='_blank',data-intro="{{_ 'tours.intro.support' }}", data-step='7')
+              | {{_ 'layouts.appBody.support' }}
+              i.glyphicon.glyphicon-link
       .mdl-mega-footer__drop-down-section
         input.mdl-mega-footer__heading-checkbox(type='checkbox', checked='')
         h1.mdl-mega-footer__heading {{_ 'layouts.appBody.about'}}
@@ -18,20 +20,22 @@ template(name='footer')
           li
             a(href='/pricing') {{_ 'layouts.appBody.pricing'}}
           li
-            a(href='https://github.com/NickBusey/BulletNotes',target='_blank') GitHub
+            a(href='https://github.com/NickBusey/BulletNotes',target='_blank')
+              | GitHub
+              i.glyphicon.glyphicon-link
 
     .mdl-mega-footer__bottom-section
-      .mdl-logo(data-intro="{{_ 'tours.intro.begin'}}", data-step='1') BulletNotes
+      .mdl-logo(data-intro="{{_ 'tours.intro.begin'}}", data-step='1') {{_ 'app.general.siteName' }}
       ul.mdl-mega-footer__link-list
         li
           | {{year}}
         li
           span#version
         li
-          | created by
+          | {{_ 'layouts.footer.createdBy' }}
           a(href='https://twitter.com/nickbusey',target='_blank') Nick Busey
         li
           div#totalNotes {{totalNotes}}
           span#totalNotesSpacer {{totalNotes}}
-          span#totalNotesCaption notes and counting!
+          span#totalNotesCaption {{_ 'layouts.footer.notesCounting' }}
 

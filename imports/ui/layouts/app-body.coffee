@@ -222,9 +222,6 @@ Template.App_body.shouldNav = () ->
   return !editingNote && !editingFocusedNote && !editingBody && !focused
 
 Template.App_body.helpers
-  siteName: ->
-    'BulletNotes.io'
-
   wrapClasses: ->
     classname = ''
     if Meteor.isCordova
