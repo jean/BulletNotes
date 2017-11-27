@@ -20,7 +20,10 @@ Template.kanbanList.helpers
   childNotes: ->
     Notes.find {
       parent: this._id
-    }, sort: rank: 1
+    }, sort: {
+      complete: 1
+      rank: 1
+    }
 
   photo: () ->
     Meteor.subscribe 'files.note', @_id
