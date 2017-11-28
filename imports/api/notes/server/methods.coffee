@@ -103,18 +103,20 @@ export inbox = new ValidatedMethod
     title: Notes.simpleSchema().schema('title')
     body: Notes.simpleSchema().schema('body')
     userId: Notes.simpleSchema().schema('_id')
+    telegram: Notes.simpleSchema().schema('telegram')
   .validator
     clean: yes
     filter: no
-  run: ({ title, body, userId }) ->
+  run: ({ title, body, userId, telegram=false }) ->
     inbox = Notes.findOne
       owner: userId
       inbox: true
       deleted: {$exists:false}
 
+    # If there is not an existing Inbox note, create one.
     if !inbox
       inboxId = Notes.insert
-        title: "<b>Inbox</b>"
+        title: ":inbox_tray: <b>Inbox</b>"
         createdAt: new Date()
         owner: userId
         inbox: true
@@ -122,6 +124,7 @@ export inbox = new ValidatedMethod
         complete: false
     else
       inboxId = inbox._id
+
     if inboxId
       noteId = Notes.insert
         title: title
@@ -131,6 +134,7 @@ export inbox = new ValidatedMethod
         createdAt: new Date()
         rank: 0
         complete: false
+        telegram: telegram
       rankDenormalizer.updateSiblings inboxId
       return noteId
 

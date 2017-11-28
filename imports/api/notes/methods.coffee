@@ -341,7 +341,7 @@ export makeChild = new ValidatedMethod
     if rank == null
       rank = 1
 
-    tx.start 'note makeChild'
+    tx.start 'Move Note'
     parentId = null
     level = 0
     if parent
