@@ -9,6 +9,18 @@ Meteor.methods
   'users.clearDropboxOauth': () ->
     Meteor.users.update {_id:@userId}, {$unset:{"profile.dropbox_token"}}
 
+export setTelegramId = new ValidatedMethod
+  name: 'users.setTelegramId'
+  validate: new SimpleSchema
+    id:
+      type: String
+  .validator
+    clean: yes
+    filter: no
+  run: ({ id }) ->
+    Meteor.users.update {_id:@userId},
+      {$set:{"telegramId":id}}
+
 export setDropboxOauth = new ValidatedMethod
   name: 'users.setDropboxOauth'
   validate: new SimpleSchema
@@ -66,6 +78,7 @@ export setLanguage = new ValidatedMethod
     Meteor.users.update {_id:@userId}, {$set:{language:language}}
 
 USER_METHODS = _.pluck([
+  setTelegramId
   setDropboxOauth
   setMenuPin
   setMuted

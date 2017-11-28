@@ -5,7 +5,7 @@ if Meteor.isServer
     TelegramBot.token = Meteor.settings.telegramKey
     TelegramBot.start()
 
-    TelegramBot.addListener '/note', (command) ->
+    TelegramBot.addListener '/note', (command, _, data) ->
       # command will contain the entire command in an array where command[0] is the command.
       # In this case '/note'. Each argument will follow.
 
@@ -14,14 +14,20 @@ if Meteor.isServer
 
       else
         command.shift()
+        user = Meteor.users.findOne({telegramId:data.chat.id.toString()})
         noteId = Meteor.call 'notes.inbox',
-          userId: "2nuEecMRHthr9xKGP"
+          userId: user._id
           title: command.join ' '
 
-        'Saved note: ' + Meteor.settings.public.url + '/note/' + noteId
+        'Note Saved! ' + Meteor.settings.public.url + '/note/' + noteId
 
-    TelegramBot.addListener '/start', (command) ->
-      'Welcome to BulletNotesBot! I can help you save Notes quickly to BulletNotes.io. In the future I can help you look up notes and mark them as complete.\n\nType `/note Walk the dog.` or `/help` to get started.'
+    TelegramBot.addListener '/start', (command, username, data) ->
+      user = Meteor.users.findOne({telegramId:data.chat.id.toString()})
+
+      if !user
+        'Hello '+ username + ', I am BulletNotesBot! I can help you save Notes quickly to BulletNotes.io.\n\nClick here to link your account: ' + Meteor.settings.public.url + '/telegramAuth/' + data.chat.id
+      else
+        'Your account is linked. Type `/note Walk the dog` or `/help` to get started.'
 
     TelegramBot.addListener '/help', (command) ->
       msg = 'I have the following commands available:\n'

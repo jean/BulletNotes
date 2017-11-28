@@ -112,6 +112,20 @@ FlowRouter.route '/admin',
 
     BlazeLayout.render 'App_body', main: 'App_admin'
 
+FlowRouter.route '/telegramAuth/:telegramId',
+  name: 'App.telegramAuth'
+  action: ->
+    Meteor.call 'users.setTelegramId', {
+      id: FlowRouter.getParam('telegramId')
+    }, (error, result) ->
+      if !error
+        Template.App_body.showSnackbar
+          message: "Telegram account linked successfully!"
+      else
+        Template.App_body.showSnackbar
+          message: "Error occured while linking Telegram account."
+    FlowRouter.redirect '/'
+
 FlowRouter.route '/dropboxAuth',
   name: 'App.dropboxAuth'
   action: ->
