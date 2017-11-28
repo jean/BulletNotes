@@ -10,10 +10,10 @@ template(name='bulletNoteItem')
             i.material-icons add
         +noteMenu
         // Handle
-        .dot.mdl-button.mdl-button--icon.hasChildren(title="{{hoverInfo}}")
+        .handle.dot.mdl-button.mdl-button--icon.hasChildren(title="{{hoverInfo}}")
           i.material-icons.zoom(id="drag_{{_id}}") fiber_manual_record
         
-        .noteNumber {{count}}
+        .handle.noteNumber {{count}}
 
       +noteTitle
 

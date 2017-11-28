@@ -2,5 +2,7 @@
 node_modules
 npm-debug.log
 settings.private.json
+settings.dev.json
+settings.prod.json
 version.desktop
 .desktop-package/

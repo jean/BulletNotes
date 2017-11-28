@@ -19,6 +19,7 @@ babel-runtime@1.1.1
 babrahams:transactions@0.8.6
 babrahams:undo-redo@0.3.5
 base64@1.0.10
+benjick:telegram-bot@1.3.0
 binary-heap@1.0.10
 blaze@2.3.2
 blaze-html-templates@1.1.2

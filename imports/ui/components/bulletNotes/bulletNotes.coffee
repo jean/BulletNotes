@@ -277,7 +277,7 @@ Template.bulletNotes.rendered = ->
   # $('#notes').selectable
   #   delay: 150
   $('.sortable').nestedSortable
-    handle: 'div.dot'
+    handle: '.handle'
     items: 'li.note-item'
     placeholder: 'placeholder'
     opacity: .6

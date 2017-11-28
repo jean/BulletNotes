@@ -6,7 +6,12 @@
     "referralNoteBonus": 250,
     "environment": "local",
     "keenProjectId": "",
-    "keenWriteKey": ""
+    "keenWriteKey": "",
+    "analyticsSettings": {
+      "Amplitude": {"apiKey": ""}
+    },
+    "url": "http://localhost:3123"
   },
+  "telegramKey": "",
   "adminUserIds": [""]
 }

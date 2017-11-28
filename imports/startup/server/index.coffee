@@ -1,6 +1,9 @@
 # This file configures the Accounts package to define the UI of the reset password email.
 require './reset-password-email.js'
 
+# Start Chat Bot
+require './bot.coffee'
+
 # Set up some rate limiting and other important security settings.
 require './security.js'
 require './register-api.coffee'

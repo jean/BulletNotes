@@ -10,22 +10,23 @@ template(name='bulletNotes')
       .filesContainer
         each focusedNoteFiles
           +file
-          
-    if notesReady
-      each notes
-        +bulletNoteItem
-      if completedCount
-        .toggleComplete
-          if showComplete
-            if alwaysShowComplete
-              a.toggleAlwaysShowComplete Don't Always Show Complete
+
+    +momentum(plugin="right-to-left")
+      if notesReady
+        each notes
+          +bulletNoteItem
+        if completedCount
+          .toggleComplete
+            if showComplete
+              if alwaysShowComplete
+                a.toggleAlwaysShowComplete Don't Always Show Complete
+              else
+                | Hide completed
+                a.toggleAlwaysShowComplete Always Show Complete
             else
-              | Hide completed
-              a.toggleAlwaysShowComplete Always Show Complete
-          else
-            | Show completed ({{completedCount}} completed notes)
-      li.newNote
-        | Add a new note..
-    else
-      .wrapper-message
-        .title-message {{_ 'notes.show.loading'}}
+              | Show completed ({{completedCount}} completed notes)
+        li.newNote
+          | Add a new note..
+      else
+        .wrapper-message
+          .title-message {{_ 'notes.show.loading'}}

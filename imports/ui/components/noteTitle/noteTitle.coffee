@@ -8,8 +8,9 @@ Template.noteTitle.onCreated ->
 
 Template.noteTitle.onRendered ->
   noteElement = this
-
+  console.log noteElement
   Tracker.autorun ->
+    console.log "Update text"
     if noteElement.data.title
       $(noteElement.firstNode).find('.title').first().html(
         Template.bulletNotes.formatText noteElement.data.title
