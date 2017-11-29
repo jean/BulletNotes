@@ -19,11 +19,20 @@ Template.kanban.onRendered ->
       console.log event, ui
       parent = $(event.target).closest('.kanbanList').data('id')
       upperSibling = $(ui.item[0]).prev('li').data('id')
-      makeChild.call
-        noteId: $(ui.item[0]).data('id')
-        shareKey: FlowRouter.getParam('shareKey')
-        upperSibling: upperSibling
-        parent: parent
+      if upperSibling
+        makeChild.call
+          noteId: $(ui.item[0]).data('id')
+          shareKey: FlowRouter.getParam('shareKey')
+          upperSibling: upperSibling
+          parent: parent
+          expandParent: false
+      else
+        makeChild.call
+          noteId: $(ui.item[0]).data('id')
+          shareKey: FlowRouter.getParam('shareKey')
+          upperSibling: upperSibling
+          parent: parent
+          rank: 0
 
 Template.kanban.helpers
   focusedNote: ->

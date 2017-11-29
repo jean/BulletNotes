@@ -1,3 +1,5 @@
+pjson = require('/package.json')
+
 import { Random } from 'meteor/random'
 
 import { Notes } from '/imports/api/notes/notes.coffee'
@@ -6,6 +8,8 @@ if Meteor.isServer
   Meteor.startup ->
     TelegramBot.token = Meteor.settings.telegramKey
     TelegramBot.maxTitleLength = 100
+    TelegramBot.maxNoteReturn = 25
+    TelegramBot.defaultLimit = 10
     TelegramBot.start()
 
     TelegramBot.formatNote = (note) ->
@@ -20,7 +24,7 @@ if Meteor.isServer
         userId: user._id
         title: message.text
         telegram: true
-      TelegramBot.send 'Note Saved! ' + Meteor.settings.public.url + '/note/' + noteId, message.chat.id, true
+      TelegramBot.send 'Note Saved! ' + TelegramBot.formatNote({_id:noteId,title:message.text}), message.chat.id, true
 
     TelegramBot.addListener '/start', (command, username, data) ->
       user = Meteor.users.findOne({telegramId:data.chat.id.toString()})
@@ -30,15 +34,18 @@ if Meteor.isServer
         'Your account is linked. Simply send me any note like `Walk the dog` to get started. Type `/help` for more commands.'
 
     TelegramBot.addListener '/help', (command) ->
-      msg = 'I have the following commands available (more coming):\n'
+      msg = 'Hi, I\'m *BulletNotesBot*!\n'
+      msg = msg + 'I have the following commands available:\n\n'
       TelegramBot.triggers.text.forEach (post) ->
         msg = msg + '- ' + post.command + '\n'
+      msg = msg + '\nVersion: ' + pjson.version + '\n'
+      msg = msg + 'https://bulletnotes.io'
       msg
 
     TelegramBot.addListener '/find', (command, _, data) ->
       # If a limit is not provided as the first param, use 10
       if command.length < 2
-        'You must provide a search term.'
+        'You must provide a search term. Example: `/find #work`'
       else
         # Drop the /find from the command
         command.shift()
@@ -60,10 +67,9 @@ if Meteor.isServer
         msg
 
     TelegramBot.addListener '/recent', (command, _, data) ->
-      # If a limit is not provided as the first param, use 10
-      limit = command[1] || 10
-      # Cap the limit at 50
-      limit = Math.min 50, limit
+      # If a limit is not provided as the first param, use the default
+      limit = command[1] || TelegramBot.defaultLimit
+      limit = Math.min TelegramBot.maxNoteReturn, limit
       user = Meteor.users.findOne({telegramId:data.chat.id.toString()})
       notes = Notes.find({owner:user._id,deleted:{$exists: false}},{sort:{createdAt:-1},limit:limit})
 
@@ -75,14 +81,13 @@ if Meteor.isServer
       msg
 
     TelegramBot.addListener '/random', (command, _, data) ->
-      # If a limit is not provided as the first param, use 10
-      limit = command[1] || 10
-      # Cap the limit at 50
-      limit = Math.min 50, limit
+      # If a limit is not provided as the first param, use the default
+      limit = command[1] || TelegramBot.defaultLimit
+      limit = Math.min TelegramBot.maxNoteReturn, limit
       user = Meteor.users.findOne({telegramId:data.chat.id.toString()})
       notes = Notes.find({owner:user._id,deleted:{$exists: false}},{sort:{_id:Random.choice([1,-1])},limit:limit})
 
-      msg = 'Here are '+limit+' random notes:\n'
+      msg = 'Here are '+limit+' "random" notes:\n'
       ii = 1
       notes.forEach (note) ->
         msg = msg + '*' + ii + '* - ' + TelegramBot.formatNote(note) + '\n'

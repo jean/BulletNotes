@@ -7,14 +7,23 @@ import {
 
 Template.noteMenu.onCreated ->
   @state = new ReactiveDict()
-  @state.setDefault
-    showMenu: false
 
 Template.noteMenu.helpers
+
   showMenu: ->
     Template.instance().state.get 'showMenu'
 
+  showEncrypt: ->
+    Template.instance().state.get 'showEncrypt'
+
+  showShare: ->
+    Template.instance().state.get 'showShare'
+
+  showMoveTo: ->
+    Template.instance().state.get 'showMoveTo'
+
 Template.noteMenu.events
+
   'click .menuToggle': (event, instance) ->
     event.stopImmediatePropagation()
     if instance.state.get('showMenu') == true
@@ -30,16 +39,15 @@ Template.noteMenu.events
   'click .zoom': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
-    console.log event, instance
     if !Session.get 'dragging'
-      console.log "In"
       Template.App_body.playSound 'navigate'
-      offset = $(instance.firstNode).parent().find('.title').offset()
+      title = $(instance.firstNode).closest('.noteContainer,.kanbanListItem').find('.title').first()
+      offset = title.offset()
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
       headerOffset = $('.title-wrapper').offset()
       $('.title-wrapper').fadeOut()
 
-      $('body').append($(instance.firstNode).find('.title').first().clone().addClass('zoomingTitle'))
+      $('body').append(title.clone().addClass('zoomingTitle'))
       $('.zoomingTitle').offset(offset).animate({
         left: headerOffset.left
         top: headerOffset.top
@@ -115,7 +123,7 @@ Template.noteMenu.events
     event.preventDefault()
     event.stopImmediatePropagation()
 
-    Template.bulletNoteItem.showMoveTo instance
+    Template.noteMenu.showMoveTo instance
 
   'click .duplicate': (event) ->
     event.preventDefault()
@@ -141,3 +149,15 @@ Template.noteMenu.events
     , (err, res) ->
       if err
         window.location = window.location
+
+Template.noteMenu.showMoveTo = (instance) ->
+    instance.state.set 'showMoveTo', true
+    setTimeout ->
+      $('#toggleMoveTo_'+instance.data._id).click()
+      setTimeout ->
+        $('.modal.in').parent().append($('.modal-backdrop'))
+        setTimeout ->
+          $('input.moveToInput').focus()
+        , 500
+      , 250
+    , 50

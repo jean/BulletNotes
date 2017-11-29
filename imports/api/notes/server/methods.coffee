@@ -6,6 +6,7 @@ import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
 Dropbox = require('dropbox')
 
 import rankDenormalizer from '/imports/api/notes/rankDenormalizer.coffee'
+import childCountDenormalizer from '/imports/api/notes/childCountDenormalizer.coffee'
 
 import { Notes } from '/imports/api/notes/notes.coffee'
 
@@ -136,6 +137,7 @@ export inbox = new ValidatedMethod
         complete: false
         telegram: telegram
       rankDenormalizer.updateSiblings inboxId
+      childCountDenormalizer.afterInsertNote inboxId
       return noteId
 
 export summary = new ValidatedMethod

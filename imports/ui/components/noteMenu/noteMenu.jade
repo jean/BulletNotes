@@ -69,8 +69,14 @@ template(name='noteMenu')
             i.glyphicon.glyphicon-trash
             |  {{_ 'notes.menu.delete'}}
             span.keyboardShortcutHint Ctrl + Delete
-          
-        if inbox
+    if showShare
+      +share
+    if showEncrypt
+      +encrypt
+    if showMoveTo
+      +moveTo
+ 
+        //- if inbox
           li.mdl-menu__item
             a(href="javascript:function bninbox(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','http://localhost:3000/notes/inbox/'+encodeURIComponent(d.location.href)+'&t='+(new Date().getTime()));b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}bninbox();void(0)")
               i.glyphicon.glyphicon-envelope

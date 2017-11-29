@@ -53,7 +53,6 @@ Template.bulletNoteItem.onCreated ->
   @state.setDefault
     focused: false
     showComplete: false
-    showMoveTo: false
 
   query = Notes.find({_id:@data._id})
 
@@ -176,15 +175,6 @@ Template.bulletNoteItem.helpers
 
   progressClass: ->
     Template.bulletNotes.getProgressClass this
-
-  showEncrypt: ->
-    Template.instance().state.get 'showEncrypt'
-
-  showShare: ->
-    Template.instance().state.get 'showShare'
-
-  showMoveTo: ->
-    Template.instance().state.get 'showMoveTo'
 
   displayEncrypted: ->
     if @encrypted || @encryptedRoot
@@ -759,18 +749,6 @@ Template.bulletNoteItem.setCursorToEnd = (ele) ->
   sel.removeAllRanges()
   sel.addRange range
   ele.focus()
-
-Template.bulletNoteItem.showMoveTo = (instance) ->
-    instance.state.set 'showMoveTo', true
-    setTimeout ->
-      $('#toggleMoveTo_'+instance.data._id).click()
-      setTimeout ->
-        $('.modal.in').parent().append($('.modal-backdrop'))
-        setTimeout ->
-          $('input.moveToInput').focus()
-        , 500
-      , 250
-    , 50
 
 Template.bulletNoteItem.addAutoComplete = (target) ->
   $(target).textcomplete [ {
