@@ -88,7 +88,7 @@ export insert = new ValidatedMethod
     childCountDenormalizer.afterInsertNote parentId
 
     Meteor.users.update {_id:@userId},
-      {$inc:{"profile.notes_created":1}}
+      {$inc:{"notes_created":1}}
 
     if Meteor.isClient
       Template.App_body.recordEvent 'newNote', owner: @userId
@@ -166,7 +166,7 @@ export updateBody = new ValidatedMethod
         showContent: false
       }}, tx: createTransaction
     Meteor.users.update {_id:@userId},
-      {$inc:{"profile.notes_edited":1}}
+      {$inc:{"notes_edited":1}}
 
 export setDueDate = new ValidatedMethod
   name: 'notes.setDueDate'
@@ -306,7 +306,7 @@ export updateTitle = new ValidatedMethod
     tx.commit()
 
     Meteor.users.update {_id:@userId},
-      {$inc:{"profile.notes_edited":1}}
+      {$inc:{"notes_edited":1}}
 
 export makeChild = new ValidatedMethod
   name: 'notes.makeChild'
@@ -459,7 +459,6 @@ export setChildrenLastShown = new ValidatedMethod
     Notes.update noteId, $inc:
       childrenShownCount: 1
 
-
 export setShowChildren = new ValidatedMethod
   name: 'notes.setShowChildren'
   validate: new SimpleSchema
@@ -475,40 +474,48 @@ export setShowChildren = new ValidatedMethod
       showChildren: show
       childrenLastShown: new Date
 
-Meteor.methods
-  'notes.duplicate': (id, parentId = null) ->
-    tx.start 'duplicate note'
-    Meteor.call 'notes.duplicateRun', id
-    tx.commit()
 
-  'notes.duplicateRun': (id, parentId = null) ->
-    note = Notes.findOne(id)
-    if !note
-      return false
-    if !parentId
-      parentId = note.parent
-    newNoteId = Notes.insert
-      title: note.title
-      createdAt: new Date
-      rank: note.rank+.5
-      owner: @userId
-      parent: parentId
-      level: note.level
-      complete: false
-    ,
-      tx: true
-      instant: true
+export duplicate = new ValidatedMethod
+  name: 'notes.duplicate'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    shareKey: Notes.simpleSchema().schema('shareKey')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId, shareKey = null }) ->
+    if !@userId || !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+    duplicateRun @userId, noteId
 
-    Meteor.users.update {_id:@userId},
-      {$inc:{"profile.notes_created":1}}
+duplicateRun = (userId, id, parentId = null) ->
+  note = Notes.findOne(id)
+  if !note
+    return false
+  if !parentId
+    parentId = note.parent
+  newNoteId = Notes.insert
+    title: note.title
+    createdAt: new Date
+    rank: note.rank+.5
+    owner: userId
+    parent: parentId
+    level: note.level
+    body: note.body
+    complete: false
 
-    children = Notes.find parent: id
-    if children
-      Notes.update newNoteId,
-        $set: showChildren: true,
-        children: children.count()
-      children.forEach (child) ->
-        Meteor.call 'notes.duplicateRun', child._id, newNoteId
+  Meteor.users.update {_id:@userId},
+    {$inc:{"notes_created":1}}
+
+  children = Notes.find
+    parent: id
+    deleted: {$exists: false}
+  if children
+    Notes.update newNoteId,
+      $set: showChildren: true,
+      children: children.count()
+    children.forEach (child) ->
+      duplicateRun userId, child._id, newNoteId
 
 NOTES_METHODS = _.pluck([
   updateBody
@@ -518,6 +525,7 @@ NOTES_METHODS = _.pluck([
   setShowChildren
   setShowContent
   favorite
+  duplicate
 ], 'name')
 
 if Meteor.isServer

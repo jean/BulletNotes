@@ -2,6 +2,7 @@ import './noteMenu.styl'
 import './noteMenu.jade'
 
 import {
+  setShowContent
   favorite
 } from '/imports/api/notes/methods.coffee'
 
@@ -128,7 +129,9 @@ Template.noteMenu.events
   'click .duplicate': (event) ->
     event.preventDefault()
     event.stopImmediatePropagation()
-    Meteor.call 'notes.duplicate', @_id
+    Meteor.call 'notes.duplicate', {
+      noteId: @_id
+    }
 
   'click .addBody': (event, instance) ->
     setShowContent.call

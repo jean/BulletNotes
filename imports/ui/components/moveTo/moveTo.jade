@@ -14,4 +14,5 @@ template(name='moveTo')
           button.btn.btn-sm(data-dismiss='modal') Cancel
 
 template(name="notePill")
-    span.moveToResult {{title}}
+  span.moveToResult.mdl-layout__tab {{parentTitle}}
+  span.moveToResult.mdl-layout__tab.is-active {{shortTitle}}
