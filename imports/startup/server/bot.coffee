@@ -1,9 +1,18 @@
+import { Random } from 'meteor/random'
+
 import { Notes } from '/imports/api/notes/notes.coffee'
 
 if Meteor.isServer
   Meteor.startup ->
     TelegramBot.token = Meteor.settings.telegramKey
+    TelegramBot.maxTitleLength = 100
     TelegramBot.start()
+
+    TelegramBot.formatNote = (note) ->
+      title = note.title.replace(/(<([^>]+)>|:|_)/ig, " ")
+      if title.length > TelegramBot.maxTitleLength
+        title = title.substr(0,TelegramBot.maxTitleLength) + '...'
+      title + ' - ' + Meteor.settings.public.url + '/note/' + note._id
 
     TelegramBot.setCatchAllText true, (_, message) ->
       user = Meteor.users.findOne({telegramId:message.chat.id.toString()})
@@ -34,11 +43,20 @@ if Meteor.isServer
         # Drop the /find from the command
         command.shift()
         user = Meteor.users.findOne({telegramId:data.chat.id.toString()})
-        notes = Notes.search command.join(' '), user._id
+        searchTerm = command.join(' ')
+        notes = Notes.search searchTerm, user._id, 10
 
         msg = 'Here are your search results:\n'
+        ii = 1
         notes.forEach (note) ->
-          msg = msg + '- ' + note.title + '\n'
+          title = TelegramBot.formatNote note
+
+          # Highlight search terms
+          regex = new RegExp searchTerm, 'gi'
+          title = title.replace regex, '*$&*'
+
+          msg = msg + '*' + ii + '* - ' + title + '\n'
+          ii++
         msg
 
     TelegramBot.addListener '/recent', (command, _, data) ->
@@ -50,8 +68,25 @@ if Meteor.isServer
       notes = Notes.find({owner:user._id,deleted:{$exists: false}},{sort:{createdAt:-1},limit:limit})
 
       msg = 'Here are your most recent '+limit+' notes:\n'
+      ii = 1
       notes.forEach (note) ->
-        msg = msg + '- ' + note.title + '\n'
+        msg = msg + '*' + ii + '* - ' + TelegramBot.formatNote(note) + '\n'
+        ii++
+      msg
+
+    TelegramBot.addListener '/random', (command, _, data) ->
+      # If a limit is not provided as the first param, use 10
+      limit = command[1] || 10
+      # Cap the limit at 50
+      limit = Math.min 50, limit
+      user = Meteor.users.findOne({telegramId:data.chat.id.toString()})
+      notes = Notes.find({owner:user._id,deleted:{$exists: false}},{sort:{_id:Random.choice([1,-1])},limit:limit})
+
+      msg = 'Here are '+limit+' random notes:\n'
+      ii = 1
+      notes.forEach (note) ->
+        msg = msg + '*' + ii + '* - ' + TelegramBot.formatNote(note) + '\n'
+        ii++
       msg
 
     TelegramBot.addListener '/delete', (command, username, data) ->

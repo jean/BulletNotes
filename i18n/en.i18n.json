@@ -111,7 +111,9 @@
       "kanbanMode": "Kanban Mode",
       "calendarMode": "Calendar Mode",
       "support": "Support",
-      "userGuide": "User Guide"
+      "userGuide": "User Guide",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy"
     },
     "menu": {
       "pinMenu": "Pin Menu Open",

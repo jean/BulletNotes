@@ -73,7 +73,7 @@ TelegramBot.parsePollResult = data => {
 					const obj = _.find(TelegramBot.triggers.text, obj => obj.command == msg[0]);
 					
 					if(obj) {
-						TelegramBot.send(obj.callback(msg, fromUsername, message), chatId);
+						TelegramBot.send(obj.callback(msg, fromUsername, message), chatId, true);
 					} else if (TelegramBot.catchAllText.enabled) {
 						TelegramBot.catchAllText.callback(fromUsername, message);
 					}

@@ -19,6 +19,7 @@ Template.Notes_import.events
     event.preventDefault()
     data = {}
     textarea = $(event.currentTarget).find('textarea').get(0)
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
     data.importLines = textarea.value.split('\n')
     textarea.value = ''
     data.prevLevel = 0

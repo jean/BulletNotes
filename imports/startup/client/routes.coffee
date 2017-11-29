@@ -4,14 +4,17 @@
 import { Notes } from '/imports/api/notes/notes.coffee'
 
 require '/imports/ui/layouts/app-body.coffee'
-require '/imports/ui/pages/root-redirector.js'
-require '/imports/ui/pages/notes/notes-show-page.coffee'
+
 require '/imports/ui/pages/404/app-not-found.coffee'
-require '/imports/ui/pages/import/import.coffee'
-require '/imports/ui/pages/settings/settings.coffee'
-require '/imports/ui/pages/admin/admin.coffee'
 require '/imports/ui/pages/account/account.coffee'
+require '/imports/ui/pages/admin/admin.coffee'
+require '/imports/ui/pages/import/import.coffee'
+require '/imports/ui/pages/notes/notes-show-page.coffee'
+require '/imports/ui/pages/root-redirector.js'
 require '/imports/ui/pages/pricing/pricing.coffee'
+require '/imports/ui/pages/privacy/privacy.coffee'
+require '/imports/ui/pages/settings/settings.coffee'
+require '/imports/ui/pages/terms/terms.coffee'
 
 # Import to override accounts templates
 require '/imports/ui/accounts/accounts-templates.coffee'
@@ -174,6 +177,18 @@ FlowRouter.route '/pricing',
   action: ->
     NProgress.start()
     BlazeLayout.render 'App_body', main: 'App_pricing'
+
+FlowRouter.route '/terms',
+  name: 'App.terms'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_body', main: 'App_terms'
+
+FlowRouter.route '/privacy',
+  name: 'App.privacy'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_body', main: 'App_privacy'
 
 FlowRouter.notFound =
   action: ->
