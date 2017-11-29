@@ -8,7 +8,7 @@ template(name='moveTo')
           button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
           h4#myModalLabel.modal-title Move Note
         .modal-body
-            p 
+            p Begin typing to search for a note to nest this note underneath. The note in black text with the blue underline is the note being selected. The grayed out note is that note's parent note, for reference. Use the up and down arrow keys to select a note, and press enter when the when you want is highlighted.
             {{> inputAutocomplete settings=settings class="moveToInput input-xlarge" placeholder="Select a note to move this note under.." size="40"}}
         .modal-footer
           button.btn.btn-sm(data-dismiss='modal') Cancel

@@ -212,6 +212,7 @@ Template.App_body.loadFavorite = (number) ->
     Template.App_body.playSound 'navigate'
     $('input').val('')
     NProgress.start()
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
     FlowRouter.go $($('.favoriteNote').get(number-1)).attr 'href'
 
 Template.App_body.shouldNav = () ->

@@ -35,7 +35,7 @@ Template.moveTo.events
             actionText: 'View'
             timeout: 5000
 
-Template.notePill.maxTitleLength = 35
+Template.notePill.maxTitleLength = 30
 
 Template.notePill.helpers
     shortTitle: ->

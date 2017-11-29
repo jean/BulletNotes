@@ -58,11 +58,25 @@ body
 a.mdl-layout__tab:hover, a.mdl-layout__tab:focus
   color: white !important
 
+.mdl-layout__tab
+  margin: 0 .25em
+  transition: box-shadow .25s 
+  box-shadow: 0px 0px 5px black
+
+.mdl-layout__tab.is-active
+  box-shadow: 0px 0px 5px white
+  font-weight: bold
+
 .mdl-layout__header.mdl-layout__header--waterfall
   background: rgba(0,0,0,.2)
   border-bottom: solid black 1px
   box-shadow: 0px 3px 5px #000
-#  overflow: visible
+
+  .mdl-layout__tab
+    margin: 0 .5em
+
+  .mdl-layout__tab:hover
+    box-shadow: 0px 0px 5px white
 
 .modal
   margin-top: 7em
