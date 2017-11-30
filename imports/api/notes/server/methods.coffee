@@ -114,6 +114,9 @@ export inbox = new ValidatedMethod
       inbox: true
       deleted: {$exists:false}
 
+    Meteor.users.update userId,
+      {$inc:{"notesCreated":1}}
+
     # If there is not an existing Inbox note, create one.
     if !inbox
       inboxId = Notes.insert

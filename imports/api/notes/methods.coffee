@@ -60,11 +60,9 @@ export insert = new ValidatedMethod
       throw new (Meteor.Error)('Maximum number of notes reached.')
 
     parentId = null
-    level = 0
 
     if parent
       parentId = parent._id
-      level = parent.level+1
 
     sharedParent = Notes.getSharedParent parentId, shareKey
     if sharedParent
@@ -75,7 +73,6 @@ export insert = new ValidatedMethod
       title: title
       parent: parentId
       rank: rank
-      level: level
       createdAt: new Date()
       complete: complete
       showChildren: showChildren
@@ -91,8 +88,8 @@ export insert = new ValidatedMethod
 
     childCountDenormalizer.afterInsertNote parentId
 
-    Meteor.users.update {_id:ownerId},
-      {$inc:{"notes_created":1}}
+    Meteor.users.update ownerId,
+      {$inc:{"notesCreated":1}}
 
     if Meteor.isClient
       Template.App_body.recordEvent 'newNote', owner: ownerId
@@ -170,7 +167,7 @@ export updateBody = new ValidatedMethod
         showContent: false
       }}, tx: createTransaction
     Meteor.users.update {_id:@userId},
-      {$inc:{"notes_edited":1}}
+      {$inc:{"notesEdited":1}}
 
 export setDueDate = new ValidatedMethod
   name: 'notes.setDueDate'
@@ -310,7 +307,7 @@ export updateTitle = new ValidatedMethod
     tx.commit()
 
     Meteor.users.update {_id:@userId},
-      {$inc:{"notes_edited":1}}
+      {$inc:{"notesEdited":1}}
 
 export makeChild = new ValidatedMethod
   name: 'notes.makeChild'
@@ -509,7 +506,7 @@ duplicateRun = (userId, id, parentId = null) ->
     complete: false
 
   Meteor.users.update {_id:@userId},
-    {$inc:{"notes_created":1}}
+    {$inc:{"notesCreated":1}}
 
   children = Notes.find
     parent: id
