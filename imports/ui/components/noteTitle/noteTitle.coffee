@@ -1,5 +1,4 @@
 require './noteTitle.jade'
-require './noteTitle.styl'
 
 Template.noteTitle.onCreated ->
   @state = new ReactiveDict()

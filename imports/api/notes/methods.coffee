@@ -20,37 +20,43 @@ export insert = new ValidatedMethod
     shareKey: Notes.simpleSchema().schema('shareKey')
     complete: Notes.simpleSchema().schema('complete')
     showChildren: Notes.simpleSchema().schema('showChildren')
+    ownerId: Notes.simpleSchema().schema('owner')
     isImport:
       type: Boolean
       optional: true
   .validator
     clean: yes
     filter: no
-  run: ({ title, rank, parent, shareKey = null, isImport = false, complete = false, showChildren = false }) ->
+  run: ({ title, rank, parent, shareKey = null, isImport = false, complete = false, showChildren = false, ownerId = null }) ->
     parent = Notes.findOne parent
 
     # if note.isPrivate() and note.userId isnt @userId
     #   throw new Meteor.Error 'notes.insert.accessDenied',
     # 'Cannot add notes to a private note that is not yours'
 
-    if !Meteor.user()
-      throw new Meteor.Error 'not-authorized',
-        'Please login'
+    if !Meteor.isServer
+      if !Meteor.user()
+        throw new Meteor.Error 'not-authorized',
+          'Please login'
 
-    if parentId && !Notes.isEditable parentId, shareKey
-      throw new Meteor.Error 'not-authorized',
-        'Cannot edit this note'
+      if parentId && !Notes.isEditable parentId, shareKey
+        throw new Meteor.Error 'not-authorized',
+          'Cannot edit this note'
+
+    if @userId
+      ownerId = @userId
 
     noteCount = Notes.find
-      owner: @userId
+      owner: owner
       deleted: {$exists: false}
     .count()
 
     referralCount = 0
-    if Meteor.user().referralCount > 0
-      referralCount = Meteor.user().referralCount
+    owner = Meteor.users.findOne ownerId
+    if owner.referralCount > 0
+      referralCount = owner.referralCount
 
-    if !Meteor.user().isAdmin && noteCount >= Meteor.settings.public.noteLimit * (referralCount + 1)
+    if !owner.isAdmin && noteCount >= Meteor.settings.public.noteLimit * (referralCount + 1)
       throw new (Meteor.Error)('Maximum number of notes reached.')
 
     parentId = null
@@ -60,14 +66,12 @@ export insert = new ValidatedMethod
       parentId = parent._id
       level = parent.level+1
 
-    owner = @userId
-
     sharedParent = Notes.getSharedParent parentId, shareKey
     if sharedParent
-      owner = sharedParent.owner
+      ownerId = sharedParent.owner
 
     note =
-      owner: owner
+      owner: ownerId
       title: title
       parent: parentId
       rank: rank
@@ -75,7 +79,7 @@ export insert = new ValidatedMethod
       createdAt: new Date()
       complete: complete
       showChildren: showChildren
-      createdBy: @userId
+      createdBy: ownerId
 
     # Only create a transaction if we are not importing.
     if isImport
@@ -87,11 +91,11 @@ export insert = new ValidatedMethod
 
     childCountDenormalizer.afterInsertNote parentId
 
-    Meteor.users.update {_id:@userId},
+    Meteor.users.update {_id:ownerId},
       {$inc:{"notes_created":1}}
 
     if Meteor.isClient
-      Template.App_body.recordEvent 'newNote', owner: @userId
+      Template.App_body.recordEvent 'newNote', owner: ownerId
 
     note
 
