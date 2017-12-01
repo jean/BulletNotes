@@ -24,16 +24,20 @@ Bot.defaultLimit = 9
 Bot.formatNote = (note, mobileFormat) ->
   if note.title
     title = note.title.replace(/(<([^>]+)>|:|_)/ig, " ")
-    if mobileFormat
+  if mobileFormat
+    if title
       if title.length > Bot.maxTitleLength
         title = title.substr(0,Bot.maxMobileTitleLength) + '...'
       title
     else
+      '_( Empty Note )_'
+  else
+    if title
       if title.length > Bot.maxTitleLength
         title = title.substr(0,Bot.maxTitleLength) + '...'
       title + ' - ' + Meteor.settings.public.url + '/note/' + note._id
-  else
-    '_( Empty Note )_'
+    else
+      '_( Empty Note )_ - ' + Meteor.settings.public.url + '/note/' + note._id
 
 Bot.formatNotes = (notes, limitMultiplier, mobileFormat) ->
   if notes.count()
