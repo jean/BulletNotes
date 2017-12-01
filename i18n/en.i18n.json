@@ -113,7 +113,8 @@
       "support": "Support",
       "userGuide": "User Guide",
       "terms": "Terms and Conditions",
-      "privacy": "Privacy Policy"
+      "privacy": "Privacy Policy",
+      "botLink": "Chat with BulletNotesBot"
     },
     "menu": {
       "pinMenu": "Pin Menu Open",

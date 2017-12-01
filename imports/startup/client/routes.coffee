@@ -5,6 +5,8 @@ import { Notes } from '/imports/api/notes/notes.coffee'
 
 require '/imports/ui/layouts/app-body.coffee'
 
+require '/imports/ui/layouts/app-botPage.coffee'
+
 require '/imports/ui/pages/404/app-not-found.coffee'
 require '/imports/ui/pages/account/account.coffee'
 require '/imports/ui/pages/admin/admin.coffee'
@@ -171,6 +173,12 @@ FlowRouter.route '/dropboxAuth',
         Template.App_body.showSnackbar
           message: "Error occured while linking Dropbox account."
     FlowRouter.redirect '/'
+
+FlowRouter.route '/bot',
+  name: 'App.botPage'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_botPage'
 
 FlowRouter.route '/pricing',
   name: 'App.pricing'

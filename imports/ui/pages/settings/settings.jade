@@ -53,4 +53,9 @@ template(name="App_settings")
         a(href="https://bulletnotes.io/note/frCTPYCuSQN2kDRdo")
           | https://bulletnotes.io/note/frCTPYCuSQN2kDRdo
       .mdl-card__actions.mdl-card--border
-        p Your user id is: {{currentUser._id}}
+        p Your API Key
+        input#apiKey(value='{{currentUser.apiKey}}')
+        br
+        a#copyApiKey Copy
+        br
+        a#generateApiKey Generate a New API Key

@@ -12,6 +12,7 @@ Meteor.publish 'users.prefs', () ->
       theme: 1
       language: 1
       isPro: 1
+      apiKey: 1
   user
 
 Meteor.publish 'users.count.total', ->

@@ -1,0 +1,19 @@
+template(name='botWidget')
+  #chatToolbar
+    button#closeBotWidget.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
+      i.material-icons close
+    .mdl-tooltip.mdl-tooltip--large(for='closeBotWidget')
+      | {{_ 'layouts.botWidget.close'}}
+    a(href='/bot')#fullscreetBotWidget.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised
+      i.material-icons fullscreen
+    .mdl-tooltip.mdl-tooltip--large(for='fullscreenBotWidget')
+      | {{_ 'layouts.botWidget.fullscreen'}}
+
+
+  #chatArea
+    .chat.botChat
+      br
+      br
+      | Hello, I am the BulletNotes Bot! Type `/help` for commands.
+  #chatInputWrap
+    input#chatInput(placeholder="Type any note here to get started")

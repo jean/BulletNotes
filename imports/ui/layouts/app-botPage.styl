@@ -1,0 +1,42 @@
+#botPageWrap
+  background-color: beige
+  height: 100%
+  width: 100%
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  padding: 1em 5em
+  
+  a#backLink
+    position: absolute
+    left: 1em
+    top: 1em
+    z-index: 500
+
+  #chatArea
+    padding: 1em 5em
+    position: absolute
+    top: 0
+    bottom: 4em
+    left: 0
+    right: 0
+    overflow-x: hidden
+    overflow-y: scroll
+
+  #chatInputWrap
+    position: absolute
+    bottom: 0px
+    padding: 2em 5em
+    right: 0
+    left: 0
+    
+    input
+      width: 100%
+  
+  .mdl-button
+    display: none
+
+#botPageWrap:after
+  background: linear-gradient(beige, transparent) left repeat

@@ -33,6 +33,11 @@ template(name='App_body')
                   i.material-icons search
                 .mdl-textfield__expandable-holder
                   input#waterfall-exp.mdl-textfield__input.search(placeholder="{{_ 'layouts.appBody.search'}}...")
+              a#botHeaderButton.mdl-button.mdl-js-button.mdl-button--icon
+                  i#botIcon.material-icons chat
+              .mdl-tooltip.mdl-tooltip--large(for='botIcon')
+                  | {{_ 'layouts.appBody.botLink'}}
+
             .mdl-layout__tab-bar.mdl-js-ripple-effect(data-intro="{{_ 'tours.intro.breadcrumbs' }}", data-step='6')
               +breadcrumbs (noteArgs focusedNoteId)
           .mdl-layout__drawer
@@ -76,6 +81,9 @@ template(name='App_body')
                 | {{_ 'layouts.appBody.devWarning'}}
               .description
                 | {{{_ 'layouts.appBody.betaWarningBody'}}}
+  if showBotWidget
+    #botWidgetWrap
+      +botWidget
   #snackbar.mdl-js-snackbar.mdl-snackbar
     .mdl-snackbar__text
     button.mdl-snackbar__action(type='button')

@@ -222,6 +222,10 @@ Template.App_body.shouldNav = () ->
   focused = $('input:focus').length
   return !editingNote && !editingFocusedNote && !editingBody && !focused
 
+Template.App_body.events
+  'click #botHeaderButton': (event, instance) ->
+    Session.set 'showBotWidget', true
+
 Template.App_body.helpers
   wrapClasses: ->
     classname = ''
@@ -287,6 +291,9 @@ Template.App_body.helpers
   theme: ->
     if Meteor.user() && Meteor.user().theme
       "url('/img/bgs/"+Meteor.user().theme.toLowerCase()+".jpg')"
+
+  showBotWidget: ->
+    Session.get 'showBotWidget'
 
   noteArgs: () ->
     instance = Template.instance()

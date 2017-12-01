@@ -18,6 +18,19 @@ Template.App_settings.events
       $('#exportSpinner').fadeOut()
       $('#exportResult').val(res).fadeIn()
   
+  'click #generateApiKey': (event) ->
+    event.preventDefault()
+    Meteor.call 'users.generateApiKey'
+
+  'click #copyApiKey': (event) ->
+    event.preventDefault()
+    copyText = document.getElementById("apiKey")
+    copyText.select()
+    document.execCommand("Copy")
+
+    Template.App_body.showSnackbar
+      message: "API Copied to Clipboard"
+
   'click #dropboxExportLink': (event) ->
     Meteor.call 'notes.dropboxExport', {}, (err, res) ->
       console.log err, res

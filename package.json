@@ -1,7 +1,7 @@
 {
   "name": "BulletNotes",
-  "version": "0.3.26",
-  "releaseDate": "2017-11-29",
+  "version": "0.3.27",
+  "releaseDate": "2017-11-30",
   "private": true,
   "scripts": {
     "start": "ROLLBAR_SERVER_ACCESS_TOKEN=d71133c85f83465db6d1c53f347a479a ROLLBAR_CLIENT_ACCESS_TOKEN=9787fb0d1c82430f8d3139a4cf3ae742 ROLLBAR_ENVIRONMENT=local meteor -p 3123 -s settings.private.json",
@@ -23,7 +23,9 @@
     "dropbox": "^2.5.1",
     "faker": "^3.0.1",
     "intro.js": "^2.8.0-alpha.1",
+    "linkifyjs": "^2.1.5",
     "meteor-node-stubs": "^0.2.5",
+    "node-localstorage": "^1.3.0",
     "sanitize-html": "^1.14.1",
     "simpl-schema": "^0.1.1"
   },
