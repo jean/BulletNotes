@@ -2,6 +2,7 @@ package main
 
 import (
   "bufio"
+//  "bytes"
   "fmt"
 	"io/ioutil"
   "os"
@@ -9,6 +10,7 @@ import (
   "net/url"
 	"strings"
   "crypto/tls"
+	"github.com/russross/blackfriday"
 )
 
 const (
@@ -18,7 +20,7 @@ const (
 
 func chatLoop(apiKey string) {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("> ")
+	fmt.Print("\u001b[38;5;87m > ")
 	text, _ := reader.ReadString('\n')
 	fmt.Println(text)
 
@@ -56,7 +58,33 @@ func chatLoop(apiKey string) {
 			return
 		}
 
-		fmt.Printf("%v\n\n", string(data))
+		renderer := &Console{}
+		extensions := 0 |
+			blackfriday.EXTENSION_NO_INTRA_EMPHASIS |
+			blackfriday.EXTENSION_FENCED_CODE |
+			blackfriday.EXTENSION_AUTOLINK |
+			blackfriday.EXTENSION_STRIKETHROUGH |
+			blackfriday.EXTENSION_SPACE_HEADERS |
+			blackfriday.EXTENSION_HEADER_IDS |
+			blackfriday.EXTENSION_BACKSLASH_LINE_BREAK |
+			blackfriday.EXTENSION_DEFINITION_LISTS
+
+
+		scanner := bufio.NewScanner(strings.NewReader(string(data)))
+		for scanner.Scan() {			
+			os.Stdout.Write(blackfriday.Markdown([]byte(scanner.Text()), renderer, extensions))
+		}
+		if err := scanner.Err(); err != nil {
+			fmt.Println(err)
+		}
+		// var lines bytes.Buffer
+
+		// lines.WriteString(string(data))
+		// scanner := bufio.NewScanner(&lines)
+		// for scanner.Scan() {
+		// output := 
+		// 	os.Stdout.Write(output)	
+		// }
 
 
 		chatLoop(apiKey)
@@ -65,10 +93,10 @@ func chatLoop(apiKey string) {
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("< Welcome to BulletNotesBot!")
+	fmt.Println("\u001b[1m\u001b[38;5;84m < Welcome to BulletNotesBot!")
 	fmt.Println("")
-	fmt.Print("Enter your BulletNotes API Key: ")
+	fmt.Print("\u001b[38;5;87m > Enter your BulletNotes API Key (available at https://bulletnotes.io/settings): ")
 	apiKey, _ := reader.ReadString('\n')
-
+	fmt.Println("\u001b[38;5;84m < Alright, send me a note to record, or type /help for more information.")
 	chatLoop(apiKey)
 }
