@@ -138,8 +138,8 @@ export inbox = new ValidatedMethod
         rank: 0
         complete: false
 
-      rankDenormalizer.updateSiblings inboxId
-      childCountDenormalizer.afterInsertNote inboxId
+      # rankDenormalizer.updateSiblings inboxId
+      # childCountDenormalizer.afterInsertNote inboxId
       return noteId
 
 export summary = new ValidatedMethod

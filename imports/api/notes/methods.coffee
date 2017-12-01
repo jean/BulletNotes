@@ -84,9 +84,9 @@ export insert = new ValidatedMethod
     else
       note = Notes.insert note, {tx: true}
 
-    rankDenormalizer.updateSiblings parentId
+    # rankDenormalizer.updateSiblings parentId
 
-    childCountDenormalizer.afterInsertNote parentId
+    # childCountDenormalizer.afterInsertNote parentId
 
     Meteor.users.update ownerId,
       {$inc:{"notesCreated":1}}
