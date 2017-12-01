@@ -152,6 +152,7 @@ Notes.schema = new SimpleSchema
   rank:
     type: Number
     optional: yes
+    index: 1
   date:
     type: Date
     optional: yes
