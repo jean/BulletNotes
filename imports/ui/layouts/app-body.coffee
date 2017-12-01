@@ -225,6 +225,9 @@ Template.App_body.shouldNav = () ->
 Template.App_body.events
   'click #botHeaderButton': (event, instance) ->
     Session.set 'showBotWidget', true
+    setTimeout ->
+      $('#chatInput').focus()
+    , 250
 
 Template.App_body.helpers
   wrapClasses: ->

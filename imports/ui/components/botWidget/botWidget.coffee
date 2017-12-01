@@ -1,7 +1,5 @@
 require './botWidget.jade'
 
-import linkifyHtml from 'linkifyjs/html'
-
 Template.botWidget.onRendered ->
   $('.botChat').linkify()
 
@@ -18,7 +16,7 @@ Template.botWidget.events
         converter = new Showdown.converter()
         formattedRes = res.replace(/(?:\r\n|\r|\n)/g, '<br />')
         formattedRes = converter.makeHtml formattedRes
-        formattedRes = linkifyHtml formattedRes
+
         $('.botPending').last().html(formattedRes).removeClass('botPending')
         $("#chatArea").animate({ scrollTop: $("#chatArea")[0].scrollHeight }, 200)
 

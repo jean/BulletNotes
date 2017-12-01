@@ -23,7 +23,6 @@
     "dropbox": "^2.5.1",
     "faker": "^3.0.1",
     "intro.js": "^2.8.0-alpha.1",
-    "linkifyjs": "^2.1.5",
     "meteor-node-stubs": "^0.2.5",
     "node-localstorage": "^1.3.0",
     "sanitize-html": "^1.14.1",

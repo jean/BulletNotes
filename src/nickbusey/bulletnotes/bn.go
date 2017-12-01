@@ -8,6 +8,7 @@ import (
   "net/http"
   "net/url"
 	"strings"
+  "crypto/tls"
 )
 
 const (
@@ -34,7 +35,11 @@ func chatLoop(apiKey string) {
 
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	c := &http.Client{}
+  tr := &http.Transport{
+  	// Oh bad, naughty, wicked Zoot!
+    TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+  }
+  c := &http.Client{Transport: tr}
 	resp, err := c.Do(req)
 	if err != nil {
 		fmt.Printf("http.Do() error: %v\n", err)
