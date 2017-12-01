@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	apiUrl string = "http://localhost:3123/bot/chat"
+	// apiUrl string = "http://localhost:3123/bot/chat"
+	apiUrl string = "https://bulletnotes.io/bot/chat"
 )
 
 func chatLoop(apiKey string) {

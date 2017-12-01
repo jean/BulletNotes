@@ -137,12 +137,12 @@ export chat = new ValidatedMethod
     else if apiKey
       user = Meteor.users.findOne apiKey:apiKey
       if !user
-        return 'Bad API Key Provided. Get a new one at https://bulletnotes.io/settings'
+        return 'Bad API Key Provided. Get a new one at ' + Meteor.settings.public.url + 'settings'
     else
       user = Meteor.user()
 
     if !user
-      return 'Please login. You can register at https://bulletnotes.io/ or chat me on Telegram at @BulletNotesBot'
+      return 'Please login. You can register at ' + Meteor.settings.public.url + ' or chat me on Telegram at @BulletNotesBot'
 
     conversation = new LocalStorage('./conversations'+user._id)
 

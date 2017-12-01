@@ -215,10 +215,6 @@ Notes.schema = new SimpleSchema
   transaction_id:
     type: SimpleSchema.RegEx.Id
     optional: true
-  # True if this note was created by the telegram bot
-  telegram:
-    type: Boolean
-    optional: yes
 
 Notes.attachSchema Notes.schema
 
