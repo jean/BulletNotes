@@ -33,6 +33,31 @@ Template.Notes_show_page.onRendered ->
       FlowRouter.getParam 'noteId'
       FlowRouter.getParam 'shareKey'
 
+Template.Notes_show_page.events
+  'focus .body': (event, instance) ->
+    Session.set 'focused', true
+    Template.bulletNoteItem.addAutoComplete event.currentTarget
+
+  'blur .body': (event, instance) ->
+    event.stopPropagation()
+    that = this
+    Session.set 'focused', false
+    # console.log event.target
+    body = Template.bulletNoteItem.stripTags event.target.innerHTML
+    if body != Template.bulletNoteItem.stripTags(@body)
+      note = Notes.findOne FlowRouter.getParam 'noteId',
+        fields:
+          _id: yes
+      Meteor.call 'notes.updateBody', {
+        noteId: note._id
+        body: body
+        shareKey: FlowRouter.getParam 'shareKey'
+      }, (err, res) ->
+        that.body = body
+        $(event.target).html Template.bulletNotes.formatText body
+    if !body
+      $(event.target).fadeOut()
+
 Template.Notes_show_page.helpers
   showNotes: ->
     if Session.get('viewMode') != "kanban" && Session.get('viewMode') != "calendar"

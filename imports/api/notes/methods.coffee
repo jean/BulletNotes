@@ -369,13 +369,13 @@ export makeChild = new ValidatedMethod
 
     rankDenormalizer.updateSiblings parentId
 
-removeRun = (id) ->
+removeRun = (note) ->
+  Notes.remove { _id: note._id }, { tx: true, softDelete: true }
+
   children = Notes.find
-    parent: id
+    parent: note._id
   children.forEach (child) ->
-    removeRun child._id
-  note = Notes.findOne(id)
-  Notes.remove { _id: id }, { tx: true, softDelete: true }
+    removeRun child
 
 export remove = new ValidatedMethod
   name: 'notes.remove'
@@ -392,7 +392,7 @@ export remove = new ValidatedMethod
       throw new (Meteor.Error)('not-authorized')
 
     tx.start 'delete note'
-    removeRun noteId
+    removeRun note
     tx.commit()
 
     childCountDenormalizer.afterInsertNote note.parent

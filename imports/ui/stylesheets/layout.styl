@@ -167,3 +167,100 @@ a.mdl-layout__tab:hover, a.mdl-layout__tab:focus
   padding: 1em
   background-color: white
   box-shadow: 0px 0px 10px #000
+
+
+// Hacker theme
+body.Terminal
+  $green = #00cf00
+  
+  background-image: none !important
+  background-color: black
+  font-family: 'PT Mono', monospace !important
+  font-size: 1.2em
+  color: $green
+    
+  .note-item
+    background: none
+    
+  .tag-white
+    border-color: white
+    color: white
+  .tag-red
+    border-color: #FF2020 !important
+    color: red
+  .tag-orange
+    border-color: #FFD8B5 !important
+    color: rgba(255, 216, 181, 1)
+  .tag-yellow
+    border-color: #FFFAB5 !important
+    color: rgba(255, 250, 181, 1)
+  .tag-lime
+    border-color: #E1FFB5 !important
+    color: rgba(225, 255, 181, 1)
+  .tag-olive
+    border-color: #B5FFC9 !important
+    color: rgba(181, 255, 201, 1)
+  .tag-green
+    border-color: #CCFFB5 !important
+    color: rgba(204, 255, 181, 1)
+  .tag-teal
+    border-color: #B5FFD7 !important
+    color: rgba(181, 255, 215, 1)
+  .tag-aqua
+    border-color: #B5FFFC !important
+    color: rgba(181, 255, 252, 1)
+  .tag-blue
+    border-color: #B5E8FF !important
+    color: rgba(181, 232, 255, 1)
+  .tag-navy
+    border-color: #3f34ff !important
+    color: rgba(63, 52, 255, 1)
+  .tag-fuchia, .tag-fuschia
+    border-color: #F1B5FF !important
+    color: rgba(241, 181, 255, 1)
+  .tag-pink
+    border-color: #F1B5FF !important
+    color: pink
+  .tag-purple
+    border-color: #D3B5FF !important
+    color: rgba(211, 181, 255, 1)
+  .tag-maroon
+    border-color: #C08F8F !important
+    color: rgba(192, 143, 143, 1)
+  .tag-silver
+    border-color: silver !important
+    color: rgba(192, 192, 192, 1)
+  
+  #siteFooter
+    margin-bottom: 0
+    background: none !important
+    color: $green
+    a
+      color: $green
+
+  #scrollToTopWrap
+    display: none !important
+
+  #notes, .extraPage
+    margin-top: .5em
+    color: $green
+    background-color: black
+    border: solid $green 1px
+    
+  li.body
+    border-color: $green
+
+  .mdl-list__item, .mdl-card__title, .mdl-card__supporting-text
+    color: green
+  
+  .mdl-radio__outer-circle
+    border: 2px solid $green
+      
+  .note-item.focused
+    .title
+      box-shadow: 0px 0px 5px $green
+
+  .mdl-card
+    background-color: black
+    border: solid $green 1px
+    color: $green

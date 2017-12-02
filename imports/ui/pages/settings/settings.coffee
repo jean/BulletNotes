@@ -77,6 +77,7 @@ Template.App_settings.helpers
       {theme:'Field'}
       {theme:'Beach'}
       {theme:'Space'}
+      {theme:'Terminal'}
       {theme:'White'}
       {theme:'Light'}
     ]

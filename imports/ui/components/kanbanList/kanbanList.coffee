@@ -52,7 +52,5 @@ Template.kanbanList.events
       parent: parent
       shareKey: FlowRouter.getParam('shareKey')
     }
-    console.log instance
-    console.log event
-    console.log $(instance.firstNode).children(".kanbanChildNotes")
     $(instance.firstNode).children(".kanbanChildNotes").animate({ scrollTop: $(instance.firstNode).children(".kanbanChildNotes")[0].scrollHeight }, 200)
+    $(instance.firstNode).find(".title").last().focus()

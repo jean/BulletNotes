@@ -56,15 +56,13 @@ Bot.formatNotes = (notes, limitMultiplier, mobileFormat) ->
     msg = ''
     if limitMultiplier > 1
       msg = msg + '`-1` - _( Previous Notes )_\n'
-    if showNextPage
-      msg = msg + '`0` - _( More Notes )_\n'
-
-    msg = msg + '\n'
 
     for note in notes
       childCount = note.children || 0
       msg = msg + '`' + ii + '` - ' + '_[' + childCount + ']_ - ' + Bot.formatNote(note, mobileFormat) + '\n'
       ii++
+    if showNextPage
+      msg = msg + '`0` - _( More Notes )_\n'
 
   else
     msg = '_( No Notes )_\n'
@@ -163,21 +161,39 @@ export chat = new ValidatedMethod
     limitMultiplier = 1
 
     # Check for an active conversation
-
     if conversationCommand = conversation.getItem 'command'
       limitMultiplier = conversation.getItem('limitMultiplier') || 1
-      switch conversationCommand
+      limitMultiplier = Number.parseInt limitMultiplier, 10
 
+      # Check for pagination first
+      console.log limitMultiplier
+      console.log "?"
+      if command[0] == "0"
+        # Advance pagination
+        if limitMultiplier < 10
+          limitMultiplier = limitMultiplier + 1
+          conversation.setItem 'limitMultiplier', limitMultiplier
+          command[0] = "/edit"
+        else
+          msg = 'Sorry that is all the notes I can show you. Try searching with `/find stuff` or browsing with `/browse`.\n\n'
+        didPaginate = true
+      else if command[0] == "-1"
+        console.log "Go back"
+        # Retreat pagination
+        if limitMultiplier > 1
+          limitMultiplier = limitMultiplier - 1
+          conversation.setItem 'limitMultiplier', limitMultiplier
+        else
+          msg = 'Already at the first notes!.\n\n'
+        didPaginate = true
+
+      console.log command[0], didPaginate, limitMultiplier
+
+      switch conversationCommand
         when 'delete'
-          if command[0] == "0"
-            # Advance pagination
-            if limitMultiplier < 10
-              limitMultiplier = limitMultiplier + 1
-              conversation.setItem 'limitMultiplier', limitMultiplier
-              command[0] = "/delete"
-            else
-              msg = 'Sorry that is all the notes I can show you. Try searching with `/find stuff` or browsing with `/browse`.\n\n'
-          else 
+          command[0] = "/delete"
+
+          if !didPaginate
             deleteId = conversation.getItem('deleteId')
             noteIds = conversation.getItem('noteIds')
 
@@ -208,16 +224,10 @@ export chat = new ValidatedMethod
               conversation.clear()
 
         when 'edit'
+          command[0] = "/edit"
 
-          if command[0] == "0"
-            # Advance pagination
-            if limitMultiplier < 10
-              limitMultiplier = limitMultiplier + 1
-              conversation.setItem 'limitMultiplier', limitMultiplier
-              command[0] = "/edit"
-            else
-              msg = 'Sorry that is all the notes I can show you. Try searching with `/find stuff` or browsing with `/browse`.\n\n'
-          else 
+          # If we didn't change pagination, then try and do stuff
+          if !didPaginate
             editId = conversation.getItem('editId')
             noteIds = conversation.getItem('noteIds')
 
@@ -234,9 +244,7 @@ export chat = new ValidatedMethod
             else if command.length > 1
 
               editId = noteIds[command[0]-1]
-              console.log command
               command.shift()
-              console.log command
               msg = Bot.editNoteTitle editId, command.join ' '
               msg = msg + Bot.getRecent Bot.defaultLimit, user
               conversation.clear()
@@ -394,7 +402,7 @@ export chat = new ValidatedMethod
           if command.length < 2
             # We don't have a search param, grab the most recent notes
 
-            msg = Bot.formatNotes notes, user.telegramBotMobileFormat
+            msg = Bot.formatNotes notes, limitMultiplier, user.telegramBotMobileFormat
 
             msg = msg + '\n`Reply` with the number of the note you want to delete, or reply with `(N)o` to cancel.'
             noteIds = Bot.generateNoteIds notes, limitMultiplier
@@ -425,7 +433,7 @@ export chat = new ValidatedMethod
               msg = 'Here are your most recent '+Bot.defaultLimit+' notes containing `' + searchTerm + '`:\n\n'
 
               noteIds = Bot.generateNoteIds notes, limitMultiplier
-              msg = msg + Bot.formatNotes notes, user.telegramBotMobileFormat
+              msg = msg + Bot.formatNotes notes, limitMultiplier, user.telegramBotMobileFormat
 
               msg = msg + '\n`Reply` with the number of the note you want to delete, or reply with `(N)o` to cancel.'
 
@@ -443,7 +451,7 @@ export chat = new ValidatedMethod
           if command.length < 2
             # We don't have a search param, grab the most recent notes
 
-            msg = Bot.formatNotes notes, user.telegramBotMobileFormat
+            msg = Bot.formatNotes notes, limitMultiplier, user.telegramBotMobileFormat
 
             msg = msg + '\n`Reply` with the number of the note you want to edit, or reply with `(N)o` to cancel.'
             noteIds = Bot.generateNoteIds notes, limitMultiplier
@@ -464,13 +472,14 @@ export chat = new ValidatedMethod
               # We do have a search, find recent notes matching the search
               command.shift()
               searchTerm = command.join(' ')
-              notes = Notes.search searchTerm, user._id, Bot.defaultLimit
+              # Again add one to the limit to enable pagination
+              notes = Notes.search searchTerm, user._id, Bot.defaultLimit + 1
               msg = 'Here are your most recent '+Bot.defaultLimit+' notes containing `' + searchTerm + '`:\n\n'
 
               noteIds = Bot.generateNoteIds notes, limitMultiplier
-              msg = msg + Bot.formatNotes notes, user.telegramBotMobileFormat
+              msg = msg + Bot.formatNotes notes, limitMultiplier, user.telegramBotMobileFormat
 
-              msg = msg + '\n`Reply` with the number of the note you want to delete, or reply with `(N)o` to cancel.'
+              msg = msg + '\n`Reply` with the number of the note you want to edit, or reply with `(N)o` to cancel.'
 
               if searchTerm
                 regex = new RegExp searchTerm, 'gi'

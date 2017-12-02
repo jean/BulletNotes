@@ -188,10 +188,11 @@ Template.App_body.onCreated ->
     Meteor.subscribe 'notes.count.total'
     Meteor.subscribe 'notes.count.user'
     Session.set 'ready', handle.ready()
-    return
+    if Meteor.user()
+      $('body').removeAttr('class').addClass Meteor.user().theme
+
   setTimeout (->
     $('.betaWarning,.devWarning').fadeOut()
-    return
   ), 5000
 
 Template.App_body.getTotalNotesAllowed = ->
