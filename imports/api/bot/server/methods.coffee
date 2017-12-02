@@ -141,7 +141,7 @@ export chat = new ValidatedMethod
     else if apiKey
       user = Meteor.users.findOne apiKey:apiKey
       if !user
-        return 'Bad API Key Provided. Get a new one at ' + Meteor.settings.public.url + 'settings'
+        throw new (Meteor.Error)('Bad API Key')
     else
       user = Meteor.user()
 
@@ -203,7 +203,7 @@ export chat = new ValidatedMethod
       switch command[0]
         when '/help', '/h'
           if command.length < 2
-            msg = 'Hi, I\'m *BulletNotesBot*!:thumbup:\n\n'
+            msg = 'Hi, I\'m *BulletNotesBot*! :thumbup:\n\n'
             msg = msg + 'I have the following commands available:\n\n'
             
             msg = msg + '`/delete` `/del` `/d` - Delete a note.\n'
