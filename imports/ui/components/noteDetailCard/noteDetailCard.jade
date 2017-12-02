@@ -1,4 +1,4 @@
 template(name="noteDetailCard")
 	| Transactions: 
-	+each transactions
-		| Test! {{ description }}
+	+each tx in transactions
+		| Test! {{ tx.description }} {{ tx._id }}

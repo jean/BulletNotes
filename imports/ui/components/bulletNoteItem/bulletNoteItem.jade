@@ -24,8 +24,9 @@ template(name='bulletNoteItem')
       if showContent
         +noteBody
       input.fileInput(type='file',style='display:none')
-        
-      //- +noteDetailCard
+      
+      if showDetailCard
+        +noteDetailCard
 
       if showContent
         if hasContent

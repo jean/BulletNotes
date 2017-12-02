@@ -8,10 +8,11 @@ template(name="menu")
 
       if currentUser
         .mdl-layout-spacer
+          | Notes: {{getCount 'notes.count.user'}}
           if currentUser.isPro
-            | Thank you!
+            | Thank you for upgrading to Pro!
           else
-            | Notes: {{getCount 'notes.count.user'}} Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
+            | Limit: {{totalNotesAllowed}} Referrals: {{referralCount}}
           #spaceUsedBar.mdl-progress.mdl-js-progress
         .buttonWrap
           if hideUndoButton

@@ -1,6 +1,6 @@
 template(name='breadcrumbs')
   a.mdl-layout__tab.home(href='/') {{_ 'layouts.appBody.home'}}
-  +each parents
-    a.mdl-layout__tab(href='/note/{{_id}}/{{shareKey}}') {{{title}}}
+  +each parent in parents
+    a.mdl-layout__tab(href='/note/{{ parent._id }}/{{ parent.shareKey }}') {{{ parent.title }}}
   if focusedTitle
     a.mdl-layout__tab.is-active(href='/note/{{focusedId}}/{{shareKey}}') {{{focusedTitle}}}

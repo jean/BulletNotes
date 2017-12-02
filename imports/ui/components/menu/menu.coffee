@@ -121,35 +121,41 @@ Template.menu.helpers
 
 Template.menu.events
   'click .menuToggle': (event, instance) ->
+    event.stopImmediatePropagation()
+
     Meteor.call('users.setMenuPin', {menuPin:false}, ->
       $( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" )
     )
 
-  'click .loginBtn, click .joinBtn, click .favoriteNote': (event, instance) ->
-    $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
-    $( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" )
+  'click .js-logout': (event) ->
+    event.stopImmediatePropagation()
 
-  'click .js-logout': ->
     Meteor.logout()
     FlowRouter.go '/'
 
-  'click #menuPin': ->
+  'click #menuPin': (event) ->
+    event.stopImmediatePropagation()
+
     if Meteor.user().menuPin
       Meteor.call('users.setMenuPin', {menuPin:false})
     else
       Meteor.call('users.setMenuPin', {menuPin:true})
 
-  'click #mute': ->
-    Template.App_body.toggleMute()
-
-  'click .homeLink': ->
+  'click .homeLink': (event) ->
+    event.stopImmediatePropagation()
     $('#searchForm input').val('')
 
   'click #undo': (event) ->
+    event.stopImmediatePropagation()
     tx.undo()
 
   'click #redo': (event) ->
+    event.stopImmediatePropagation()
     tx.redo()
+
+  'click a': (event) ->
+    $('.mdl-layout__obfuscator.is-visible').trigger( "click" )
+    $('.mdl-layout__content').animate({ scrollTop: 0 }, 200)
 
 Template.registerHelper 'increment', (count) ->
   return count + 1

@@ -12,7 +12,7 @@ require '/imports/ui/components/moveTo/moveTo.coffee'
 require '/imports/ui/components/noteMenu/noteMenu.coffee'
 require '/imports/ui/components/noteTitle/noteTitle.coffee'
 require '/imports/ui/components/noteBody/noteBody.coffee'
-# require '/imports/ui/components/noteDetailCard/noteDetailCard.coffee'
+require '/imports/ui/components/noteDetailCard/noteDetailCard.coffee'
 
 import {
   setShowContent

@@ -1,61 +1,70 @@
 template(name="App_settings")
   #settingsPage.extraPage
     .title-message {{_ 'layouts.appBody.settings'}}
-    .subtitle-message
-      h4 Theme
-    ul.demo-list-control.mdl-list
-      +each themes
-        li.mdl-list__item
-          span.mdl-list__item-primary-content
-            i.material-icons.mdl-list__item-avatar person
-            | {{theme}}
-          span.mdl-list__item-secondary-action
-            label.demo-list-radio.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='theme_{{theme}}')
-              input.themeInput.mdl-radio__button(type='radio', name='options', value='1', checked='{{themeChecked theme}}', id='theme_{{theme}}' data-name='{{theme}}')
+    .mdl-grid
+      .mdl-cell.mdl-cell--6-col
+        .mdl-card.mdl-shadow--2dp.mdl--centered
+          .mdl-card__title
+            h2.mdl-card__title-text Language
+          .mdl-card__supporting-text
+            ul.demo-list-control.mdl-list
+            +each languages
+              li.mdl-list__item
+                span.mdl-list__item-primary-content
+                  i.material-icons.mdl-list__item-avatar person
+                  | {{language}}
+                span.mdl-list__item-secondary-action
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='language_{{language}}')
+                    input.languageInput.mdl-radio__button(type='radio', name='language', value='1', checked='{{languageChecked language}}', id='language_{{language}}' data-name='{{language}}')
 
-    .subtitle-message
-      h4 Language
-    ul.demo-list-control.mdl-list
-      +each languages
-        li.mdl-list__item
-          span.mdl-list__item-primary-content
-            i.material-icons.mdl-list__item-avatar person
-            | {{language}}
-          span.mdl-list__item-secondary-action
-            label.demo-list-radio.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='language_{{language}}')
-              input.languageInput.mdl-radio__button(type='radio', name='options', value='1', checked='{{languageChecked language}}', id='language_{{language}}' data-name='{{language}}')
+      .mdl-cell.mdl-cell--6-col
+        .mdl-card.mdl-shadow--2dp.mdl--centered
+          .mdl-card__title
+            h2.mdl-card__title-text {{_ 'layouts.appBody.import'}}/{{_ 'layouts.appBody.export'}}
+          .mdl-card__supporting-text
+            | Here you can generate an Export, which is just a list of notes in flat text format. Copy and paste it somewhere to back it up, or import it somewhere else.
+            #exportSpinner(style='display:none')
+              i.glyphicon.glyphicon-refresh.glyphicon-spin
+            textarea#exportResult(style='display:none')
+          .mdl-card__actions.mdl-card--border
+            a#importLink.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='/import') {{_ 'layouts.appBody.import'}}
+            a#exportLink.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='#') {{_ 'layouts.appBody.export'}}
 
+      .mdl-cell.mdl-cell--6-col
+        .mdl-card.mdl-shadow--2dp.mdl--centered
+          .mdl-card__title
+            h2.mdl-card__title-text Dropbox
+          .mdl-card__supporting-text
+            | You can link your Dropbox account for a nightly backup.
+            | Each backup file can be imported straight into another instance of BulletNotes,
+            | or into something like Workflowy or Dynalist.
+          .mdl-card__actions.mdl-card--border
+            if dropbox_token
+              a#dropboxExportLink.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Export All Notes to Dropbox
+              a#deauthLink.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Unlink Dropbox Account
+            else
+              a#authlink.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Authenticate with Dropbox
 
-    .subtitle-message
-      h4 {{_ 'layouts.appBody.import'}}/{{_ 'layouts.appBody.export'}}
-    a#importLink.form-control.btn.btn-theme.btn-primary(href='/import') {{_ 'layouts.appBody.import'}}
-    a#exportLink.form-control.btn.btn-theme.btn-primary(href='#') {{_ 'layouts.appBody.export'}}
-    #exportSpinner(style='display:none')
-      i.glyphicon.glyphicon-refresh.glyphicon-spin
-    textarea#exportResult(style='display:none')
-    
-    h4 Dropbox
-    p
-      | You can link your Dropbox account for a nightly backup.
-      | Each backup file can be imported straight into another instance of BulletNotes,
-      | or into something like Workflowy.
-    if dropbox_token
-      a#dropboxExportLink.form-control.btn.btn-theme.btn-primary Export All Notes to Dropbox
-      a#deauthLink.form-control.btn.btn-theme.btn-primary Unlink Dropbox Account
-    else
-      a#authlink.form-control.btn.btn-theme.btn-primary Authenticate with Dropbox
+      .mdl-cell.mdl-cell--6-col
+        .mdl-card.mdl-shadow--2dp.mdl--centered
+          .mdl-card__title
+            h2.mdl-card__title-text API Key
+          .mdl-card__supporting-text
+            p Your API Key
+            input#apiKey.form-control.btn(value='{{currentUser.apiKey}}')
+          .mdl-card__actions.mdl-card--border
+            a#copyApiKey.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Copy
+            a#generateApiKey.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Generate a New API Key
 
-    .mdl-card.mdl-shadow--2dp.mdl--centered
-      .mdl-card__title
-        h2.mdl-card__title-text Alfred Integration
-      .mdl-card__supporting-text
-        p Documentation: 
-        a(href="https://bulletnotes.io/note/frCTPYCuSQN2kDRdo")
-          | https://bulletnotes.io/note/frCTPYCuSQN2kDRdo
-      .mdl-card__actions.mdl-card--border
-        p Your API Key
-        input#apiKey(value='{{currentUser.apiKey}}')
-        br
-        a#copyApiKey Copy
-        br
-        a#generateApiKey Generate a New API Key
+    if currentUser.isPro
+      .subtitle-message
+        h4 Theme
+      ul.demo-list-control.mdl-list
+        +each themes
+          li.mdl-list__item
+            span.mdl-list__item-primary-content
+              i.material-icons.mdl-list__item-avatar person
+              | {{theme}}
+            span.mdl-list__item-secondary-action
+              label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='theme_{{theme}}')
+                input.themeInput.mdl-radio__button(type='radio', name='theme', value='1', checked='{{themeChecked theme}}', id='theme_{{theme}}' data-name='{{theme}}')

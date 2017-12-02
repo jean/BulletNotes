@@ -26,6 +26,27 @@ Template.noteTitle.helpers
     else
       return true
 
+Template.noteTitle.saveTitle = (event, instance) ->
+  title = Template.bulletNoteItem.stripTags(event.target.innerHTML)
+
+  if !@title || title != Template.bulletNoteItem.stripTags emojione.shortnameToUnicode @title
+    instance.state.set 'dirty', true
+    setTimeout ->
+      $(event.target).html Template.bulletNotes.formatText title
+    , 20
+
+    Meteor.call 'notes.updateTitle', {
+      noteId: instance.data._id
+      title: title
+      shareKey: FlowRouter.getParam 'shareKey'
+    }, (err, res) ->
+      if err
+        Template.App_body.showSnackbar
+          message: err.error
+      else
+        instance.state.set 'dirty', false
+
+
 Template.noteTitle.events
   'click .title': (event, instance) ->
     if instance.view.parentView.templateInstance().state
@@ -43,21 +64,4 @@ Template.noteTitle.events
       Session.set 'indenting', false
       return
 
-    title = Template.bulletNoteItem.stripTags(event.target.innerHTML)
-
-    if !@title || title != Template.bulletNoteItem.stripTags emojione.shortnameToUnicode @title
-      instance.state.set 'dirty', true
-      setTimeout ->
-        $(event.target).html Template.bulletNotes.formatText title
-      , 20
-
-      Meteor.call 'notes.updateTitle', {
-        noteId: instance.data._id
-        title: title
-        shareKey: FlowRouter.getParam 'shareKey'
-      }, (err, res) ->
-        if err
-          Template.App_body.showSnackbar
-            message: err.error
-        else
-          instance.state.set 'dirty', false
+    Template.noteTitle.saveTitle event, instance

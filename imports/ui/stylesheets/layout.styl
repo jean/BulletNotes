@@ -138,8 +138,8 @@ a.mdl-layout__tab:hover, a.mdl-layout__tab:focus
   opacity: 0
   padding: 0 .35em
 
-.mdl-layout__obfuscator
-  display: none
+// .mdl-layout__obfuscator
+//   display: none
 
 .zoomingTitle
   z-index: 500
@@ -170,8 +170,8 @@ a.mdl-layout__tab:hover, a.mdl-layout__tab:focus
 
 
 // Hacker theme
+$green = #00cf00
 body.Terminal
-  $green = #00cf00
   
   background-image: none !important
   background-color: black
@@ -232,14 +232,10 @@ body.Terminal
     color: rgba(192, 192, 192, 1)
   
   #siteFooter
-    margin-bottom: 0
     background: none !important
     color: $green
     a
       color: $green
-
-  #scrollToTopWrap
-    display: none !important
 
   #notes, .extraPage
     margin-top: .5em
@@ -264,3 +260,35 @@ body.Terminal
     background-color: black
     border: solid $green 1px
     color: $green
+
+  #botWidgetWrap
+    border: solid $green 1px
+  #chatArea, #botPageWrap, #botWidgetWrap
+    background: black
+  #chatInput
+    background: black
+    box-shadow: 0px 0px 5px $green
+  
+  #botPageWrap::after, #botWidgetWrap::after
+    display: none
+
+  #settingsPage
+    .mdl-list__item:hover
+      border-color: $green
+// end Terminal Theme
+
+#settingsPage
+  .mdl-list__item
+    padding: 5px !important    
+
+// Hide the giant footer area
+body.Terminal, body.White
+  #siteFooter
+    margin-bottom: 0
+
+  #scrollToTopWrap
+    display: none !important
+
+body.White
+  .mdl-layout__header
+    background-color: gray;
