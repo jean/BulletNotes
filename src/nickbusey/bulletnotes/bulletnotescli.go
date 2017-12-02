@@ -86,15 +86,6 @@ func chatLoop(apiKey string) {
 		if err := scanner.Err(); err != nil {
 			fmt.Println(err)
 		}
-		// var lines bytes.Buffer
-
-		// lines.WriteString(string(data))
-		// scanner := bufio.NewScanner(&lines)
-		// for scanner.Scan() {
-		// output := 
-		// 	os.Stdout.Write(output)	
-		// }
-
 
 		chatLoop(apiKey)
 	}

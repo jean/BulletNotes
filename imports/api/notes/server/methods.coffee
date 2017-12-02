@@ -104,42 +104,61 @@ export inbox = new ValidatedMethod
     title: Notes.simpleSchema().schema('title')
     body: Notes.simpleSchema().schema('body')
     userId: Notes.simpleSchema().schema('_id')
+    parentId:
+      type: String
+      optional: true
   .validator
     clean: yes
     filter: no
-  run: ({ title, body, userId }) ->
-    inbox = Notes.findOne
-      owner: userId
-      inbox: true
-      deleted: {$exists:false}
+  # userId has already been translated from apiKey by notes/routes by the time it gets here
+  run: ({ title, body, userId, parentId = null }) ->
+    # If we have a parent note to put it under, use that. But make sure we have write permissions.
+    if parentId
+      note = Notes.findOne
+        owner: userId
+        _id: parentId
 
-    Meteor.users.update userId,
-      {$inc:{"notesCreated":1}}
+      if !note        
+        # No permission, or no note. Just quit.
+        false
 
-    # If there is not an existing Inbox note, create one.
-    if !inbox
-      inboxId = Notes.insert
-        title: ":inbox_tray: <b>Inbox</b>"
-        createdAt: new Date()
+    # We don't have a specific note to put this under, put it in the Inbox
+    else
+      inbox = Notes.findOne
         owner: userId
         inbox: true
-        showChildren: true
-        complete: false
-    else
-      inboxId = inbox._id
+        deleted: {$exists:false}
 
-    if inboxId
+      # If there is not an existing Inbox note, create one.
+      if !inbox
+        parentId = Notes.insert
+          title: ":inbox_tray: <b>Inbox</b>"
+          createdAt: new Date()
+          owner: userId
+          inbox: true
+          showChildren: true
+          complete: false
+
+      # Otherwise, use the existing inbox
+      else
+        parentId = inbox._id
+
+    if parentId
       noteId = Notes.insert
         title: title
         body: body
-        parent: inboxId
+        parent: parentId
         owner: userId
         createdAt: new Date()
         rank: 0
         complete: false
 
-      # rankDenormalizer.updateSiblings inboxId
-      # childCountDenormalizer.afterInsertNote inboxId
+      Meteor.users.update userId,
+        {$inc:{"notesCreated":1}}
+
+      rankDenormalizer.updateSiblings parentId
+      childCountDenormalizer.afterInsertNote parentId
+
       return noteId
 
 export summary = new ValidatedMethod

@@ -191,6 +191,7 @@ Notes.schema = new SimpleSchema
   complete:
     type: Boolean
     optional: yes
+    index: 1
   inbox:
     type: Boolean
     optional: yes

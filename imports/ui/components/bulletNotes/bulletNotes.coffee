@@ -176,7 +176,6 @@ Template.bulletNotes.events
       , file
 
   'click .newNote': (event, instance) ->
-    Template.App_body.playSound 'newNote'
     note = Notes.findOne Template.currentData().note()
     if note
       children = Notes.find { parent: note._id }
@@ -296,7 +295,6 @@ Template.bulletNotes.rendered = ->
       $('.sortable').removeClass 'sorting'
 
     update: (event, ui) ->
-      Template.App_body.playSound 'sort'
       parent = $(ui.item).closest('ol').closest('li').data('id')
       if !parent
         parent = FlowRouter.getParam 'noteId'

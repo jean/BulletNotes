@@ -45,7 +45,6 @@ Template.breadcrumbs.events
     if $(event.currentTarget).hasClass('home') && window.location.pathname == '/'
       return false
 
-    Template.App_body.playSound('navigate')
     event.preventDefault()
     $('input.search').val('')
 

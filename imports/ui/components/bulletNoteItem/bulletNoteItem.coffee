@@ -237,7 +237,6 @@ Template.bulletNoteItem.events
     if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
       window.open(event.target.href)
     else
-      Template.App_body.playSound 'navigate'
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
       FlowRouter.go(event.target.pathname)
 
@@ -377,11 +376,10 @@ Template.bulletNoteItem.events
           else if event.ctrlKey
             Template.bulletNoteItem.toggleChildren instance
           else
-            Template.App_body.playSound 'newNote'
             # Create a new note below the current.
             Meteor.call 'notes.insert', {
               title: ''
-              rank: note.rank + 1
+              rank: note.rank + 0.5
               parent: note.parent
               shareKey: FlowRouter.getParam('shareKey')
             }
@@ -410,7 +408,6 @@ Template.bulletNoteItem.events
             #     title: topNote
             #     shareKey: FlowRouter.getParam('shareKey')
             #   }
-            # Template.App_body.playSound 'newNote'
             # # Create a new note below the current.
             # Meteor.call 'notes.insert', {
             #   title: bottomNote
@@ -475,7 +472,6 @@ Template.bulletNoteItem.events
         # If the note is empty and hit delete again, or delete with ctrl key
         if event.currentTarget.innerText.trim().length == 0 || event.ctrlKey
           $(event.currentTarget).closest('.note-item').fadeOut()
-          Template.App_body.playSound 'delete'
           Meteor.call 'notes.remove',
             noteId: @_id
             shareKey: FlowRouter.getParam 'shareKey'
@@ -494,7 +490,6 @@ Template.bulletNoteItem.events
             prev = $(event.currentTarget).closest('.note-item').prev()
             prevNote = Blaze.getData(prev.get(0))
             note = this
-            Template.App_body.playSound 'delete'
             Meteor.call 'notes.updateTitle', {
               noteId: prevNote._id
               title: prevNote.title + event.target.innerHTML
@@ -643,10 +638,6 @@ Template.bulletNoteItem.events
     event.stopImmediatePropagation()
     event.preventDefault()
     $('.mdl-tooltip').fadeOut().remove()
-    if instance.data.showChildren
-      Template.App_body.playSound 'collapse'
-    else
-      Template.App_body.playSound 'expand'
 
     Template.bulletNoteItem.toggleChildren(instance)
 
@@ -654,7 +645,6 @@ Template.bulletNoteItem.events
     event.preventDefault()
     event.stopImmediatePropagation()
     if !Session.get 'dragging'
-      Template.App_body.playSound 'navigate'
       offset = $(instance.firstNode).find('.title').offset()
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
       headerOffset = $('.title-wrapper').offset()

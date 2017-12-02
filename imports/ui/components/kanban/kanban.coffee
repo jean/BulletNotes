@@ -44,7 +44,6 @@ Template.kanban.helpers
 
 Template.kanban.events
   'click .newKanbanList header': (event, instance) ->
-    Template.App_body.playSound 'newNote'
     note = Notes.findOne FlowRouter.getParam('noteId')
     if note
       children = Notes.find { parent: note._id }

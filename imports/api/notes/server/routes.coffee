@@ -13,6 +13,7 @@ Picker.route '/note/inbox', ( params, request, response, next ) ->
         userId: user._id
         title: request.body.title
         body: request.body.body
+        parentId: request.body.parentId
       response.setHeader( 'Content-Type', 'application/json' )
       response.statusCode = 200
       response.end( noteId )

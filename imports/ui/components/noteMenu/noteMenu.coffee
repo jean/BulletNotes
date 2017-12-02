@@ -41,7 +41,6 @@ Template.noteMenu.events
     event.preventDefault()
     event.stopImmediatePropagation()
     if !Session.get 'dragging'
-      Template.App_body.playSound 'navigate'
       title = $(instance.firstNode).closest('.noteContainer,.kanbanListItem').find('.title').first()
       offset = title.offset()
       $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
@@ -115,7 +114,6 @@ Template.noteMenu.events
   'click .favorite, click .unfavorite': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
-    Template.App_body.playSound 'favorite'
 
     favorite.call
       noteId: instance.data._id
@@ -144,7 +142,7 @@ Template.noteMenu.events
 
   'click a.delete': (event) ->
     event.preventDefault()
-    Template.App_body.playSound 'delete'
+
     $(event.currentTarget).closest('.note').remove()
     Meteor.call 'notes.remove',
       noteId: @_id

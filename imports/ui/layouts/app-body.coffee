@@ -87,9 +87,6 @@ Meteor.startup ->
     editingNote = $(document.activeElement).hasClass('title')
     menuVisible = $('#container').hasClass('menu-open')
     switch e.keyCode
-      # m - mute
-      when 77
-        Template.App_body.toggleMute()
       # f - find / search
       when 70
         if Template.App_body.shouldNav()
@@ -100,24 +97,20 @@ Meteor.startup ->
         if Template.App_body.shouldNav()
           if Meteor.user() && Meteor.user().menuPin
             Meteor.call('users.setMenuPin', {menuPin:false})
-            Template.App_body.playSound 'menuClose'
             Template.App_body.showSnackbar
               message: "Menu unpinned"
           else
             Meteor.call('users.setMenuPin', {menuPin:true})
-            Template.App_body.playSound 'menuOpen'
             Template.App_body.showSnackbar
               message: "Menu pinned"
       # , comma - load settings
       when 188
         if Template.App_body.shouldNav()
-          Template.App_body.playSound 'navigate'
           FlowRouter.go('/settings')
       # 0
       # Home
       when 48, 36
         if Template.App_body.shouldNav()
-          Template.App_body.playSound 'navigate'
           FlowRouter.go('/')
       # 1
       when 49
@@ -209,7 +202,6 @@ Template.App_body.getTotalNotesAllowed = ->
 
 Template.App_body.loadFavorite = (number) ->
   if Template.App_body.shouldNav() && $('.favoriteNote').get(number-1)
-    Template.App_body.playSound 'navigate'
     $('input').val('')
     NProgress.start()
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
@@ -348,7 +340,6 @@ Template.App_body.events
     true
 
   'click #scrollToTop': () ->
-    Template.App_body.playSound 'navigate'
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
   'blur .title-wrapper': (event, instance) ->
@@ -379,26 +370,7 @@ Template.App_body.events
     Session.set('viewMode','kanban')
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
-
-Template.App_body.playSound = (sound) ->
-  if Meteor.user() && !Meteor.user().muted
-    audio = new Audio('/snd/'+sound+'.wav')
-    audio.volume = .5
-    audio.play()
-
-Template.App_body.toggleMute = () ->
-  if Template.App_body.shouldNav()
-    if Meteor.user().muted
-      Meteor.call 'users.setMuted', {muted:false}, (err, res) ->
-        Template.App_body.showSnackbar
-          message: "Unmuted"
-    else
-      Meteor.call 'users.setMuted', {muted:true}, (err, res) ->
-        Template.App_body.showSnackbar
-          message: "Muted"
-
 Template.App_body.showSnackbar = (data) ->
-  Template.App_body.playSound 'snackbar'
   document.querySelector('#snackbar').MaterialSnackbar.showSnackbar(data)
 
 UI.registerHelper 'getCount', (name) ->
