@@ -25,7 +25,12 @@ An open-source, fully featured note taking, journaling, self quantification app.
 * Ease of Use
  * Point and click friendliness for less technical users.
  * API and CLI interface for more technical users.
+ * Chat bot
+ 	* Telegram Interface
 
+```
+brew install NickBusey/Bulletnotescli/bulletnotescli
+```
 
 
 ## User Guide, Planned Feature List, and Bug Tracker

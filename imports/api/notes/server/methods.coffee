@@ -156,9 +156,9 @@ export inbox = new ValidatedMethod
       Meteor.users.update userId,
         {$inc:{"notesCreated":1}}
 
-      rankDenormalizer.updateSiblings parentId
-      childCountDenormalizer.afterInsertNote parentId
-
+      Meteor.defer ->
+        rankDenormalizer.updateSiblings noteId
+    
       return noteId
 
 export summary = new ValidatedMethod
