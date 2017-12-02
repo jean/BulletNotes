@@ -17,8 +17,6 @@ if Meteor.isServer
 
         false
       else
-        Meteor.users.update user._id, $inc:
-          telegramBotUseCount:1
 
         user
 

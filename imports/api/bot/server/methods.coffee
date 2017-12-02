@@ -110,9 +110,17 @@ Bot.deleteNote = (noteId) ->
       deleted: new Date()
 
   if note
-    childCountDenormalizer.afterInsertNote note.parent
+    Meteor.defer ->
+      childCountDenormalizer.afterInsertNote note.parent
 
   msg = '`Note deleted successfully!` - ' + Bot.formatNote(note,false) + '\n\n'
+
+Bot.editNoteTitle = (noteId, title) ->
+  Meteor.call 'notes.updateTitle',
+    noteId: noteId
+    title: title
+
+  msg = '`Note edited successfully.` - ' + Bot.formatNote({_id:noteId,title:title},false) + '\n\n'
 
 # Actual chat method
 
@@ -148,7 +156,11 @@ export chat = new ValidatedMethod
     if !user
       return 'Please login. You can register at ' + Meteor.settings.public.url + ' or chat me on Telegram at @BulletNotesBot'
 
+    Meteor.users.update user._id, $inc:
+      chatBotUseCount:1
+
     conversation = new LocalStorage('./conversations'+user._id)
+    limitMultiplier = 1
 
     # Check for an active conversation
 
@@ -194,11 +206,59 @@ export chat = new ValidatedMethod
               msg = '`Delete note cancelled.`\n\n'
               msg = msg + Bot.getRecent Bot.defaultLimit, user
               conversation.clear()
-    else
-      limitMultiplier = 1
+
+        when 'edit'
+
+          if command[0] == "0"
+            # Advance pagination
+            if limitMultiplier < 10
+              limitMultiplier = limitMultiplier + 1
+              conversation.setItem 'limitMultiplier', limitMultiplier
+              command[0] = "/edit"
+            else
+              msg = 'Sorry that is all the notes I can show you. Try searching with `/find stuff` or browsing with `/browse`.\n\n'
+          else 
+            editId = conversation.getItem('editId')
+            noteIds = conversation.getItem('noteIds')
+
+            if noteIds
+              noteIds = noteIds.split ','
+            
+            # Editing a note, save what came in
+            if editId
+              msg = Bot.editNoteTitle editId, chat
+              msg = msg + Bot.getRecent Bot.defaultLimit, user
+              conversation.clear()
+
+            # If we have a '# edited message', edit it right away
+            else if command.length > 1
+
+              editId = noteIds[command[0]-1]
+              console.log command
+              command.shift()
+              console.log command
+              msg = Bot.editNoteTitle editId, command.join ' '
+              msg = msg + Bot.getRecent Bot.defaultLimit, user
+              conversation.clear()
+
+            # Otherwise get confirmation
+            else if !editId
+              if noteSelected = parseInt chat, 10
+                note = Notes.findOne noteIds[noteSelected-1]
+                conversation.setItem 'editId', note._id
+
+                msg = 'Current note text: ' + note.title + '\n\n`Reply` with the updated text you would like.'
+              else
+                msg = '`Edit note cancelled`.\n\n'
+                msg = msg + Bot.getRecent Bot.defaultLimit, user
+                conversation.clear()
+            else
+              msg = '`Edit note cancelled.`\n\n'
+              msg = msg + Bot.getRecent Bot.defaultLimit, user
+              conversation.clear()
+
 
     # We don't have a conversation going, move on to the commands
-
     if !msg
       switch command[0]
         when '/help', '/h'
@@ -287,7 +347,7 @@ export chat = new ValidatedMethod
           'Your account was created `' + moment(user.createdAt).fromNow() + '. 📆`\n'+
           'Since then you have created `' + noteCount + '` notes. 😎\n'+
           'That is `' + notesDay + '` notes a day! 👍\n'+
-          'We have talked `' + user.telegramBotUseCount + '` times so far. ❤️\n'+
+          'We have talked `' + user.chatBotUseCount + '` times so far. ❤️\n'+
           'Keep up the great work, and thanks for using BulletNotes! 😄'
 
         when '/mobile'
@@ -376,35 +436,58 @@ export chat = new ValidatedMethod
               conversation.setItem 'command', 'delete'
               conversation.setItem 'noteIds', noteIds
 
-
-
-
         when '/edit', '/e'
+          # We add one to the default limit to enable pagining
+          notes = Notes.find({owner:user._id,deleted:{$exists: false}},{sort:{createdAt: -1},limit:Bot.defaultLimit * limitMultiplier + 1})
+          noteIds = Bot.generateNoteIds notes, limitMultiplier
           if command.length < 2
             # We don't have a search param, grab the most recent notes
-            notes = Notes.find({owner:user._id,deleted:{$exists: false}},{sort:{createdAt:-1},limit:Bot.defaultLimit+1})
 
-            msg = 'Here are your most recent '+Bot.defaultLimit+' notes:\n\n'
+            msg = Bot.formatNotes notes, user.telegramBotMobileFormat
+
+            msg = msg + '\n`Reply` with the number of the note you want to edit, or reply with `(N)o` to cancel.'
+            noteIds = Bot.generateNoteIds notes, limitMultiplier
+            conversation.setItem 'command', 'edit'
+            conversation.setItem 'noteIds', noteIds
+
           else
-            # We do have a search, find recent notes matching the search
-            command.shift()
-            searchTerm = command.join(' ')
-            notes = Notes.search searchTerm, user._id, Bot.defaultLimit+1
-            msg = 'Here are your most recent '+Bot.defaultLimit+' notes containing `' + searchTerm + '`:\n\n'
 
-          noteIds = Bot.generateNoteIds notes, limitMultiplier
-          msg = msg + Bot.formatNotes notes, user.telegramBotMobileFormat
-          
-          msg = msg + '\n`Reply` with the number of the note you want to edit, or reply with `(N)o` to cancel.'
+            # We have params, if the first is a number, select that note.
+            noteSelected = parseInt command[1], 10
+            if noteSelected && note = Notes.findOne noteIds[noteSelected-1]
+              # We have a note, if there is more, just edit it now
+              command = command.slice 2
+              msg = Bot.editNoteTitle note._id, command.join ' '
+              msg = msg + Bot.getRecent Bot.defaultLimit, user
 
-          if searchTerm
-            regex = new RegExp searchTerm, 'gi'
-            msg = msg.replace regex, '`$&`'
+            else
+              # We do have a search, find recent notes matching the search
+              command.shift()
+              searchTerm = command.join(' ')
+              notes = Notes.search searchTerm, user._id, Bot.defaultLimit
+              msg = 'Here are your most recent '+Bot.defaultLimit+' notes containing `' + searchTerm + '`:\n\n'
+
+              noteIds = Bot.generateNoteIds notes, limitMultiplier
+              msg = msg + Bot.formatNotes notes, user.telegramBotMobileFormat
+
+              msg = msg + '\n`Reply` with the number of the note you want to delete, or reply with `(N)o` to cancel.'
+
+              if searchTerm
+                regex = new RegExp searchTerm, 'gi'
+                msg = msg.replace regex, '*$&*'
+
+              conversation.setItem 'command', 'edit'
+              conversation.setItem 'noteIds', noteIds
 
         # Extras
 
         when '/random'
           msg = Math.round(Math.random()*100)
+
+        when '/rot13'
+          command.shift()
+          msg = command.join(' ').replace /[a-zA-Z]/g, (c) ->
+            String.fromCharCode if (if c <= 'Z' then 90 else 122) >= (c = c.charCodeAt(0) + 13) then c else c - 26
 
 
         # End Switch
@@ -424,80 +507,11 @@ export chat = new ValidatedMethod
 
 
 
-    #   # Start the conversation
-    #   Bot.startConversation username, data.chat.id, ((username, chat, chat_id) ->
-    #     conversation = _.find(Bot.conversations[chat_id], (conversation) ->
-    #       conversation.username == username
-    #     )
-    #     if !conversation.editId
 
-    #       # We haven't picked what to edit yet
-    #       noteSelected = parseInt chat, 10
-    #       if noteSelected > 0
-    #         command = chat.split ' '
 
-    #         # We have an edit included, apply that right away
-    #         if command.length > 1
-    #           command.shift()
-    #           title = command.join ' '
-    #           Notes.update conversation.noteIds[noteSelected-1], $set:
-    #             title: title
-    #           note = Notes.findOne conversation.noteIds[noteSelected-1]
-    #           Bot.send 'Note edited successfully! ' + Bot.formatNote(note,user.telegramBotMobileFormat), chat_id
-    #           Bot.endConversation username, chat_id
 
-    #         # No included edit, return the full note text to be edited
-    #         else
-    #           note = Notes.findOne conversation.noteIds[noteSelected-1]
-    #           conversation.editId = note._id
-    #           msg = 'Current note text: ' + note.title + '\n\n`Reply` with the updated text you would like.'
-    #           Bot.send msg, chat_id, true
-    #       else if chat == "0" || chat == "-1"
-    #         # They have opted to view the next page
-    #         msg = ''
-    #         if chat == "0"
-    #           if conversation.limitMultiplier < 10
-    #             conversation.limitMultiplier = conversation.limitMultiplier + 1
-    #           else
-    #             msg = 'Sorry that is all the notes I can show you. Try searching with `/find stuff` or browsing with `/browse`.\n\n'
-    #         # Load the previous page
-    #         else
-    #           if conversation.limitMultiplier > 0
-    #             conversation.limitMultiplier = conversation.limitMultiplier - 1
-    #           else
-    #             msg = 'Already at the first note.\n\n'
 
-    #         if searchTerm
-    #           msg = msg + 'Here are '+Bot.getNoteRange(conversation)+' of your most recent notes containing `' + searchTerm + '`:\n\n'
-    #           notes = Notes.search searchTerm, user._id, Bot.defaultLimit * conversation.limitMultiplier + 1
-    #         else
-    #           msg = msg + 'Here are '+Bot.getNoteRange(conversation)+' of your most recent notes:\n\n'
-    #           notes = Notes.find({owner:user._id,deleted:{$exists: false}},{sort:{createdAt:-1},limit:Bot.defaultLimit * conversation.limitMultiplier + 1})
 
-    #         conversation.noteIds = Bot.generateNoteIds notes, conversation.limitMultiplier
-    #         msg = msg + Bot.formatNotes notes, conversation.limitMultiplier
-
-    #         msg = msg + '\n`Reply` with the number of the note you want to edit, or reply with `(N)o` to cancel.'
-
-    #         if searchTerm
-    #           regex = new RegExp searchTerm, 'gi'
-    #           msg = msg.replace regex, '`$&`'
-    #         Bot.send msg, chat_id, true
-    #       else
-    #         Bot.send 'Edit note cancelled.', chat_id
-    #         Bot.endConversation username, chat_id
-    #     else          
-    #       Notes.update conversation.editId, $set:
-    #         title: chat
-    #       note = Notes.findOne conversation.editId
-    #       Bot.send 'Note edited successfully! ' + Bot.formatNote(note,user.telegramBotMobileFormat), chat_id
-    #       Bot.endConversation username, chat_id
-    #   ),
-    #     noteIds: noteIds
-    #     limitMultiplier: 1
-
-    #   # The return in this listener will be the first prompt
-    #   msg
 
     # Bot.addListener '/browse', (command, username, data) ->
     #   user = Bot.getUser data
