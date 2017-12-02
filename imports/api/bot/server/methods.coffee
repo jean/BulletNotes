@@ -441,6 +441,7 @@ export chat = new ValidatedMethod
                 regex = new RegExp searchTerm, 'gi'
                 msg = msg.replace regex, '*$&*'
 
+              conversation.setItem 'searchTerm', searchTerm
               conversation.setItem 'command', 'delete'
               conversation.setItem 'noteIds', noteIds
 
@@ -485,6 +486,7 @@ export chat = new ValidatedMethod
                 regex = new RegExp searchTerm, 'gi'
                 msg = msg.replace regex, '*$&*'
 
+              conversation.setItem 'searchTerm', searchTerm
               conversation.setItem 'command', 'edit'
               conversation.setItem 'noteIds', noteIds
 

@@ -433,7 +433,7 @@ Template.bulletNoteItem.events
       # Tab
       when 9
         event.preventDefault()
-        Session.set 'indenting', true
+
         # First save the title in case it was changed.
         title = Template.bulletNoteItem.stripTags(event.target.innerHTML)
         if title != @title

@@ -29,7 +29,7 @@ Template.noteTitle.helpers
 Template.noteTitle.saveTitle = (event, instance) ->
   title = Template.bulletNoteItem.stripTags(event.target.innerHTML)
 
-  if !@title || title != Template.bulletNoteItem.stripTags emojione.shortnameToUnicode @title
+  if !instance.data.title || title != Template.bulletNoteItem.stripTags emojione.shortnameToUnicode instance.data.title
     instance.state.set 'dirty', true
     setTimeout ->
       $(event.target).html Template.bulletNotes.formatText title
@@ -46,7 +46,6 @@ Template.noteTitle.saveTitle = (event, instance) ->
       else
         instance.state.set 'dirty', false
 
-
 Template.noteTitle.events
   'click .title': (event, instance) ->
     if instance.view.parentView.templateInstance().state
@@ -57,11 +56,4 @@ Template.noteTitle.events
     Template.bulletNoteItem.addAutoComplete event.currentTarget
 
   'blur .title': (event, instance) ->
-    # If we blurred because we hit tab and are causing an indent
-    # don't save the title here, it was already saved with the
-    # indent event.
-    if Session.get 'indenting'
-      Session.set 'indenting', false
-      return
-
     Template.noteTitle.saveTitle event, instance

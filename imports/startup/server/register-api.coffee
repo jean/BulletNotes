@@ -13,5 +13,8 @@ import '/imports/api/files/methods.coffee'
 import '/imports/api/files/server/routes.coffee'
 import '/imports/api/files/server/publications.coffee'
 
+import '/imports/api/tags/tags.coffee'
+import '/imports/api/tags/server/methods.coffee'
+
 import '/imports/api/bot/server/methods.coffee'
 import '/imports/api/bot/server/routes.coffee'

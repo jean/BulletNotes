@@ -1,0 +1,1 @@
+export Tags = new Mongo.Collection 'tags'

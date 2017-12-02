@@ -9,6 +9,10 @@ export NoteLogs = new Mongo.Collection 'tx.Transactions'
 
 Notes.donePattern = /(#done|#complete|#finished)/gim
 
+Notes.hashtagPattern = /(((^|\s)#)([a-z\d-]+))/gim
+
+Notes.namePattern = /(((^|\s)@)([a-z\d-]+))/gim
+
 Notes.isEditable = (id, shareKey) ->
   if !Meteor.user()
     return false

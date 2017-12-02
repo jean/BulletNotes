@@ -308,6 +308,9 @@ export updateTitle = new ValidatedMethod
     Meteor.users.update {_id:@userId},
       {$inc:{"notesEdited":1}}
 
+    Meteor.call 'tags.updateNoteTags',
+      noteId: note._id
+
 export makeChild = new ValidatedMethod
   name: 'notes.makeChild'
   validate: new SimpleSchema
