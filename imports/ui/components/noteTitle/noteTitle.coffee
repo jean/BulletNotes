@@ -30,16 +30,19 @@ Template.noteTitle.saveTitle = (event, instance) ->
   title = Template.bulletNoteItem.stripTags(event.target.innerHTML)
 
   if !instance.data.title || title != Template.bulletNoteItem.stripTags emojione.shortnameToUnicode instance.data.title
-    instance.state.set 'dirty', true
-    setTimeout ->
-      $(event.target).html Template.bulletNotes.formatText title
-    , 20
+    $(event.target).html Template.bulletNotes.formatText title
+    
+    # Don't show the 'dirty' status right away, let it try and save first.
+    dirtyTimer = setTimeout ->
+      instance.state.set 'dirty', true
+    , 1000
 
     Meteor.call 'notes.updateTitle', {
       noteId: instance.data._id
       title: title
       shareKey: FlowRouter.getParam 'shareKey'
     }, (err, res) ->
+      clearTimeout dirtyTimer
       if err
         Template.App_body.showSnackbar
           message: err.error

@@ -70,7 +70,6 @@ export insert = new ValidatedMethod
 
     note =
       owner: ownerId
-      title: title
       parent: parentId
       rank: rank
       createdAt: new Date()
@@ -80,12 +79,18 @@ export insert = new ValidatedMethod
 
     # Only create a transaction if we are not importing.
     if isImport
-      note = Notes.insert note
+      noteId = Notes.insert note
     else
-      note = Notes.insert note, {tx: true}
+      noteId = Notes.insert note, tx: true
 
-    Meteor.defer ->
-      childCountDenormalizer.afterInsertNote parentId
+    Meteor.call 'notes.denormalizeChildCount',
+      noteId: parentId
+
+    if title
+      Meteor.call 'notes.updateTitle',
+        noteId: noteId
+        title: title
+        createTransaction: false
 
     Meteor.users.update ownerId,
       {$inc:{"notesCreated":1}}
@@ -142,17 +147,20 @@ export updateBody = new ValidatedMethod
     filter: no
   run: ({ noteId, body, createTransaction = true }) ->
     note = Notes.findOne noteId
-
     bodyHasContent = true
+
+    # This is all just to check if the body actually has content.
+    # sanitizedBody is not saved
     sanitizedBody = sanitizeHtml body,
       allowedTags: []
-    sanitizedBody = sanitizedBody.replace(/(\r\n|\n|\r|\s)/gm, '')
+    sanitizedBody = sanitizedBody.replace(/(\r\n|\n|\r|\s|\\n)/gm, '')
 
     if sanitizedBody.length < 1
       bodyHasContent = false
 
     if body && bodyHasContent
       body = Notes.filterBody body
+
       Notes.update noteId, {$set: {
         body: body
         updatedAt: new Date
@@ -182,8 +190,6 @@ export setDueDate = new ValidatedMethod
     note = Notes.findOne(noteId)
     if note.owner != @userId
       return
-
-    console.log "Got date date: ", date
 
     title = note.title.replace(/#(date|due)-([0-9]+(-?))+/gim,'')
     title = title.trim()
@@ -285,29 +291,6 @@ export updateTitle = new ValidatedMethod
 
     if createTransaction
       tx.commit()
-
-    Meteor.defer ->
-      pattern = /#pct-([0-9]+)/gim
-      match = pattern.exec note.title
-      if match
-        Notes.update noteId, {$set: {
-          progress: match[1]
-        }}
-      else
-        # If there is not a defined percent tag (e.g., #pct-20)
-        # then calculate the #done rate of notes
-        notes = Notes.find({ parent: note.parent, deleted: {$exists: false} })
-        total = 0
-        done = 0
-        notes.forEach (note) ->
-          total++
-          if note.title
-            match = note.title.match Notes.donePattern
-            if match
-              done++
-        Notes.update note.parent, {$set: {
-          progress: Math.round((done/total)*100)
-        }}
 
     Meteor.call 'tags.updateNoteTags',
       noteId: note._id

@@ -37,7 +37,7 @@ export notesExport = new ValidatedMethod
       spacing = new Array(level * 5).join(' ')
       exportText += spacing + '- '
       if note.title
-        exportText += note.title.replace(/(\r\n|\n|\r)/gm, '')
+        exportText += note.title
       exportText += '\n'
       if note.body
         exportText += spacing + '  "' + note.body + '"\n'
@@ -181,6 +181,17 @@ export summary = new ValidatedMethod
           html: html
         })
 
+# We don't add this to to rate limiter because imports hit it a bunch. Hence the defer.
+export denormalizeChildCount = new ValidatedMethod
+  name: 'notes.denormalizeChildCount'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId }) ->
+    Meteor.defer ->
+      childCountDenormalizer.afterInsertNote noteId
 
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([

@@ -29,7 +29,8 @@ Template.Notes_import.events
 
 Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
   line = data.importLines[ii]
-  NProgress.set(ii/data.importLines.length)
+  if ii > 0 && ii < data.importLines.length
+    NProgress.set(ii/data.importLines.length)
   if (data.importLines.length - 1 == ii)
     NProgress.done()
   if !line || line.trim().substr(0, 1) != '-'
@@ -39,6 +40,7 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
   leadingSpaceCount = line.match(/^(\s*)/)[1].length
   level = leadingSpaceCount / 4
   parent = null
+
   if level > 0
     # Calculate parent
     if level > data.prevLevel
@@ -63,27 +65,28 @@ Template.Notes_import.import = (data, ii = 0, lastNote = null) ->
     body = nextLine.trim().substr(1)
     body = body.substr(0, body.length-1)
 
+  parentId = null
+  if parent
+    parentId = parent._id
+
   insert.call {
     title: title
     rank: data.levelRanks[level]
-    parent: parent
+    parent: parentId
     isImport: true
   }, (err, res) ->
 
     if !level
       FlowRouter.go('/')
 
-    # Wrapping the following calls in these short Timeouts prevents browser lockup
     if body
       updateBody.call {
-        noteId: res
+        noteId: res._id
         body: body
         createTransaction: false
-      }, (err, bodyRes) ->
-        setTimeout ->
-          Template.Notes_import.import data, ii + 1, res
-        , 10
-    else
-      setTimeout ->
-        Template.Notes_import.import data, ii + 1, res
-      , 10
+      }
+
+    # Wrapping the loop in this short Timeout prevents browser lockup
+    setTimeout ->
+      Template.Notes_import.import data, ii + 1, res
+    , 1
