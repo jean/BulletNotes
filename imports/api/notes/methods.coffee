@@ -165,8 +165,6 @@ export updateBody = new ValidatedMethod
       }, $set: {
         showContent: false
       }}, tx: createTransaction
-    Meteor.users.update {_id:@userId},
-      {$inc:{"notesEdited":1}}
 
 export setDueDate = new ValidatedMethod
   name: 'notes.setDueDate'
@@ -239,16 +237,20 @@ export updateTitle = new ValidatedMethod
     noteId: Notes.simpleSchema().schema('_id')
     title: Notes.simpleSchema().schema('title')
     shareKey: Notes.simpleSchema().schema('shareKey')
+    createTransaction:
+      type: Boolean
+      optional: true
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, title, shareKey = null }) ->
+  run: ({ noteId, title, shareKey = null, createTransaction = true }) ->
     note = Notes.findOne noteId
 
     if !Notes.isEditable noteId, shareKey
       throw new (Meteor.Error)('not-authorized')
 
-    tx.start 'Update Note Title', { context:{ noteId: noteId } }
+    if createTransaction
+      tx.start 'Update Note Title', { context:{ noteId: noteId } }
     
     title = Notes.filterTitle title
     if title
@@ -279,34 +281,33 @@ export updateTitle = new ValidatedMethod
       updatedAt: new Date
       updatedBy: @userId
       complete: complete
-    }}, tx: true
+    }}, tx: createTransaction
 
-    pattern = /#pct-([0-9]+)/gim
-    match = pattern.exec note.title
-    if match
-      Notes.update noteId, {$set: {
-        progress: match[1]
-      }}
-    else
-      # If there is not a defined percent tag (e.g., #pct-20)
-      # then calculate the #done rate of notes
-      notes = Notes.find({ parent: note.parent, deleted: {$exists: false} })
-      total = 0
-      done = 0
-      notes.forEach (note) ->
-        total++
-        if note.title
-          match = note.title.match Notes.donePattern
-          if match
-            done++
-      Notes.update note.parent, {$set: {
-        progress: Math.round((done/total)*100)
-      }}
+    if createTransaction
+      tx.commit()
 
-    tx.commit()
-
-    Meteor.users.update {_id:@userId},
-      {$inc:{"notesEdited":1}}
+    Meteor.defer ->
+      pattern = /#pct-([0-9]+)/gim
+      match = pattern.exec note.title
+      if match
+        Notes.update noteId, {$set: {
+          progress: match[1]
+        }}
+      else
+        # If there is not a defined percent tag (e.g., #pct-20)
+        # then calculate the #done rate of notes
+        notes = Notes.find({ parent: note.parent, deleted: {$exists: false} })
+        total = 0
+        done = 0
+        notes.forEach (note) ->
+          total++
+          if note.title
+            match = note.title.match Notes.donePattern
+            if match
+              done++
+        Notes.update note.parent, {$set: {
+          progress: Math.round((done/total)*100)
+        }}
 
     Meteor.call 'tags.updateNoteTags',
       noteId: note._id
