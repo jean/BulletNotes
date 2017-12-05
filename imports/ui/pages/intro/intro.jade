@@ -1,27 +1,31 @@
 template(name="App_intro")
-  #settingsPage.extraPage
-    .title-message Welcome
-    .mdl-grid
-        .mdl-card.mdl-cell.mdl-shadow--2dp.mdl-cell--1-offset
-            .mdl-card__title
-                h2.mdl-card__title-text HEYEOE
-            .mdl-card__supporting-text
-                | BulletNotes.io is free for up to {{noteLimit}} notes.
-                | It is also Open Source so you are free to run your own, unrestricted version on your own server.
-            .mdl-card__actions.mdl-card--border
-                a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='https://github.com/NickBusey/BulletNotes',target='_blank')
-                    | Download Open Source
-            .mdl-card__menu
-                | Free!
-                    
-        .mdl-card.mdl-cell.mdl-shadow--2dp.mdl-cell--2-offset
-            .mdl-card__title
-                h2.mdl-card__title-text Pro Plan
-            .mdl-card__supporting-text
-                | The Pro plan comes with unlimited notes, automatic nightly Dropbox export, and more!
-            .mdl-card__actions.mdl-card--border
-                a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='#')
-                    | Coming Soon
-            .mdl-card__menu
-                | $5/month
-        
+  #introPage.extraPage
+    h1 
+        a(href='/') BulletNotes.io
+        | - Organize your life
+    a.mdl-button--raised.mdl-button.mdl-button--colored(href='/join') Create Free Account
+    h2 Save and organize anything with a powerful interface
+    ul
+        li.mdl-button--raised.mdl-button Todos
+        li.mdl-button.mdl-button--raised Notes
+        li.mdl-button.mdl-button--raised Journal Entries
+        li.mdl-button.mdl-button--raised Writing
+        li.mdl-button.mdl-button--raised Recipes
+        li.mdl-button.mdl-button--raised Trip Planning
+        li.mdl-button.mdl-button--raised Reference
+        li.mdl-button.mdl-button--raised Study Guides
+    h2 Integrations
+    h3 Automatically save and categorize information from almost anywhere with our integrations
+    ul
+        li.mdl-button.mdl-button--raised IFTTT
+        li.mdl-button.mdl-button--raised Telegram
+        li.mdl-button.mdl-button--raised CLI
+        li.mdl-button.mdl-button--raised API
+        li.mdl-button.mdl-button--raised Alfred
+        li.mdl-button.mdl-button--raised Dropbox
+    h2 BulletNotes Pro
+    h3 Go Pro and get a slew of extra features
+    ul
+        li.mdl-button.mdl-button--raised Unlimited Notes
+        li.mdl-button.mdl-button--raised Nightly Dropbox Backup
+    a.mdl-button--raised.mdl-button.mdl-button--colored(href='/join') Create Free Account

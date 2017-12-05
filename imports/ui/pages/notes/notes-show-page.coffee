@@ -14,6 +14,9 @@ import '/imports/ui/components/calendar/calendar.coffee'
 
 
 Template.Notes_show_page.onCreated ->
+  if !Meteor.user() && !Session.get 'introLoaded'
+      FlowRouter.go '/intro'
+
   @getNoteId = ->
     FlowRouter.getParam 'noteId'
 
