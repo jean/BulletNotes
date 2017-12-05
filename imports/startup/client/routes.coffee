@@ -199,6 +199,12 @@ FlowRouter.route '/privacy',
     NProgress.start()
     BlazeLayout.render 'App_body', main: 'App_privacy'
 
+FlowRouter.route '/intro',
+  name: 'App.intro'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_body', main: 'App_intro'
+
 FlowRouter.notFound =
   action: ->
     BlazeLayout.render('App_body', { main: 'App_notFound' })

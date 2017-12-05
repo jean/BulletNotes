@@ -1,6 +1,8 @@
 import './routes.coffee'
 
 Meteor.startup ->
+    if !Meteor.user() && !Session.get 'introLoaded'
+        FlowRouter.go '/intro'
     $(document).on 'keyup', (event) ->
         if !Session.get 'focused'
             switch event.keyCode
