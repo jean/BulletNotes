@@ -23,9 +23,10 @@ template(name="App_pricing")
                     li Unlimited notes
                     li Automatic nightly Dropbox export
                     li More on the way
+                | Free 31 day trial
             .mdl-card__actions.mdl-card--border
-                a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='/account')
+                a.mdl-button--raised.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='/account')
                     | Start Free Trial
             .mdl-card__menu
-                | $5/month
+                | ${{ proPrice }}/month
         

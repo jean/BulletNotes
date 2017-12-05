@@ -5,5 +5,8 @@ Template.App_pricing.onRendered ->
   $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
 Template.App_pricing.helpers
-    noteLimit: ->
-        Meteor.settings.public.noteLimit
+  noteLimit: ->
+    Meteor.settings.public.noteLimit
+    
+  proPrice: ->
+    Meteor.settings.public.proPrice
