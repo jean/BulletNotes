@@ -10,7 +10,9 @@
     "analyticsSettings": {
       "Amplitude": {"apiKey": ""}
     },
-    "url": "http://localhost:3123"
+    "url": "http://localhost:3123",
+    "stripePublicKey": "",
+    "proPrice": ""
   },
   "telegramKey": "",
   "stripeSecretKey": "",

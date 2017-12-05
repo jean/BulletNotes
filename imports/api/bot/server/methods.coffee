@@ -513,8 +513,8 @@ export chat = new ValidatedMethod
         title: chat
         userId: user._id
 
-      msg = '`Note Saved!` ' + Bot.formatNote({_id:noteId,title:chat}, false) + '\n\n'
-      msg = msg + Bot.getRecent Bot.defaultLimit, user
+      msg = '`Note Saved!` ' + Bot.formatNote({_id:noteId,title:chat}, false)
+
       msg
 
 

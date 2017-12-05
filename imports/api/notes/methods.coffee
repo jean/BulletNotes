@@ -47,7 +47,7 @@ export insert = new ValidatedMethod
       ownerId = @userId
 
     noteCount = Notes.find
-      owner: owner
+      owner: ownerId
       deleted: {$exists: false}
     .count()
 

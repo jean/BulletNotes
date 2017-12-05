@@ -22,7 +22,16 @@ Meteor.startup ->
     schedule: (parser) ->
       parser.text cronTime
     job: ->
-      Meteor.call('notes.dropboxNightly')
+      Meteor.call 'notes.dropboxNightly'
+
+  SyncedCron.add
+    name: 'Nightly subscription cleanup'
+    schedule: (parser) ->
+      parser.text 'at 10:00 am'
+    job: ->
+      Meteor.call 'users.checkSubscriptions'
+
+  Meteor.call 'users.checkSubscriptions'
   SyncedCron.start()
 
   BrowserPolicy.framing.disallow()
@@ -36,6 +45,7 @@ Meteor.startup ->
     '*.cloudfront.net'
     'api.keen.io'
     '*.hotjar.com'
+    '*.stripe.com'
   ]
   _.each trusted, (origin) ->
     origin = 'https://' + origin

@@ -1,16 +1,33 @@
 template(name='App_account')
+  script(src='https://js.stripe.com/v3/')
+
   #adminPage.extraPage.container-fluid
     .title-message {{_ 'layouts.appBody.account'}}
     .mdl-grid
       .mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--1-offset
-        .mdl-card__title
-          h2.mdl-card__title-text Free Plan
-        .mdl-card__supporting-text
-          p Sorry to limit the amount of notes you can have, but storage ain't free.
-          p You can either purchase an upgrade (soon) for unlimited notes, or you can refer your friends to tell them about this great site, and earn some extra space!
+        #freePlan(style='display:none')
+          .mdl-card__title
+            h2.mdl-card__title-text Free Plan
+          .mdl-card__supporting-text
+            p Sorry to limit the amount of notes you can have, but storage ain't free.
+            p You can either subscripbe to BulletNotes Pro for unlimited notes, or you can refer your friends to tell them about this great site, and earn some extra space!
+        #proPlan(style='display:none')
+          .mdl-card__title
+              h2.mdl-card__title-text Pro Plan
+          .mdl-card__supporting-text
+              | Thank you very much for upgrading!
+
         .mdl-card__actions.mdl-card--border
-          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href="/pricing") Pricing
-          a#trialButton.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Start Trial
+          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='/pricing') Pricing
+          a#trialButton.mdl-button--raised.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(style='display:none') Start Trial
+          a#stopSubscription.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(style='display:none') Cancel Subscription
+          #AccountStatus
+          form#payment-form(action='/charge', method='post', style='display: none')
+            #card-element  
+            #card-errors(role='alert')
+            p
+              input.mdl-button--raised.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(type='submit',value='Begin Subscription')
+            p You will be billed ${{ proPrice }}/month after a 31 day free trial. You can cancel at anytime.
 
       .mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--2-offset
         .mdl-card__title
@@ -21,6 +38,6 @@ template(name='App_account')
           p Extra notes earned: {{extraNotesEarned}}
         .mdl-card__actions.mdl-card--border
           | Your link: 
-          a(href="{{url}}?ref={{currentUser._id}}") {{url}}?ref={{currentUser._id}}
+          a(href='{{url}}?ref={{currentUser._id}}') {{url}}?ref={{currentUser._id}}
 
 

@@ -27,10 +27,7 @@ FlowRouter.route '/',
   action: ->
     NProgress.start()
     Session.set 'searchTerm', null
-    if Meteor.user()
-      BlazeLayout.render 'App_body', main: 'Notes_show_page'
-    else
-      BlazeLayout.render 'App_body', main: 'App_intro'
+    BlazeLayout.render 'App_body', main: 'Notes_show_page'
 
 FlowRouter.route '/note/:noteId',
   name: 'Notes.show'

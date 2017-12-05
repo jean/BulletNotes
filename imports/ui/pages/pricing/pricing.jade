@@ -18,10 +18,14 @@ template(name="App_pricing")
             .mdl-card__title
                 h2.mdl-card__title-text Pro Plan
             .mdl-card__supporting-text
-                | The Pro plan comes with unlimited notes, automatic nightly Dropbox export, and more!
+                | The Pro plan comes with :
+                ul
+                    li Unlimited notes
+                    li Automatic nightly Dropbox export
+                    li More on the way
             .mdl-card__actions.mdl-card--border
-                a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='#')
-                    | Coming Soon
+                a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='/account')
+                    | Start Free Trial
             .mdl-card__menu
                 | $5/month
         
