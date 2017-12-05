@@ -285,6 +285,7 @@ Template.bulletNotes.rendered = ->
       $('.sortable').removeClass 'sorting'
 
     sort: (event, ui) ->
+      console.log event, ui
       Session.set 'dragging', true
       $('.sortable').addClass 'sorting'
 

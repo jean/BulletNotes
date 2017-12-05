@@ -56,15 +56,14 @@ template(name="App_settings")
             a#copyApiKey.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Copy
             a#generateApiKey.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Generate a New API Key
 
-    if currentUser.isPro
-      .subtitle-message
-        h4 Theme
-      ul.demo-list-control.mdl-list
-        +each themes
-          li.mdl-list__item
-            span.mdl-list__item-primary-content
-              i.material-icons.mdl-list__item-avatar person
-              | {{theme}}
-            span.mdl-list__item-secondary-action
-              label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='theme_{{theme}}')
-                input.themeInput.mdl-radio__button(type='radio', name='theme', value='1', checked='{{themeChecked theme}}', id='theme_{{theme}}' data-name='{{theme}}')
+    .subtitle-message
+      h4 Theme
+    ul.demo-list-control.mdl-list
+      +each themes
+        li.mdl-list__item
+          span.mdl-list__item-primary-content
+            i.material-icons.mdl-list__item-avatar person
+            | {{theme}}
+          span.mdl-list__item-secondary-action
+            label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='theme_{{theme}}')
+              input.themeInput.mdl-radio__button(type='radio', name='theme', value='1', checked='{{themeChecked theme}}', id='theme_{{theme}}' data-name='{{theme}}')

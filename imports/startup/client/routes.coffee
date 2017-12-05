@@ -14,6 +14,7 @@ require '/imports/ui/pages/import/import.coffee'
 require '/imports/ui/pages/notes/notes-show-page.coffee'
 require '/imports/ui/pages/root-redirector.js'
 require '/imports/ui/pages/pricing/pricing.coffee'
+require '/imports/ui/pages/intro/intro.coffee'
 require '/imports/ui/pages/privacy/privacy.coffee'
 require '/imports/ui/pages/settings/settings.coffee'
 require '/imports/ui/pages/terms/terms.coffee'
@@ -26,7 +27,10 @@ FlowRouter.route '/',
   action: ->
     NProgress.start()
     Session.set 'searchTerm', null
-    BlazeLayout.render 'App_body', main: 'Notes_show_page'
+    if Meteor.user()
+      BlazeLayout.render 'App_body', main: 'Notes_show_page'
+    else
+      BlazeLayout.render 'App_body', main: 'App_intro'
 
 FlowRouter.route '/note/:noteId',
   name: 'Notes.show'

@@ -356,6 +356,7 @@ export chat = new ValidatedMethod
           'Since then you have created `' + noteCount + '` notes. 😎\n'+
           'That is `' + notesDay + '` notes a day! 👍\n'+
           'We have talked `' + user.chatBotUseCount + '` times so far. ❤️\n'+
+          'If I have bugs, please report them. I was born ' + moment('2017-11-27').fromNow()+':cake:\n'
           'Keep up the great work, and thanks for using BulletNotes! 😄'
 
         when '/mobile'

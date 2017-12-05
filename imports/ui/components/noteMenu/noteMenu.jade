@@ -65,10 +65,11 @@ template(name='noteMenu')
               i.glyphicon.glyphicon-eye-close
               |  {{_ 'notes.menu.encrypt'}}
 
-          a.delete.mdl-menu__item(href='#')
-            i.glyphicon.glyphicon-trash
-            |  {{_ 'notes.menu.delete'}}
-            span.keyboardShortcutHint Ctrl + Delete
+        a.delete.mdl-menu__item(href='#')
+          i.glyphicon.glyphicon-trash
+          |  {{_ 'notes.menu.delete'}}
+          span.keyboardShortcutHint Ctrl + Delete
+
     if showShare
       +share
     if showEncrypt
