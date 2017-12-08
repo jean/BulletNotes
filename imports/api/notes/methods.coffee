@@ -86,6 +86,9 @@ export insert = new ValidatedMethod
     Meteor.call 'notes.denormalizeChildCount',
       noteId: parentId
 
+    Meteor.call 'notes.denormalizeRanks',
+      noteId: parentId
+
     if title
       Meteor.call 'notes.updateTitle',
         noteId: noteId
@@ -350,11 +353,14 @@ export makeChild = new ValidatedMethod
     tx.commit()
 
     if oldParent
-      childCountDenormalizer.afterInsertNote oldParent._id
+      Meteor.call 'notes.denormalizeChildCount',
+        noteId: oldParent._id
     if parent
-       childCountDenormalizer.afterInsertNote parent._id
+      Meteor.call 'notes.denormalizeChildCount',
+        noteId: parent._id
 
-    rankDenormalizer.updateSiblings parentId
+    Meteor.call 'notes.denormalizeRanks',
+      noteId: parent._id
 
 removeRun = (note) ->
   Notes.remove { _id: note._id }, { tx: true, softDelete: true }

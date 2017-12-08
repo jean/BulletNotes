@@ -157,7 +157,7 @@ export inbox = new ValidatedMethod
         {$inc:{"notesCreated":1}}
 
       Meteor.defer ->
-        rankDenormalizer.updateSiblings parentId
+        rankDenormalizer.updateChildren parentId
     
       return noteId
 
@@ -193,11 +193,23 @@ export denormalizeChildCount = new ValidatedMethod
     Meteor.defer ->
       childCountDenormalizer.afterInsertNote noteId
 
+export denormalizeRanks = new ValidatedMethod
+  name: 'notes.denormalizeRanks'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId }) ->
+    Meteor.defer ->
+      rankDenormalizer.updateChildren noteId
+
 # Get note of all method names on Notes
 NOTES_METHODS = _.pluck([
   notesExport
   dropboxExport
   dropboxNightly
+  denormalizeRanks
   summary
   inbox
 ], 'name')

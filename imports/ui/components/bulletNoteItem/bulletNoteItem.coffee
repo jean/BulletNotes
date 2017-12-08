@@ -373,8 +373,12 @@ Template.bulletNoteItem.events
               rank: note.rank + 0.5
               parent: note.parent
               shareKey: FlowRouter.getParam('shareKey')
-            }
-            Template.bulletNoteItem.focus $(event.target).closest('.note-item').next()[0]
+            }, (err, res) ->
+              if err
+               Template.App_body.showSnackbar
+                 message: err.message
+              else
+                Template.bulletNoteItem.focus $(event.target).closest('.note-item').next()[0]
 
             return
 
