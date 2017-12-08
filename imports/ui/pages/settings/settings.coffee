@@ -5,6 +5,7 @@ require './settings.jade'
 
 Template.App_settings.onRendered ->
   NProgress.done()
+  analytics.page('Settings')
 
 Template.App_settings.events
   'click #deauthLink': (event) ->

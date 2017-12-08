@@ -4,3 +4,20 @@ template(name='kanbanListItem')
             i.material-icons.zoom(id="drag_{{_id}}") fiber_manual_record
         +noteMenu
         +noteTitle
+        if showContent
+          +noteBody
+          if hasContent
+            if files
+              .filesContainer
+                each files
+                  +file
+          a.hideContent(id="hideContent_{{_id}}")
+            i.glyphicon.glyphicon-chevron-up
+          .mdl-tooltip.mdl-tooltip--large(for='hideContent_{{_id}}')
+            | {{_ 'notes.tooltips.hide_content'}}
+        else
+          if hasContent
+            a.showContent(id="showContent_{{_id}}")
+              i.glyphicon.glyphicon-chevron-down
+            .mdl-tooltip.mdl-tooltip--large(for='showContent_{{_id}}')
+              | {{_ 'notes.tooltips.show_content'}}

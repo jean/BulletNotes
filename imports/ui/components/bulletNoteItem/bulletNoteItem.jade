@@ -21,14 +21,13 @@ template(name='bulletNoteItem')
         .progress.progress-striped(data-toggle="tooltip", data-placement="top", title="{{progress}}% Complete", data-original-title="{{progress}}% Complete")
           .progress-bar(class='progress-bar-{{progressClass}}' role='progressbar', aria-valuenow='{{progress}}', aria-valuemin='0', aria-valuemax='100', style='width: {{progress}}%')
             span.sr-only {{progress}}% Complete (success)
-      if showContent
-        +noteBody
       input.fileInput(type='file',style='display:none')
       
       if showDetailCard
         +noteDetailCard
 
       if showContent
+        +noteBody
         if hasContent
           if files
             .filesContainer

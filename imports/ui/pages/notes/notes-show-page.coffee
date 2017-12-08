@@ -21,6 +21,7 @@ Template.Notes_show_page.onCreated ->
     FlowRouter.getParam 'noteId'
 
 Template.Notes_show_page.onRendered ->
+  analytics.page('Note View')
   Session.set 'searchTerm', FlowRouter.getParam 'searchTerm'
   @autorun =>
     if Meteor.user()

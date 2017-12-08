@@ -8,6 +8,7 @@
     "keenProjectId": "",
     "keenWriteKey": "",
     "analyticsSettings": {
+      "autorun"  : false,
       "Amplitude": {"apiKey": ""}
     },
     "url": "http://localhost:3123",
