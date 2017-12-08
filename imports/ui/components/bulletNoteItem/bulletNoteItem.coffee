@@ -377,8 +377,8 @@ Template.bulletNoteItem.events
               if err
                Template.App_body.showSnackbar
                  message: err.message
-              else
-                Template.bulletNoteItem.focus $(event.target).closest('.note-item').next()[0]
+
+            Template.bulletNoteItem.focus $(event.target).closest('.note-item').next()[0]
 
             return
 
