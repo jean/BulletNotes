@@ -56,7 +56,7 @@ export insert = new ValidatedMethod
     if owner.referralCount > 0
       referralCount = owner.referralCount
 
-    if !owner.isAdmin && noteCount >= Meteor.settings.public.noteLimit * (referralCount + 1)
+    if !owner.isAdmin && !owner.isPro && noteCount >= Meteor.settings.public.noteLimit * (referralCount + 1)
       throw new (Meteor.Error)('Maximum number of notes reached.')
 
     parentId = null
@@ -462,12 +462,11 @@ export setShowChildren = new ValidatedMethod
       childrenLastShown: new Date
 
     if show
-      Meteor.defer ->
-        Notes.update noteId, 
-          $set:
-            childrenLastShown: new Date
-          $inc:
-            childrenShownCount: 1
+      Notes.update noteId, 
+        $set:
+          childrenLastShown: new Date
+        $inc:
+          childrenShownCount: 1
 
 
 export duplicate = new ValidatedMethod
