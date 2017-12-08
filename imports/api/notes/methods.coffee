@@ -356,9 +356,8 @@ export makeChild = new ValidatedMethod
     if parent
       Meteor.call 'notes.denormalizeChildCount',
         noteId: parent._id
+      rankDenormalizer.updateChildren parent._id
 
-    Meteor.call 'notes.denormalizeRanks',
-      noteId: parent._id
 
 removeRun = (note) ->
   Notes.remove { _id: note._id }, { tx: true, softDelete: true }
