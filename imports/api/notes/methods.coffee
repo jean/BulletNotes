@@ -461,6 +461,14 @@ export setShowChildren = new ValidatedMethod
       showChildren: show
       childrenLastShown: new Date
 
+    if show
+      Meteor.defer ->
+        Notes.update noteId, 
+          $set:
+            childrenLastShown: new Date
+          $inc:
+            childrenShownCount: 1
+
 
 export duplicate = new ValidatedMethod
   name: 'notes.duplicate'

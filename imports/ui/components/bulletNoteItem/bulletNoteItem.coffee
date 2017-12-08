@@ -231,15 +231,6 @@ Template.bulletNoteItem.events
           $(event.currentTarget).closest('.noteContainer').removeClass 'dragging'
       , file
 
-  'click .title a': (event, instance) ->
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
-      window.open(event.target.href)
-    else
-      $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
-      FlowRouter.go(event.target.pathname)
-
   'click .toggleComplete': (event, instance) ->
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -460,7 +451,9 @@ Template.bulletNoteItem.events
             parent: parent_id
             rank: (childCount*2)+1
             shareKey: FlowRouter.getParam 'shareKey'
+            expandParent: true
           }
+          Session.set('expand_'+parent_id, true)
           Template.bulletNoteItem.focus $('#noteItem_'+noteId)[0]
 
       # Backspace / delete
@@ -689,11 +682,6 @@ Template.bulletNoteItem.events
 
 Template.bulletNoteItem.toggleChildren = (instance) ->
   if Meteor.userId()
-    if !instance.data.showChildren
-        Meteor.call 'notes.setChildrenLastShown', {
-          noteId: instance.data._id
-        }
-
     Meteor.call 'notes.setShowChildren', {
       noteId: instance.data._id
       show: !instance.data.showChildren

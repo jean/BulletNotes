@@ -60,3 +60,12 @@ Template.noteTitle.events
 
   'blur .title': (event, instance) ->
     Template.noteTitle.saveTitle event, instance
+
+  'click .title a': (event, instance) ->
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    if !$(event.target).hasClass('tagLink') && !$(event.target).hasClass('atLink')
+      window.open(event.target.href)
+    else
+      $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
+      FlowRouter.go(event.target.pathname)
