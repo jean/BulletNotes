@@ -83,11 +83,9 @@ export insert = new ValidatedMethod
     else
       noteId = Notes.insert note, tx: true
 
-    Meteor.call 'notes.denormalizeChildCount',
-      noteId: parentId
+    rankDenormalizer.updateChildren parentId
 
-    Meteor.call 'notes.denormalizeRanks',
-      noteId: parentId
+    childCountDenormalizer.afterInsertNote parentId
 
     if title
       Meteor.call 'notes.updateTitle',
