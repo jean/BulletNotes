@@ -88,8 +88,8 @@
       "tryingToConnect": "Trying to connect",
       "connectionIssue": "There seems to be a connection issue",
       "devWarning": "Warning!",
-      "import": "Import",
-      "export": "Export",
+      "import": "インポート",
+      "export": "輸出する",
       "settings": "Settings",
       "home": "Home",
       "favorites": "Favorites",
@@ -130,7 +130,7 @@
       "pageNotFound": "Page not found"
     },
     "settings": {
-      "language": "Language"
+      "language": "言語"
     }
   },
   "tours": {

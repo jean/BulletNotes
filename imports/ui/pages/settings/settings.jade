@@ -2,20 +2,31 @@ template(name="App_settings")
   #settingsPage.extraPage
     .title-message {{_ 'layouts.appBody.settings'}}
     .mdl-grid
-      .mdl-cell.mdl-cell--6-col
+
+      .mdl-cell.mdl-cell--6-col.themeWrap
         .mdl-card.mdl-shadow--2dp.mdl--centered
           .mdl-card__title
-            h2.mdl-card__title-text Language
+            h2.mdl-card__title-text Theme
           .mdl-card__supporting-text
-            ul.demo-list-control.mdl-list
-            +each languages
-              li.mdl-list__item
-                span.mdl-list__item-primary-content
-                  i.material-icons.mdl-list__item-avatar person
-                  | {{language}}
-                span.mdl-list__item-secondary-action
-                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='language_{{language}}')
-                    input.languageInput.mdl-radio__button(type='radio', name='language', value='1', checked='{{languageChecked language}}', id='language_{{language}}' data-name='{{language}}')
+            .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.getmdl-select
+              img.selectIcon.mdl-list__item-avatar(src='/img/bgs/{{toLower currentUser.theme}}_thumb.jpg')
+              input#theme.selectInput.mdl-textfield__input(name='theme', value='{{currentUser.theme}}', type='text', readonly='', tabindex='-1')
+              ul#themes.mdl-menu.mdl-menu--bottom-left.mdl-js-menu(for='theme')
+                +each themes
+                  li.themeSelect.mdl-menu__item(value='', type='radio', name='theme', selected='{{themeChecked theme}}', id='theme_{{theme}}' data-name='{{theme}}') 
+                    img.mdl-list__item-avatar(src='/img/bgs/{{toLower theme}}_thumb.jpg')
+                    | {{theme}}
+
+      .mdl-cell.mdl-cell--6-col.languageWrap
+        .mdl-card.mdl-shadow--2dp.mdl--centered
+          .mdl-card__title
+            h2.mdl-card__title-text {{_ 'pages.settings.language'}}
+          .mdl-card__supporting-text
+              input#language.mdl-textfield__input(name='language', value='{{currentUser.language}}', type='text', readonly='', tabindex='-1')
+              ul#languages.mdl-menu.mdl-menu--bottom-left.mdl-js-menu(for='language')
+                +each languages
+                  li.languageSelect.mdl-menu__item(value='', type='radio', name='language', selected='{{languageChecked key}}', id='language_{{key}}' data-name='{{key}}') 
+                    | {{language}}
 
       .mdl-cell.mdl-cell--6-col
         .mdl-card.mdl-shadow--2dp.mdl--centered
@@ -56,14 +67,5 @@ template(name="App_settings")
             a#copyApiKey.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Copy
             a#generateApiKey.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Generate a New API Key
 
-    .subtitle-message
-      h4 Theme
-    ul.demo-list-control.mdl-list
-      +each themes
-        li.mdl-list__item
-          span.mdl-list__item-primary-content
-            i.material-icons.mdl-list__item-avatar person
-            | {{theme}}
-          span.mdl-list__item-secondary-action
-            label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='theme_{{theme}}')
-              input.themeInput.mdl-radio__button(type='radio', name='theme', value='1', checked='{{themeChecked theme}}', id='theme_{{theme}}' data-name='{{theme}}')
+
+

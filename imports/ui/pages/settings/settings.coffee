@@ -35,12 +35,13 @@ Template.App_settings.events
     Meteor.call 'notes.dropboxExport', {}, (err, res) ->
       console.log err, res
 
-  'change .themeInput': (event, instance) ->
+  'click #themes .themeSelect': (event, instance) ->
+    console.log event
     Meteor.call 'users.setTheme', {theme:event.target.dataset.name}, (err, res) ->
       Template.App_body.showSnackbar
         message: "Theme Saved"
 
-  'change .languageInput': (event, instance) ->
+  'click #languages .languageSelect': (event, instance) ->
     Meteor.call 'users.setLanguage', {language:event.target.dataset.name}, (err, res) ->
       Template.App_body.showSnackbar
         message: "Language Saved"
@@ -68,6 +69,9 @@ Template.App_settings.helpers
     if Meteor.user() && language == Meteor.user().language
       'checked'
 
+  toLower: (theme) ->
+    theme.toLowerCase()
+ 
   themes: ->
     [
       {theme:'Mountain'}
@@ -84,6 +88,7 @@ Template.App_settings.helpers
 
   languages: ->
     [
-      {language:'en'}
-      {language:'fr'}
+      {language:'English', key:'en'}
+      {language:'Français', key:'fr'}
+      {language:'日本語', key:'ja'}
     ]
