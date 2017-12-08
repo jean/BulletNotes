@@ -3,12 +3,18 @@ import { check } from 'meteor/check'
 
 import { Notes } from './notes.coffee'
 
+
+
 export default rankDenormalizer =
   updateChildren: (noteId) ->
-    siblings = Notes.find { parent: noteId }, sort: rank: 1
+    bulk = Notes.rawCollection().initializeUnorderedBulkOp()
+    siblings = Notes.find { owner: Meteor.userId(), parent: noteId }, sort: rank: 1
     count = 0
     siblings.forEach (bro) ->
       count = count + 2
-      Notes.update bro._id, {$set:
+      bulk.find({_id:bro._id}).update {$set:
         rank: count
       }
+
+    Meteor.wrapAsync(bulk.execute, bulk)()
+

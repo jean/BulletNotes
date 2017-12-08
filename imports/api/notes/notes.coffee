@@ -189,9 +189,6 @@ Notes.schema = new SimpleSchema
   progress:
     type: Number
     optional: yes
-  deleted:
-    type: Date
-    optional: yes
   complete:
     type: Boolean
     optional: yes
@@ -199,6 +196,7 @@ Notes.schema = new SimpleSchema
   inbox:
     type: Boolean
     optional: yes
+    index: 1
   showContent:
     type: Boolean
     optional: yes
