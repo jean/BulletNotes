@@ -64,6 +64,7 @@ AccountsTemplates.configure
 AccountsTemplates.configureRoute 'signIn',
   name: 'signin'
   path: '/signin'
+
 AccountsTemplates.configureRoute 'signUp',
   name: 'join'
   path: '/join'

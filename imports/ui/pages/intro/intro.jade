@@ -1,13 +1,13 @@
 template(name="App_intro")
   #introPage.extraPage
-    if currentUser
-      a.back(href='/') Back to your notes
     .intro-wrap
         .intro-description
             h1 
                 a(href='/') BulletNotes.io
             h2 Organize your life
             a.register.mdl-button--raised.mdl-button.mdl-button--colored(href='/join') Create Free Account
+            a.signIn.mdl-button--raised.mdl-button.mdl-button--colored(href='/signin') Sign in
+            a.signIn.mdl-button--raised.mdl-button.mdl-button--colored(href='https://telegram.me/bulletnotesbot',target='_blank') Get started on Telegram
 
         .intro-media
           .shot.shot1

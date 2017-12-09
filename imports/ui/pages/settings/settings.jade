@@ -3,7 +3,7 @@ template(name="App_settings")
     .title-message {{_ 'layouts.appBody.settings'}}
     .mdl-grid
 
-      .mdl-cell.mdl-cell--6-col.themeWrap
+      .themeWrap.mdl-cell.mdl-cell--6-col
         .mdl-card.mdl-shadow--2dp.mdl--centered
           .mdl-card__title
             h2.mdl-card__title-text Theme
@@ -17,7 +17,7 @@ template(name="App_settings")
                     img.mdl-list__item-avatar(src='/img/bgs/{{toLower theme}}_thumb.jpg')
                     | {{theme}}
 
-      .mdl-cell.mdl-cell--6-col.languageWrap
+      .languageWrap.mdl-cell.mdl-cell--6-col
         .mdl-card.mdl-shadow--2dp.mdl--centered
           .mdl-card__title
             h2.mdl-card__title-text {{_ 'pages.settings.language'}}
@@ -27,6 +27,17 @@ template(name="App_settings")
                 +each languages
                   li.languageSelect.mdl-menu__item(value='', type='radio', name='language', selected='{{languageChecked key}}', id='language_{{key}}' data-name='{{key}}') 
                     | {{language}}
+
+      .mdl-cell.mdl-cell--6-col
+        .mdl-card.mdl-shadow--2dp.mdl--centered
+          .mdl-card__title
+            h2.mdl-card__title-text Location
+          .mdl-card__supporting-text
+            p Store your location when you create notes
+            label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect(for='enableLocation')
+              input#enableLocation.mdl-switch__input(type='checkbox')
+              span.mdl-switch__label
+
 
       .mdl-cell.mdl-cell--6-col
         .mdl-card.mdl-shadow--2dp.mdl--centered

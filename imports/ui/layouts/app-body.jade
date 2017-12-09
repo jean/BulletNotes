@@ -21,6 +21,10 @@ template(name='App_body')
                     i.material-icons date_range
                   .mdl-tooltip.mdl-tooltip--large(for='calendarMode')
                     | {{_ 'layouts.appBody.calendarMode'}}
+                  button#mapMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.mapMode' }}", data-step='4')
+                    i.material-icons map
+                  .mdl-tooltip.mdl-tooltip--large(for='mapMode')
+                    | {{_ 'layouts.appBody.mapMode'}}
                 .js-edit-note.title-page(data-intro="{{_ 'tours.intro.viewModes' }}", data-step='5')
                   if focusedNote
                     .title-wrapper.showingNotes(contenteditable='true') {{{focusedNoteTitle}}}

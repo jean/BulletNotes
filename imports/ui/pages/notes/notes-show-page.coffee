@@ -11,7 +11,7 @@ import '/imports/ui/pages/404/app-not-found.coffee'
 import '/imports/ui/components/bulletNotes/bulletNotes.coffee'
 import '/imports/ui/components/kanban/kanban.coffee'
 import '/imports/ui/components/calendar/calendar.coffee'
-
+import '/imports/ui/components/map/map.coffee'
 
 Template.Notes_show_page.onCreated ->
   if !Meteor.user() && !Session.get 'introLoaded'
@@ -64,7 +64,7 @@ Template.Notes_show_page.events
 
 Template.Notes_show_page.helpers
   showNotes: ->
-    if Session.get('viewMode') != "kanban" && Session.get('viewMode') != "calendar"
+    if Session.get('viewMode') != "kanban" && Session.get('viewMode') != "calendar" && Session.get('viewMode') != "map"
       true
 
   showKanban: ->
@@ -73,6 +73,10 @@ Template.Notes_show_page.helpers
 
   showCalendar: ->
     if Session.get('viewMode') == "calendar"
+      true
+
+  showMap: ->
+    if Session.get('viewMode') == "map"
       true
 
   focusedNoteId: ->

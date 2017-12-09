@@ -38,7 +38,8 @@ Template.breadcrumbs.helpers
     FlowRouter.getParam 'shareKey'
 
   showingNotes: ->
-    Template.App_body.showingNotes()
+    if (FlowRouter.getRouteName() != "join" && FlowRouter.getRouteName() != "signin" && FlowRouter.getRouteName() != "App.intro") || (FlowRouter.getRouteName() == "App.intro" && Meteor.user())
+      true
 
 Template.breadcrumbs.events
   "click a": (event, template) ->

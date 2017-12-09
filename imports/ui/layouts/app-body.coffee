@@ -310,16 +310,10 @@ Template.App_body.helpers
       note: ->
         Notes.findOne FlowRouter.getParam('noteId')
 
-  viewModeIcon: ->
-    if Session.get('viewMode') == "calendar"
-      "date_range"
-    else if Session.get('viewMode') == "kanban"
-      "view_column"
-    else
-      "fiber_manual_record"
-
   modeBackgroundLeft: ->
-    if Session.get('viewMode') == "calendar"
+    if Session.get('viewMode') == "map"
+      120
+    else if Session.get('viewMode') == "calendar"
       80
     else if Session.get('viewMode') == "kanban"
       40
@@ -376,6 +370,10 @@ Template.App_body.events
 
   'click #kanbanMode': ->
     Session.set('viewMode','kanban')
+    $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
+
+  'click #mapMode': ->
+    Session.set('viewMode','map')
     $(".mdl-layout__content").animate({ scrollTop: 0 }, 200)
 
 Template.App_body.showSnackbar = (data) ->

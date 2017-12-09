@@ -219,6 +219,12 @@ Notes.schema = new SimpleSchema
   transaction_id:
     type: SimpleSchema.RegEx.Id
     optional: true
+  lat:
+    type: Number
+    optional: true
+  lon:
+    type: Number
+    optional: true
 
 Notes.attachSchema Notes.schema
 

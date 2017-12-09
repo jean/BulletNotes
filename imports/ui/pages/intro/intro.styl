@@ -1,205 +1,209 @@
 #introPage
-    text-align: center
+  text-align: center
 
-    .back
-      float: left
+  .register
+    font-size: 2em
+    padding: 1em
+    height: 3em
+    margin: 1em 0
 
-    .register
-      font-size: 2em
-      padding: 1em
-      height: 3em
-      margin: 1em 0
+  .signIn
+    clear: both
+    margin: 0 auto 2em
+    display: block;
+    width: 26em;
 
-    #logo
-        font-size: 4.2em
-        color: #85abed
 
-    ul
-        margin: 0 auto
-        display: block
-        overflow: hidden
-        padding: 2em
-    li
-        list-style: none
-        cursor: default
-        margin: 0 1em
+  #logo
+      font-size: 4.2em
+      color: #85abed
 
-    
-    /* --  #3g. Override bootstrap typography styles */
-    @-webkit-keyframes showIntroShot1 {
-      0% {
-        opacity: 0;
-        -webkit-transform: perspective(700px) translate3d(200px, -300px, -200px);
-                transform: perspective(700px) translate3d(200px, -300px, -200px);
-      }
-      100% {
-        opacity: 1;
-        -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
-                transform: perspective(700px) translate3d(0px, 0px, 0px);
-      }
+  ul
+      margin: 0 auto
+      display: block
+      overflow: hidden
+      padding: 2em
+  li
+      list-style: none
+      cursor: default
+      margin: 0 1em
+
+  
+  /* --  #3g. Override bootstrap typography styles */
+  @-webkit-keyframes showIntroShot1 {
+    0% {
+      opacity: 0;
+      -webkit-transform: perspective(700px) translate3d(200px, -300px, -200px);
+              transform: perspective(700px) translate3d(200px, -300px, -200px);
     }
-    @keyframes showIntroShot1 {
-      0% {
-        opacity: 0;
-        -webkit-transform: perspective(700px) translate3d(200px, -300px, -200px);
-                transform: perspective(700px) translate3d(200px, -300px, -200px);
-      }
-      100% {
-        opacity: 1;
-        -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
-                transform: perspective(700px) translate3d(0px, 0px, 0px);
-      }
+    100% {
+      opacity: 1;
+      -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
+              transform: perspective(700px) translate3d(0px, 0px, 0px);
     }
-
-    @-webkit-keyframes showIntroShot2 {
-      0% {
-        opacity: 0;
-        -webkit-transform: perspective(700px) translate3d(250px, -250px, -200px);
-                transform: perspective(700px) translate3d(250px, -250px, -200px);
-      }
-      100% {
-        opacity: 1;
-        -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
-                transform: perspective(700px) translate3d(0px, 0px, 0px);
-      }
+  }
+  @keyframes showIntroShot1 {
+    0% {
+      opacity: 0;
+      -webkit-transform: perspective(700px) translate3d(200px, -300px, -200px);
+              transform: perspective(700px) translate3d(200px, -300px, -200px);
     }
-
-    @keyframes showIntroShot2 {
-      0% {
-        opacity: 0;
-        -webkit-transform: perspective(700px) translate3d(250px, -250px, -200px);
-                transform: perspective(700px) translate3d(250px, -250px, -200px);
-      }
-      100% {
-        opacity: 1;
-        -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
-                transform: perspective(700px) translate3d(0px, 0px, 0px);
-      }
+    100% {
+      opacity: 1;
+      -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
+              transform: perspective(700px) translate3d(0px, 0px, 0px);
     }
+  }
 
-    @-webkit-keyframes showIntroShot3 {
-      0% {
-        opacity: 0;
-        -webkit-transform: perspective(700px) translate3d(200px, -100px, -200px);
-                transform: perspective(700px) translate3d(200px, -100px, -200px);
-      }
-      100% {
-        opacity: 1;
-        -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
-                transform: perspective(700px) translate3d(0px, 0px, 0px);
-      }
+  @-webkit-keyframes showIntroShot2 {
+    0% {
+      opacity: 0;
+      -webkit-transform: perspective(700px) translate3d(250px, -250px, -200px);
+              transform: perspective(700px) translate3d(250px, -250px, -200px);
     }
-
-    @keyframes showIntroShot3 {
-      0% {
-        opacity: 0;
-        -webkit-transform: perspective(700px) translate3d(200px, -100px, -200px);
-                transform: perspective(700px) translate3d(200px, -100px, -200px);
-      }
-      100% {
-        opacity: 1;
-        -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
-                transform: perspective(700px) translate3d(0px, 0px, 0px);
-      }
+    100% {
+      opacity: 1;
+      -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
+              transform: perspective(700px) translate3d(0px, 0px, 0px);
     }
+  }
 
-    .shot1 {
-      -webkit-animation: 0.6s ease-in-out 0.65s showIntroShot1;
-              animation: 0.6s ease-in-out 0.65s showIntroShot1;
-      -webkit-animation-fill-mode: both;
-              animation-fill-mode: both;
+  @keyframes showIntroShot2 {
+    0% {
+      opacity: 0;
+      -webkit-transform: perspective(700px) translate3d(250px, -250px, -200px);
+              transform: perspective(700px) translate3d(250px, -250px, -200px);
     }
-
-    .shot2 {
-      -webkit-animation: 0.7s ease-in-out 0.5s showIntroShot2;
-              animation: 0.7s ease-in-out 0.5s showIntroShot2;
-      -webkit-animation-fill-mode: both;
-              animation-fill-mode: both;
+    100% {
+      opacity: 1;
+      -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
+              transform: perspective(700px) translate3d(0px, 0px, 0px);
     }
+  }
 
-    .shot3 {
-      -webkit-animation: 0.5s ease-in-out 0.8s showIntroShot3;
-              animation: 0.5s ease-in-out 0.8s showIntroShot3;
-      -webkit-animation-fill-mode: both;
-              animation-fill-mode: both;
+  @-webkit-keyframes showIntroShot3 {
+    0% {
+      opacity: 0;
+      -webkit-transform: perspective(700px) translate3d(200px, -100px, -200px);
+              transform: perspective(700px) translate3d(200px, -100px, -200px);
     }
-
-    @-webkit-keyframes showIntroMedia {
-      0% {
-        -webkit-transform: perspective(1260px) rotateY(50deg) rotateX(-30deg) scale(0.8);
-                transform: perspective(1260px) rotateY(50deg) rotateX(-30deg) scale(0.8);
-      }
-      100% {
-        -webkit-transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1);
-                transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1);
-      }
+    100% {
+      opacity: 1;
+      -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
+              transform: perspective(700px) translate3d(0px, 0px, 0px);
     }
+  }
 
-    @keyframes showIntroMedia {
-      0% {
-        -webkit-transform: perspective(1260px) rotateY(50deg) rotateX(-30deg) scale(0.8);
-                transform: perspective(1260px) rotateY(50deg) rotateX(-30deg) scale(0.8);
-      }
-      100% {
-        -webkit-transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1);
-                transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1);
-      }
+  @keyframes showIntroShot3 {
+    0% {
+      opacity: 0;
+      -webkit-transform: perspective(700px) translate3d(200px, -100px, -200px);
+              transform: perspective(700px) translate3d(200px, -100px, -200px);
     }
+    100% {
+      opacity: 1;
+      -webkit-transform: perspective(700px) translate3d(0px, 0px, 0px);
+              transform: perspective(700px) translate3d(0px, 0px, 0px);
+    }
+  }
 
-    .intro-wrap 
-        margin-bottom: 15em
-        display: -webkit-box
-        display: -ms-flexbox
-        display: flex
-        -webkit-box-align: center
-        -ms-flex-align: center
-        align-items: center
-        height: 75vh
+  .shot1 {
+    -webkit-animation: 0.6s ease-in-out 0.65s showIntroShot1;
+            animation: 0.6s ease-in-out 0.65s showIntroShot1;
+    -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+  }
 
-   .intro-media 
-        animation: 1.4s ease-in-out 0.2s showIntroMedia
-        animation-fill-mode: both    
-        flex: 1 
-        padding-left: 120px
-        position: relative
-        transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1)
-        .shot
-              position: absolute
+  .shot2 {
+    -webkit-animation: 0.7s ease-in-out 0.5s showIntroShot2;
+            animation: 0.7s ease-in-out 0.5s showIntroShot2;
+    -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+  }
 
-    .intro-description 
-        -webkit-box-flex: 0
-        -ms-flex: 0 1 600px
-        flex: 0 1 600px
+  .shot3 {
+    -webkit-animation: 0.5s ease-in-out 0.8s showIntroShot3;
+            animation: 0.5s ease-in-out 0.8s showIntroShot3;
+    -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+  }
 
-    .intro-media .shot .shot-i
-        box-shadow: 0 2px 50px 0 rgba(68, 125, 232, 0.5)
-        background-size: cover
+  @-webkit-keyframes showIntroMedia {
+    0% {
+      -webkit-transform: perspective(1260px) rotateY(50deg) rotateX(-30deg) scale(0.8);
+              transform: perspective(1260px) rotateY(50deg) rotateX(-30deg) scale(0.8);
+    }
+    100% {
+      -webkit-transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1);
+              transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1);
+    }
+  }
 
-    .intro-media .shot1
-        z-index: 2
-        width: 95%
+  @keyframes showIntroMedia {
+    0% {
+      -webkit-transform: perspective(1260px) rotateY(50deg) rotateX(-30deg) scale(0.8);
+              transform: perspective(1260px) rotateY(50deg) rotateX(-30deg) scale(0.8);
+    }
+    100% {
+      -webkit-transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1);
+              transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1);
+    }
+  }
 
-    .intro-media .shot1 .shot-i
-        padding-bottom: 57%
-        transform: translate(0, -70%)
+  .intro-wrap 
+      margin-bottom: 15em
+      display: -webkit-box
+      display: -ms-flexbox
+      display: flex
+      -webkit-box-align: center
+      -ms-flex-align: center
+      align-items: center
+      height: 75vh
 
-    .intro-media .shot2 
-        z-index: 3
-        width: 65%
-    
+ .intro-media 
+      animation: 1.4s ease-in-out 0.2s showIntroMedia
+      animation-fill-mode: both    
+      flex: 1 
+      padding-left: 120px
+      position: relative
+      transform: perspective(1260px) rotateY(-20.2deg) rotateX(10.6deg) scale(1)
+      .shot
+            position: absolute
 
-    .intro-media .shot2 .shot-i 
-        background-size: contain
-        background-repeat: no-repeat
-        background-position: left center
-        padding-bottom: 62%
-        transform: translate(-25%, -10%)
+  .intro-description 
+      -webkit-box-flex: 0
+      -ms-flex: 0 1 600px
+      flex: 0 1 600px
 
-    .intro-media .shot3 
-        z-index: 3
-        width: 75%
-    
+  .intro-media .shot .shot-i
+      box-shadow: 0 2px 50px 0 rgba(68, 125, 232, 0.5)
+      background-size: cover
 
-    .intro-media .shot3 .shot-i 
-        padding-bottom: 81%
-        transform: translate(57%, -36%)
+  .intro-media .shot1
+      z-index: 2
+      width: 95%
+
+  .intro-media .shot1 .shot-i
+      padding-bottom: 57%
+      transform: translate(0, -70%)
+
+  .intro-media .shot2 
+      z-index: 3
+      width: 65%
+  
+
+  .intro-media .shot2 .shot-i 
+      background-size: contain
+      background-repeat: no-repeat
+      background-position: left center
+      padding-bottom: 62%
+      transform: translate(-25%, -10%)
+
+  .intro-media .shot3 
+      z-index: 3
+      width: 75%
+  
+
+  .intro-media .shot3 .shot-i 
+      padding-bottom: 81%
+      transform: translate(57%, -36%)

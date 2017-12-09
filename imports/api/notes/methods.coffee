@@ -216,6 +216,26 @@ export stopSharing = new ValidatedMethod
       shared: 1
       shareKey: 1
 
+export updateLocation = new ValidatedMethod
+  name: 'notes.updateLocation'
+  validate: new SimpleSchema
+    noteId: Notes.simpleSchema().schema('_id')
+    lat: Notes.simpleSchema().schema('lat')
+    lon: Notes.simpleSchema().schema('lon')
+    shareKey: Notes.simpleSchema().schema('shareKey')
+  .validator
+    clean: yes
+    filter: no
+  run: ({ noteId, lat, lon, shareKey = null }) ->
+    note = Notes.findOne noteId
+
+    if !Notes.isEditable noteId, shareKey
+      throw new (Meteor.Error)('not-authorized')
+
+    Notes.update noteId, {$set: {
+      lat: lat
+      lon: lon
+    }}, tx: true
 
 export setEncrypted = new ValidatedMethod
   name: 'notes.setEncrypted'
@@ -245,13 +265,15 @@ export updateTitle = new ValidatedMethod
     noteId: Notes.simpleSchema().schema('_id')
     title: Notes.simpleSchema().schema('title')
     shareKey: Notes.simpleSchema().schema('shareKey')
+    lat: Notes.simpleSchema().schema('lat')
+    lon: Notes.simpleSchema().schema('lon')
     createTransaction:
       type: Boolean
       optional: true
   .validator
     clean: yes
     filter: no
-  run: ({ noteId, title, shareKey = null, createTransaction = true }) ->
+  run: ({ noteId, title, shareKey = null, createTransaction = true, lat = null, lon = null }) ->
     note = Notes.findOne noteId
 
     if !Notes.isEditable noteId, shareKey
@@ -283,6 +305,12 @@ export updateTitle = new ValidatedMethod
     complete = false
     if title.match Notes.donePattern
       complete = true
+
+    if lat
+      Notes.update noteId, {$set: {
+        lat: lat
+        lon: lon
+      }}
 
     Notes.update noteId, {$set: {
       title: title
@@ -522,6 +550,8 @@ NOTES_METHODS = _.pluck([
   remove
   makeChild
   outdent
+  updateLocation
+  setEncrypted
   setShowChildren
   setShowContent
   favorite

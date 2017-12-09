@@ -37,6 +37,19 @@ Template.noteTitle.saveTitle = (event, instance) ->
       instance.state.set 'dirty', true
     , 1000
 
+    if Meteor.user().storeLocation && navigator.geolocation
+      success = (position) ->
+        Meteor.call 'notes.updateLocation',
+          noteId: instance.data._id
+          shareKey: FlowRouter.getParam 'shareKey'
+          lat: position.coords.latitude
+          lon: position.coords.longitude
+
+      error = (error) ->
+        Template.App_body.showSnackbar
+          message: "Couldn't get location"+error.code
+      navigator.geolocation.getCurrentPosition success, error
+
     Meteor.call 'notes.updateTitle', {
       noteId: instance.data._id
       title: title

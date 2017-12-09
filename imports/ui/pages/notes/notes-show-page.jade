@@ -14,5 +14,7 @@ template(name='Notes_show_page')
               +kanban (noteArgs noteId)
             if showCalendar
               +calendar (noteArgs noteId)
+          if showMap
+            +map (noteArgs noteId)
   +else
     +App_notFound

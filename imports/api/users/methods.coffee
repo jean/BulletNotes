@@ -21,6 +21,18 @@ export setTelegramId = new ValidatedMethod
     Meteor.users.update {_id:@userId},
       {$set:{"telegramId":id}}
 
+export setStoreLocation = new ValidatedMethod
+  name: 'users.setStoreLocation'
+  validate: new SimpleSchema
+    storeLocation:
+      type: Boolean
+  .validator
+    clean: yes
+    filter: no
+  run: ({ storeLocation }) ->
+    Meteor.users.update {_id:@userId},
+      {$set:{"storeLocation":storeLocation}}
+
 export setDropboxOauth = new ValidatedMethod
   name: 'users.setDropboxOauth'
   validate: new SimpleSchema

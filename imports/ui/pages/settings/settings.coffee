@@ -49,6 +49,9 @@ Template.App_settings.events
       T9n.setLanguage(Meteor.user().language)
       TAPi18n.setLanguage(Meteor.user().language)
 
+  'click #enableLocation': (event, instance) ->
+    Meteor.call 'users.setStoreLocation',
+      storeLocation: !Meteor.user().storeLocation
 
 Template.App_settings.helpers
   dropbox_token: ->

@@ -120,3 +120,10 @@ aldeed:schema-index
 benjick:telegram-bot
 markdown@1.0.12
 okgrow:analytics
+accounts-facebook
+accounts-github
+accounts-twitter
+facebook-config-ui
+github-config-ui
+twitter-config-ui
+bozhao:link-accounts

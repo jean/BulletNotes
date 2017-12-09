@@ -152,7 +152,7 @@ a.mdl-layout__tab:hover, a.mdl-layout__tab:focus
   cursor: default
   text-decoration: none
 
-#noteMode, #calendarMode, #kanbanMode, #modeBackground
+#noteMode, #calendarMode, #kanbanMode, #modeBackground, #mapMode
   position: absolute
   top: -5px
   transition: left .5s ease-in-out
@@ -163,8 +163,11 @@ a.mdl-layout__tab:hover, a.mdl-layout__tab:focus
 #calendarMode
   left: 80px
 
+#mapMode
+  left: 120px
+
 .title-wrapper.showingNotes
-  margin-left: 6em
+  margin-left: 8em
 
 .contentSection
   margin: 0 1em
@@ -281,3 +284,21 @@ body.Terminal, body.White
 body.White
   .mdl-layout__header
     background-color: gray;
+    
+.page.auth
+  padding-bottom: 1em
+  .at-social
+    margin: 1em
+  .at-oauth
+    overflow: hidden;
+    margin: 0 auto;
+    width: 35em;
+  .row
+    float: left;
+    margin: 1em;
+  .row.at-sep
+    margin: 1em auto;
+    float: none;
+  .at-pwd-form
+    width: 24em
+    margin: 1em auto

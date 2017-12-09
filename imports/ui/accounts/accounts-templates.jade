@@ -1,0 +1,43 @@
+template(name='Auth_page')
+  .page.auth
+    .content-scrollable
+      .wrapper-auth
+        +atForm
+        +atOauth
+
+template(name='override-atPwdFormBtn')
+  button.mdl-button.mdl-button--colored.mdl-button--raised.mdl-js-button.mdl-js-ripple-effect(type='submit')
+    | {{buttonText}}
+
+template(name='override-atTextInput')
+  .input(class='{{#if isValidating}}validating{{/if}} {{#if hasError}}error{{/if}} {{#if hasSuccess}}has-success{{/if}} {{#if feedback}}has-feedback{{/if}}')
+    input(type='{{type}}', id='at-field-{{_id}}', name='at-field-{{_id}}', placeholder='{{placeholder}}', autocapitalize='none', autocorrect='off')
+    if hasIcon
+      span(class='{{iconClass}}')
+    if hasError
+      span {{errorText}}
+
+template(name='override-atTitle')
+  h1.title-auth {{title}}
+  p.subtitle-auth {{_ 'useraccounts.atTitle.subtitle'}}
+
+template(name='override-atError')
+  .list-errors
+    each error
+      .list-item {{errorText}}
+
+template(name='override-atPwdForm')
+  .at-pwd-form
+    form#at-pwd-form(role='form', class='{{disabled}}', novalidate='', action='#', method='POST')
+      each fields
+        +atInput
+      if showReCaptcha
+        +atReCaptcha
+      +atPwdFormBtn
+      if showForgotPasswordLink
+        +atPwdLink
+
+template(name='override-atSocial')
+  button.at-social.mdl-button.mdl-button--raised.mdl-js-button.mdl-js-ripple-effect(class='{{disabled}}', id='at-{{name}}', name='{{name}}')
+    i(class='{{iconClass}}')
+    |  {{buttonText}}
