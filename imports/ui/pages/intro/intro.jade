@@ -1,11 +1,13 @@
 template(name="App_intro")
   #introPage.extraPage
+    if currentUser
+      a.back(href='/') Back to your notes
     .intro-wrap
         .intro-description
             h1 
                 a(href='/') BulletNotes.io
-                | - Organize your life
-            a.mdl-button--raised.mdl-button.mdl-button--colored(href='/join') Create Free Account
+            h2 Organize your life
+            a.register.mdl-button--raised.mdl-button.mdl-button--colored(href='/join') Create Free Account
 
         .intro-media
           .shot.shot1
@@ -62,4 +64,4 @@ template(name="App_intro")
     ul
         li.mdl-button.mdl-button--raised Unlimited Notes
         li.mdl-button.mdl-button--raised Nightly Dropbox Backup
-    a.mdl-button--raised.mdl-button.mdl-button--colored(href='/join') Create Free Account
+    a.register.mdl-button--raised.mdl-button.mdl-button--colored(href='/join') Create Free Account

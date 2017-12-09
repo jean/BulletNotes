@@ -17,17 +17,23 @@ template(name='footer')
             a(href='https://twitter.com/BulletNotes_io',target='_blank')
               | Twitter
               i.glyphicon.glyphicon-link
+          li
+            a(href='https://www.reddit.com/r/BulletNotes/',target='_blank')
+              | Reddit
+              i.glyphicon.glyphicon-link
 
       .mdl-mega-footer__drop-down-section
         input.mdl-mega-footer__heading-checkbox(type='checkbox', checked='')
         h1.mdl-mega-footer__heading {{_ 'layouts.appBody.about'}}
         ul.mdl-mega-footer__link-list
           li
-            a(href='/terms') {{_ 'layouts.appBody.terms'}}
+            a(href='/intro') {{_ 'layouts.appBody.features' }}
           li
-            a(href='/privacy') {{_ 'layouts.appBody.privacy'}}
+            a(href='/terms') {{_ 'layouts.appBody.terms' }}
           li
-            a(href='/pricing') {{_ 'layouts.appBody.pricing'}}
+            a(href='/privacy') {{_ 'layouts.appBody.privacy' }}
+          li
+            a(href='/pricing') {{_ 'layouts.appBody.pricing' }}
           li
             a(href='https://github.com/NickBusey/BulletNotes',target='_blank')
               | GitHub

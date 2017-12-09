@@ -51,7 +51,7 @@ mySubmitFunc = (error, state) ->
       FlowRouter.go '/'
 
     if state == 'signOut'
-      FlowRouter.go '/'
+      FlowRouter.go '/intro'
   return
 
 AccountsTemplates.configure onSubmitHook: mySubmitFunc
@@ -71,10 +71,3 @@ AccountsTemplates.configureRoute 'forgotPwd'
 AccountsTemplates.configureRoute 'resetPwd',
   name: 'resetPwd'
   path: '/reset-password'
-if Meteor.isServer
-  Accounts.onCreateUser (options, user) ->
-    # We still want the default hook's 'profile' behavior.
-    if options.profile
-      user.profile = options.profile
-    # Don't forget to return the new user object at the end!
-    user

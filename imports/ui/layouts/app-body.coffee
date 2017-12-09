@@ -326,6 +326,13 @@ Template.App_body.helpers
     else
       0
 
+  showingNotes: ->
+    Template.App_body.showingNotes()
+
+Template.App_body.showingNotes = ->
+  if FlowRouter.getParam('noteId') || FlowRouter.getRouteName() == "App.notes" || FlowRouter.getRouteName() == "App.home"
+      true
+
 Template.App_body.events
   'keyup .search': (event, instance) ->
     # Throttle so we don't search for single letters

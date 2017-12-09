@@ -7,36 +7,40 @@ template(name='App_body')
             .mdl-layout__header-row
               // Title
               span.mdl-layout-title
-                button#modeBackground.mdl-button.mdl-button--icon.mdl-button--colored.mdl-button--raised(style="left:{{modeBackgroundLeft}}px")
-                button#noteMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.noteMode' }}", data-step='2')
-                  i.material-icons fiber_manual_record
-                .mdl-tooltip.mdl-tooltip--large(for='noteMode')
-                  | {{_ 'layouts.appBody.noteMode'}}
-                button#kanbanMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.kanbanMode' }}", data-step='3')
-                  i.material-icons view_column
-                .mdl-tooltip.mdl-tooltip--large(for='kanbanMode')
-                  | {{_ 'layouts.appBody.kanbanMode'}}
-                button#calendarMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.calendarMode' }}", data-step='4')
-                  i.material-icons date_range
-                .mdl-tooltip.mdl-tooltip--large(for='calendarMode')
-                  | {{_ 'layouts.appBody.calendarMode'}}
+                if showingNotes
+                  button#modeBackground.mdl-button.mdl-button--icon.mdl-button--colored.mdl-button--raised(style="left:{{modeBackgroundLeft}}px")
+                  button#noteMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.noteMode' }}", data-step='2')
+                    i.material-icons fiber_manual_record
+                  .mdl-tooltip.mdl-tooltip--large(for='noteMode')
+                    | {{_ 'layouts.appBody.noteMode'}}
+                  button#kanbanMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.kanbanMode' }}", data-step='3')
+                    i.material-icons view_column
+                  .mdl-tooltip.mdl-tooltip--large(for='kanbanMode')
+                    | {{_ 'layouts.appBody.kanbanMode'}}
+                  button#calendarMode.mdl-button.mdl-js-button.mdl-button--icon.mdl-js-ripple-effect.mdl-button--raised(data-intro="{{_ 'tours.intro.calendarMode' }}", data-step='4')
+                    i.material-icons date_range
+                  .mdl-tooltip.mdl-tooltip--large(for='calendarMode')
+                    | {{_ 'layouts.appBody.calendarMode'}}
                 .js-edit-note.title-page(data-intro="{{_ 'tours.intro.viewModes' }}", data-step='5')
                   if focusedNote
-                    .title-wrapper(contenteditable='true') {{{focusedNoteTitle}}}
+                    .title-wrapper.showingNotes(contenteditable='true') {{{focusedNoteTitle}}}
                   else if searchTerm
-                    .title-wrapper(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
+                    .title-wrapper.showingNotes(style='opacity:.5;cursor:default') Searching: {{ searchTerm }}
+                  else if showingNotes
+                    .title-wrapper.showingNotes(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
                   else
-                    .title-wrapper(style='opacity:.5;cursor:default') {{_ 'layouts.appBody.home'}}
-              .mdl-layout-spacer
-              .searchIcon.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
-                label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
-                  i.material-icons search
-                .mdl-textfield__expandable-holder
-                  input#waterfall-exp.mdl-textfield__input.search(placeholder="{{_ 'layouts.appBody.search'}}...")
-              a#botHeaderButton.mdl-button.mdl-js-button.mdl-button--icon
-                  i#botIcon.material-icons chat
-              .mdl-tooltip.mdl-tooltip--large(for='botIcon')
-                  | {{_ 'layouts.appBody.botLink'}}
+                    .title-wrapper BulletNotes.io
+              if currentUser
+                .mdl-layout-spacer
+                .searchIcon.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right
+                  label.mdl-button.mdl-js-button.mdl-button--icon(for='waterfall-exp')
+                    i.material-icons search
+                  .mdl-textfield__expandable-holder
+                    input#waterfall-exp.mdl-textfield__input.search(placeholder="{{_ 'layouts.appBody.search'}}...")
+                a#botHeaderButton.mdl-button.mdl-js-button.mdl-button--icon
+                    i#botIcon.material-icons chat
+                .mdl-tooltip.mdl-tooltip--large(for='botIcon')
+                    | {{_ 'layouts.appBody.botLink'}}
 
             .mdl-layout__tab-bar.mdl-js-ripple-effect(data-intro="{{_ 'tours.intro.breadcrumbs' }}", data-step='6')
               +breadcrumbs (noteArgs focusedNoteId)

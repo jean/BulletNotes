@@ -50,7 +50,7 @@ export startTrial = new ValidatedMethod
       ],
     }
 
-    Meteor.users.update {_id:userId}, {$set:{stripeId:customer.id,stripeSubscriptionId:subscription.id,isPro:1}}
+    Meteor.users.update {_id:userId}, {$set:{stripeId:customer.id,stripeSubscriptionId:subscription.id,isPro:true}}
 
     subscription
 

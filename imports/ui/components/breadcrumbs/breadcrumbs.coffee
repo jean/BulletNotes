@@ -37,6 +37,9 @@ Template.breadcrumbs.helpers
   shareKey: ->
     FlowRouter.getParam 'shareKey'
 
+  showingNotes: ->
+    Template.App_body.showingNotes()
+
 Template.breadcrumbs.events
   "click a": (event, template) ->
     if ($(event.currentTarget).hasClass('is-active'))

@@ -131,7 +131,7 @@ Template.menu.events
     event.stopImmediatePropagation()
 
     Meteor.logout()
-    FlowRouter.go '/'
+    FlowRouter.go '/intro'
 
   'click #menuPin': (event) ->
     event.stopImmediatePropagation()
