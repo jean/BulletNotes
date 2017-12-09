@@ -83,7 +83,8 @@ export insert = new ValidatedMethod
     else
       noteId = Notes.insert note, tx: true
 
-    rankDenormalizer.updateChildren parentId
+    Meteor.call 'notes.denormalizeRanks',
+      noteId: parentId
 
     childCountDenormalizer.afterInsertNote parentId
 
@@ -356,7 +357,9 @@ export makeChild = new ValidatedMethod
     if parent
       Meteor.call 'notes.denormalizeChildCount',
         noteId: parent._id
-      rankDenormalizer.updateChildren parent._id
+
+    Meteor.call 'notes.denormalizeRanks',
+      noteId: parentId
 
 
 removeRun = (note) ->

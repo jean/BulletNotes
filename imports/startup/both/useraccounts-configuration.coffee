@@ -3,6 +3,8 @@ import { AccountsTemplates } from 'meteor/useraccounts:core';
 import { insert } from '/imports/api/notes/methods.coffee';
 import { Meteor } from 'meteor/meteor';
 mySubmitFunc = (error, state) ->
+  console.log error, state
+  
   if !error
     # if state == 'signIn'
       # Successfully logged in
@@ -12,39 +14,41 @@ mySubmitFunc = (error, state) ->
         'rank': 1
         'showChildren': true
       , (err, res) ->
+        console.log err, res
         insert.call
           'title': 'You can nest notes under each other'
           'rank': 10
-          'parent': res
+          'parent': res._id
         insert.call
           'title': 'As many as you want'
           'rank': 20
-          'parent': res
+          'parent': res._id
         insert.call
           'title': 'You can zoom into notes by clicking the dot, and rearrange them by dragging the dot'
           'rank': 21
-          'parent': res
+          'parent': res._id
         insert.call
           'title': 'You can use <b>bold</b> and <i>italics</i>'
           'rank': 30
-          'parent': res
+          'parent': res._id
         insert.call
           'title': 'You can mark them using hashtags #tips'
           'rank': 31
-          'parent': res
+          'parent': res._id
         insert.call
           'title': 'You can color them #blue'
           'rank': 32
-          'parent': res
+          'parent': res._id
         insert.call
           'title': 'And you can mark some as #done'
           'rank': 40
-          'parent': res
+          'parent': res._id
           'complete': true
 
       insert.call
         'title': 'For more help getting started check out the User Guide link in the footer. #tips'
         'rank': 20
+      FlowRouter.go '/'
 
     if state == 'signOut'
       FlowRouter.go '/'
