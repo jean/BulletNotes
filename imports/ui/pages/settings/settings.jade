@@ -33,10 +33,13 @@ template(name="App_settings")
           .mdl-card__title
             h2.mdl-card__title-text Location
           .mdl-card__supporting-text
-            p Store your location when you create notes
-            label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect(for='enableLocation')
-              input#enableLocation.mdl-switch__input(type='checkbox')
-              span.mdl-switch__label
+            if storeLocation
+              label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect(for='enableLocation')
+                input#enableLocation.mdl-switch__input(type='checkbox',checked='checked')
+            else
+              label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect(for='enableLocation')
+                input#enableLocation.mdl-switch__input(type='checkbox')
+            span.mdl-switch__label Store your location when you create notes
 
 
       .mdl-cell.mdl-cell--6-col

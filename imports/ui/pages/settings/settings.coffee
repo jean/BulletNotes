@@ -50,10 +50,14 @@ Template.App_settings.events
       TAPi18n.setLanguage(Meteor.user().language)
 
   'click #enableLocation': (event, instance) ->
-    Meteor.call 'users.setStoreLocation',
-      storeLocation: !Meteor.user().storeLocation
+    if !Meteor.user().storeLocation
+      navigator.geolocation.getCurrentPosition (location) ->
+        Meteor.call 'users.setStoreLocation',
+          storeLocation: !Meteor.user().storeLocation
 
 Template.App_settings.helpers
+  storeLocation: ->
+    Meteor.user().storeLocation
   dropbox_token: ->
     setTimeout ->
       dbx = new Dropbox(clientId: Meteor.settings.public.dropbox_client_id)
@@ -63,7 +67,7 @@ Template.App_settings.helpers
         authLink.href = authUrl
     , 100
     if Meteor.user() && Meteor.user().profile
-      return Meteor.user().profile.dropbox_token
+      Meteor.user().profile.dropbox_token
 
   themeChecked: (theme) ->
     if Meteor.user() && theme == Meteor.user().theme

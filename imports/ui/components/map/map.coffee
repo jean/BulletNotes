@@ -24,7 +24,17 @@ Template.map.onRendered ->
 
 
 Template.map.helpers
-  childNotes: ->
-    Notes.find {
-      parent: FlowRouter.getParam('noteId')
-    }, sort: rank: 1
+  noteCount: ->
+    Notes.find({
+      lat: {$exists: true}
+    }).count()
+
+  locationStore: ->
+    Meteor.user().storeLocation
+
+Template.map.events
+  'click #enableLocation': (event, instance) ->
+    if !Meteor.user().storeLocation
+      navigator.geolocation.getCurrentPosition (location) ->
+        Meteor.call 'users.setStoreLocation',
+          storeLocation: !Meteor.user().storeLocation

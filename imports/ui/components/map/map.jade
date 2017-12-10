@@ -1,2 +1,11 @@
 template(name='map')
-    #map(style='width: 100%; height: 500px;')
+    if noteCount
+        #map(style='width: 100%; height: 500px;')
+    else
+        .extraPage
+            h3
+                | You don't have any notes with location yet.
+            if locationStore
+                | Create or edit some notes to save them with a location.
+            else
+                a#enableLocation Turn on 'Store location with notes'
