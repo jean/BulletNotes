@@ -1,7 +1,6 @@
 import { Mongo } from 'meteor/mongo'
 import { Factory } from 'meteor/dburles:factory'
 import SimpleSchema from 'simpl-schema'
-import faker from 'faker'
 
 export Files = new Mongo.Collection 'files'
 

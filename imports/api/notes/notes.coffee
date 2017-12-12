@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo'
 import { Factory } from 'meteor/dburles:factory'
 import SimpleSchema from 'simpl-schema'
-import faker from 'faker'
+
 sanitizeHtml = require('sanitize-html')
 
 export Notes = new Mongo.Collection 'notes'
@@ -246,16 +246,6 @@ Notes.publicFields =
   favorite: 1
   body: 1
   progress: 1
-
-# NOTE This factory has a name - do we have a code style for this?
-#   - usually I've used the singular, sometimes you have more than one though, like
-#   'note', 'emptyNote', 'checkedNote'
-Factory.define 'note', Notes,
-  title: ->
-    faker.lorem.sentence()
-
-  createdAt: ->
-    new Date()
 
 Notes.helpers
   note: ->

@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "start": "ROLLBAR_SERVER_ACCESS_TOKEN=d71133c85f83465db6d1c53f347a479a ROLLBAR_CLIENT_ACCESS_TOKEN=9787fb0d1c82430f8d3139a4cf3ae742 ROLLBAR_ENVIRONMENT=local meteor -p 3123 -s settings.private.json",
+    "bunvis": "meteor --extra-packages bundle-visualizer --production -p 3123 -s settings.private.json",
     "pretest": "coffeelint imports/; meteor reset",
     "test": "meteor test --once --driver-package dispatch:mocha-phantomjs --port 3333 --settings settings.json",
     "test-app": "meteor test --full-app --once --driver-package dispatch:mocha-phantomjs",
