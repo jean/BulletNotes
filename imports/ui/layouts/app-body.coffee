@@ -189,7 +189,10 @@ Template.App_body.onCreated ->
     Meteor.subscribe 'notes.count.user'
     Session.set 'ready', handle.ready()
     if Meteor.user()
-      $('body').removeAttr('class').addClass Meteor.user().theme
+      if Meteor.user().theme
+        $('body').removeAttr('class').addClass Meteor.user().theme
+      else
+        $('body').removeAttr('class').addClass 'Mountain'
 
   setTimeout (->
     $('.betaWarning,.devWarning').fadeOut()
@@ -287,6 +290,8 @@ Template.App_body.helpers
   theme: ->
     if Meteor.user() && Meteor.user().theme
       "url('/img/bgs/"+Meteor.user().theme.toLowerCase()+".jpg')"
+    else
+      "url('/img/bgs/mountain.jpg')"
 
   showBotWidget: ->
     Session.get 'showBotWidget'
