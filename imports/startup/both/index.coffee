@@ -1,0 +1,2 @@
+import './useraccounts-configuration.coffee'
+
