@@ -6,9 +6,6 @@
 require './kanbanList.jade'
 require '/imports/ui/components/kanbanListItem/kanbanListItem.coffee'
 
-Template.kanbanList.onRendered ->
-  Meteor.subscribe 'notes.children', this.data._id
-
 Template.kanbanList.helpers
   className: ->
     className = ''

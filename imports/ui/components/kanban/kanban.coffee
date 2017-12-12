@@ -9,8 +9,6 @@ import {
 } from '/imports/api/notes/methods.coffee'
 
 Template.kanban.onRendered ->
-  Meteor.subscribe 'notes.view', FlowRouter.getParam 'noteId'
-  Meteor.subscribe 'notes.children', FlowRouter.getParam 'noteId'
   NProgress.done()
   $('.kanbanChildNotes').sortable
     connectWith: '.kanbanChildNotes'

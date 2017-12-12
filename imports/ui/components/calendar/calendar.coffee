@@ -10,8 +10,6 @@ Template.calendar.onCreated ->
     eventSidebar: true
 
 Template.calendar.onRendered ->
-  Meteor.subscribe 'notes.calendar'
-  Meteor.subscribe 'notes.children', FlowRouter.getParam 'noteId'
   NProgress.done()
 
   this.calendar = $('#calendar').fullCalendar

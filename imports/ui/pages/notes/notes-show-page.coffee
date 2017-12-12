@@ -30,12 +30,6 @@ Template.Notes_show_page.onRendered ->
       }
     if @subscriptionsReady()
       noteRenderHold.release()
-    Meteor.subscribe 'notes.view',
-      FlowRouter.getParam 'noteId'
-      FlowRouter.getParam 'shareKey'
-    Meteor.subscribe 'notes.children',
-      FlowRouter.getParam 'noteId'
-      FlowRouter.getParam 'shareKey'
 
 Template.Notes_show_page.events
   'focus .body': (event, instance) ->

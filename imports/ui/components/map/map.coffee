@@ -4,8 +4,6 @@
 require './map.jade'
 
 Template.map.onRendered ->
-  Meteor.subscribe 'notes.view', FlowRouter.getParam 'noteId'
-  Meteor.subscribe 'notes.children', FlowRouter.getParam 'noteId'
   NProgress.done()
   setTimeout ->
     mymap = L.map('map').setView([51.505, -0.09], 3)

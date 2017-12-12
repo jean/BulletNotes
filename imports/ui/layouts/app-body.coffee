@@ -83,7 +83,7 @@ Meteor.startup ->
   NProgress.start()
   # Only show the connection error box if it has been 5 seconds since
   # the app started
-  $(document).on 'keyup', (e) ->
+  $(document).on 'keydown', (e) ->
     editingNote = $(document.activeElement).hasClass('title')
     menuVisible = $('#container').hasClass('menu-open')
     switch e.keyCode
