@@ -18,6 +18,7 @@ require '/imports/ui/pages/intro/intro.coffee'
 require '/imports/ui/pages/privacy/privacy.coffee'
 require '/imports/ui/pages/settings/settings.coffee'
 require '/imports/ui/pages/terms/terms.coffee'
+require '/imports/ui/pages/zoom/zoom.coffee'
 
 # Import to override accounts templates
 require '/imports/ui/accounts/accounts-templates.coffee'
@@ -110,6 +111,12 @@ FlowRouter.route '/settings',
   action: ->
     NProgress.start()
     BlazeLayout.render 'App_body', main: 'App_settings'
+
+FlowRouter.route '/zoom',
+  name: 'App.zoom'
+  action: ->
+    NProgress.start()
+    BlazeLayout.render 'App_body', main: 'App_zoom'
 
 FlowRouter.route '/admin',
   name: 'App.admin'

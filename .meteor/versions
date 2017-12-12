@@ -43,6 +43,7 @@ chriswessels:hammer@4.0.2
 coffeescript@1.12.7_3
 coffeescript-compiler@1.12.7_3
 crosswalk@1.7.1
+d3js:d3@3.5.8
 dandv:caret-position@2.1.1
 dburles:collection-helpers@1.1.0
 dburles:factory@1.1.0
