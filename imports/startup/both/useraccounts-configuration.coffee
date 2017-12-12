@@ -3,10 +3,9 @@ import { AccountsTemplates } from 'meteor/useraccounts:core';
 import { insert } from '/imports/api/notes/methods.coffee';
 import { Meteor } from 'meteor/meteor';
 mySubmitFunc = (error, state) ->
-  console.log error, state
-  
   if !error
-    # if state == 'signIn'
+    if state == 'signIn'
+      FlowRouter.go '/'
       # Successfully logged in
     if state == 'signUp'
       insert.call
